@@ -1,5 +1,5 @@
 """pynintendoparental"""
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 
 
 BASE_URL = "https://api-lp1.pctl.srv.nintendo.net/moon/v1"
