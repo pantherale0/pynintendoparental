@@ -7,8 +7,11 @@ from .device import Device
 class NintendoParental:
     """Core Python API."""
 
-    def __init__(self, auth: Authenticator) -> None:
-        self._api: Api = Api(auth=auth)
+    def __init__(self,
+                 auth: Authenticator,
+                 timezone: str = "Europe/London",
+                 lang: str = "en-GB") -> None:
+        self._api: Api = Api(auth=auth, tz=timezone, lang=lang)
         self.account_id = auth.account_id
         self.devices: list[Device] = None
 

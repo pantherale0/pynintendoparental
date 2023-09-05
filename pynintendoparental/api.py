@@ -17,9 +17,11 @@ def _check_http_success(status: int) -> bool:
 class Api:
     """Nintendo Parental Controls API."""
 
-    def __init__(self, auth):
+    def __init__(self, auth, tz, lang):
         """INIT"""
         self._auth: Authenticator = auth
+        self._tz = tz
+        self._language = lang
 
     @property
     def _auth_token(self) -> str:
@@ -54,9 +56,9 @@ class Api:
             session.headers.add("X-Moon-Os", "ANDROID")
             session.headers.add("X-Moon-Os-Version", "33")
             session.headers.add("X-Moon-Model", "Pixel 4 XL")
-            session.headers.add("X-Moon-TimeZone", "Europe/London")
-            session.headers.add("X-Moon-Os-Language", "en-GB")
-            session.headers.add("X-Moon-App-Language", "en-GB")
+            session.headers.add("X-Moon-TimeZone", self._tz)
+            session.headers.add("X-Moon-Os-Language", self._language)
+            session.headers.add("X-Moon-App-Language", self._language)
             session.headers.add("X-Moon-App-Display-Version", "1.18.0")
             session.headers.add("X-Moon-App-Internal-Version", "275")
             #session.headers.add("X-Moon-Smart-Device-Id", "190207e4-2f6f-4db7-bc96-fdfe109124f0")
