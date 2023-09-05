@@ -1,8 +1,7 @@
 PYTHON_BINARY := "python3"
 VIRTUAL_ENV := "venv"
 VIRTUAL_BIN := VIRTUAL_ENV / "bin"
-PROJECT_NAME := "project_name"
-TEST_DIR := "test"
+PROJECT_NAME := "pynintendoparental"
 
 # Scans the project for security vulnerabilities
 bandit:
@@ -14,11 +13,11 @@ build:
 
 # Runs the Black Python formatter against the project
 black:
-    {{VIRTUAL_BIN}}/black {{PROJECT_NAME}}/ {{TEST_DIR}}/
+    {{VIRTUAL_BIN}}/black {{PROJECT_NAME}}/
 
 # Checks if the project is formatted correctly against the Black rules
 black-check:
-    {{VIRTUAL_BIN}}/black {{PROJECT_NAME}}/ {{TEST_DIR}}/ --check
+    {{VIRTUAL_BIN}}/black {{PROJECT_NAME}}/ --check
 
 # Test the project and generate an HTML coverage report
 coverage:
@@ -31,7 +30,7 @@ clean:
 
 # Run flake8 checks against the project
 flake8:
-    {{VIRTUAL_BIN}}/flake8 {{PROJECT_NAME}}/ {{TEST_DIR}}/
+    {{VIRTUAL_BIN}}/flake8 {{PROJECT_NAME}}/
 
 # Lints the project
 lint: black-check isort-check flake8 mypy bandit
@@ -46,15 +45,15 @@ install:
 
 # Sorts imports throughout the project
 isort:
-    {{VIRTUAL_BIN}}/isort {{PROJECT_NAME}}/ {{TEST_DIR}}/
+    {{VIRTUAL_BIN}}/isort {{PROJECT_NAME}}/
 
 # Checks that imports throughout the project are sorted correctly
 isort-check:
-    {{VIRTUAL_BIN}}/isort {{PROJECT_NAME}}/ {{TEST_DIR}}/ --check-only
+    {{VIRTUAL_BIN}}/isort {{PROJECT_NAME}}/ --check-only
 
 # Run mypy type checking on the project
 mypy:
-    {{VIRTUAL_BIN}}/mypy {{PROJECT_NAME}}/ {{TEST_DIR}}/
+    {{VIRTUAL_BIN}}/mypy {{PROJECT_NAME}}/
 
 # Test the project
 test:
