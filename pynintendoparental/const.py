@@ -37,4 +37,8 @@ ENDPOINTS = {
         "url": "{BASE_URL}/devices/{DEVICE_ID}/alarm_setting_state",
         "method": "POST"
     },
+    "get_device_alarm_setting_state": {
+        "url": "{BASE_URL}/devices/{DEVICE_ID}/alarm_setting_state",
+        "method": "POST"
+    },
 }
