@@ -22,6 +22,7 @@ class Device:
         self.players: list[Player] = None
         self.limit_time: int = None
         self.previous_limit_time: int = None
+        self.today_playing_time: int = None
 
     async def update(self):
         """Update data."""
@@ -83,6 +84,7 @@ class Device:
             DEVICE_ID = self.device_id
         )
         self.daily_summaries = response["json"]["items"]
+        self.today_playing_time = self.get_date_summary()[0].get("playingTime")/60
 
     async def set_alarm_state(self, state: AlarmSettingState):
         """Updates the alarm state for the device."""
