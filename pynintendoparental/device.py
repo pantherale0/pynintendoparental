@@ -6,6 +6,7 @@ from datetime import date
 from .api import Api
 from .enum import AlarmSettingState
 from .player import Player
+from .application import Application
 
 class Device:
     """A device"""
@@ -28,6 +29,8 @@ class Device:
         self.today_notices: list = []
         self.today_important_info: list = []
         self.today_observations: list = []
+        self.month_summary = []
+        self.month_applications: list[Application] = []
 
     async def update(self):
         """Update data."""
@@ -112,6 +115,14 @@ class Device:
             x for x in self.daily_summaries
             if x["date"] == input_date.strftime('%Y-%m-%d')
         ]
+
+    def get_application(self, application_id: str):
+        """Returns a single application."""
+        app = [x for x in self.month_applications
+                if x.application_id == application_id]
+        if len(app) == 1:
+            return app[0]
+        raise ValueError("Application not found.")
 
     @classmethod
     async def from_devices_response(cls, raw: dict, api) -> list['Device']:

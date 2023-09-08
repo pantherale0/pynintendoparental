@@ -41,4 +41,7 @@ ENDPOINTS = {
         "url": "{BASE_URL}/devices/{DEVICE_ID}/alarm_setting_state",
         "method": "POST"
     },
+    "get_monthly_summary": {
+        "url": "{BASE_URL}/devices/{DEVICE_ID}/monthly_summaries/{YEAR}-{MONTH}"
+    }
 }
