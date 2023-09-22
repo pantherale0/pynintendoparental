@@ -39,7 +39,11 @@ class Device:
         await self._update_daily_summaries()
         await self._update_parental_control_setting()
         await self.get_monthly_summary()
-        self.players = Player.from_device_daily_summary(self.daily_summaries)
+        if self.players is None:
+            self.players = Player.from_device_daily_summary(self.daily_summaries)
+        else:
+            for player in self.players:
+                player.update_from_daily_summary(self.daily_summaries)
 
     async def set_new_pin(self, pin: str):
         """Updates the pin for the device."""
