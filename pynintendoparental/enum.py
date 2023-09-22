@@ -10,3 +10,11 @@ class AlarmSettingState(Enum):
 
     def __str__(self) -> str:
         return self.name
+
+class RestrictionMode(Enum):
+    """Restriction modes."""
+    FORCED_TERMINATION = 0
+    ALARM = 1
+
+    def __str__(self) -> str:
+        return self.name

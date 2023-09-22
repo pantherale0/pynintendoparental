@@ -1,10 +1,10 @@
 # pylint: disable=line-too-long
 """Defines a single Nintendo Switch device."""
 
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 
 from .api import Api
-from .enum import AlarmSettingState
+from .enum import AlarmSettingState, RestrictionMode
 from .player import Player
 from .application import Application
 
@@ -44,6 +44,15 @@ class Device:
     async def set_new_pin(self, pin: str):
         """Updates the pin for the device."""
         self.parental_control_settings["unlockCode"] = pin
+        await self._set_parental_control_setting()
+
+    async def set_restriction_mode(self, mode: RestrictionMode):
+        """Updates the restriction mode of the device."""
+        self.parental_control_settings["playTimerRegulations"]["restrictionMode"] = str(mode)
+        await self._set_parental_control_setting()
+
+    async def _set_parental_control_setting(self):
+        """Shortcut method to deduplicate code used to update parental control settings."""
         await self._api.send_request(
             endpoint="update_device_parental_control_setting",
             body=self._get_update_parental_control_setting_body(),
@@ -61,12 +70,7 @@ class Device:
             self.previous_limit_time = self.limit_time
         self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["enabled"] = True
         self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["limitTime"] = minutes
-        await self._api.send_request(
-            endpoint="update_device_parental_control_setting",
-            body=self._get_update_parental_control_setting_body(),
-            DEVICE_ID=self.device_id
-        )
-        await self._update_parental_control_setting()
+        await self._set_parental_control_setting()
 
     def _get_update_parental_control_setting_body(self):
         """Returns the dict that is required to update the parental control settings."""
