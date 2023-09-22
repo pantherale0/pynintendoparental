@@ -6,7 +6,17 @@ from datetime import datetime
 import aiohttp
 
 from .authenticator import Authenticator
-from .const import ENDPOINTS, BASE_URL, USER_AGENT
+from .const import (
+    ENDPOINTS,
+    BASE_URL,
+    USER_AGENT,
+    MOBILE_APP_PKG,
+    MOBILE_APP_BUILD,
+    MOBILE_APP_VERSION,
+    OS_VERSION,
+    OS_NAME,
+    DEVICE_MODEL
+)
 from .exceptions import HttpException
 
 _LOGGER = logging.getLogger(__name__)
@@ -52,15 +62,15 @@ class Api:
             # Add auth header
             session.headers.add("Authorization", self._auth_token)
             session.headers.add("User-Agent", USER_AGENT)
-            session.headers.add("X-Moon-App-Id", "com.nintendo.znma")
-            session.headers.add("X-Moon-Os", "ANDROID")
-            session.headers.add("X-Moon-Os-Version", "33")
-            session.headers.add("X-Moon-Model", "Pixel 4 XL")
+            session.headers.add("X-Moon-App-Id", MOBILE_APP_PKG)
+            session.headers.add("X-Moon-Os", OS_NAME)
+            session.headers.add("X-Moon-Os-Version", OS_VERSION)
+            session.headers.add("X-Moon-Model", DEVICE_MODEL)
             session.headers.add("X-Moon-TimeZone", self._tz)
             session.headers.add("X-Moon-Os-Language", self._language)
             session.headers.add("X-Moon-App-Language", self._language)
-            session.headers.add("X-Moon-App-Display-Version", "1.18.0")
-            session.headers.add("X-Moon-App-Internal-Version", "275")
+            session.headers.add("X-Moon-App-Display-Version", MOBILE_APP_VERSION)
+            session.headers.add("X-Moon-App-Internal-Version", MOBILE_APP_BUILD)
             #session.headers.add("X-Moon-Smart-Device-Id", "190207e4-2f6f-4db7-bc96-fdfe109124f0")
             async with session.request(
                 method=e_point.get("method"),
