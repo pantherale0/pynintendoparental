@@ -1,6 +1,7 @@
 """Nintendo Player."""
 
 class Player:
+    """Defines a single player on a Nintendo device."""
     def __init__(self):
         """Init a player."""
         self.player_image: str = None
