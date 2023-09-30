@@ -151,7 +151,7 @@ class Device:
         """Gets the monthly summary."""
         latest = False
         if search_date is None:
-            search_date = datetime.now()-timedelta(days=29)
+            search_date = datetime.now()-timedelta(days=datetime.today().day+1)
             latest = True
 
         response = await self._api.send_request(
