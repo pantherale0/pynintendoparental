@@ -151,7 +151,12 @@ class Device:
         """Gets the monthly summary."""
         latest = False
         if search_date is None:
-            search_date = datetime.now()-timedelta(days=datetime.today().day+1)
+            response = await self._api.send_request(
+                endpoint="get_device_monthly_summaries",
+                DEVICE_ID=self.device_id
+            )
+            response = response["json"]["indexes"][0]
+            search_date = datetime.strptime(f"{response}-01", "%Y-%m-%d")
             latest = True
 
         response = await self._api.send_request(

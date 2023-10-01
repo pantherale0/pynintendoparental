@@ -1,6 +1,6 @@
 # pylint: disable=line-too-long
 """pynintendoparental"""
-__version__ = '0.1.1'
+__version__ = '0.1.2'
 
 MOBILE_APP_PKG = "com.nintendo.znma"
 MOBILE_APP_VERSION = "1.18.0"
