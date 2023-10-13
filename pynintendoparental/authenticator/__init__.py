@@ -13,7 +13,11 @@ from datetime import datetime, timedelta
 
 import aiohttp
 
-from pynintendoparental.exceptions import HttpException
+from pynintendoparental.exceptions import (
+    HttpException,
+    InvalidOAuthConfigurationException,
+    InvalidSessionTokenException
+)
 from .const import (
     TOKEN_URL,
     SESSION_TOKEN_URL,
@@ -129,6 +133,12 @@ class Authenticator:
                 "session_token": self._session_token
             }
         )
+
+        if token_response["status"] == 400:
+            raise InvalidSessionTokenException(token_response["json"]["error"])
+
+        if token_response["status"] == 401:
+            raise InvalidOAuthConfigurationException(token_response["json"]["error"])
 
         if token_response.get("status") != 200:
             raise HttpException(f"login error {token_response.get('status')}")
