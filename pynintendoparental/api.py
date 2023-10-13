@@ -1,7 +1,7 @@
 """API handler."""
 
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import aiohttp
 
@@ -46,7 +46,7 @@ class Api:
         if e_point is None:
             raise ValueError("Endpoint does not exist")
         # refresh the token if it has expired.
-        if self._auth.expires < datetime.now():
+        if self._auth.expires < (datetime.now()+timedelta(seconds=30)):
             await self._auth.perform_refresh()
         # format the URL using the kwargs
         url = e_point.get("url").format(BASE_URL=BASE_URL, **kwargs)
