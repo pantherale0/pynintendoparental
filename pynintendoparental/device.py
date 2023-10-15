@@ -33,12 +33,15 @@ class Device:
         self.last_month_summary: dict = None
         self.applications: list[Application] = []
         self.last_month_playing_time: int = None
+        self.forced_termination_mode: bool = None
+        self.alarms_enabled: bool = None
 
     async def update(self):
         """Update data."""
         await self._update_daily_summaries()
         await self._update_parental_control_setting()
         await self.get_monthly_summary()
+        await self._update_extras()
         if self.players is None:
             self.players = Player.from_device_daily_summary(self.daily_summaries)
         else:
@@ -100,6 +103,9 @@ class Device:
         )
         self.parental_control_settings = response["json"]
         self.limit_time = self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["limitTime"]
+        self.forced_termination_mode = (
+            self.parental_control_settings["playTimerRegulations"]["restrictionMode"] == str(RestrictionMode.FORCED_TERMINATION)
+        )
         if self.previous_limit_time is None:
             self.previous_limit_time = self.limit_time
 
@@ -146,6 +152,19 @@ class Device:
         for player in self.get_date_summary()[0].get("devicePlayers", []):
             for app in player.get("playedApps", []):
                 self.get_application(app["applicationId"]).update_today_time_played(app)
+
+    async def _update_extras(self):
+        """Update extra props."""
+        if self.alarms_enabled is not None:
+            # first refresh can come from self.extra without http request
+            response = await self._api.send_request(
+                endpoint="get_account_device",
+                ACCOUNT_ID = self._api.account_id,
+                DEVICE_ID = self.device_id
+            )
+            self.extra = response["json"]
+        status = self.extra["device"]["alarmSetting"]["visibility"]
+        self.alarms_enabled = status == str(AlarmSettingState.VISIBLE)
 
     async def get_monthly_summary(self, search_date: datetime = None):
         """Gets the monthly summary."""

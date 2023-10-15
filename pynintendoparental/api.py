@@ -38,6 +38,11 @@ class Api:
         """Returns the auth token."""
         return f"Bearer {self._auth.access_token}"
 
+    @property
+    def account_id(self):
+        """Return the account id."""
+        return self._auth.account_id
+
     async def send_request(self, endpoint: str, body: object=None, **kwargs):
         """Sends a request to a given endpoint."""
         _LOGGER.debug("Sending request to %s", endpoint)

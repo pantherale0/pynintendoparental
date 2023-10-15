@@ -1,6 +1,6 @@
 # pylint: disable=line-too-long
 """pynintendoparental"""
-__version__ = '0.1.3'
+__version__ = '0.1.4'
 
 MOBILE_APP_PKG = "com.nintendo.znma"
 MOBILE_APP_VERSION = "1.18.0"
@@ -19,6 +19,10 @@ ENDPOINTS = {
     },
     "get_account_devices": {
         "url": "{BASE_URL}/users/{ACCOUNT_ID}/devices?filter.device.activated.$eq=true",
+        "method": "GET"
+    },
+    "get_account_device": {
+        "url": "{BASE_URL}/users/{ACCOUNT_ID}/devices/{DEVICE_ID}",
         "method": "GET"
     },
     "get_device_daily_summaries": {

@@ -7,6 +7,8 @@ class AlarmSettingState(Enum):
     SUCCESS = 0
     TO_VISIBLE = 1
     TO_INVISIBLE = 2
+    VISIBLE = 4
+    INVISIBLE = 8
 
     def __str__(self) -> str:
         return self.name
