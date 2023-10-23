@@ -1,7 +1,5 @@
 """A Nintendo application."""
 
-import logging
-
 from datetime import datetime
 
 from .const import _LOGGER
