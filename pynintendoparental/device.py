@@ -146,13 +146,7 @@ class Device:
             _LOGGER.debug("Set today important info, notices and observations for device %s",
                         self.device_id)
         except ValueError as err:
-            _LOGGER.warning("Missing daily summary for today in response from Nintendo: %s", err)
-            self.today_playing_time = 0
-            self.today_disabled_time = 0
-            self.today_exceeded_time = 0
-            self.today_important_info = []
-            self.today_notices = []
-            self.today_observations = []
+            _LOGGER.warning("Unable to update daily summary: %s", err)
 
         current_month = datetime(
             year=datetime.now().year,
@@ -186,7 +180,7 @@ class Device:
                 for app in player.get("playedApps", []):
                     self.get_application(app["applicationId"]).update_today_time_played(app)
         except ValueError:
-            _LOGGER.warning("Unable to update application playtime due to missing daily summary.")
+            _LOGGER.warning("Unable to update application play time: %s", err)
 
     async def _update_extras(self):
         """Update extra props."""
