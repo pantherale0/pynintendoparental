@@ -130,20 +130,29 @@ class Device:
         )
         self.daily_summaries = response["json"]["items"]
         _LOGGER.debug("New daily summary %s", self.daily_summaries)
-        today_playing_time = self.get_date_summary()[0].get("playingTime", 0)
-        self.today_playing_time = None if today_playing_time is None else today_playing_time/60
-        today_disabled_time = self.get_date_summary()[0].get("disabledTime", 0)
-        self.today_disabled_time = None if today_disabled_time is None else today_disabled_time/60
-        today_exceeded_time = self.get_date_summary()[0].get("exceededTime", 0)
-        self.today_exceeded_time = None if today_exceeded_time is None else today_exceeded_time/60
-        _LOGGER.debug("Set playing, disabled and exceeded time for today for device %s",
-                      self.device_id)
+        try:
+            today_playing_time = self.get_date_summary()[0].get("playingTime", 0)
+            self.today_playing_time = None if today_playing_time is None else today_playing_time/60
+            today_disabled_time = self.get_date_summary()[0].get("disabledTime", 0)
+            self.today_disabled_time = None if today_disabled_time is None else today_disabled_time/60
+            today_exceeded_time = self.get_date_summary()[0].get("exceededTime", 0)
+            self.today_exceeded_time = None if today_exceeded_time is None else today_exceeded_time/60
+            _LOGGER.debug("Set playing, disabled and exceeded time for today for device %s",
+                        self.device_id)
 
-        self.today_important_info = self.get_date_summary()[0].get("importantInfos", [])
-        self.today_notices = self.get_date_summary()[0].get("notices", [])
-        self.today_observations = self.get_date_summary()[0].get("observations", [])
-        _LOGGER.debug("Set today important info, notices and observations for device %s",
-                      self.device_id)
+            self.today_important_info = self.get_date_summary()[0].get("importantInfos", [])
+            self.today_notices = self.get_date_summary()[0].get("notices", [])
+            self.today_observations = self.get_date_summary()[0].get("observations", [])
+            _LOGGER.debug("Set today important info, notices and observations for device %s",
+                        self.device_id)
+        except ValueError as err:
+            _LOGGER.warning("Missing daily summary for today in response from Nintendo: %s", err)
+            self.today_playing_time = 0
+            self.today_disabled_time = 0
+            self.today_exceeded_time = 0
+            self.today_important_info = []
+            self.today_notices = []
+            self.today_observations = []
 
         current_month = datetime(
             year=datetime.now().year,
@@ -243,6 +252,8 @@ class Device:
             x for x in self.daily_summaries
             if x["date"] == input_date.strftime('%Y-%m-%d')
         ]
+        if len(summary) == 0:
+            raise ValueError(f"A summary for the given date {input_date} does not exist")
         return summary
 
     def get_application(self, application_id: str) -> Application:
