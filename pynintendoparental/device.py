@@ -181,9 +181,12 @@ class Device:
                 self.applications.append(app)
 
         # update application playtime
-        for player in self.get_date_summary()[0].get("devicePlayers", []):
-            for app in player.get("playedApps", []):
-                self.get_application(app["applicationId"]).update_today_time_played(app)
+        try:
+            for player in self.get_date_summary()[0].get("devicePlayers", []):
+                for app in player.get("playedApps", []):
+                    self.get_application(app["applicationId"]).update_today_time_played(app)
+        except ValueError:
+            _LOGGER.warning("Unable to update application playtime due to missing daily summary.")
 
     async def _update_extras(self):
         """Update extra props."""
