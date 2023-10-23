@@ -243,6 +243,8 @@ class Device:
             x for x in self.daily_summaries
             if x["date"] == input_date.strftime('%Y-%m-%d')
         ]
+        if len(summary) == 0:
+            raise ValueError(f"A summary for the given date {input_date} does not exist")
         return summary
 
     def get_application(self, application_id: str) -> Application:
