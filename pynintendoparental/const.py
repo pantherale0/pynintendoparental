@@ -1,10 +1,10 @@
 # pylint: disable=line-too-long
 """pynintendoparental"""
-__version__ = '0.1.6'
+__version__ = '0.1.7'
 
 import logging
 
-_LOGGER = logging.getLogger(__name__)
+_LOGGER = logging.getLogger(__package__)
 MOBILE_APP_PKG = "com.nintendo.znma"
 MOBILE_APP_VERSION = "1.18.0"
 MOBILE_APP_BUILD = "275"
