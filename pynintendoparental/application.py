@@ -4,7 +4,7 @@ import logging
 
 from datetime import datetime
 
-_LOGGER = logging.getLogger(__name__)
+from .const import _LOGGER
 
 class Application:
     """Model for an application"""
@@ -22,10 +22,13 @@ class Application:
 
     def update_today_time_played(self, daily_summary: dict):
         """Updates the today time played for the given application."""
+        _LOGGER.debug("Updating today time played for app %s",
+                      self.application_id)
         self.today_time_played = daily_summary.get("playingTime", 0)
 
     def update(self, updated: 'Application'):
         """Updates self with a given application."""
+        _LOGGER.debug("Updating application %s", self.application_id)
         self.application_id = updated.application_id
         self.first_played_date = updated.first_played_date
         self.has_ugc = updated.has_ugc

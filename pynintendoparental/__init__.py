@@ -2,6 +2,7 @@
 
 from .authenticator import Authenticator
 from .api import Api
+from .const import _LOGGER
 from .device import Device
 
 class NintendoParental:
@@ -22,7 +23,10 @@ class NintendoParental:
             ACCOUNT_ID=self.account_id
         )
         self.devices = await Device.from_devices_response(response["json"], self._api)
+        _LOGGER.debug("Found %s device(s)", len(self.devices))
 
     async def update(self):
         """Update module data."""
+        _LOGGER.debug("Received request to update data.")
         await self._get_devices()
+        _LOGGER.debug("Update complete.")

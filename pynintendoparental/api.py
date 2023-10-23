@@ -15,11 +15,10 @@ from .const import (
     MOBILE_APP_VERSION,
     OS_VERSION,
     OS_NAME,
-    DEVICE_MODEL
+    DEVICE_MODEL,
+    _LOGGER
 )
 from .exceptions import HttpException
-
-_LOGGER = logging.getLogger(__name__)
 
 def _check_http_success(status: int) -> bool:
     return status >= 200 and status < 300
@@ -52,6 +51,7 @@ class Api:
             raise ValueError("Endpoint does not exist")
         # refresh the token if it has expired.
         if self._auth.expires < (datetime.now()+timedelta(seconds=30)):
+            _LOGGER.debug("Access token expired, requesting refresh.")
             await self._auth.perform_refresh()
         # format the URL using the kwargs
         url = e_point.get("url").format(BASE_URL=BASE_URL, **kwargs)

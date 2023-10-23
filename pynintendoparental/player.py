@@ -1,5 +1,7 @@
 """Nintendo Player."""
 
+from .const import _LOGGER
+
 class Player:
     """Defines a single player on a Nintendo device."""
     def __init__(self):
@@ -12,6 +14,7 @@ class Player:
 
     def update_from_daily_summary(self, raw: list[dict]):
         """Update the current instance of the player from the daily summery"""
+        _LOGGER.debug("Updating player %s daily summary", self.player_id)
         for player in raw[0].get("devicePlayers", []):
             if self.player_id is player.get("playerId"):
                 self.player_id = player.get("playerId")
@@ -25,6 +28,7 @@ class Player:
     def from_device_daily_summary(cls, raw: list[dict]) -> list['Player']:
         """Converts a daily summary response into a list of players."""
         players = []
+        _LOGGER.debug("Building players from device daily summary.")
         for player in raw[0].get("devicePlayers", []):
             parsed = cls()
             parsed.player_id = player.get("playerId")
@@ -33,4 +37,5 @@ class Player:
             parsed.playing_time = player.get("playingTime")
             parsed.apps = player.get("playedApps")
             players.append(parsed)
+            _LOGGER.debug("Built player %s", parsed.player_id)
         return players
