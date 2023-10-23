@@ -70,6 +70,11 @@ class Authenticator:
         self._session_token: str = session_token
         self.login_url: str = None
 
+    @property
+    def get_session_token(self) -> str:
+        """Return the session token."""
+        return self._session_token
+
     async def _request_handler(self, method, url, json=None, data=None, headers: dict=None):
         """Send a HTTP request"""
         if headers is None:
@@ -130,7 +135,7 @@ class Authenticator:
             json={
                 "client_id": CLIENT_ID,
                 "grant_type": GRANT_TYPE,
-                "session_token": self._session_token
+                "session_token": self.get_session_token
             }
         )
 
