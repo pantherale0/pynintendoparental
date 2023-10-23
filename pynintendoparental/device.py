@@ -17,25 +17,25 @@ class Device:
         self.device_id: str = None
         self.name: str = None
         self.sync_state: str = None
-        self.extra: dict = None
+        self.extra: dict = {}
         self._api: Api = api
-        self.daily_summaries: dict = None
-        self.parental_control_settings: dict = None
-        self.players: list[Player] = None
-        self.limit_time: int = None
-        self.previous_limit_time: int = None
-        self.today_playing_time: int = None
-        self.month_playing_time: int = None
-        self.today_disabled_time: int = None
-        self.today_exceeded_time: int = None
+        self.daily_summaries: dict = {}
+        self.parental_control_settings: dict = {}
+        self.players: list[Player] = []
+        self.limit_time: int = 0
+        self.previous_limit_time: int = 0
+        self.today_playing_time: int = 0
+        self.month_playing_time: int = 0
+        self.today_disabled_time: int = 0
+        self.today_exceeded_time: int = 0
         self.today_notices: list = []
         self.today_important_info: list = []
         self.today_observations: list = []
-        self.last_month_summary: dict = None
+        self.last_month_summary: dict = {}
         self.applications: list[Application] = []
-        self.last_month_playing_time: int = None
-        self.forced_termination_mode: bool = None
-        self.alarms_enabled: bool = None
+        self.last_month_playing_time: int = 0
+        self.forced_termination_mode: bool = False
+        self.alarms_enabled: bool = False
         _LOGGER.debug("Device init complete for %s", self.device_id)
 
     async def update(self):
