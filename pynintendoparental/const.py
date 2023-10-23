@@ -2,6 +2,9 @@
 """pynintendoparental"""
 __version__ = '0.1.4'
 
+import logging
+
+_LOGGER = logging.getLogger(__name__)
 MOBILE_APP_PKG = "com.nintendo.znma"
 MOBILE_APP_VERSION = "1.18.0"
 MOBILE_APP_BUILD = "275"

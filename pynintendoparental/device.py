@@ -4,6 +4,7 @@
 from datetime import datetime, timedelta
 
 from .api import Api
+from .const import _LOGGER
 from .enum import AlarmSettingState, RestrictionMode
 from .player import Player
 from .application import Application
@@ -35,9 +36,11 @@ class Device:
         self.last_month_playing_time: int = None
         self.forced_termination_mode: bool = None
         self.alarms_enabled: bool = None
+        _LOGGER.debug("Device init complete for %s", self.device_id)
 
     async def update(self):
         """Update data."""
+        _LOGGER.debug("Updating device %s", self.device_id)
         await self._update_daily_summaries()
         await self._update_parental_control_setting()
         await self.get_monthly_summary()
@@ -50,16 +53,19 @@ class Device:
 
     async def set_new_pin(self, pin: str):
         """Updates the pin for the device."""
+        _LOGGER.debug("Setting new pin for device %s", self.device_id)
         self.parental_control_settings["unlockCode"] = pin
         await self._set_parental_control_setting()
 
     async def set_restriction_mode(self, mode: RestrictionMode):
         """Updates the restriction mode of the device."""
+        _LOGGER.debug("Setting restriction mode for device %s", self.device_id)
         self.parental_control_settings["playTimerRegulations"]["restrictionMode"] = str(mode)
         await self._set_parental_control_setting()
 
     async def _set_parental_control_setting(self):
         """Shortcut method to deduplicate code used to update parental control settings."""
+        _LOGGER.debug("Internal set parental control setting for device %s", self.device_id)
         await self._api.send_request(
             endpoint="update_device_parental_control_setting",
             body=self._get_update_parental_control_setting_body(),
@@ -75,6 +81,10 @@ class Device:
             minutes = self.previous_limit_time
         elif not restore and minutes == 0:
             self.previous_limit_time = self.limit_time
+        _LOGGER.debug(
+            "Setting timeToPlayInOneDay.limitTime for device %s to value %s",
+            self.device_id,
+            minutes)
         self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["enabled"] = True
         self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["limitTime"] = minutes
         await self._set_parental_control_setting()
@@ -90,6 +100,7 @@ class Device:
 
     def _update_applications(self):
         """Updates applications from daily summary."""
+        _LOGGER.debug("Updating application stats for device %s", self.device_id)
         updated_apps = Application.from_daily_summary([])
         for app in self.applications:
             updated = [x for x in updated_apps if x.application_id == app.application_id][0]
@@ -97,6 +108,7 @@ class Device:
 
     async def _update_parental_control_setting(self):
         """Retreives parental control settings from the API."""
+        _LOGGER.debug("Updating parental control settings for device %s", self.device_id)
         response = await self._api.send_request(
             endpoint="get_device_parental_control_setting",
             DEVICE_ID=self.device_id
@@ -111,22 +123,27 @@ class Device:
 
     async def _update_daily_summaries(self):
         """Update daily summaries."""
+        _LOGGER.debug("Updating daily summaries for device %s", self.device_id)
         response = await self._api.send_request(
             endpoint="get_device_daily_summaries",
             DEVICE_ID = self.device_id
         )
         self.daily_summaries = response["json"]["items"]
-
+        _LOGGER.debug("New daily summary %s", self.daily_summaries)
         today_playing_time = self.get_date_summary()[0].get("playingTime", 0)
         self.today_playing_time = None if today_playing_time is None else today_playing_time/60
         today_disabled_time = self.get_date_summary()[0].get("disabledTime", 0)
         self.today_disabled_time = None if today_disabled_time is None else today_disabled_time/60
         today_exceeded_time = self.get_date_summary()[0].get("exceededTime", 0)
         self.today_exceeded_time = None if today_exceeded_time is None else today_exceeded_time/60
+        _LOGGER.debug("Set playing, disabled and exceeded time for today for device %s",
+                      self.device_id)
 
         self.today_important_info = self.get_date_summary()[0].get("importantInfos", [])
         self.today_notices = self.get_date_summary()[0].get("notices", [])
         self.today_observations = self.get_date_summary()[0].get("observations", [])
+        _LOGGER.debug("Set today important info, notices and observations for device %s",
+                      self.device_id)
 
         current_month = datetime(
             year=datetime.now().year,
@@ -139,13 +156,19 @@ class Device:
             if date_parsed > current_month:
                 month_playing_time += summary["playingTime"]
         self.month_playing_time = month_playing_time
-
+        _LOGGER.debug("Set current month playing time for device %s", self.device_id)
         parsed_apps = Application.from_daily_summary(self.daily_summaries)
         for app in parsed_apps:
             try:
                 int_app = self.get_application(app.application_id)
+                _LOGGER.debug("Updating app %s for device %s",
+                              int_app.application_id,
+                              self.device_id)
                 int_app.update(app)
             except ValueError:
+                _LOGGER.debug("Creating new application entry %s for device %s",
+                              app.application_id,
+                              self.device_id)
                 self.applications.append(app)
 
         # update application playtime
@@ -155,6 +178,7 @@ class Device:
 
     async def _update_extras(self):
         """Update extra props."""
+        _LOGGER.debug("Updating extra dicts for device %s", self.device_id)
         if self.alarms_enabled is not None:
             # first refresh can come from self.extra without http request
             response = await self._api.send_request(
@@ -165,9 +189,13 @@ class Device:
             self.extra = response["json"]
         status = self.extra["device"]["alarmSetting"]["visibility"]
         self.alarms_enabled = status == str(AlarmSettingState.VISIBLE)
+        _LOGGER.debug("Set alarms enabled to state %s for device %s",
+                      self.alarms_enabled,
+                      self.device_id)
 
     async def get_monthly_summary(self, search_date: datetime = None):
         """Gets the monthly summary."""
+        _LOGGER.debug("Updating monthly summary for device %s", self.device_id)
         latest = False
         if search_date is None:
             response = await self._api.send_request(
@@ -192,6 +220,9 @@ class Device:
 
     async def set_alarm_state(self, state: AlarmSettingState):
         """Updates the alarm state for the device."""
+        _LOGGER.debug("Setting alarm state to %s for device %s",
+                      state,
+                      self.device_id)
         await self._api.send_request(
             endpoint="update_device_alarm_setting_state",
             body={
@@ -233,6 +264,7 @@ class Device:
     @classmethod
     async def from_devices_response(cls, raw: dict, api) -> list['Device']:
         """Parses a device request response body."""
+        _LOGGER.debug("Parsing device list response")
         if "items" not in raw.keys():
             raise ValueError("Invalid response from API.")
         devices = []
