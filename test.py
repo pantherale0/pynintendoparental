@@ -19,8 +19,7 @@ async def main():
                 auth = await Authenticator.complete_login(auth, input("Response URL: "), False)
             _LOGGER.info("Logged in, ready.")
             _LOGGER.debug("Access token is: %s", auth.access_token)
-            control = NintendoParental(auth)
-            await control.update()
+            control = await NintendoParental.create(auth)
             login = False
         except InvalidSessionTokenException as err:
             _LOGGER.error("Invalid session token provided: %s", err)
