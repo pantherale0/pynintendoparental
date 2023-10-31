@@ -36,6 +36,8 @@ class Device:
         self.last_month_playing_time: int = 0
         self.forced_termination_mode: bool = False
         self.alarms_enabled: bool = False
+        self.stats_update_failed: bool = False
+        self.application_update_failed: bool = False
         _LOGGER.debug("Device init complete for %s", self.device_id)
 
     async def update(self):
@@ -145,8 +147,10 @@ class Device:
             self.today_observations = self.get_date_summary()[0].get("observations", [])
             _LOGGER.debug("Set today important info, notices and observations for device %s",
                         self.device_id)
+            self.stats_update_failed = False
         except ValueError as err:
-            _LOGGER.warning("Unable to update daily summary: %s", err)
+            _LOGGER.warning("Unable to update daily summary for device %s: %s", self.name, err)
+            self.stats_update_failed = True
 
         current_month = datetime(
             year=datetime.now().year,
@@ -179,8 +183,10 @@ class Device:
             for player in self.get_date_summary()[0].get("devicePlayers", []):
                 for app in player.get("playedApps", []):
                     self.get_application(app["applicationId"]).update_today_time_played(app)
+            self.application_update_failed = False
         except ValueError:
-            _LOGGER.warning("Unable to update application play time: %s", err)
+            _LOGGER.warning("Unable to update applications for device %s: %s", self.name, err)
+            self.application_update_failed = True
 
     async def _update_extras(self):
         """Update extra props."""
