@@ -209,26 +209,35 @@ class Device:
         """Gets the monthly summary."""
         _LOGGER.debug("Updating monthly summary for device %s", self.device_id)
         latest = False
+        index_found = True
         if search_date is None:
+            _LOGGER.debug("Requesting latest monthly data for device %s", self.device_id)
             response = await self._api.send_request(
                 endpoint="get_device_monthly_summaries",
                 DEVICE_ID=self.device_id
             )
-            response = response["json"]["indexes"][0]
-            search_date = datetime.strptime(f"{response}-01", "%Y-%m-%d")
-            latest = True
+            response = response.get("json", {}).get("indexes",[])
+            if len(response) > 0:
+                search_date = datetime.strptime(f"{response[0]}-01", "%Y-%m-%d")
+                latest = True
+            else:
+                _LOGGER.warning("Unable to update monthly data for %s as this device does not report monthly data.", self.device_id)
 
-        response = await self._api.send_request(
-            endpoint="get_device_monthly_summary",
-            DEVICE_ID = self.device_id,
-            YEAR=search_date.year,
-            MONTH=str(search_date.month).zfill(2)
-        )
-        if latest:
-            self.last_month_summary = response["json"]["insights"]
-            self.last_month_playing_time = self.last_month_summary["thisMonth"]["playingTime"]
-            return self.last_month_summary
-        return response["json"]["insights"]
+        if index_found:
+            response = await self._api.send_request(
+                endpoint="get_device_monthly_summary",
+                DEVICE_ID = self.device_id,
+                YEAR=search_date.year,
+                MONTH=str(search_date.month).zfill(2)
+            )
+            if latest:
+                _LOGGER.debug("Updating latest monthly data for %s.", self.device_id)
+                self.last_month_summary = response["json"]["insights"]
+                self.last_month_playing_time = self.last_month_summary["thisMonth"]["playingTime"]
+                return self.last_month_summary
+            return response["json"]["insights"]
+
+        return {}
 
     async def set_alarm_state(self, state: AlarmSettingState):
         """Updates the alarm state for the device."""

@@ -1,6 +1,6 @@
 # pylint: disable=line-too-long
 """pynintendoparental"""
-__version__ = '0.1.10'
+__version__ = '0.1.11'
 
 import logging
 
