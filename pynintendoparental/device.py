@@ -184,7 +184,7 @@ class Device:
                 for app in player.get("playedApps", []):
                     self.get_application(app["applicationId"]).update_today_time_played(app)
             self.application_update_failed = False
-        except ValueError:
+        except ValueError as err:
             _LOGGER.warning("Unable to update applications for device %s: %s", self.name, err)
             self.application_update_failed = True
 
