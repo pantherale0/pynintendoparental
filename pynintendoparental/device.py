@@ -222,6 +222,7 @@ class Device:
                 latest = True
             else:
                 _LOGGER.warning("Unable to update monthly data for %s as this device does not report monthly data.", self.device_id)
+                index_found = False
 
         if index_found:
             response = await self._api.send_request(
