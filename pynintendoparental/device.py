@@ -33,6 +33,7 @@ class Device:
         self.today_observations: list = []
         self.last_month_summary: dict = {}
         self.applications: list[Application] = []
+        self.whitelisted_applications: dict[str, bool] = {}
         self.last_month_playing_time: int = 0
         self.forced_termination_mode: bool = False
         self.alarms_enabled: bool = False
@@ -103,10 +104,13 @@ class Device:
     def _update_applications(self):
         """Updates applications from daily summary."""
         _LOGGER.debug("Updating application stats for device %s", self.device_id)
-        updated_apps = Application.from_daily_summary([])
-        for app in self.applications:
-            updated = [x for x in updated_apps if x.application_id == app.application_id][0]
-            app.update(updated)
+        parsed_apps = Application.from_whitelist(self.parental_control_settings["whitelistedApplications"])
+        for app in parsed_apps:
+            try:
+                self.get_application(app.application_id).update(app)
+                self.get_application(app.application_id).update_today_time_played(self.daily_summaries[0])
+            except ValueError:
+                self.applications.append(app)
 
     async def _update_parental_control_setting(self):
         """Retreives parental control settings from the API."""
@@ -122,6 +126,15 @@ class Device:
         )
         if self.previous_limit_time is None:
             self.previous_limit_time = self.limit_time
+        self._update_whitelisted_applications()
+        self._update_applications()
+
+    def _update_whitelisted_applications(self):
+        """Update whitelisted applications from local parental control settings."""
+        for app_id in self.parental_control_settings["whitelistedApplications"]:
+            self.whitelisted_applications[app_id] = (
+                self.parental_control_settings["whitelistedApplications"][app_id]["safeLaunch"] == "ALLOW"
+            )
 
     async def _update_daily_summaries(self):
         """Update daily summaries."""
@@ -242,6 +255,20 @@ class Device:
             },
             DEVICE_ID = self.device_id
         )
+
+    async def set_whitelisted_application(self, app_id: str, allowed: bool):
+        """Set the state of the application."""
+        # check if the application exists first
+        self.get_application(app_id)
+        # take a snapshot of the whitelisted apps state
+        current_state = self.parental_control_settings["whitelistedApplications"]
+        current_state[app_id]["safeLaunch"] = "ALLOW" if allowed else "NONE"
+        await self._api.send_request(
+            endpoint="update_device_whitelisted_applications",
+            body=current_state,
+            DEVICE_ID=self.device_id
+        )
+        await self._update_parental_control_setting()
 
     def get_date_summary(self, input_date: datetime = datetime.now()) -> dict:
         """Returns usage for a given date."""

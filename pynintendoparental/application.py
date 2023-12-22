@@ -65,13 +65,27 @@ class Application:
         return None
 
     @classmethod
+    def from_whitelist(cls, raw: dict) -> list['Application']:
+        """Converts a raw whitelist response into a list of applications."""
+        parsed = []
+        for app_id in raw:
+            _LOGGER.debug("Parsing app %s", app_id)
+            internal = cls()
+            internal.application_id = raw[app_id]["applicationId"]
+            internal.first_played_date = datetime.strptime(raw[app_id]["firstPlayDate"], "%Y-%m-%d")
+            internal.image_url = raw[app_id]["imageUri"]
+            internal.name = raw[app_id]["title"]
+            parsed.append(internal)
+        return parsed
+
+    @classmethod
     def from_monthly_summary(cls, raw: list) -> list['Application']:
         """Converts a raw monthly summary response into a list of applications."""
         parsed = []
         for app in raw:
             _LOGGER.debug("Parsing app %s", app)
             internal = cls()
-            internal.application_id = app.get("applicationId")
+            internal.application_id = app.get("applicationId").capitalize()
             internal.first_played_date = datetime.strptime(app.get("firstPlayDate"), "%Y-%m-%d")
             internal.has_ugc = app.get("hasUgc", False)
             internal.image_url = app.get("imageUri").get("small")

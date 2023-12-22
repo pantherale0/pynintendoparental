@@ -37,6 +37,8 @@ async def main():
                               player.player_id,
                               player.playing_time)
             _LOGGER.debug("Usage today %s", device.today_playing_time)
+            _LOGGER.debug("Testing enable application %s", "0100152000022000")
+            await device.set_whitelisted_application("0100152000022000", False)
 
         _LOGGER.debug("ping")
         await asyncio.sleep(15)

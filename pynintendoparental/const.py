@@ -1,13 +1,13 @@
 # pylint: disable=line-too-long
 """pynintendoparental"""
-__version__ = '0.1.9'
+__version__ = '0.2.0'
 
 import logging
 
 _LOGGER = logging.getLogger(__package__)
 MOBILE_APP_PKG = "com.nintendo.znma"
-MOBILE_APP_VERSION = "1.18.0"
-MOBILE_APP_BUILD = "275"
+MOBILE_APP_VERSION = "1.20.0"
+MOBILE_APP_BUILD = "282"
 OS_NAME = "ANDROID"
 OS_VERSION = "33"
 OS_STR = f"{OS_NAME} {OS_VERSION}"
@@ -42,6 +42,10 @@ ENDPOINTS = {
     },
     "update_device_parental_control_setting": {
         "url": "{BASE_URL}/devices/{DEVICE_ID}/parental_control_setting",
+        "method": "POST"
+    },
+    "update_device_whitelisted_applications": {
+        "url": "{BASE_URL}/devices/{DEVICE_ID}/parental_control_setting/whitelisted_applications",
         "method": "POST"
     },
     "get_device_parental_control_setting_state": {
