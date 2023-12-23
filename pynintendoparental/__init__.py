@@ -37,6 +37,7 @@ class NintendoParental:
                 if device.device_id not in self._discovered_devices:
                     _LOGGER.debug("Creating new device %s", device.device_id)
                     self.devices.append(device)
+                    self._discovered_devices.append(device.device_id)
             coros = [update_device(d) for d in self.devices]
             await asyncio.gather(*coros)
         except Exception as err:
