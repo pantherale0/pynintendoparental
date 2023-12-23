@@ -1,6 +1,8 @@
 # pylint: disable=line-too-long
 """Defines a single Nintendo Switch device."""
 
+import asyncio
+
 from datetime import datetime, timedelta
 
 from .api import Api
@@ -44,10 +46,12 @@ class Device:
     async def update(self):
         """Update data."""
         _LOGGER.debug("Updating device %s", self.device_id)
-        await self._update_daily_summaries()
-        await self._update_parental_control_setting()
-        await self.get_monthly_summary()
-        await self._update_extras()
+        await asyncio.gather(
+                self._update_daily_summaries(),
+                self._update_parental_control_setting(),
+                self.get_monthly_summary()
+                # self._update_extras()
+        )
         if self.players is None:
             self.players = Player.from_device_daily_summary(self.daily_summaries)
         else:
@@ -319,3 +323,17 @@ class Device:
             devices.append(parsed)
 
         return devices
+
+    @classmethod
+    def from_device_response(cls, raw: dict, api) -> 'Device':
+        """Parses a single device request response body."""
+        _LOGGER.debug("Parsing device response")
+        if "deviceId" not in raw.keys():
+            raise ValueError("Invalid response from API.")
+
+        parsed = Device(api)
+        parsed.device_id = raw["deviceId"]
+        parsed.name = raw["label"]
+        parsed.sync_state = raw["parentalControlSettingState"]["updatedAt"]
+        parsed.extra = raw
+        return parsed
