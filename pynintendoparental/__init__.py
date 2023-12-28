@@ -41,7 +41,6 @@ class NintendoParental:
             coros = [update_device(d) for d in self.devices]
             await asyncio.gather(*coros)
         except Exception as err:
-            self.devices = []
             raise RuntimeError(err) from err
         _LOGGER.debug("Found %s device(s)", len(self.devices))
 
