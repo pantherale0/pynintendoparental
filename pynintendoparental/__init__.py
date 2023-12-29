@@ -17,8 +17,7 @@ class NintendoParental:
                  lang) -> None:
         self._api: Api = Api(auth=auth, tz=timezone, lang=lang)
         self.account_id = auth.account_id
-        self.devices: list[Device] = []
-        self._discovered_devices: list[str] = []
+        self.devices: dict[str, Device] = {}
 
     async def _get_devices(self):
         """Gets devices from the API and stores in self.devices"""
@@ -33,11 +32,10 @@ class NintendoParental:
 
         for dev_raw in response["json"]["items"]:
             device: Device = Device.from_device_response(dev_raw, self._api)
-            if device.device_id not in self._discovered_devices:
+            if self.devices.get(device.device_id, None) is None:
                 _LOGGER.debug("Creating new device %s", device.device_id)
-                self.devices.append(device)
-                self._discovered_devices.append(device.device_id)
-        coros = [update_device(d) for d in self.devices]
+                self.devices[device.device_id] = device
+        coros = [update_device(d) for d in self.devices.values()]
         await asyncio.gather(*coros)
         _LOGGER.debug("Found %s device(s)", len(self.devices))
 

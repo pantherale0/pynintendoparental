@@ -49,8 +49,8 @@ class Device:
         await asyncio.gather(
                 self._update_daily_summaries(),
                 self._update_parental_control_setting(),
-                self.get_monthly_summary()
-                # self._update_extras()
+                self.get_monthly_summary(),
+                self._update_extras()
         )
         if self.players is None:
             self.players = Player.from_device_daily_summary(self.daily_summaries)

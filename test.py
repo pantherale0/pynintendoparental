@@ -27,7 +27,7 @@ async def main():
             _LOGGER.critical(err)
 
     while True:
-        for device in control.devices:
+        for device in control.devices.values():
             _LOGGER.debug("Discovered device %s, label %s", device.device_id, device.name)
             _LOGGER.debug(device.extra)
             for usage in device.daily_summaries:
