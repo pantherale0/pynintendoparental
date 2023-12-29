@@ -108,11 +108,11 @@ class Device:
     def _update_applications(self):
         """Updates applications from daily summary."""
         _LOGGER.debug("Updating application stats for device %s", self.device_id)
-        parsed_apps = Application.from_whitelist(self.parental_control_settings["whitelistedApplications"])
+        parsed_apps = Application.from_whitelist(self.parental_control_settings.get("whitelistedApplications", []))
         for app in parsed_apps:
             try:
                 self.get_application(app.application_id).update(app)
-                self.get_application(app.application_id).update_today_time_played(self.daily_summaries[0])
+                # self.get_application(app.application_id).update_today_time_played(self.daily_summaries[0])
             except ValueError:
                 self.applications.append(app)
 

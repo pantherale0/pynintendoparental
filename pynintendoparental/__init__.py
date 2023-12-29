@@ -31,17 +31,14 @@ class NintendoParental:
             ACCOUNT_ID=self.account_id
         )
 
-        try:
-            for dev_raw in response["json"]["items"]:
-                device: Device = Device.from_device_response(dev_raw, self._api)
-                if device.device_id not in self._discovered_devices:
-                    _LOGGER.debug("Creating new device %s", device.device_id)
-                    self.devices.append(device)
-                    self._discovered_devices.append(device.device_id)
-            coros = [update_device(d) for d in self.devices]
-            await asyncio.gather(*coros)
-        except Exception as err:
-            raise RuntimeError(err) from err
+        for dev_raw in response["json"]["items"]:
+            device: Device = Device.from_device_response(dev_raw, self._api)
+            if device.device_id not in self._discovered_devices:
+                _LOGGER.debug("Creating new device %s", device.device_id)
+                self.devices.append(device)
+                self._discovered_devices.append(device.device_id)
+        coros = [update_device(d) for d in self.devices]
+        await asyncio.gather(*coros)
         _LOGGER.debug("Found %s device(s)", len(self.devices))
 
     async def update(self):
