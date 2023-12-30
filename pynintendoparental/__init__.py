@@ -23,7 +23,12 @@ class NintendoParental:
         """Gets devices from the API and stores in self.devices"""
         async def update_device(dev: Device):
             """Update a device."""
-            await dev.update()
+            try:
+                await dev.update()
+            except Exception as err:
+                _LOGGER.error("Error updating device %s: %s",
+                              dev.device_id,
+                              err)
 
         response = await self._api.send_request(
             endpoint="get_account_devices",

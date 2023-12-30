@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 
 from .api import Api
 from .const import _LOGGER
+from .exceptions import HttpException
 from .enum import AlarmSettingState, RestrictionMode
 from .player import Player
 from .application import Application
@@ -231,21 +232,31 @@ class Device:
                 endpoint="get_device_monthly_summaries",
                 DEVICE_ID=self.device_id
             )
+            _LOGGER.debug("Available monthly summaries: %s", response)
             response = response["json"]["indexes"][0]
             search_date = datetime.strptime(f"{response}-01", "%Y-%m-%d")
+            _LOGGER.debug("Using search date %s for latest summary", search_date)
             latest = True
 
-        response = await self._api.send_request(
-            endpoint="get_device_monthly_summary",
-            DEVICE_ID = self.device_id,
-            YEAR=search_date.year,
-            MONTH=str(search_date.month).zfill(2)
-        )
-        if latest:
-            self.last_month_summary = response["json"]["insights"]
-            self.last_month_playing_time = self.last_month_summary["thisMonth"]["playingTime"]
-            return self.last_month_summary
-        return response["json"]["insights"]
+        try:
+            response = await self._api.send_request(
+                endpoint="get_device_monthly_summary",
+                DEVICE_ID = self.device_id,
+                YEAR=search_date.year,
+                MONTH=str(search_date.month).zfill(2)
+            )
+            _LOGGER.debug("Monthly summary query complete for device %s: %s",
+                        self.device_id,
+                        response)
+            if latest:
+                self.last_month_summary = response["json"]["insights"]
+                self.last_month_playing_time = self.last_month_summary["thisMonth"]["playingTime"]
+                return self.last_month_summary
+            return response["json"]["insights"]
+        except HttpException as exc:
+            _LOGGER.warning("HTTP Exception raised while getting monthly summary for device %s: %s",
+                            self.device_id,
+                            exc)
 
     async def set_alarm_state(self, state: AlarmSettingState):
         """Updates the alarm state for the device."""
