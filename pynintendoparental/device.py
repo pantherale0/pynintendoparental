@@ -57,7 +57,7 @@ class Device:
                 self._update_extras()
         )
         if (self.bonus_time_set is not None) and (self.bonus_time_set < (datetime.strptime(
-            f"{date.today().isoformat()}T00:00:00Z",
+            f"{date.today().isoformat()}T00:00:00",
             "%Y-%m-%dT%H:%M:%S"
         ))):
             self.bonus_time = 0
