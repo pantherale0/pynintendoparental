@@ -146,7 +146,7 @@ class Device:
 
     def _update_day_of_week_regulations(self):
         """Override the limit / bed time for the device from parental_control_settings if individual days are configured."""
-        day_of_week_regs = self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["eachDayOfTheWeekRegulations"]
+        day_of_week_regs = self.parental_control_settings["playTimerRegulations"]["eachDayOfTheWeekRegulations"]
         current_day = day_of_week_regs[DAYS_OF_WEEK[datetime.now().weekday()]]
         if current_day["timeToPlayInOneDay"]["enabled"]:
             self.limit_time = current_day["timeToPlayInOneDay"]["limitTime"]
