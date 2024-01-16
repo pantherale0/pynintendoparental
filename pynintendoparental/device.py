@@ -26,6 +26,7 @@ class Device:
         self.parental_control_settings: dict = {}
         self.players: list[Player] = []
         self.limit_time: int = 0
+        self.timer_mode: str = ""
         self.bonus_time: int = 0
         self.bonus_time_set: datetime = None
         self.previous_limit_time: int = 0
@@ -94,7 +95,12 @@ class Device:
                     "minute": end_time.minute
                 }
             }
-        self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["bedtime"] = bedtime
+        if self.timer_mode == "DAILY":
+            self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["bedtime"] = bedtime
+        else:
+            self.parental_control_settings["playTimerRegulations"]["eachDayOfTheWeekRegulations"][
+                DAYS_OF_WEEK[datetime.now().weekday()]
+            ]["bedtime"] = bedtime
         await self._set_parental_control_setting()
 
     async def _set_parental_control_setting(self):
@@ -115,14 +121,28 @@ class Device:
             minutes = self.previous_limit_time
         elif not restore and minutes == 0:
             self.previous_limit_time = self.limit_time
-        _LOGGER.debug(
-            "Setting timeToPlayInOneDay.limitTime for device %s to value %s with bonus %s",
-            self.device_id,
-            minutes,
-            self.bonus_time)
-        self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["enabled"] = True
-        self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["limitTime"] = minutes + self.bonus_time
-        await self._set_parental_control_setting()
+        if self.timer_mode == "DAILY":
+            _LOGGER.debug(
+                "Setting timeToPlayInOneDay.limitTime for device %s to value %s with bonus %s",
+                self.device_id,
+                minutes,
+                self.bonus_time)
+            self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["enabled"] = True
+            self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["limitTime"] = minutes + self.bonus_time
+            await self._set_parental_control_setting()
+        else:
+            _LOGGER.debug(
+                "Setting timeToPlayInOneDay.limitTime for device %s to value %s with bonus %s",
+                self.device_id,
+                minutes,
+                self.bonus_time
+            )
+            day_of_week_regs = self.parental_control_settings["playTimerRegulations"].get("eachDayOfTheWeekRegulations", {})
+            current_day = day_of_week_regs.get(DAYS_OF_WEEK[datetime.now().weekday()], {})
+            day_of_week_regs[current_day]["timeToPlayInOneDay"]["limitTime"] = minutes + self.bonus_time
+            day_of_week_regs[current_day]["timeToPlayInOneDay"]["enabled"] = True
+            self.parental_control_settings["playTimerRegulations"]["eachDayOfTheWeekRegulations"][current_day] = day_of_week_regs
+            await self._set_parental_control_setting()
 
     def _get_update_parental_control_setting_body(self):
         """Returns the dict that is required to update the parental control settings."""
@@ -148,15 +168,19 @@ class Device:
         """Override the limit / bed time for the device from parental_control_settings if individual days are configured."""
         day_of_week_regs = self.parental_control_settings["playTimerRegulations"].get("eachDayOfTheWeekRegulations", {})
         current_day = day_of_week_regs.get(DAYS_OF_WEEK[datetime.now().weekday()], {})
-        if current_day.get("timeToPlayInOneDay", {}).get("enabled", False):
+        self.timer_mode = self.parental_control_settings["playTimerRegulations"]["timerMode"]
+        if self.timer_mode == "EACH_DAY_OF_THE_WEEK":
             self.limit_time = current_day["timeToPlayInOneDay"]["limitTime"]
         else:
             self.limit_time = self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["limitTime"]
 
-        if current_day.get("bedtime", {}).get("enabled", False):
-            self.bedtime_alarm = time(hour=
-                                      current_day["bedtime"]["endingTime"]["hour"],
-                                      minute=current_day["bedtime"]["endingTime"]["minute"])
+        if self.timer_mode == "EACH_DAY_OF_THE_WEEK":
+            if current_day["bedtime"]["enabled"]:
+                self.bedtime_alarm = time(hour=
+                                        current_day["bedtime"]["endingTime"]["hour"],
+                                        minute=current_day["bedtime"]["endingTime"]["minute"])
+            else:
+                self.bedtime_alarm = None
         else:
             bedtime_alarm = self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["bedtime"]
             if bedtime_alarm["enabled"]:
