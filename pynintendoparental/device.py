@@ -138,7 +138,7 @@ class Device:
                 self.bonus_time
             )
             day_of_week_regs = self.parental_control_settings["playTimerRegulations"].get("eachDayOfTheWeekRegulations", {})
-            current_day = day_of_week_regs.get(DAYS_OF_WEEK[datetime.now().weekday()], {})
+            current_day = DAYS_OF_WEEK[datetime.now().weekday()]
             day_of_week_regs[current_day]["timeToPlayInOneDay"]["limitTime"] = minutes + self.bonus_time
             day_of_week_regs[current_day]["timeToPlayInOneDay"]["enabled"] = True
             self.parental_control_settings["playTimerRegulations"]["eachDayOfTheWeekRegulations"][current_day] = day_of_week_regs
