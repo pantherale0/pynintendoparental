@@ -26,6 +26,7 @@ class Device:
         self.parental_control_settings: dict = {}
         self.players: list[Player] = []
         self.limit_time: int = 0
+        self._limit_time_overflow: int = 0 # max 6 hrs on limit time
         self.timer_mode: str = ""
         self.bonus_time: int = 0
         self.bonus_time_set: datetime = None
@@ -68,6 +69,9 @@ class Device:
         else:
             for player in self.players:
                 player.update_from_daily_summary(self.daily_summaries)
+        if self.limit_time == self._limit_time_overflow:
+            if self._limit_time_overflow < self.today_playing_time:
+                await self.update_max_daily_playtime(0, False)
 
     async def set_new_pin(self, pin: str):
         """Updates the pin for the device."""
@@ -115,8 +119,12 @@ class Device:
 
     async def update_max_daily_playtime(self, minutes: int = 0, restore: bool = False):
         """Updates the maximum daily playtime of a device."""
+        time_to_play_in_one_day_enabled = True
         if restore and self.previous_limit_time == 0:
             raise RuntimeError("Invalid state for restore operation.")
+        if minutes > 360:
+            self._limit_time_overflow = minutes + self.bonus_time
+            time_to_play_in_one_day_enabled = False
         if restore:
             minutes = self.previous_limit_time
         elif not restore and minutes == 0:
@@ -127,8 +135,11 @@ class Device:
                 self.device_id,
                 minutes,
                 self.bonus_time)
-            self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["enabled"] = True
-            self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["limitTime"] = minutes + self.bonus_time
+            self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["enabled"] = time_to_play_in_one_day_enabled
+            if time_to_play_in_one_day_enabled:
+                self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["limitTime"] = minutes + self.bonus_time
+            else:
+                self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["limitTime"] = None
             await self._set_parental_control_setting()
         else:
             _LOGGER.debug(
@@ -139,8 +150,11 @@ class Device:
             )
             day_of_week_regs = self.parental_control_settings["playTimerRegulations"].get("eachDayOfTheWeekRegulations", {})
             current_day = DAYS_OF_WEEK[datetime.now().weekday()]
-            day_of_week_regs[current_day]["timeToPlayInOneDay"]["limitTime"] = minutes + self.bonus_time
-            day_of_week_regs[current_day]["timeToPlayInOneDay"]["enabled"] = True
+            day_of_week_regs[current_day]["timeToPlayInOneDay"]["enabled"] = time_to_play_in_one_day_enabled
+            if time_to_play_in_one_day_enabled:
+                day_of_week_regs[current_day]["timeToPlayInOneDay"]["limitTime"] = minutes + self.bonus_time
+            else:
+                day_of_week_regs[current_day]["timeToPlayInOneDay"]["limitTime"] = None
             self.parental_control_settings["playTimerRegulations"]["eachDayOfTheWeekRegulations"][current_day] = day_of_week_regs
             await self._set_parental_control_setting()
 
@@ -170,9 +184,15 @@ class Device:
         current_day = day_of_week_regs.get(DAYS_OF_WEEK[datetime.now().weekday()], {})
         self.timer_mode = self.parental_control_settings["playTimerRegulations"]["timerMode"]
         if self.timer_mode == "EACH_DAY_OF_THE_WEEK":
-            self.limit_time = current_day["timeToPlayInOneDay"]["limitTime"]
+            if self._limit_time_overflow > 0:
+                self.limit_time = self._limit_time_overflow
+            else:
+                self.limit_time = current_day["timeToPlayInOneDay"]["limitTime"]
         else:
-            self.limit_time = self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["limitTime"]
+            if self._limit_time_overflow > 0:
+                self.limit_time = self._limit_time_overflow
+            else:
+                self.limit_time = self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["limitTime"]
 
         if self.timer_mode == "EACH_DAY_OF_THE_WEEK":
             if current_day["bedtime"]["enabled"]:
