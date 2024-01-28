@@ -117,12 +117,12 @@ class Device:
         )
         await self._update_parental_control_setting()
 
-    async def update_max_daily_playtime(self, minutes: int = 0, restore: bool = False):
+    async def update_max_daily_playtime(self, minutes: int | None = 0, restore: bool = False):
         """Updates the maximum daily playtime of a device."""
         time_to_play_in_one_day_enabled = True
         if restore and self.previous_limit_time == 0:
             raise RuntimeError("Invalid state for restore operation.")
-        if minutes > 360:
+        if (minutes is not None and minutes > 360):
             self._limit_time_overflow = minutes + self.bonus_time
             time_to_play_in_one_day_enabled = False
         if restore:
@@ -136,7 +136,7 @@ class Device:
                 minutes,
                 self.bonus_time)
             self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["enabled"] = time_to_play_in_one_day_enabled
-            if time_to_play_in_one_day_enabled:
+            if time_to_play_in_one_day_enabled and minutes is not None:
                 self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["limitTime"] = minutes + self.bonus_time
             else:
                 self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["limitTime"] = None
@@ -151,7 +151,7 @@ class Device:
             day_of_week_regs = self.parental_control_settings["playTimerRegulations"].get("eachDayOfTheWeekRegulations", {})
             current_day = DAYS_OF_WEEK[datetime.now().weekday()]
             day_of_week_regs[current_day]["timeToPlayInOneDay"]["enabled"] = time_to_play_in_one_day_enabled
-            if time_to_play_in_one_day_enabled:
+            if time_to_play_in_one_day_enabled and minutes is not None:
                 day_of_week_regs[current_day]["timeToPlayInOneDay"]["limitTime"] = minutes + self.bonus_time
             else:
                 day_of_week_regs[current_day]["timeToPlayInOneDay"]["limitTime"] = None
@@ -385,10 +385,16 @@ class Device:
         """Give additional bonus minutes to the device."""
         self.bonus_time += minutes
         self.bonus_time_set = datetime.now()
-        await self.update_max_daily_playtime(
-            minutes=self.limit_time + minutes,
-            restore=False
-        )
+        if self.limit_time is None and self._limit_time_overflow == 0:
+            await self.update_max_daily_playtime(
+                minutes=minutes,
+                restore=False
+            )
+        else:
+            await self.update_max_daily_playtime(
+                minutes=self.limit_time + minutes,
+                restore=False
+            )
 
     def get_date_summary(self, input_date: datetime = datetime.now()) -> dict:
         """Returns usage for a given date."""
