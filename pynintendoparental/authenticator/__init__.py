@@ -7,7 +7,7 @@ import hashlib
 import random
 import string
 
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urlparse
 
 from datetime import datetime, timedelta
 
@@ -22,7 +22,6 @@ from .const import (
     TOKEN_URL,
     SESSION_TOKEN_URL,
     CLIENT_ID,
-    RESPONSE_TOKEN_REGEXP,
     GRANT_TYPE,
     MY_ACCOUNT_ENDPOINT,
     REDIRECT_URI,
@@ -35,14 +34,18 @@ _LOGGER = logging.getLogger(__name__)
 def _parse_response_token(token: str) -> dict:
     """Parses a response token."""
     _LOGGER.debug(">> Parsing response token.")
-    matches = re.findall(RESPONSE_TOKEN_REGEXP, token)
-    if len(matches) == 1:
-        return {
-            "session_state": matches[0][0],
-            "session_token_code": matches[0][1],
-            "state": matches[0][2]
-        }
-    raise ValueError("Invalid token provided.")
+    try:
+        url = urlparse(token)
+        params = url.fragment.split('&')
+        response = {}
+        for param in params:
+            response = {
+                **response,
+                param.split('=')[0]: param.split('=')[1]
+            }
+        return response
+    except Exception as exc:
+        raise ValueError("Invalid token provided.") from exc
 
 def _hash(text: str):
     """Hash given text for login."""
