@@ -51,7 +51,7 @@ class Device:
 
     async def update(self):
         """Update data."""
-        _LOGGER.debug("Updating device %s", self.device_id)
+        _LOGGER.debug(">> Device.update()")
         await asyncio.gather(
                 self._update_daily_summaries(),
                 self._update_parental_control_setting(),
@@ -75,19 +75,21 @@ class Device:
 
     async def set_new_pin(self, pin: str):
         """Updates the pin for the device."""
-        _LOGGER.debug("Setting new pin for device %s", self.device_id)
+        _LOGGER.debug(">> Device.set_new_pin(pin=REDACTED)")
         self.parental_control_settings["unlockCode"] = pin
         await self._set_parental_control_setting()
 
     async def set_restriction_mode(self, mode: RestrictionMode):
         """Updates the restriction mode of the device."""
-        _LOGGER.debug("Setting restriction mode for device %s", self.device_id)
+        _LOGGER.debug(">> Device.set_restriction_mode(mode=%s)", mode)
         self.parental_control_settings["playTimerRegulations"]["restrictionMode"] = str(mode)
         await self._set_parental_control_setting()
 
     async def set_bedtime_alarm(self, end_time: time = None, enabled: bool = True):
         """Update the bedtime alarm for the device."""
-        _LOGGER.debug("Setting bedtime alarm for device %s", self.device_id)
+        _LOGGER.debug(">> Device.set_bedtime_alarm(end_time=%s, enabled=%s)",
+                      end_time,
+                      enabled)
         bedtime = {
             "enabled": enabled,
         }
@@ -109,7 +111,7 @@ class Device:
 
     async def _set_parental_control_setting(self):
         """Shortcut method to deduplicate code used to update parental control settings."""
-        _LOGGER.debug("Internal set parental control setting for device %s", self.device_id)
+        _LOGGER.debug(">> Device._set_parental_control_setting()")
         await self._api.send_request(
             endpoint="update_device_parental_control_setting",
             body=self._get_update_parental_control_setting_body(),
@@ -119,6 +121,9 @@ class Device:
 
     async def update_max_daily_playtime(self, minutes: int | None = 0, restore: bool = False):
         """Updates the maximum daily playtime of a device."""
+        _LOGGER.debug(">> Device.update_max_daily_playtime(minutes=%s, restore=%s)",
+                      minutes,
+                      restore)
         time_to_play_in_one_day_enabled = True
         if restore and self.previous_limit_time == 0:
             raise RuntimeError("Invalid state for restore operation.")
@@ -169,7 +174,7 @@ class Device:
 
     def _update_applications(self):
         """Updates applications from daily summary."""
-        _LOGGER.debug("Updating application stats for device %s", self.device_id)
+        _LOGGER.debug(">> Device._update_applications()")
         parsed_apps = Application.from_whitelist(self.parental_control_settings.get("whitelistedApplications", []))
         for app in parsed_apps:
             try:
@@ -217,7 +222,7 @@ class Device:
 
     async def _update_parental_control_setting(self):
         """Retreives parental control settings from the API."""
-        _LOGGER.debug("Updating parental control settings for device %s", self.device_id)
+        _LOGGER.debug(">> Device._update_parental_control_setting()")
         response = await self._api.send_request(
             endpoint="get_device_parental_control_setting",
             DEVICE_ID=self.device_id
@@ -239,7 +244,7 @@ class Device:
 
     async def _update_daily_summaries(self):
         """Update daily summaries."""
-        _LOGGER.debug("Updating daily summaries for device %s", self.device_id)
+        _LOGGER.debug(">> Device._update_daily_summaries()")
         response = await self._api.send_request(
             endpoint="get_device_daily_summaries",
             DEVICE_ID = self.device_id
@@ -304,7 +309,7 @@ class Device:
 
     async def _update_extras(self):
         """Update extra props."""
-        _LOGGER.debug("Updating extra dicts for device %s", self.device_id)
+        _LOGGER.debug(">> Device._update_extras()")
         if self.alarms_enabled is not None:
             # first refresh can come from self.extra without http request
             response = await self._api.send_request(
@@ -321,7 +326,7 @@ class Device:
 
     async def get_monthly_summary(self, search_date: datetime = None):
         """Gets the monthly summary."""
-        _LOGGER.debug("Updating monthly summary for device %s", self.device_id)
+        _LOGGER.debug(">> Device.get_monthly_summary(search_date=%s)", search_date)
         latest = False
         if search_date is None:
             response = await self._api.send_request(
@@ -356,9 +361,8 @@ class Device:
 
     async def set_alarm_state(self, state: AlarmSettingState):
         """Updates the alarm state for the device."""
-        _LOGGER.debug("Setting alarm state to %s for device %s",
-                      state,
-                      self.device_id)
+        _LOGGER.debug(">> Device.set_alarm_state(state=%s)",
+                      state)
         await self._api.send_request(
             endpoint="update_device_alarm_setting_state",
             body={
@@ -369,6 +373,9 @@ class Device:
 
     async def set_whitelisted_application(self, app_id: str, allowed: bool):
         """Set the state of the application."""
+        _LOGGER.debug(">> Device.set_whitelisted_application(app_id=%s, allowed=%s)",
+                      app_id,
+                      allowed)
         # check if the application exists first
         self.get_application(app_id)
         # take a snapshot of the whitelisted apps state
@@ -383,6 +390,8 @@ class Device:
 
     async def give_bonus_time(self, minutes: int = 0):
         """Give additional bonus minutes to the device."""
+        _LOGGER.debug(">> Device.give_bonus_time(minutes=%s)",
+                      minutes)
         self.bonus_time += minutes
         self.bonus_time_set = datetime.now()
         if self.limit_time is None and self._limit_time_overflow == 0:
