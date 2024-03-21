@@ -3,7 +3,7 @@
 
 import asyncio
 
-from datetime import datetime, timedelta, time, date
+from datetime import datetime, timedelta, time
 
 from .api import Api
 from .const import _LOGGER, DAYS_OF_WEEK
@@ -28,8 +28,6 @@ class Device:
         self.limit_time: int = 0
         self._limit_time_overflow: int = 0 # max 6 hrs on limit time
         self.timer_mode: str = ""
-        self.bonus_time: int = 0
-        self.bonus_time_set: datetime = None
         self.previous_limit_time: int = 0
         self.today_playing_time: int = 0
         self.bedtime_alarm: time
@@ -58,12 +56,6 @@ class Device:
                 self.get_monthly_summary(),
                 self._update_extras()
         )
-        if (self.bonus_time_set is not None) and (self.bonus_time_set < (datetime.strptime(
-            f"{date.today().isoformat()}T00:00:00",
-            "%Y-%m-%dT%H:%M:%S"
-        ))):
-            self.bonus_time = 0
-            self.bonus_time_set = None
         if self.players is None:
             self.players = Player.from_device_daily_summary(self.daily_summaries)
         else:
@@ -128,7 +120,7 @@ class Device:
         if restore and self.previous_limit_time == 0:
             raise RuntimeError("Invalid state for restore operation.")
         if (minutes is not None and minutes > 360):
-            self._limit_time_overflow = minutes + self.bonus_time
+            self._limit_time_overflow = minutes
             time_to_play_in_one_day_enabled = False
         if restore:
             minutes = self.previous_limit_time
@@ -136,31 +128,28 @@ class Device:
             self.previous_limit_time = self.limit_time
         if self.timer_mode == "DAILY":
             _LOGGER.debug(
-                "Setting timeToPlayInOneDay.limitTime for device %s to value %s with bonus %s",
+                "Setting timeToPlayInOneDay.limitTime for device %s to value %s",
                 self.device_id,
-                minutes,
-                self.bonus_time)
+                minutes)
             self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["enabled"] = time_to_play_in_one_day_enabled
             if time_to_play_in_one_day_enabled and minutes is not None:
-                self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["limitTime"] = minutes + self.bonus_time
+                self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["limitTime"] = minutes
             else:
                 self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["limitTime"] = None
             await self._set_parental_control_setting()
         else:
             _LOGGER.debug(
-                "Setting timeToPlayInOneDay.limitTime for device %s to value %s with bonus %s",
+                "Setting timeToPlayInOneDay.limitTime for device %s to value %s",
                 self.device_id,
-                minutes,
-                self.bonus_time
+                minutes
             )
-            day_of_week_regs = self.parental_control_settings["playTimerRegulations"].get("eachDayOfTheWeekRegulations", {})
+            day_of_week_regs = self.parental_control_settings["playTimerRegulations"]["eachDayOfTheWeekRegulations"]
             current_day = DAYS_OF_WEEK[datetime.now().weekday()]
             day_of_week_regs[current_day]["timeToPlayInOneDay"]["enabled"] = time_to_play_in_one_day_enabled
             if time_to_play_in_one_day_enabled and minutes is not None:
-                day_of_week_regs[current_day]["timeToPlayInOneDay"]["limitTime"] = minutes + self.bonus_time
+                day_of_week_regs[current_day]["timeToPlayInOneDay"]["limitTime"] = minutes
             else:
                 day_of_week_regs[current_day]["timeToPlayInOneDay"]["limitTime"] = None
-            self.parental_control_settings["playTimerRegulations"]["eachDayOfTheWeekRegulations"][current_day] = day_of_week_regs
             await self._set_parental_control_setting()
 
     def _get_update_parental_control_setting_body(self):
@@ -387,23 +376,6 @@ class Device:
             DEVICE_ID=self.device_id
         )
         await self._update_parental_control_setting()
-
-    async def give_bonus_time(self, minutes: int = 0):
-        """Give additional bonus minutes to the device."""
-        _LOGGER.debug(">> Device.give_bonus_time(minutes=%s)",
-                      minutes)
-        self.bonus_time += minutes
-        self.bonus_time_set = datetime.now()
-        if self.limit_time is None and self._limit_time_overflow == 0:
-            await self.update_max_daily_playtime(
-                minutes=minutes,
-                restore=False
-            )
-        else:
-            await self.update_max_daily_playtime(
-                minutes=self.limit_time + minutes,
-                restore=False
-            )
 
     def get_date_summary(self, input_date: datetime = datetime.now()) -> dict:
         """Returns usage for a given date."""
