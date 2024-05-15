@@ -37,6 +37,7 @@ async def main():
                               player.player_id,
                               player.playing_time)
             _LOGGER.debug("Usage today %s", device.today_playing_time)
+            await device.update_max_daily_playtime(minutes=15)
 
         _LOGGER.debug("ping")
         await asyncio.sleep(15)

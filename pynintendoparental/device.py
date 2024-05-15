@@ -106,25 +106,23 @@ class Device:
         )
         await self._get_parental_control_setting()
 
-    async def update_max_daily_playtime(self, minutes: int | None = 0):
+    async def update_max_daily_playtime(self, minutes: int = 0):
         """Updates the maximum daily playtime of a device."""
         _LOGGER.debug(">> Device.update_max_daily_playtime(minutes=%s)",
                       minutes)
-        time_to_play_in_one_day_enabled = True
         if minutes > 360:
             raise ValueError("Only values up to 360 minutes (6 hours) are accepted.")
-        if minutes is not None:
-            time_to_play_in_one_day_enabled = False
+        ttpiod = True
+        if minutes == -1:
+            ttpiod = False
+            minutes = None
         if self.timer_mode == "DAILY":
             _LOGGER.debug(
                 "Setting timeToPlayInOneDay.limitTime for device %s to value %s",
                 self.device_id,
                 minutes)
-            self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["enabled"] = time_to_play_in_one_day_enabled
-            if time_to_play_in_one_day_enabled and minutes is not None:
-                self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["limitTime"] = minutes
-            else:
-                self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["limitTime"] = -1
+            self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["enabled"] = ttpiod
+            self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["limitTime"] = minutes
             await self._set_parental_control_setting()
         else:
             _LOGGER.debug(
@@ -134,11 +132,8 @@ class Device:
             )
             day_of_week_regs = self.parental_control_settings["playTimerRegulations"]["eachDayOfTheWeekRegulations"]
             current_day = DAYS_OF_WEEK[datetime.now().weekday()]
-            day_of_week_regs[current_day]["timeToPlayInOneDay"]["enabled"] = time_to_play_in_one_day_enabled
-            if time_to_play_in_one_day_enabled and minutes is not None:
-                day_of_week_regs[current_day]["timeToPlayInOneDay"]["limitTime"] = minutes
-            else:
-                day_of_week_regs[current_day]["timeToPlayInOneDay"]["limitTime"] = -1
+            day_of_week_regs[current_day]["timeToPlayInOneDay"]["enabled"] = ttpiod
+            day_of_week_regs[current_day]["timeToPlayInOneDay"]["limitTime"] = minutes
             await self._set_parental_control_setting()
 
     def _get_update_parental_control_setting_body(self):
