@@ -75,13 +75,15 @@ class Api:
             session.headers.add("X-Moon-App-Language", self._language)
             session.headers.add("X-Moon-App-Display-Version", MOBILE_APP_VERSION)
             session.headers.add("X-Moon-App-Internal-Version", MOBILE_APP_BUILD)
-            #session.headers.add("X-Moon-Smart-Device-Id", "190207e4-2f6f-4db7-bc96-fdfe109124f0")
             async with session.request(
                 method=e_point.get("method"),
                 url=url,
                 json=body
             ) as response:
-                _LOGGER.debug("Request to %s status code %s", url, response.status)
+                _LOGGER.debug("%s request to %s status code %s",
+                              e_point.get("method"),
+                              url,
+                              response.status)
                 if _check_http_success(response.status):
                     resp["status"] = response.status
                     resp["text"] = await response.text()
