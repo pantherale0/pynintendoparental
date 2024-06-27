@@ -1,19 +1,21 @@
 # pylint: disable=line-too-long
 """pynintendoparental"""
-__version__ = '0.3.0'
+__version__ = '0.6.1'
 
 import logging
 
 _LOGGER = logging.getLogger(__package__)
 MOBILE_APP_PKG = "com.nintendo.znma"
-MOBILE_APP_VERSION = "1.20.0"
-MOBILE_APP_BUILD = "282"
+MOBILE_APP_VERSION = "1.21.0"
+MOBILE_APP_BUILD = "289"
 OS_NAME = "ANDROID"
 OS_VERSION = "33"
 OS_STR = f"{OS_NAME} {OS_VERSION}"
 DEVICE_MODEL = "Pixel 4 XL"
 BASE_URL = "https://api-lp1.pctl.srv.nintendo.net/moon/v1"
 USER_AGENT = f"moon_ANDROID/{MOBILE_APP_VERSION} ({MOBILE_APP_PKG}; build:{MOBILE_APP_BUILD}; {OS_STR})"
+
+DAYS_OF_WEEK = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
 
 ENDPOINTS = {
     "get_account_details": {
