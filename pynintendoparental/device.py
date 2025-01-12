@@ -231,7 +231,7 @@ class Device:
                         self.device_id)
             self.stats_update_failed = False
         except ValueError as err:
-            _LOGGER.warning("Unable to update daily summary for device %s: %s", self.name, err)
+            _LOGGER.debug("Unable to update daily summary for device %s: %s", self.name, err)
             self.stats_update_failed = True
 
         current_month = datetime(
