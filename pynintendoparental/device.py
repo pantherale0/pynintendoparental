@@ -267,7 +267,7 @@ class Device:
                     self.get_application(app["applicationId"]).update_today_time_played(app)
             self.application_update_failed = False
         except ValueError as err:
-            _LOGGER.warning("Unable to retrieve applications for device %s: %s", self.name, err)
+            _LOGGER.debug("Unable to retrieve applications for device %s: %s", self.name, err)
             self.application_update_failed = True
 
     async def _get_extras(self):
