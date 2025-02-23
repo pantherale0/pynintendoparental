@@ -21,7 +21,7 @@ REQUIREMENTS = [
 DEV_REQUIREMENTS = [
     'bandit == 1.7.*',
     'black == 23.*',
-    'build == 0.10.*',
+    'build >= 0.10,< 1.3',
     'flake8 == 6.*',
     'isort == 5.*',
     'mypy == 1.5.*',
