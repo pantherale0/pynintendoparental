@@ -15,7 +15,7 @@ jobs:
           filepath="pynintendoparental/_version.py"
           new_version_string="__version__ = \"${{ github.event.release.tag_name }}\""
           sed -i "s/^__version__ = .*$/$new_version_string/" "$filepath"
-      - uses: extractions/setup-just@v2
+      - uses: extractions/setup-just@v3
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
