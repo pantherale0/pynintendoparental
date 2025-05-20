@@ -31,7 +31,7 @@ class Device:
         self.timer_mode: str = ""
         self.today_playing_time: int | float = 0
         self.today_time_remaining: int | float = 0
-        self.bedtime_alarm: time | None
+        self.bedtime_alarm: time | None = None
         self.month_playing_time: int | float = 0
         self.today_disabled_time: int | float = 0
         self.today_exceeded_time: int | float = 0
