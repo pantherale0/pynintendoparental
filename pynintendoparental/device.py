@@ -27,13 +27,14 @@ class Device:
         self.daily_summaries: dict = {}
         self.parental_control_settings: dict = {}
         self.players: list[Player] = []
-        self.limit_time: int = 0
+        self.limit_time: int | float | None = 0
         self.timer_mode: str = ""
-        self.today_playing_time: int = 0
-        self.bedtime_alarm: time
-        self.month_playing_time: int = 0
-        self.today_disabled_time: int = 0
-        self.today_exceeded_time: int = 0
+        self.today_playing_time: int | float = 0
+        self.today_time_remaining: int | float = 0
+        self.bedtime_alarm: time | None
+        self.month_playing_time: int | float = 0
+        self.today_disabled_time: int | float = 0
+        self.today_exceeded_time: int | float = 0
         self.today_notices: list = []
         self.today_important_info: list = []
         self.today_observations: list = []
@@ -183,9 +184,10 @@ class Device:
         current_day = day_of_week_regs.get(DAYS_OF_WEEK[datetime.now().weekday()], {})
         self.timer_mode = self.parental_control_settings["playTimerRegulations"]["timerMode"]
         if self.timer_mode == "EACH_DAY_OF_THE_WEEK":
-            self.limit_time = current_day["timeToPlayInOneDay"]["limitTime"]
+            self.limit_time = current_day.get("timeToPlayInOneDay", {}).get("limitTime", None)
         else:
-            self.limit_time = self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["limitTime"]
+            self.limit_time = self.parental_control_settings.get("playTimerRegulations", {}).get(
+                "dailyRegulations", {}).get("timeToPlayInOneDay", {}).get("limitTime", None)
 
         if self.timer_mode == "EACH_DAY_OF_THE_WEEK":
             if current_day["bedtime"]["enabled"]:
@@ -241,14 +243,46 @@ class Device:
         _LOGGER.debug("New daily summary %s", self.daily_summaries)
         try:
             today_playing_time = self.get_date_summary()[0].get("playingTime", 0)
-            self.today_playing_time = None if today_playing_time is None else today_playing_time/60
+            self.today_playing_time = 0 if today_playing_time is None else today_playing_time/60
             today_disabled_time = self.get_date_summary()[0].get("disabledTime", 0)
-            self.today_disabled_time = None if today_disabled_time is None else today_disabled_time/60
+            self.today_disabled_time = 0 if today_disabled_time is None else today_disabled_time/60
             today_exceeded_time = self.get_date_summary()[0].get("exceededTime", 0)
-            self.today_exceeded_time = None if today_exceeded_time is None else today_exceeded_time/60
+            self.today_exceeded_time = 0 if today_exceeded_time is None else today_exceeded_time/60
             _LOGGER.debug("Cached playing, disabled and exceeded time for today for device %s",
                         self.device_id)
+            now = datetime.now()
+            current_minutes_past_midnight = now.hour * 60 + now.minute
+            minutes_in_day = 1440 # 24 * 60
 
+            # 1. Calculate remaining time based on play limit
+
+            time_remaining_by_play_limit = 0.0
+            if self.limit_time is None:
+                # No specific play limit, effectively limited by end of day for this calculation step.
+                time_remaining_by_play_limit = float(minutes_in_day - current_minutes_past_midnight)
+            elif self.limit_time == 0:
+                time_remaining_by_play_limit = 0.0
+            else:
+                time_remaining_by_play_limit = float(self.limit_time - self.today_playing_time)
+
+            time_remaining_by_play_limit = max(0.0, time_remaining_by_play_limit)
+
+            # Initialize overall remaining time with play limit constraint
+            effective_remaining_time = time_remaining_by_play_limit
+
+            # 2. Factor in bedtime alarm, if any, to further constrain remaining time
+            if self.bedtime_alarm is not None:
+                bedtime_dt = datetime.combine(now.date(), self.bedtime_alarm)
+                time_remaining_by_bedtime = 0.0
+                if bedtime_dt > now: # Bedtime is in the future today
+                    time_remaining_by_bedtime = (bedtime_dt - now).total_seconds() / 60
+                    time_remaining_by_bedtime = max(0.0, time_remaining_by_bedtime) 
+                # else: Bedtime has passed for today or is now, so time_remaining_by_bedtime remains 0.0
+
+                effective_remaining_time = min(effective_remaining_time, time_remaining_by_bedtime)
+
+            self.today_time_remaining = int(max(0.0, effective_remaining_time)) # Ensure non-negative and integer
+            _LOGGER.debug("Calculated and updated the amount of time remaining for today: %s", self.today_time_remaining)
             self.today_important_info = self.get_date_summary()[0].get("importantInfos", [])
             self.today_notices = self.get_date_summary()[0].get("notices", [])
             self.today_observations = self.get_date_summary()[0].get("observations", [])
