@@ -27,14 +27,14 @@ class Device:
         self.daily_summaries: dict = {}
         self.parental_control_settings: dict = {}
         self.players: list[Player] = []
-        self.limit_time: int = 0
+        self.limit_time: int | float | None = 0
         self.timer_mode: str = ""
-        self.today_playing_time: int = 0
-        self.today_time_remaining: int = 0
+        self.today_playing_time: int | float = 0
+        self.today_time_remaining: int | float = 0
         self.bedtime_alarm: time | None
-        self.month_playing_time: int = 0
-        self.today_disabled_time: int = 0
-        self.today_exceeded_time: int = 0
+        self.month_playing_time: int | float = 0
+        self.today_disabled_time: int | float = 0
+        self.today_exceeded_time: int | float = 0
         self.today_notices: list = []
         self.today_important_info: list = []
         self.today_observations: list = []
@@ -184,9 +184,10 @@ class Device:
         current_day = day_of_week_regs.get(DAYS_OF_WEEK[datetime.now().weekday()], {})
         self.timer_mode = self.parental_control_settings["playTimerRegulations"]["timerMode"]
         if self.timer_mode == "EACH_DAY_OF_THE_WEEK":
-            self.limit_time = current_day["timeToPlayInOneDay"]["limitTime"]
+            self.limit_time = current_day.get("timeToPlayInOneDay", {}).get("limitTime", None)
         else:
-            self.limit_time = self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]["limitTime"]
+            self.limit_time = self.parental_control_settings.get("playTimerRegulations", {}).get(
+                "dailyRegulations", {}).get("timeToPlayInOneDay", {}).get("limitTime", None)
 
         if self.timer_mode == "EACH_DAY_OF_THE_WEEK":
             if current_day["bedtime"]["enabled"]:
@@ -254,7 +255,6 @@ class Device:
             minutes_in_day = 1440 # 24 * 60
 
             # 1. Calculate remaining time based on play limit
-            played_today_minutes = self.daily_summaries[0].get("playingTime", 0) / 60
 
             time_remaining_by_play_limit = 0.0
             if self.limit_time is None:
@@ -263,7 +263,7 @@ class Device:
             elif self.limit_time == 0:
                 time_remaining_by_play_limit = 0.0
             else:
-                time_remaining_by_play_limit = float(self.limit_time - played_today_minutes)
+                time_remaining_by_play_limit = float(self.limit_time - self.today_playing_time)
 
             time_remaining_by_play_limit = max(0.0, time_remaining_by_play_limit)
 
