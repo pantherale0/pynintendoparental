@@ -30,6 +30,7 @@ class Device:
         self.limit_time: int = 0
         self.timer_mode: str = ""
         self.today_playing_time: int = 0
+        self.today_time_remaining: int = 0
         self.bedtime_alarm: time
         self.month_playing_time: int = 0
         self.today_disabled_time: int = 0
@@ -241,14 +242,38 @@ class Device:
         _LOGGER.debug("New daily summary %s", self.daily_summaries)
         try:
             today_playing_time = self.get_date_summary()[0].get("playingTime", 0)
-            self.today_playing_time = None if today_playing_time is None else today_playing_time/60
+            self.today_playing_time = 0 if today_playing_time is None else today_playing_time/60
             today_disabled_time = self.get_date_summary()[0].get("disabledTime", 0)
-            self.today_disabled_time = None if today_disabled_time is None else today_disabled_time/60
+            self.today_disabled_time = 0 if today_disabled_time is None else today_disabled_time/60
             today_exceeded_time = self.get_date_summary()[0].get("exceededTime", 0)
-            self.today_exceeded_time = None if today_exceeded_time is None else today_exceeded_time/60
+            self.today_exceeded_time = 0 if today_exceeded_time is None else today_exceeded_time/60
             _LOGGER.debug("Cached playing, disabled and exceeded time for today for device %s",
                         self.device_id)
-
+            if self.limit_time == 0:
+                self.today_time_remaining = 0
+            if self.limit_time == 0 and self.bedtime_alarm == 0:
+                # we will assume until midnight in this case
+                # Calculate and return the total minutes passed since midnight
+                self.today_time_remaining = 1440-(datetime.now().hour * 60 + datetime.now().minute)
+            if self.limit_time is None:
+                limit_remain = 1440 - \
+                    (datetime.now().hour * 60 + datetime.now().minute)
+            else:
+                limit_remain = self.limit_time - (
+                    self.daily_summaries[0].get("playingTime", 0) / 60
+                )
+            if self.bedtime_alarm != 0:
+                if self.bedtime_alarm < datetime.now().time():
+                    return 0
+                # work out minutes remaining
+                t_1 = datetime.combine(
+                    datetime.today(), self.bedtime_alarm)
+                t_2 = datetime.now()
+                min_remain = (t_1 - t_2).total_seconds() / 60
+                if min_remain < limit_remain:
+                    self.today_time_remaining = min_remain
+            self.today_time_remaining = limit_remain
+            _LOGGER.debug("Calculated and updated the amount of time remaining for today.")
             self.today_important_info = self.get_date_summary()[0].get("importantInfos", [])
             self.today_notices = self.get_date_summary()[0].get("notices", [])
             self.today_observations = self.get_date_summary()[0].get("observations", [])

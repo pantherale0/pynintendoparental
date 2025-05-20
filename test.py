@@ -29,15 +29,8 @@ async def main():
     while True:
         for device in control.devices.values():
             _LOGGER.debug("Discovered device %s, label %s", device.device_id, device.name)
-            _LOGGER.debug(device.extra)
-            for usage in device.daily_summaries:
-                _LOGGER.debug("Discovered daily summary %s", usage)
-            for player in device.players:
-                _LOGGER.debug("Discovered player %s with %s playtime",
-                              player.player_id,
-                              player.playing_time)
             _LOGGER.debug("Usage today %s", device.today_playing_time)
-            await device.update_max_daily_playtime(minutes=15)
+            _LOGGER.debug("Usage remaining %s", device.today_time_remaining)
 
         _LOGGER.debug("ping")
         await asyncio.sleep(15)
