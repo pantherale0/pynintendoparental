@@ -17,8 +17,6 @@ from .application import Application
 class Device:
     """A device"""
 
-    _callbacks: list[Callable] = []
-
     def __init__(self, api):
         """INIT"""
         self.device_id: str = None
@@ -47,6 +45,7 @@ class Device:
         self.alarms_enabled: bool = False
         self.stats_update_failed: bool = False
         self.application_update_failed: bool = False
+        self._callbacks: list[Callable] = []
         _LOGGER.debug("Device init complete for %s", self.device_id)
 
     async def update(self):
