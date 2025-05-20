@@ -249,31 +249,39 @@ class Device:
             self.today_exceeded_time = 0 if today_exceeded_time is None else today_exceeded_time/60
             _LOGGER.debug("Cached playing, disabled and exceeded time for today for device %s",
                         self.device_id)
-            if self.limit_time == 0:
-                self.today_time_remaining = 0
-            if self.limit_time == 0 and self.bedtime_alarm is None:
-                # we will assume until midnight in this case
-                # Calculate and return the total minutes passed since midnight
-                self.today_time_remaining = 1440-(datetime.now().hour * 60 + datetime.now().minute)
+            now = datetime.now()
+            current_minutes_past_midnight = now.hour * 60 + now.minute
+            minutes_in_day = 1440 # 24 * 60
+
+            # 1. Calculate remaining time based on play limit
+            played_today_minutes = self.daily_summaries[0].get("playingTime", 0) / 60
+
+            time_remaining_by_play_limit = 0.0
             if self.limit_time is None:
-                limit_remain = 1440 - \
-                    (datetime.now().hour * 60 + datetime.now().minute)
+                # No specific play limit, effectively limited by end of day for this calculation step.
+                time_remaining_by_play_limit = float(minutes_in_day - current_minutes_past_midnight)
+            elif self.limit_time == 0:
+                time_remaining_by_play_limit = 0.0
             else:
-                limit_remain = self.limit_time - (
-                    self.daily_summaries[0].get("playingTime", 0) / 60
-                )
+                time_remaining_by_play_limit = float(self.limit_time - played_today_minutes)
+
+            time_remaining_by_play_limit = max(0.0, time_remaining_by_play_limit)
+
+            # Initialize overall remaining time with play limit constraint
+            effective_remaining_time = time_remaining_by_play_limit
+
+            # 2. Factor in bedtime alarm, if any, to further constrain remaining time
             if self.bedtime_alarm is not None:
-                if self.bedtime_alarm < datetime.now().time():
-                    self.today_time_remaining = 0
-                # work out minutes remaining
-                t_1 = datetime.combine(
-                    datetime.today(), self.bedtime_alarm)
-                t_2 = datetime.now()
-                min_remain = (t_1 - t_2).total_seconds() / 60
-                if min_remain < limit_remain:
-                    self.today_time_remaining = min_remain
-            else:
-                self.today_time_remaining = limit_remain
+                bedtime_dt = datetime.combine(now.date(), self.bedtime_alarm)
+                time_remaining_by_bedtime = 0.0
+                if bedtime_dt > now: # Bedtime is in the future today
+                    time_remaining_by_bedtime = (bedtime_dt - now).total_seconds() / 60
+                    time_remaining_by_bedtime = max(0.0, time_remaining_by_bedtime) 
+                # else: Bedtime has passed for today or is now, so time_remaining_by_bedtime remains 0.0
+
+                effective_remaining_time = min(effective_remaining_time, time_remaining_by_bedtime)
+
+            self.today_time_remaining = int(max(0.0, effective_remaining_time)) # Ensure non-negative and integer
             _LOGGER.debug("Calculated and updated the amount of time remaining for today: %s", self.today_time_remaining)
             self.today_important_info = self.get_date_summary()[0].get("importantInfos", [])
             self.today_notices = self.get_date_summary()[0].get("notices", [])
