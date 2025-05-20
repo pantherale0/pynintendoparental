@@ -4,16 +4,20 @@
 import asyncio
 
 from datetime import datetime, timedelta, time
+from typing import Callable
 
 from .api import Api
 from .const import _LOGGER, DAYS_OF_WEEK
 from .exceptions import HttpException
 from .enum import AlarmSettingState, RestrictionMode
 from .player import Player
+from .utils import is_awaitable
 from .application import Application
 
 class Device:
     """A device"""
+
+    _callbacks: list[Callable] = []
 
     def __init__(self, api):
         """INIT"""
@@ -59,6 +63,18 @@ class Device:
         else:
             for player in self.players:
                 player.update_from_daily_summary(self.daily_summaries)
+        for cb in self._callbacks:
+            if is_awaitable(cb):
+                await cb()
+            else:
+                cb()
+
+    def add_device_callback(self, callback):
+        """Add a callback to the device."""
+        if not callable(callback):
+            raise ValueError("Object must be callable.")
+        if callback not in self._callbacks:
+            self._callbacks.append(callback)
 
     async def set_new_pin(self, pin: str):
         """Updates the pin for the device."""
