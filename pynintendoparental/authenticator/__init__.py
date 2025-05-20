@@ -191,9 +191,9 @@ class Authenticator:
 
     @classmethod
     async def complete_login(cls,
-                     auth: 'Authenticator' | None,
+                     auth: Authenticator | None,
                      response_token: str,
-                     is_session_token: bool=False) -> 'Authenticator':
+                     is_session_token: bool=False) -> Authenticator:
         """Creates and logs into Nintendo APIs"""
         if is_session_token:
             auth = cls(session_token=response_token)
