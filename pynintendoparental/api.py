@@ -25,11 +25,12 @@ def _check_http_success(status: int) -> bool:
 class Api:
     """Nintendo Parental Controls API."""
 
-    def __init__(self, auth, tz, lang):
+    def __init__(self, auth, tz, lang, session):
         """INIT"""
         self._auth: Authenticator = auth
         self._tz = tz
         self._language = lang
+        self._session = session
 
     @property
     def _auth_token(self) -> str:
@@ -62,35 +63,136 @@ class Api:
             "json": "",
             "headers": ""
         }
-        async with aiohttp.ClientSession() as session:
-            # Add auth header
-            session.headers.add("Authorization", self._auth_token)
-            session.headers.add("User-Agent", USER_AGENT)
-            session.headers.add("X-Moon-App-Id", MOBILE_APP_PKG)
-            session.headers.add("X-Moon-Os", OS_NAME)
-            session.headers.add("X-Moon-Os-Version", OS_VERSION)
-            session.headers.add("X-Moon-Model", DEVICE_MODEL)
-            session.headers.add("X-Moon-TimeZone", self._tz)
-            session.headers.add("X-Moon-Os-Language", self._language)
-            session.headers.add("X-Moon-App-Language", self._language)
-            session.headers.add("X-Moon-App-Display-Version", MOBILE_APP_VERSION)
-            session.headers.add("X-Moon-App-Internal-Version", MOBILE_APP_BUILD)
-            async with session.request(
-                method=e_point.get("method"),
-                url=url,
-                json=body
-            ) as response:
-                _LOGGER.debug("%s request to %s status code %s",
-                              e_point.get("method"),
-                              url,
-                              response.status)
-                if _check_http_success(response.status):
-                    resp["status"] = response.status
-                    resp["text"] = await response.text()
-                    resp["json"] = await response.json()
-                    resp["headers"] = response.headers
-                else:
-                    raise HttpException("HTTP Error", response.status, await response.text())
+        # Add auth header
+        self._session.headers.add("Authorization", self._auth_token)
+        self._session.headers.add("User-Agent", USER_AGENT)
+        self._session.headers.add("X-Moon-App-Id", MOBILE_APP_PKG)
+        self._session.headers.add("X-Moon-Os", OS_NAME)
+        self._session.headers.add("X-Moon-Os-Version", OS_VERSION)
+        self._session.headers.add("X-Moon-Model", DEVICE_MODEL)
+        self._session.headers.add("X-Moon-TimeZone", self._tz)
+        self._session.headers.add("X-Moon-Os-Language", self._language)
+        self._session.headers.add("X-Moon-App-Language", self._language)
+        self._session.headers.add("X-Moon-App-Display-Version", MOBILE_APP_VERSION)
+        self._session.headers.add("X-Moon-App-Internal-Version", MOBILE_APP_BUILD)
+        async with self._session.request(
+            method=e_point.get("method"),
+            url=url,
+            json=body
+        ) as response:
+            _LOGGER.debug("%s request to %s status code %s",
+                            e_point.get("method"),
+                            url,
+                            response.status)
+            if _check_http_success(response.status):
+                resp["status"] = response.status
+                resp["text"] = await response.text()
+                resp["json"] = await response.json()
+                resp["headers"] = response.headers
+            else:
+                raise HttpException("HTTP Error", response.status, await response.text())
 
         # now return the resp dict
         return resp
+
+    async def async_get_account_details(self) -> dict:
+        """Get account details."""
+        return await self.send_request(
+            endpoint="get_account_details",
+            ACCOUNT_ID=self.account_id
+        )
+
+    async def async_get_account_devices(self) -> dict:
+        """Get account devices."""
+        return await self.send_request(
+            endpoint="get_account_devices",
+            ACCOUNT_ID=self.account_id
+        )
+
+    async def async_get_account_device(self, device_id: str) -> dict:
+        """Get account device."""
+        return await self.send_request(
+            endpoint="get_account_device",
+            ACCOUNT_ID=self.account_id,
+            DEVICE_ID=device_id
+        )
+
+    async def async_get_device_daily_summaries(self, device_id: str) -> dict:
+        """Get device daily summaries."""
+        return await self.send_request(
+            endpoint="get_device_daily_summaries",
+            DEVICE_ID=device_id
+        )
+
+    async def async_get_device_monthly_summaries(self, device_id: str) -> dict:
+        """Get device monthly summaries."""
+        return await self.send_request(
+            endpoint="get_device_monthly_summaries",
+            DEVICE_ID=device_id
+        )
+
+    async def async_get_device_parental_control_setting(self, device_id: str) -> dict:
+        """Get device parental control setting."""
+        return await self.send_request(
+            endpoint="get_device_parental_control_setting",
+            DEVICE_ID=device_id
+        )
+
+    async def async_get_device_parental_control_setting_state(self, device_id: str) -> dict:
+        """Get device parental control setting state."""
+        return await self.send_request(
+            endpoint="get_device_parental_control_setting_state",
+            DEVICE_ID=device_id
+        )
+
+    async def async_get_device_alarm_setting_state(self, device_id: str) -> dict:
+        """Get device alarm setting state."""
+        return await self.send_request(
+            endpoint="get_device_alarm_setting_state",
+            DEVICE_ID=device_id
+        )
+
+    async def async_get_device_monthly_summary(self, device_id: str, year: int, month: int) -> dict:
+        """Get device monthly summary."""
+        return await self.send_request(
+            endpoint="get_device_monthly_summary",
+            DEVICE_ID=device_id,
+            YEAR=year,
+            MONTH=f"{month:02d}"
+        )
+
+    async def async_set_device_parental_control_setting(
+            self,
+            device_id: str,
+            settings: dict
+        ) -> dict:
+        """Update device parental control setting."""
+        return await self.send_request(
+            endpoint="update_device_parental_control_setting",
+            DEVICE_ID=device_id,
+            body=settings
+        )
+
+    async def async_set_device_whitelisted_applications(
+            self,
+            device_id: str,
+            applications: dict
+        ) -> dict:
+        """Update device whitelisted applications."""
+        return await self.send_request(
+            endpoint="update_device_whitelisted_applications",
+            DEVICE_ID=device_id,
+            body=applications
+        )
+
+    async def async_set_device_alarm_setting_state(
+            self,
+            device_id: str,
+            alarm_state: dict
+        ) -> dict:
+        """Update device alarm setting state."""
+        return await self.send_request(
+            endpoint="update_device_alarm_setting_state",
+            DEVICE_ID=device_id,
+            body=alarm_state
+        )
