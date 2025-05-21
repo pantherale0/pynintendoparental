@@ -36,11 +36,6 @@ class Api:
         self._session = session
 
     @property
-    def _auth_token(self) -> str:
-        """Returns the auth token."""
-        return f"Bearer {self._auth.access_token}"
-
-    @property
     def account_id(self):
         """Return the account id."""
         return self._auth.account_id
@@ -59,7 +54,7 @@ class Api:
             "X-Moon-TimeZone": self._tz,
             "X-Moon-Os-Language": self._language,
             "X-Moon-App-Language": self._language,
-            "Authorization": self._auth_token
+            "Authorization": self._auth.access_token
         }
 
     async def async_close(self):
@@ -76,7 +71,7 @@ class Api:
         if e_point is None:
             raise ValueError("Endpoint does not exist")
         # refresh the token if it has expired.
-        if self._auth.expires < (datetime.now()+timedelta(seconds=30)):
+        if self._auth.access_token_expired:
             _LOGGER.debug("Access token expired, requesting refresh.")
             await self._auth.perform_refresh()
         # format the URL using the kwargs
