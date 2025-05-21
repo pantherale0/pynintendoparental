@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import logging
-import re
 import base64
 import hashlib
 import random
@@ -60,11 +59,16 @@ def _rand():
 class Authenticator:
     """Authentication functions."""
 
-    def __init__(self, session_token = None, auth_code_verifier = None):
+    def __init__(
+            self,
+            session_token = None,
+            auth_code_verifier = None,
+            session: aiohttp.ClientSession = None
+        ):
         """Basic init."""
         _LOGGER.debug(">> Init authenticator.")
-        self.expires: datetime = None
-        self.access_token: str = None
+        self._at_expiry: datetime = None
+        self._access_token: str = None
         self.available_scopes: dict = None
         self.account_id: str = None
         self.account: dict = None
@@ -73,11 +77,24 @@ class Authenticator:
         self._id_token: str = None
         self._session_token: str = session_token
         self.login_url: str = None
+        if session is None:
+            session = aiohttp.ClientSession()
+        self.client_session: aiohttp.ClientSession = session
 
     @property
     def get_session_token(self) -> str:
         """Return the session token."""
         return self._session_token
+
+    @property
+    def access_token(self) -> str:
+        """Return the formatted access token."""
+        return f"Bearer {self._access_token}"
+
+    @property
+    def access_token_expired(self) -> bool:
+        """Check if the access token has expired."""
+        return self._at_expiry < (datetime.now()+timedelta(minutes=1))
 
     async def _request_handler(self, method, url, json=None, data=None, headers: dict=None):
         """Send a HTTP request"""
@@ -89,28 +106,25 @@ class Authenticator:
             "json": "",
             "headers": ""
         }
-        async with aiohttp.ClientSession() as session:
-            session.headers.add("Accept", "application/json")
-            for header in headers.keys():
-                session.headers.add(header, headers[header])
-            async with session.request(
-                method=method,
-                url=url,
-                json=json,
-                data=data
-            ) as resp:
-                response["status"] = resp.status
-                response["text"] = await resp.text()
-                response["json"] = await resp.json()
-                response["headers"] = resp.headers
+        async with self.client_session.request(
+            method=method,
+            url=url,
+            json=json,
+            data=data,
+            headers=headers
+        ) as resp:
+            response["status"] = resp.status
+            response["text"] = await resp.text()
+            response["json"] = await resp.json()
+            response["headers"] = resp.headers
         return response
 
     def _read_tokens(self, tokens: dict):
         """Reads tokens into self."""
         self.available_scopes = tokens.get("scope")
-        self.expires = datetime.now() + timedelta(seconds=tokens.get("expires_in"))
+        self._at_expiry = datetime.now() + timedelta(seconds=tokens.get("expires_in"))
         self._id_token = tokens.get("id_token")
-        self.access_token = tokens.get("access_token")
+        self._access_token = tokens.get("access_token")
 
     async def perform_login(self, session_token_code):
         """Retrieves initial tokens."""
@@ -159,7 +173,7 @@ class Authenticator:
                 method="GET",
                 url=MY_ACCOUNT_ENDPOINT,
                 headers={
-                    "Authorization": f"Bearer {self.access_token}"
+                    "Authorization": self.access_token
                 }
             )
             if account["status"] != 200:

@@ -76,6 +76,13 @@ class Device:
         if callback not in self._callbacks:
             self._callbacks.append(callback)
 
+    def remove_device_callback(self, callback):
+        """Remove a given device callback."""
+        if not callable(callback):
+            raise ValueError("Object must be callable.")
+        if callback in self._callbacks:
+            self._callbacks.remove(callback)
+
     async def set_new_pin(self, pin: str):
         """Updates the pin for the device."""
         _LOGGER.debug(">> Device.set_new_pin(pin=REDACTED)")
@@ -273,7 +280,7 @@ class Device:
                 time_remaining_by_bedtime = 0.0
                 if bedtime_dt > now: # Bedtime is in the future today
                     time_remaining_by_bedtime = (bedtime_dt - now).total_seconds() / 60
-                    time_remaining_by_bedtime = max(0.0, time_remaining_by_bedtime) 
+                    time_remaining_by_bedtime = max(0.0, time_remaining_by_bedtime)
                 # else: Bedtime has passed for today or is now, so time_remaining_by_bedtime remains 0.0
 
                 effective_remaining_time = min(effective_remaining_time, time_remaining_by_bedtime)
