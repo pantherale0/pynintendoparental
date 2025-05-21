@@ -115,10 +115,9 @@ class Device:
     async def _set_parental_control_setting(self):
         """Shortcut method to deduplicate code used to update parental control settings."""
         _LOGGER.debug(">> Device._set_parental_control_setting()")
-        await self._api.send_request(
-            endpoint="update_device_parental_control_setting",
-            body=self._get_update_parental_control_setting_body(),
-            DEVICE_ID=self.device_id
+        await self._api.async_set_device_parental_control_setting(
+            settings=self._get_update_parental_control_setting_body(),
+            device_id=self.device_id
         )
         await self._get_parental_control_setting()
 
@@ -209,9 +208,8 @@ class Device:
     async def _get_parental_control_setting(self):
         """Retreives parental control settings from the API."""
         _LOGGER.debug(">> Device._get_parental_control_setting()")
-        response = await self._api.send_request(
-            endpoint="get_device_parental_control_setting",
-            DEVICE_ID=self.device_id
+        response = await self._api.async_get_device_parental_control_setting(
+            device_id=self.device_id
         )
         self.parental_control_settings = response["json"]
         if "bedtimeStartingTime" in self.parental_control_settings["playTimerRegulations"]:
@@ -235,9 +233,8 @@ class Device:
     async def _get_daily_summaries(self):
         """Retrieve daily summaries."""
         _LOGGER.debug(">> Device._get_daily_summaries()")
-        response = await self._api.send_request(
-            endpoint="get_device_daily_summaries",
-            DEVICE_ID = self.device_id
+        response = await self._api.async_get_device_daily_summaries(
+            device_id = self.device_id
         )
         self.daily_summaries = response["json"]["items"]
         _LOGGER.debug("New daily summary %s", self.daily_summaries)
@@ -334,10 +331,8 @@ class Device:
         _LOGGER.debug(">> Device._get_extras()")
         if self.alarms_enabled is not None:
             # first refresh can come from self.extra without http request
-            response = await self._api.send_request(
-                endpoint="get_account_device",
-                ACCOUNT_ID = self._api.account_id,
-                DEVICE_ID = self.device_id
+            response = await self._api.async_get_account_device(
+                device_id = self.device_id
             )
             self.extra = response["json"]
         status = self.extra["device"]["alarmSetting"]["visibility"]
@@ -351,9 +346,8 @@ class Device:
         _LOGGER.debug(">> Device.get_monthly_summary(search_date=%s)", search_date)
         latest = False
         if search_date is None:
-            response = await self._api.send_request(
-                endpoint="get_device_monthly_summaries",
-                DEVICE_ID=self.device_id
+            response = await self._api.async_get_device_monthly_summaries(
+                device_id=self.device_id
             )
             _LOGGER.debug("Available monthly summaries: %s", response)
             response = response["json"]["indexes"][0]
@@ -362,11 +356,10 @@ class Device:
             latest = True
 
         try:
-            response = await self._api.send_request(
-                endpoint="get_device_monthly_summary",
-                DEVICE_ID = self.device_id,
-                YEAR=search_date.year,
-                MONTH=str(search_date.month).zfill(2)
+            response = await self._api.async_get_device_monthly_summary(
+                device_id = self.device_id,
+                year=search_date.year,
+                month=search_date.month
             )
             _LOGGER.debug("Monthly summary query complete for device %s: %s",
                         self.device_id,
@@ -385,12 +378,11 @@ class Device:
         """Updates the alarm state for the device."""
         _LOGGER.debug(">> Device.set_alarm_state(state=%s)",
                       state)
-        await self._api.send_request(
-            endpoint="update_device_alarm_setting_state",
-            body={
+        await self._api.async_set_device_alarm_setting_state(
+            alarm_state={
                 "status": str(state)
             },
-            DEVICE_ID = self.device_id
+            device_id = self.device_id
         )
 
     async def set_whitelisted_application(self, app_id: str, allowed: bool):
@@ -403,10 +395,9 @@ class Device:
         # take a snapshot of the whitelisted apps state
         current_state = self.parental_control_settings["whitelistedApplications"]
         current_state[app_id]["safeLaunch"] = "ALLOW" if allowed else "NONE"
-        await self._api.send_request(
-            endpoint="update_device_whitelisted_applications",
-            body=current_state,
-            DEVICE_ID=self.device_id
+        await self._api.async_set_device_whitelisted_applications(
+            applications=current_state,
+            device_id=self.device_id
         )
         await self._get_parental_control_setting()
 

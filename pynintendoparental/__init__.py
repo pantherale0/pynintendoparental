@@ -30,10 +30,7 @@ class NintendoParental:
                               dev.device_id,
                               err)
 
-        response = await self._api.send_request(
-            endpoint="get_account_devices",
-            ACCOUNT_ID=self.account_id
-        )
+        response = await self._api.async_get_account_devices()
 
         for dev_raw in response["json"]["items"]:
             device: Device = Device.from_device_response(dev_raw, self._api)
