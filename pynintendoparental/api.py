@@ -25,11 +25,13 @@ def _check_http_success(status: int) -> bool:
 class Api:
     """Nintendo Parental Controls API."""
 
-    def __init__(self, auth, tz, lang, session):
+    def __init__(self, auth, tz, lang, session: aiohttp.ClientSession=None):
         """INIT"""
         self._auth: Authenticator = auth
         self._tz = tz
         self._language = lang
+        if session is None:
+            session = aiohttp.ClientSession()
         self._session = session
 
     @property
@@ -41,6 +43,23 @@ class Api:
     def account_id(self):
         """Return the account id."""
         return self._auth.account_id
+
+    @property
+    def _headers(self) -> dict:
+        """Return web request headers."""
+        return {
+            "User-Agent": USER_AGENT,
+            "X-Moon-App-Id": MOBILE_APP_PKG,
+            "X-Moon-Os": OS_NAME,
+            "X-Moon-Os-Version": OS_VERSION,
+            "X-Moon-Model": DEVICE_MODEL,
+            "X-Moon-App-Display-Version": MOBILE_APP_VERSION,
+            "X-Moon-App-Internal-Version": MOBILE_APP_BUILD,
+            "X-Moon-TimeZone": self._tz,
+            "X-Moon-Os-Language": self._language,
+            "X-Moon-App-Language": self._language,
+            "Authorization": self._auth_token
+        }
 
     async def send_request(self, endpoint: str, body: object=None, **kwargs):
         """Sends a request to a given endpoint."""
@@ -63,18 +82,7 @@ class Api:
             "json": "",
             "headers": ""
         }
-        # Add auth header
-        self._session.headers.add("Authorization", self._auth_token)
-        self._session.headers.add("User-Agent", USER_AGENT)
-        self._session.headers.add("X-Moon-App-Id", MOBILE_APP_PKG)
-        self._session.headers.add("X-Moon-Os", OS_NAME)
-        self._session.headers.add("X-Moon-Os-Version", OS_VERSION)
-        self._session.headers.add("X-Moon-Model", DEVICE_MODEL)
-        self._session.headers.add("X-Moon-TimeZone", self._tz)
-        self._session.headers.add("X-Moon-Os-Language", self._language)
-        self._session.headers.add("X-Moon-App-Language", self._language)
-        self._session.headers.add("X-Moon-App-Display-Version", MOBILE_APP_VERSION)
-        self._session.headers.add("X-Moon-App-Internal-Version", MOBILE_APP_BUILD)
+        self._session.headers.update(self._headers)
         async with self._session.request(
             method=e_point.get("method"),
             url=url,
@@ -87,7 +95,16 @@ class Api:
             if _check_http_success(response.status):
                 resp["status"] = response.status
                 resp["text"] = await response.text()
-                resp["json"] = await response.json()
+                try:
+                    resp["json"] = await response.json()
+                except (aiohttp.ContentTypeError, ValueError) as e:
+                    _LOGGER.warning(
+                        """Failed to decode JSON response from %s.
+                        Status: %s, Error: %s.
+                        Response text: %s...""",
+                        url, response.status, e, resp['text'][:200]
+                    )
+                    resp["json"] = {}
                 resp["headers"] = response.headers
             else:
                 raise HttpException("HTTP Error", response.status, await response.text())
