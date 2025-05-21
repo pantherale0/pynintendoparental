@@ -63,7 +63,7 @@ class Authenticator:
             self,
             session_token = None,
             auth_code_verifier = None,
-            session: aiohttp.ClientSession = None
+            client_session: aiohttp.ClientSession = None
         ):
         """Basic init."""
         _LOGGER.debug(">> Init authenticator.")
@@ -77,9 +77,9 @@ class Authenticator:
         self._id_token: str = None
         self._session_token: str = session_token
         self.login_url: str = None
-        if session is None:
-            session = aiohttp.ClientSession()
-        self.client_session: aiohttp.ClientSession = session
+        if client_session is None:
+            client_session = aiohttp.ClientSession()
+        self.client_session: aiohttp.ClientSession = client_session
 
     @property
     def get_session_token(self) -> str:
@@ -182,11 +182,13 @@ class Authenticator:
             self.account = account["json"]
 
     @classmethod
-    def generate_login(cls) -> 'Authenticator':
+    def generate_login(
+        cls,
+        client_session: aiohttp.ClientSession | None = None) -> 'Authenticator':
         """Starts configuration of the authenticator."""
         verifier = _rand()
 
-        auth = cls(auth_code_verifier=verifier)
+        auth = cls(auth_code_verifier=verifier, client_session=client_session)
 
         query = {
             "client_id": CLIENT_ID,
@@ -207,10 +209,11 @@ class Authenticator:
     async def complete_login(cls,
                      auth: Authenticator | None,
                      response_token: str,
-                     is_session_token: bool=False) -> Authenticator:
+                     is_session_token: bool=False,
+                     client_session: aiohttp.ClientSession | None = None) -> Authenticator:
         """Creates and logs into Nintendo APIs"""
         if is_session_token:
-            auth = cls(session_token=response_token)
+            auth = cls(session_token=response_token, client_session=client_session)
             await auth.perform_refresh()
         else:
             response_token = _parse_response_token(response_token)
