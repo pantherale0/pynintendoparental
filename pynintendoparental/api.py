@@ -25,15 +25,11 @@ def _check_http_success(status: int) -> bool:
 class Api:
     """Nintendo Parental Controls API."""
 
-    def __init__(self, auth, tz, lang, session: aiohttp.ClientSession=None):
+    def __init__(self, auth, tz, lang):
         """INIT"""
         self._auth: Authenticator = auth
         self._tz = tz
         self._language = lang
-        if session is None:
-            session = aiohttp.ClientSession()
-            self._session_created_internally = True
-        self._session = session
 
     @property
     def account_id(self):
@@ -57,12 +53,6 @@ class Api:
             "Authorization": self._auth.access_token
         }
 
-    async def async_close(self):
-        """Closes the underlying aiohttp.ClientSession if it was created by this instance."""
-        if hasattr(self, '_session_created_internally') and self._session_created_internally and self._session and not self._session.closed:
-            await self._session.close()
-            self._session = None # Optional: clear the session attribute
-
     async def send_request(self, endpoint: str, body: object=None, **kwargs):
         """Sends a request to a given endpoint."""
         _LOGGER.debug("Sending request to %s", endpoint)
@@ -84,11 +74,11 @@ class Api:
             "json": "",
             "headers": ""
         }
-        self._session.headers.update(self._headers)
-        async with self._session.request(
+        async with self._auth.client_session.request(
             method=e_point.get("method"),
             url=url,
-            json=body
+            json=body,
+            headers=self._headers
         ) as response:
             _LOGGER.debug("%s request to %s status code %s",
                             e_point.get("method"),

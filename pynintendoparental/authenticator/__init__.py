@@ -60,7 +60,12 @@ def _rand():
 class Authenticator:
     """Authentication functions."""
 
-    def __init__(self, session_token = None, auth_code_verifier = None, session: aiohttp.ClientSession = None):
+    def __init__(
+            self,
+            session_token = None,
+            auth_code_verifier = None,
+            session: aiohttp.ClientSession = None
+        ):
         """Basic init."""
         _LOGGER.debug(">> Init authenticator.")
         self._at_expiry: datetime = None
@@ -102,12 +107,12 @@ class Authenticator:
             "json": "",
             "headers": ""
         }
-        self.client_session.headers.update(headers)
         async with self.client_session.request(
             method=method,
             url=url,
             json=json,
-            data=data
+            data=data,
+            headers=headers
         ) as resp:
             response["status"] = resp.status
             response["text"] = await resp.text()
