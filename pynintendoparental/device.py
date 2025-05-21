@@ -76,6 +76,12 @@ class Device:
         if callback not in self._callbacks:
             self._callbacks.append(callback)
 
+    def remove_device_callback(self, callback):
+        """Remove a given device callback."""
+        if not callable(callback):
+            raise ValueError("Object must be callable.")
+        self._callbacks.remove(callback)
+
     async def set_new_pin(self, pin: str):
         """Updates the pin for the device."""
         _LOGGER.debug(">> Device.set_new_pin(pin=REDACTED)")
