@@ -280,7 +280,7 @@ class Device:
                 time_remaining_by_bedtime = 0.0
                 if bedtime_dt > now: # Bedtime is in the future today
                     time_remaining_by_bedtime = (bedtime_dt - now).total_seconds() / 60
-                    time_remaining_by_bedtime = max(0.0, time_remaining_by_bedtime) 
+                    time_remaining_by_bedtime = max(0.0, time_remaining_by_bedtime)
                 # else: Bedtime has passed for today or is now, so time_remaining_by_bedtime remains 0.0
 
                 effective_remaining_time = min(effective_remaining_time, time_remaining_by_bedtime)

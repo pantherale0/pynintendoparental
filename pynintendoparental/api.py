@@ -1,7 +1,5 @@
 """API handler."""
 
-from datetime import datetime, timedelta
-
 import aiohttp
 
 from .authenticator import Authenticator
