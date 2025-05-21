@@ -32,6 +32,7 @@ class Api:
         self._language = lang
         if session is None:
             session = aiohttp.ClientSession()
+            self._session_created_internally = True
         self._session = session
 
     @property
@@ -60,6 +61,12 @@ class Api:
             "X-Moon-App-Language": self._language,
             "Authorization": self._auth_token
         }
+
+    async def async_close(self):
+        """Closes the underlying aiohttp.ClientSession if it was created by this instance."""
+        if hasattr(self, '_session_created_internally') and self._session_created_internally and self._session and not self._session.closed:
+            await self._session.close()
+            self._session = None # Optional: clear the session attribute
 
     async def send_request(self, endpoint: str, body: object=None, **kwargs):
         """Sends a request to a given endpoint."""
