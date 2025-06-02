@@ -25,7 +25,7 @@ from .const import (
     GRANT_TYPE,
     MY_ACCOUNT_ENDPOINT,
     REDIRECT_URI,
-    SCOPE,
+    SCOPES,
     AUTHORIZE_URL
 )
 
@@ -89,7 +89,7 @@ class Authenticator:
     @property
     def access_token(self) -> str:
         """Return the formatted access token."""
-        return f"Bearer {self._access_token}"
+        return f"Bearer {self._id_token}" # v2 seems to use ID token for API access?
 
     @property
     def access_token_expired(self) -> bool:
@@ -173,7 +173,7 @@ class Authenticator:
                 method="GET",
                 url=MY_ACCOUNT_ENDPOINT,
                 headers={
-                    "Authorization": self.access_token
+                    "Authorization": f"Bearer {self._access_token}"
                 }
             )
             if account["status"] != 200:
@@ -195,7 +195,7 @@ class Authenticator:
             # "interacted": 1,
             "redirect_uri": REDIRECT_URI,
             "response_type": "session_token_code",
-            "scope": SCOPE,
+            "scope": "+".join(SCOPES),
             "session_token_code_challenge": _hash(verifier),
             "session_token_code_challenge_method": "S256",
             "state": _rand(),

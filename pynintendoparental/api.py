@@ -112,15 +112,13 @@ class Api:
     async def async_get_account_devices(self) -> dict:
         """Get account devices."""
         return await self.send_request(
-            endpoint="get_account_devices",
-            ACCOUNT_ID=self.account_id
+            endpoint="get_account_devices"
         )
 
     async def async_get_account_device(self, device_id: str) -> dict:
         """Get account device."""
         return await self.send_request(
             endpoint="get_account_device",
-            ACCOUNT_ID=self.account_id,
             DEVICE_ID=device_id
         )
 
@@ -152,13 +150,6 @@ class Api:
             DEVICE_ID=device_id
         )
 
-    async def async_get_device_alarm_setting_state(self, device_id: str) -> dict:
-        """Get device alarm setting state."""
-        return await self.send_request(
-            endpoint="get_device_alarm_setting_state",
-            DEVICE_ID=device_id
-        )
-
     async def async_get_device_monthly_summary(self, device_id: str, year: int, month: int) -> dict:
         """Get device monthly summary."""
         return await self.send_request(
@@ -168,38 +159,36 @@ class Api:
             MONTH=f"{month:02d}"
         )
 
-    async def async_set_device_parental_control_setting(
+    async def async_update_restriction_level(
             self,
-            device_id: str,
             settings: dict
         ) -> dict:
-        """Update device parental control setting."""
+        """Update device restriction level."""
         return await self.send_request(
-            endpoint="update_device_parental_control_setting",
-            DEVICE_ID=device_id,
+            endpoint="update_restriction_level",
             body=settings
         )
 
-    async def async_set_device_whitelisted_applications(
+    async def async_update_play_timer(
             self,
-            device_id: str,
-            applications: dict
+            settings: dict
         ) -> dict:
-        """Update device whitelisted applications."""
+        """Update device play timer settings."""
         return await self.send_request(
-            endpoint="update_device_whitelisted_applications",
-            DEVICE_ID=device_id,
-            body=applications
+            endpoint="update_play_timer",
+            body=settings
         )
 
-    async def async_set_device_alarm_setting_state(
-            self,
-            device_id: str,
-            alarm_state: dict
-        ) -> dict:
-        """Update device alarm setting state."""
+    async def async_update_unlock_code(
+        self,
+        new_code: str,
+        device_id: str
+    ) -> dict:
+        """Update device unlock code."""
         return await self.send_request(
-            endpoint="update_device_alarm_setting_state",
-            DEVICE_ID=device_id,
-            body=alarm_state
+            endpoint="update_unlock_code",
+            body={
+                "deviceId": device_id,
+                "unlockCode": new_code
+            }
         )
