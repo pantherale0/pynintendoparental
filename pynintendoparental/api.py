@@ -183,7 +183,7 @@ class Api:
         self,
         new_code: str,
         device_id: str
-    ):
+    ) -> dict:
         """Update device unlock code."""
         return await self.send_request(
             endpoint="update_unlock_code",
