@@ -173,7 +173,7 @@ class Api:
             self,
             settings: dict
         ) -> dict:
-        """Update device whitelisted applications."""
+        """Update device play timer settings."""
         return await self.send_request(
             endpoint="update_play_timer",
             body=settings
