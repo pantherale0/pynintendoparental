@@ -5,7 +5,21 @@ CLIENT_ID = "54789befb391a838"
 GRANT_TYPE = "urn:ietf:params:oauth:grant-type:jwt-bearer-session-token"
 
 REDIRECT_URI = f"npf{CLIENT_ID}://auth"
-SCOPE = "openid+user+user.mii+moonUser:administration+moonDevice:create+moonOwnedDevice:administration+moonParentalControlSetting+moonParentalControlSetting:update+moonParentalControlSettingState+moonPairingState+moonSmartDevice:administration+moonDailySummary+moonMonthlySummary"
+SCOPES = [
+    "openid",
+    "user",
+    "user.mii",
+    "moonUser:administration",
+    "moonDevice:create",
+    "moonOwnedDevice:administration",
+    "moonParentalControlSetting",
+    "moonParentalControlSetting:update",
+    "moonParentalControlSettingState",
+    "moonPairingState",
+    "moonSmartDevice:administration",
+    "moonDailySummary",
+    "moonMonthlySummary",
+]
 
 AUTHORIZE_URL = "https://accounts.nintendo.com/connect/1.0.0/authorize?{}"
 SESSION_TOKEN_URL = "https://accounts.nintendo.com/connect/1.0.0/api/session_token"

@@ -26,13 +26,13 @@ class NintendoParental:
             try:
                 await dev.update()
             except Exception as err:
-                _LOGGER.error("Error updating device %s: %s",
+                _LOGGER.exception("Error updating device %s: %s",
                               dev.device_id,
                               err)
 
         response = await self._api.async_get_account_devices()
 
-        for dev_raw in response["json"]["items"]:
+        for dev_raw in response["json"]["ownedDevices"]:
             device: Device = Device.from_device_response(dev_raw, self._api)
             if self.devices.get(device.device_id, None) is None:
                 _LOGGER.debug("Creating new device %s", device.device_id)
