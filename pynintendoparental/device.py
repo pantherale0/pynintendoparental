@@ -87,21 +87,23 @@ class Device:
         """Updates the pin for the device."""
         _LOGGER.debug(">> Device.set_new_pin(pin=REDACTED)")
         self.parental_control_settings["unlockCode"] = pin
-        self._parse_parental_control_setting(await self._api.async_update_unlock_code(
+        response = await self._api.async_update_unlock_code(
             new_code=pin,
             device_id=self.device_id
-        ))
+        )
+        self._parse_parental_control_setting(response["json"])
 
     async def set_restriction_mode(self, mode: RestrictionMode):
         """Updates the restriction mode of the device."""
         _LOGGER.debug(">> Device.set_restriction_mode(mode=%s)", mode)
         self.parental_control_settings["playTimerRegulations"]["restrictionMode"] = str(mode)
-        self._parse_parental_control_setting(await self._api.async_update_play_timer(
+        response = await self._api.async_update_play_timer(
             settings={
                 "deviceId": self.device_id,
                 "playTimerRegulations": self.parental_control_settings["playTimerRegulations"]
             }
-        ))
+        )
+        self._parse_parental_control_setting(response["json"])
 
     async def set_bedtime_alarm(self, end_time: time = None, enabled: bool = True):
         """Update the bedtime alarm for the device."""
@@ -125,12 +127,13 @@ class Device:
             self.parental_control_settings["playTimerRegulations"]["eachDayOfTheWeekRegulations"][
                 DAYS_OF_WEEK[datetime.now().weekday()]
             ]["bedtime"] = bedtime
-        self._parse_parental_control_setting(await self._api.async_update_play_timer(
+        response = await self._api.async_update_play_timer(
             settings={
                 "deviceId": self.device_id,
                 "playTimerRegulations": self.parental_control_settings["playTimerRegulations"]
             }
-        ))
+        )
+        self._parse_parental_control_setting(response["json"])
 
     async def update_max_daily_playtime(self, minutes: int = 0):
         """Updates the maximum daily playtime of a device."""
@@ -166,12 +169,13 @@ class Device:
             else:
                 day_of_week_regs[current_day]["timeToPlayInOneDay"]["limitTime"] = minutes
 
-        self._parse_parental_control_setting(await self._api.async_update_play_timer(
+        response = await self._api.async_update_play_timer(
             settings={
                 "deviceId": self.device_id,
                 "playTimerRegulations": self.parental_control_settings["playTimerRegulations"]
             }
-        ))
+        )
+        self._parse_parental_control_setting(response["json"])
 
     def _update_applications(self):
         """Updates applications from daily summary."""
