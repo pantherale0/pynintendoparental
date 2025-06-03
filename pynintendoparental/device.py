@@ -247,11 +247,11 @@ class Device:
         _LOGGER.debug("New daily summary %s", self.daily_summaries)
         try:
             today_playing_time = self.get_date_summary()[0].get("playingTime", 0)
-            self.today_playing_time = 0 if today_playing_time is None else today_playing_time/60
+            self.today_playing_time = 0 if today_playing_time is None else today_playing_time
             today_disabled_time = self.get_date_summary()[0].get("disabledTime", 0)
-            self.today_disabled_time = 0 if today_disabled_time is None else today_disabled_time/60
+            self.today_disabled_time = 0 if today_disabled_time is None else today_disabled_time
             today_exceeded_time = self.get_date_summary()[0].get("exceededTime", 0)
-            self.today_exceeded_time = 0 if today_exceeded_time is None else today_exceeded_time/60
+            self.today_exceeded_time = 0 if today_exceeded_time is None else today_exceeded_time
             _LOGGER.debug("Cached playing, disabled and exceeded time for today for device %s",
                         self.device_id)
             now = datetime.now()
