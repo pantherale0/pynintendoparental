@@ -63,11 +63,7 @@ class Device:
         else:
             for player in self.players:
                 player.update_from_daily_summary(self.daily_summaries)
-        for cb in self._callbacks:
-            if is_awaitable(cb):
-                await cb()
-            else:
-                cb()
+        await self._execute_callbacks()
 
     def add_device_callback(self, callback):
         """Add a callback to the device."""
@@ -83,6 +79,14 @@ class Device:
         if callback in self._callbacks:
             self._callbacks.remove(callback)
 
+    async def _execute_callbacks(self):
+        """Execute all callbacks."""
+        for cb in self._callbacks:
+            if is_awaitable(cb):
+                await cb()
+            else:
+                cb()
+
     async def set_new_pin(self, pin: str):
         """Updates the pin for the device."""
         _LOGGER.debug(">> Device.set_new_pin(pin=REDACTED)")
@@ -92,6 +96,17 @@ class Device:
             device_id=self.device_id
         )
         self._parse_parental_control_setting(response["json"])
+        await self._execute_callbacks()
+
+    async def add_extra_time(self, minutes: int):
+        """Add extra time to the device."""
+        _LOGGER.debug(">> Device.add_extra_time(minutes=%s)", minutes)
+        await self._api.async_update_extra_playing_time(
+            device_id=self.device_id,
+            additional_time=minutes
+        )
+        await self._execute_callbacks()
+
 
     async def set_restriction_mode(self, mode: RestrictionMode):
         """Updates the restriction mode of the device."""
@@ -104,6 +119,7 @@ class Device:
             }
         )
         self._parse_parental_control_setting(response["json"])
+        await self._execute_callbacks()
 
     async def set_bedtime_alarm(self, end_time: time = None, enabled: bool = True):
         """Update the bedtime alarm for the device."""
@@ -134,6 +150,8 @@ class Device:
             }
         )
         self._parse_parental_control_setting(response["json"])
+        self._calculate_times()
+        await self._execute_callbacks()
 
     async def update_max_daily_playtime(self, minutes: int = 0):
         """Updates the maximum daily playtime of a device."""
@@ -176,6 +194,8 @@ class Device:
             }
         )
         self._parse_parental_control_setting(response["json"])
+        self._calculate_times()
+        await self._execute_callbacks()
 
     def _update_applications(self):
         """Updates applications from daily summary."""
@@ -229,31 +249,22 @@ class Device:
         self._update_day_of_week_regulations()
         self._update_applications()
 
-    async def _get_parental_control_setting(self):
-        """Retreives parental control settings from the API."""
-        _LOGGER.debug(">> Device._get_parental_control_setting()")
-        response = await self._api.async_get_device_parental_control_setting(
-            device_id=self.device_id
-        )
-        self._parse_parental_control_setting(response["json"])
-
-    async def _get_daily_summaries(self):
-        """Retrieve daily summaries."""
-        _LOGGER.debug(">> Device._get_daily_summaries()")
-        response = await self._api.async_get_device_daily_summaries(
-            device_id = self.device_id
-        )
-        self.daily_summaries = response["json"]["dailySummaries"]
-        _LOGGER.debug("New daily summary %s", self.daily_summaries)
-        try:
-            today_playing_time = self.get_date_summary()[0].get("playingTime", 0)
-            self.today_playing_time = 0 if today_playing_time is None else today_playing_time
-            today_disabled_time = self.get_date_summary()[0].get("disabledTime", 0)
-            self.today_disabled_time = 0 if today_disabled_time is None else today_disabled_time
-            today_exceeded_time = self.get_date_summary()[0].get("exceededTime", 0)
-            self.today_exceeded_time = 0 if today_exceeded_time is None else today_exceeded_time
-            _LOGGER.debug("Cached playing, disabled and exceeded time for today for device %s",
+    def _calculate_times(self):
+        """Calculate times from parental control settings."""
+        if not isinstance(self.daily_summaries, list) or not self.daily_summaries:
+            return
+        if len(self.daily_summaries) == 0:
+            return
+        _LOGGER.debug(">> Device._calculate_times()")
+        today_playing_time = self.daily_summaries[0].get("playingTime", 0)
+        self.today_playing_time = 0 if today_playing_time is None else today_playing_time
+        today_disabled_time = self.daily_summaries[0].get("disabledTime", 0)
+        self.today_disabled_time = 0 if today_disabled_time is None else today_disabled_time
+        today_exceeded_time = self.daily_summaries[0].get("exceededTime", 0)
+        self.today_exceeded_time = 0 if today_exceeded_time is None else today_exceeded_time
+        _LOGGER.debug("Cached playing, disabled and exceeded time for today for device %s",
                         self.device_id)
+        try:
             now = datetime.now()
             current_minutes_past_midnight = now.hour * 60 + now.minute
             minutes_in_day = 1440 # 24 * 60
@@ -327,6 +338,25 @@ class Device:
         except ValueError as err:
             _LOGGER.debug("Unable to retrieve applications for device %s: %s", self.name, err)
             self.application_update_failed = True
+
+    async def _get_parental_control_setting(self):
+        """Retreives parental control settings from the API."""
+        _LOGGER.debug(">> Device._get_parental_control_setting()")
+        response = await self._api.async_get_device_parental_control_setting(
+            device_id=self.device_id
+        )
+        self._parse_parental_control_setting(response["json"])
+        self._calculate_times()
+
+    async def _get_daily_summaries(self):
+        """Retrieve daily summaries."""
+        _LOGGER.debug(">> Device._get_daily_summaries()")
+        response = await self._api.async_get_device_daily_summaries(
+            device_id = self.device_id
+        )
+        self.daily_summaries = response["json"]["dailySummaries"]
+        _LOGGER.debug("New daily summary %s", self.daily_summaries)
+        self._calculate_times()
 
     async def _get_extras(self):
         """Retrieve extra properties."""

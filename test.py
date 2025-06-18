@@ -1,8 +1,12 @@
 
+import os
 import logging
 import asyncio
+from dotenv import load_dotenv
 from pynintendoparental import Authenticator, NintendoParental
 from pynintendoparental.exceptions import InvalidSessionTokenException
+
+load_dotenv()
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -11,14 +15,15 @@ async def main():
     login = True
     while login:
         try:
-            if input("Should we use a session token? [N/y] ").upper() == "Y":
-                auth = await Authenticator.complete_login(None, input("Token: "), True)
+            if bool(int(os.environ.get("USE_SESSION_TOKEN", 0))) or input("Should we use a session token? [N/y] ").upper() == "Y":
+                auth = await Authenticator.complete_login(None, os.environ.get("SESSION_TOKEN") or input("Token: "), True)
             else:
                 auth = Authenticator.generate_login()
                 _LOGGER.info("Login using %s", auth.login_url)
                 auth = await Authenticator.complete_login(auth, input("Response URL: "), False)
             _LOGGER.info("Logged in, ready.")
             _LOGGER.debug("Access token is: %s", auth.access_token)
+            _LOGGER.debug("Session token is: %s", auth.get_session_token)
             control = await NintendoParental.create(auth)
             login = False
         except InvalidSessionTokenException as err:

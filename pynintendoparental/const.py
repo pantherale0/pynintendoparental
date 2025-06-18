@@ -5,8 +5,8 @@ import logging
 
 _LOGGER = logging.getLogger(__package__)
 MOBILE_APP_PKG = "com.nintendo.znma"
-MOBILE_APP_VERSION = "2.0.0"
-MOBILE_APP_BUILD = "502"
+MOBILE_APP_VERSION = "2.1.1"
+MOBILE_APP_BUILD = "540"
 OS_NAME = "ANDROID"
 OS_VERSION = "33"
 OS_STR = f"{OS_NAME} {OS_VERSION}"
@@ -52,5 +52,9 @@ ENDPOINTS = {
     "get_device_monthly_summary": {
         "url": "{BASE_URL}/actions/playSummary/fetchMonthlySummary?deviceId={DEVICE_ID}&year={YEAR}&month={MONTH}&containLatest=false",
         "method": "GET"
+    },
+    "update_extra_playing_time": {
+        "url": "{BASE_URL}/actions/device/updateExtraPlayingTime",
+        "method": "POST"
     }
 }
