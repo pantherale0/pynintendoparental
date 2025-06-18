@@ -102,6 +102,16 @@ class Device:
             else:
                 cb()
 
+    async def add_extra_time(self, minutes: int):
+        """Add extra time to the device."""
+        _LOGGER.debug(">> Device.add_extra_time(minutes=%s)", minutes)
+        await self._api.async_update_extra_playing_time(
+            device_id=self.device_id,
+            additional_time=minutes
+        )
+        await self._execute_callbacks()
+
+
     async def set_restriction_mode(self, mode: RestrictionMode):
         """Updates the restriction mode of the device."""
         _LOGGER.debug(">> Device.set_restriction_mode(mode=%s)", mode)

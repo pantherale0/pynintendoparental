@@ -192,3 +192,22 @@ class Api:
                 "unlockCode": new_code
             }
         )
+
+    async def async_update_extra_playing_time(
+        self,
+        device_id: str,
+        additional_time: int
+    ) -> dict:
+        """Update device extra playing time."""
+        body = {
+            "deviceId": device_id,
+            "additionalTime": additional_time,
+            "status": "TO_ADDED"
+        }
+        if additional_time == -1:
+            body["status"] = "TO_INFINITY"
+            body.pop("additionalTime")
+        return await self.send_request(
+            endpoint="update_extra_playing_time",
+            body=body
+        )
