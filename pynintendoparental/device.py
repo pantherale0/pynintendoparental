@@ -96,11 +96,7 @@ class Device:
             device_id=self.device_id
         )
         self._parse_parental_control_setting(response["json"])
-        for cb in self._callbacks:
-            if is_awaitable(cb):
-                await cb()
-            else:
-                cb()
+        await self._execute_callbacks()
 
     async def add_extra_time(self, minutes: int):
         """Add extra time to the device."""
@@ -123,11 +119,7 @@ class Device:
             }
         )
         self._parse_parental_control_setting(response["json"])
-        for cb in self._callbacks:
-            if is_awaitable(cb):
-                await cb()
-            else:
-                cb()
+        await self._execute_callbacks()
 
     async def set_bedtime_alarm(self, end_time: time = None, enabled: bool = True):
         """Update the bedtime alarm for the device."""
@@ -259,7 +251,9 @@ class Device:
 
     def _calculate_times(self):
         """Calculate times from parental control settings."""
-        if not isinstance(self.daily_summaries, list) and len(self.daily_summaries) == 0:
+        if not isinstance(self.daily_summaries, list) or not self.daily_summaries:
+            return
+        if len(self.daily_summaries) == 0:
             return
         _LOGGER.debug(">> Device._calculate_times()")
         today_playing_time = self.daily_summaries[0].get("playingTime", 0)
