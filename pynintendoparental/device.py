@@ -402,6 +402,7 @@ class Device:
             _LOGGER.warning("HTTP Exception raised while getting monthly summary for device %s: %s",
                             self.device_id,
                             exc)
+            return None
         else:
             _LOGGER.debug("Monthly summary query complete for device %s: %s",
                         self.device_id,
