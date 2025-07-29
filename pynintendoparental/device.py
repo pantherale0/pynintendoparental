@@ -373,26 +373,42 @@ class Device:
                       self.alarms_enabled,
                       self.device_id)
 
-    async def get_monthly_summary(self, search_date: datetime = None):
+    async def get_monthly_summary(self, search_date: datetime = None) -> dict | None:
         """Gets the monthly summary."""
         _LOGGER.debug(">> Device.get_monthly_summary(search_date=%s)", search_date)
         latest = False
         if search_date is None:
-            response = await self._api.async_get_device_monthly_summaries(
-                device_id=self.device_id
-            )
-            _LOGGER.debug("Available monthly summaries: %s", response["json"]["available"])
-            response = response["json"]["available"][0]
-            search_date = datetime.strptime(f"{response['year']}-{response['month']}-01", "%Y-%m-%d")
-            _LOGGER.debug("Using search date %s for monthly summary request", search_date)
-            latest = True
+            try:
+                response = await self._api.async_get_device_monthly_summaries(
+                    device_id=self.device_id
+                )
+            except HttpException as exc:
+                _LOGGER.debug("Could not retrieve monthly summaries: %s", exc)
+                return
+            else:
+                available_summaries = response["json"]["available"]
+                _LOGGER.debug("Available monthly summaries: %s", available_summaries)
+                if not available_summaries:
+                    _LOGGER.debug("No monthly summaries available for device %s", self.device_id)
+                    return None
+                # Use the most recent available summary
+                available_summary = available_summaries[0]
+                search_date = datetime.strptime(f"{available_summary['year']}-{available_summary['month']}-01", "%Y-%m-%d")
+                _LOGGER.debug("Using search date %s for monthly summary request", search_date)
+                latest = True
 
         try:
             response = await self._api.async_get_device_monthly_summary(
-                device_id = self.device_id,
+                device_id=self.device_id,
                 year=search_date.year,
                 month=search_date.month
             )
+        except HttpException as exc:
+            _LOGGER.warning("HTTP Exception raised while getting monthly summary for device %s: %s",
+                            self.device_id,
+                            exc)
+            return None
+        else:
             _LOGGER.debug("Monthly summary query complete for device %s: %s",
                         self.device_id,
                         response["json"]["summary"])
@@ -400,10 +416,7 @@ class Device:
                 self.last_month_summary = summary = response["json"]["summary"]
                 return summary
             return response["json"]["summary"]
-        except HttpException as exc:
-            _LOGGER.warning("HTTP Exception raised while getting monthly summary for device %s: %s",
-                            self.device_id,
-                            exc)
+
 
     def get_date_summary(self, input_date: datetime = datetime.now()) -> dict:
         """Returns usage for a given date."""
