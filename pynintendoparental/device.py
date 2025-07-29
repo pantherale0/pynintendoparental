@@ -399,7 +399,7 @@ class Device:
 
         try:
             response = await self._api.async_get_device_monthly_summary(
-                device_id = self.device_id,
+                device_id=self.device_id,
                 year=search_date.year,
                 month=search_date.month
             )
