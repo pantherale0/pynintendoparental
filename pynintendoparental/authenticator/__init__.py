@@ -178,7 +178,7 @@ class Authenticator:
                 }
             )
             if account["status"] != 200:
-                raise HttpException(account["status"], f"Unable to get account_id {token_response.get('status')}")
+                raise HttpException(account["status"], f"Unable to get account_id {account['status']}")
             self.account_id = account["json"]["id"]
             self.account = account["json"]
 
