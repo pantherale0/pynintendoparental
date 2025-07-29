@@ -382,8 +382,8 @@ class Device:
                 response = await self._api.async_get_device_monthly_summaries(
                     device_id=self.device_id
                 )
-            except HttpException:
-                _LOGGER.debug("No monthly summaries available.")
+            except HttpException as exc:
+                _LOGGER.debug("Could not retrieve monthly summaries: %s", exc)
                 return
             else:
                 available_summaries = response["json"]["available"]
