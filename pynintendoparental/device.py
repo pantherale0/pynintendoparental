@@ -392,8 +392,8 @@ class Device:
                     _LOGGER.debug("No monthly summaries available for device %s", self.device_id)
                     return None
                 # Use the most recent available summary
-                response = available_summaries[0]
-                search_date = datetime.strptime(f"{response['year']}-{response['month']}-01", "%Y-%m-%d")
+                available_summary = available_summaries[0]
+                search_date = datetime.strptime(f"{available_summary['year']}-{available_summary['month']}-01", "%Y-%m-%d")
                 _LOGGER.debug("Using search date %s for monthly summary request", search_date)
                 latest = True
 
