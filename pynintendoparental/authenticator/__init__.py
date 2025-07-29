@@ -140,7 +140,8 @@ class Authenticator:
         )
 
         if session_token_response.get("status") != 200:
-            raise HttpException(f"login error {session_token_response.get('status')}")
+            raise HttpException(session_token_response.get("status"),
+                                session_token_response.get("text"))
 
         self._session_token = session_token_response["json"]["session_token"]
 
@@ -158,13 +159,13 @@ class Authenticator:
         )
 
         if token_response["status"] == 400:
-            raise InvalidSessionTokenException(token_response["json"]["error"])
+            raise InvalidSessionTokenException(400, token_response["json"]["error"])
 
         if token_response["status"] == 401:
-            raise InvalidOAuthConfigurationException(token_response["json"]["error"])
+            raise InvalidOAuthConfigurationException(401, token_response["json"]["error"])
 
         if token_response.get("status") != 200:
-            raise HttpException(f"login error {token_response.get('status')}")
+            raise HttpException(token_response.get("status"), f"login error {token_response.get('status')}")
 
         self._read_tokens(token_response.get("json"))
         if self.account_id is None:
@@ -177,7 +178,7 @@ class Authenticator:
                 }
             )
             if account["status"] != 200:
-                raise HttpException(f"Unable to get account_id {token_response.get('status')}")
+                raise HttpException(account["status"], f"Unable to get account_id {token_response.get('status')}")
             self.account_id = account["json"]["id"]
             self.account = account["json"]
 

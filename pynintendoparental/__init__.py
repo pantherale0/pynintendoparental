@@ -3,6 +3,8 @@
 
 import asyncio
 
+from pynintendoparental.exceptions import HttpException, NoDevicesFoundException
+
 from .authenticator import Authenticator
 from .api import Api
 from .const import _LOGGER
@@ -29,17 +31,23 @@ class NintendoParental:
                 _LOGGER.exception("Error updating device %s: %s",
                               dev.device_id,
                               err)
-
-        response = await self._api.async_get_account_devices()
-
-        for dev_raw in response["json"]["ownedDevices"]:
-            device: Device = Device.from_device_response(dev_raw, self._api)
-            if self.devices.get(device.device_id, None) is None:
-                _LOGGER.debug("Creating new device %s", device.device_id)
-                self.devices[device.device_id] = device
-        coros = [update_device(d) for d in self.devices.values()]
-        await asyncio.gather(*coros)
-        _LOGGER.debug("Found %s device(s)", len(self.devices))
+        try:
+            response = await self._api.async_get_account_devices()
+        except HttpException as err:
+            if err.status_code == 404:
+                _LOGGER.error("No devices found for account %s", self.account_id)
+                raise NoDevicesFoundException("No devices found for account") from err
+            else:
+                _LOGGER.error("Error fetching devices: %s", err)
+        else:
+            for dev_raw in response["json"]["ownedDevices"]:
+                device: Device = Device.from_device_response(dev_raw, self._api)
+                if self.devices.get(device.device_id, None) is None:
+                    _LOGGER.debug("Creating new device %s", device.device_id)
+                    self.devices[device.device_id] = device
+            coros = [update_device(d) for d in self.devices.values()]
+            await asyncio.gather(*coros)
+            _LOGGER.debug("Found %s device(s)", len(self.devices))
 
     async def update(self):
         """Update module data."""
