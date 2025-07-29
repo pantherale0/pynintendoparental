@@ -386,8 +386,13 @@ class Device:
                 _LOGGER.debug("No monthly summaries available.")
                 return
             else:
-                _LOGGER.debug("Available monthly summaries: %s", response["json"]["available"])
-                response = response["json"]["available"][0]
+                available_summaries = response["json"]["available"]
+                _LOGGER.debug("Available monthly summaries: %s", available_summaries)
+                if not available_summaries:
+                    _LOGGER.debug("No monthly summaries available for device %s", self.device_id)
+                    return None
+                # Use the most recent available summary
+                response = available_summaries[0]
                 search_date = datetime.strptime(f"{response['year']}-{response['month']}-01", "%Y-%m-%d")
                 _LOGGER.debug("Using search date %s for monthly summary request", search_date)
                 latest = True
