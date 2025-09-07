@@ -5,10 +5,10 @@ import logging
 
 _LOGGER = logging.getLogger(__package__)
 MOBILE_APP_PKG = "com.nintendo.znma"
-MOBILE_APP_VERSION = "2.1.1"
-MOBILE_APP_BUILD = "540"
+MOBILE_APP_VERSION = "2.2.0"
+MOBILE_APP_BUILD = "560"
 OS_NAME = "ANDROID"
-OS_VERSION = "33"
+OS_VERSION = "34"
 OS_STR = f"{OS_NAME} {OS_VERSION}"
 DEVICE_MODEL = "Pixel 4 XL"
 BASE_URL = "https://app.lp1.znma.srv.nintendo.net/v2"
