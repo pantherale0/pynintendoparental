@@ -121,20 +121,20 @@ class Device:
         self._parse_parental_control_setting(response["json"])
         await self._execute_callbacks()
 
-    async def set_bedtime_alarm(self, end_time: time = None, enabled: bool = True):
+    async def set_bedtime_alarm(self, value: time):
         """Update the bedtime alarm for the device."""
-        _LOGGER.debug(">> Device.set_bedtime_alarm(end_time=%s, enabled=%s)",
-                      end_time,
-                      enabled)
+        _LOGGER.debug(">> Device.set_bedtime_alarm(value=%s)",
+                      value)
+        
         bedtime = {
-            "enabled": enabled,
+            "enabled": value.hour != 0 and value.minute != 0,
         }
-        if end_time is not None:
+        if bedtime["enabled"]:
             bedtime = {
                 **bedtime,
                 "endingTime": {
-                    "hour": end_time.hour,
-                    "minute": end_time.minute
+                    "hour": value.hour,
+                    "minute": value.minute
                 }
             }
         if self.timer_mode == "DAILY":
