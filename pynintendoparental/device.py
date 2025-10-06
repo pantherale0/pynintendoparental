@@ -31,7 +31,7 @@ class Device:
         self.timer_mode: str = ""
         self.today_playing_time: int | float = 0
         self.today_time_remaining: int | float = 0
-        self.bedtime_alarm: time | None = None
+        self.bedtime_alarm: time = time(hour=0, minute=0)
         self.month_playing_time: int | float = 0
         self.today_disabled_time: int | float = 0
         self.today_exceeded_time: int | float = 0
@@ -230,7 +230,7 @@ class Device:
                                         current_day["bedtime"]["endingTime"]["hour"],
                                         minute=current_day["bedtime"]["endingTime"]["minute"])
             else:
-                self.bedtime_alarm = None
+                self.bedtime_alarm = time(hour=0, minute=0)
         else:
             bedtime_alarm = self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["bedtime"]
             if bedtime_alarm["enabled"]:
@@ -238,7 +238,7 @@ class Device:
                                         bedtime_alarm["endingTime"]["hour"],
                                         minute=bedtime_alarm["endingTime"]["minute"])
             else:
-                self.bedtime_alarm = None
+                self.bedtime_alarm = time(hour=0, minute=0)
         return True
 
     def _parse_parental_control_setting(self, pcs: dict):
