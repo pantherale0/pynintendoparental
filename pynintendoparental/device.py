@@ -230,7 +230,7 @@ class Device:
                                         current_day["bedtime"]["endingTime"]["hour"],
                                         minute=current_day["bedtime"]["endingTime"]["minute"])
             else:
-                self.bedtime_alarm = None
+                self.bedtime_alarm = time(hour=0, minute=0)
         else:
             bedtime_alarm = self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["bedtime"]
             if bedtime_alarm["enabled"]:
@@ -238,7 +238,7 @@ class Device:
                                         bedtime_alarm["endingTime"]["hour"],
                                         minute=bedtime_alarm["endingTime"]["minute"])
             else:
-                self.bedtime_alarm = None
+                self.bedtime_alarm = time(hour=0, minute=0)
         return True
 
     def _parse_parental_control_setting(self, pcs: dict):
@@ -291,7 +291,7 @@ class Device:
             effective_remaining_time = time_remaining_by_play_limit
 
             # 2. Factor in bedtime alarm, if any, to further constrain remaining time
-            if self.bedtime_alarm is not None:
+            if self.bedtime_alarm not in (None, time(hour=0, minute=0)):
                 bedtime_dt = datetime.combine(now.date(), self.bedtime_alarm)
                 time_remaining_by_bedtime = 0.0
                 if bedtime_dt > now: # Bedtime is in the future today
