@@ -31,7 +31,7 @@ class Device:
         self.timer_mode: str = ""
         self.today_playing_time: int | float = 0
         self.today_time_remaining: int | float = 0
-        self.bedtime_alarm: time = time(hour=0, minute=0)
+        self.bedtime_alarm: time | None = None
         self.month_playing_time: int | float = 0
         self.today_disabled_time: int | float = 0
         self.today_exceeded_time: int | float = 0
@@ -291,7 +291,7 @@ class Device:
             effective_remaining_time = time_remaining_by_play_limit
 
             # 2. Factor in bedtime alarm, if any, to further constrain remaining time
-            if self.bedtime_alarm is not None:
+            if self.bedtime_alarm not in (None, time(hour=0, minute=0)):
                 bedtime_dt = datetime.combine(now.date(), self.bedtime_alarm)
                 time_remaining_by_bedtime = 0.0
                 if bedtime_dt > now: # Bedtime is in the future today
