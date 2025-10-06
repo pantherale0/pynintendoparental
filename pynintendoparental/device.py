@@ -8,7 +8,7 @@ from typing import Callable
 
 from .api import Api
 from .const import _LOGGER, DAYS_OF_WEEK
-from .exceptions import HttpException
+from .exceptions import HttpException, BedtimeOutOfRangeError
 from .enum import AlarmSettingState, RestrictionMode
 from .player import Player
 from .utils import is_awaitable
@@ -125,7 +125,12 @@ class Device:
         """Update the bedtime alarm for the device."""
         _LOGGER.debug(">> Device.set_bedtime_alarm(value=%s)",
                       value)
-        
+        if not (
+            (16 <= value.hour <= 22) or
+            (value.hour == 23 and value.minute == 0) or
+            (value.hour == 0 and value.minute == 0)
+        ):
+            raise BedtimeOutOfRangeError(value=value)
         bedtime = {
             "enabled": value.hour != 0 and value.minute != 0,
         }

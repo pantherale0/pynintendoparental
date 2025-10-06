@@ -1,5 +1,7 @@
 """Nintendo Parental exceptions."""
 
+from datetime import time
+
 class HttpException(Exception):
     """A HTTP error occured"""
     def __init__(self, status_code: int, message: str) -> None:
@@ -19,3 +21,17 @@ class InvalidOAuthConfigurationException(HttpException):
 
 class NoDevicesFoundException(Exception):
     """No devices were found for the account."""
+
+class InputValidationError(Exception):
+    """Input Validation Failed."""
+    value: object
+    error_key: str
+
+class BedtimeOutOfRangeError(InputValidationError):
+    """Bedtime is outside of the allowed range."""
+
+    error_key = "bedtime_alarm_out_of_range"
+
+    def __init__(self, value: object) -> None:
+        super().__init__()
+        self.value = value
