@@ -221,11 +221,11 @@ class Device:
         current_day = day_of_week_regs.get(DAYS_OF_WEEK[datetime.now().weekday()], {})
         self.timer_mode = self.parental_control_settings["playTimerRegulations"]["timerMode"]
         if self.timer_mode == "EACH_DAY_OF_THE_WEEK":
-            limit_time = current_day.get("timeToPlayInOneDay", {}).get("limitTime", -1)
+            regulations = current_day
         else:
-            limit_time = self.parental_control_settings.get("playTimerRegulations", {}).get(
-                "dailyRegulations", {}).get("timeToPlayInOneDay", {}).get("limitTime", -1)
+            regulations = self.parental_control_settings.get("playTimerRegulations", {}).get("dailyRegulations", {})
 
+        limit_time = regulations.get("timeToPlayInOneDay", {}).get("limitTime")
         self.limit_time = limit_time if limit_time is not None else -1
 
         if self.timer_mode == "EACH_DAY_OF_THE_WEEK":
