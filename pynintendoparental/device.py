@@ -226,9 +226,7 @@ class Device:
             limit_time = self.parental_control_settings.get("playTimerRegulations", {}).get(
                 "dailyRegulations", {}).get("timeToPlayInOneDay", {}).get("limitTime", -1)
 
-        if self.limit_time is None:
-            self.limit_time = -1
-        self.limit_time = limit_time
+        self.limit_time = limit_time if limit_time is not None else -1
 
         if self.timer_mode == "EACH_DAY_OF_THE_WEEK":
             if current_day["bedtime"]["enabled"]:
