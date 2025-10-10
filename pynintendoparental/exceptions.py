@@ -34,7 +34,7 @@ class InputValidationError(Exception):
     error_key: str
 
     def __init__(self, value: object) -> None:
-        super().__init__()
+        super().__init__(f"{self.__doc__} Received value: {value}")
         self.value = value
 
 class BedtimeOutOfRangeError(InputValidationError):
