@@ -281,7 +281,7 @@ class Device:
             # 1. Calculate remaining time based on play limit
 
             time_remaining_by_play_limit = 0.0
-            if self.limit_time == -1 or self.limit_time is None:
+            if self.limit_time in (-1, None):
                 # No specific play limit, effectively limited by end of day for this calculation step.
                 time_remaining_by_play_limit = float(minutes_in_day - current_minutes_past_midnight)
             elif self.limit_time == 0:
