@@ -8,7 +8,7 @@ from typing import Callable
 
 from .api import Api
 from .const import _LOGGER, DAYS_OF_WEEK
-from .exceptions import HttpException, BedtimeOutOfRangeError
+from .exceptions import HttpException, BedtimeOutOfRangeError, DailyPlaytimeOutOfRangeError
 from .enum import AlarmSettingState, RestrictionMode
 from .player import Player
 from .utils import is_awaitable
@@ -172,12 +172,14 @@ class Device:
         self._calculate_times()
         await self._execute_callbacks()
 
-    async def update_max_daily_playtime(self, minutes: int = 0):
+    async def update_max_daily_playtime(self, minutes: int | float = 0):
         """Updates the maximum daily playtime of a device."""
         _LOGGER.debug(">> Device.update_max_daily_playtime(minutes=%s)",
                       minutes)
-        if minutes > 360:
-            raise ValueError("Only values up to 360 minutes (6 hours) are accepted.")
+        if isinstance(minutes, float):
+            minutes = int(minutes)
+        if minutes > 360 or minutes < -1:
+            raise DailyPlaytimeOutOfRangeError(minutes)
         ttpiod = True
         if minutes == -1:
             ttpiod = False
@@ -233,10 +235,12 @@ class Device:
         current_day = day_of_week_regs.get(DAYS_OF_WEEK[datetime.now().weekday()], {})
         self.timer_mode = self.parental_control_settings["playTimerRegulations"]["timerMode"]
         if self.timer_mode == "EACH_DAY_OF_THE_WEEK":
-            self.limit_time = current_day.get("timeToPlayInOneDay", {}).get("limitTime", None)
+            regulations = current_day
         else:
-            self.limit_time = self.parental_control_settings.get("playTimerRegulations", {}).get(
-                "dailyRegulations", {}).get("timeToPlayInOneDay", {}).get("limitTime", None)
+            regulations = self.parental_control_settings.get("playTimerRegulations", {}).get("dailyRegulations", {})
+
+        limit_time = regulations.get("timeToPlayInOneDay", {}).get("limitTime")
+        self.limit_time = limit_time if limit_time is not None else -1
 
         if self.timer_mode == "EACH_DAY_OF_THE_WEEK":
             if current_day["bedtime"]["enabled"]:
@@ -291,7 +295,7 @@ class Device:
             # 1. Calculate remaining time based on play limit
 
             time_remaining_by_play_limit = 0.0
-            if self.limit_time is None:
+            if self.limit_time in (-1, None):
                 # No specific play limit, effectively limited by end of day for this calculation step.
                 time_remaining_by_play_limit = float(minutes_in_day - current_minutes_past_midnight)
             elif self.limit_time == 0:
