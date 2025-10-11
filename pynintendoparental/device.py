@@ -50,13 +50,13 @@ class Device:
         _LOGGER.debug("Device init complete for %s", self.device_id)
 
     @property
-    def model(self):
+    def model(self) -> str:
         """Return the model."""
-        if self.generation == "P00":
-            return "Switch"
-        if self.generation == "P01":
-            return "Switch 2"
-        return "Unknown"
+        model_map = {
+            "P00": "Switch",
+            "P01": "Switch 2"
+        }
+        return model_map.get(self.generation, "Unknown")
 
     @property
     def generation(self) -> str | None:
