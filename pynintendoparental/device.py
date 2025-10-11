@@ -49,6 +49,20 @@ class Device:
         self._callbacks: list[Callable] = []
         _LOGGER.debug("Device init complete for %s", self.device_id)
 
+    @property
+    def model(self) -> str:
+        """Return the model."""
+        model_map = {
+            "P00": "Switch",
+            "P01": "Switch 2"
+        }
+        return model_map.get(self.generation, "Unknown")
+
+    @property
+    def generation(self) -> str | None:
+        """Return the generation."""
+        return self.extra.get("platformGeneration", None)
+
     async def update(self):
         """Update data."""
         _LOGGER.debug(">> Device.update()")
