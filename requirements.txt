@@ -1,2 +1,2 @@
 aiohttp
-dotenv
+python-dotenv
