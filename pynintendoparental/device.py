@@ -49,6 +49,20 @@ class Device:
         self._callbacks: list[Callable] = []
         _LOGGER.debug("Device init complete for %s", self.device_id)
 
+    @property
+    def model(self):
+        """Return the model."""
+        if self.generation == "P00":
+            return "Switch"
+        if self.generation == "P01":
+            return "Switch 2"
+        return "Unknown"
+
+    @property
+    def generation(self) -> str | None:
+        """Return the generation."""
+        return self.extra.get("platformGeneration", None)
+
     async def update(self):
         """Update data."""
         _LOGGER.debug(">> Device.update()")
