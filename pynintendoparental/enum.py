@@ -1,6 +1,6 @@
 """Enums"""
 
-from enum import Enum
+from enum import Enum, StrEnum
 
 class AlarmSettingState(Enum):
     """Alarm setting states."""
@@ -17,6 +17,14 @@ class RestrictionMode(Enum):
     """Restriction modes."""
     FORCED_TERMINATION = 0
     ALARM = 1
+
+    def __str__(self) -> str:
+        return self.name
+
+class DeviceTimerMode(StrEnum):
+    """Device timer modes."""
+    DAILY = "DAILY"
+    EACH_DAY_OF_THE_WEEK = "EACH_DAY_OF_THE_WEEK"
 
     def __str__(self) -> str:
         return self.name
