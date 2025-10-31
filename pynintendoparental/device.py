@@ -72,11 +72,14 @@ class Device:
                 self.get_monthly_summary(),
                 self._get_extras()
         )
-        if self.players is None:
-            self.players = Player.from_device_daily_summary(self.daily_summaries)
-        else:
-            for player in self.players:
-                player.update_from_daily_summary(self.daily_summaries)
+        if len(self.players) == 0:
+            if self.last_month_summary.get("players") is not None:
+                self.players = Player.from_monthly_summary(self.last_month_summary["players"])
+            else:
+                self.players = Player.from_device_daily_summary(self.daily_summaries)
+
+        for player in self.players:
+            player.update_from_daily_summary(self.daily_summaries)
         await self._execute_callbacks()
 
     def add_device_callback(self, callback):
