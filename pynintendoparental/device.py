@@ -104,7 +104,7 @@ class Device:
 
     async def _send_api_update(self, api_call: Callable, *args, **kwargs):
         """Sends an update to the API and refreshes local state."""
-        now = datetime.now()
+        now = kwargs.pop("now", datetime.now())
         response = await api_call(*args, **kwargs)
         self._parse_parental_control_setting(response["json"], now)
         self._calculate_times(now)
@@ -150,6 +150,7 @@ class Device:
             (value.hour == 0 and value.minute == 0)
         ):
             raise BedtimeOutOfRangeError(value=value)
+        now = datetime.now()
         bedtime = {
             "enabled": value.hour != 0 and value.minute != 0,
         }
@@ -165,14 +166,15 @@ class Device:
             self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["bedtime"] = bedtime
         else:
             self.parental_control_settings["playTimerRegulations"]["eachDayOfTheWeekRegulations"][
-                DAYS_OF_WEEK[datetime.now().weekday()]
+                DAYS_OF_WEEK[now.weekday()]
             ]["bedtime"] = bedtime
         await self._send_api_update(
             self._api.async_update_play_timer,
             settings={
                 "deviceId": self.device_id,
                 "playTimerRegulations": self.parental_control_settings["playTimerRegulations"]
-            }
+            },
+            now=now
         )
 
     async def update_max_daily_playtime(self, minutes: int | float = 0):
@@ -183,6 +185,7 @@ class Device:
             minutes = int(minutes)
         if minutes > 360 or minutes < -1:
             raise DailyPlaytimeOutOfRangeError(minutes)
+        now = datetime.now()
         ttpiod = True
         if minutes == -1:
             ttpiod = False
@@ -204,7 +207,7 @@ class Device:
                 minutes
             )
             day_of_week_regs = self.parental_control_settings["playTimerRegulations"]["eachDayOfTheWeekRegulations"]
-            current_day = DAYS_OF_WEEK[datetime.now().weekday()]
+            current_day = DAYS_OF_WEEK[now.weekday()]
             day_of_week_regs[current_day]["timeToPlayInOneDay"]["enabled"] = ttpiod
             if "limitTime" in day_of_week_regs[current_day]["timeToPlayInOneDay"] and minutes is None:
                 day_of_week_regs[current_day]["timeToPlayInOneDay"].pop("limitTime")
@@ -216,7 +219,8 @@ class Device:
             settings={
                 "deviceId": self.device_id,
                 "playTimerRegulations": self.parental_control_settings["playTimerRegulations"]
-            }
+            },
+            now=now
         )
 
     def _update_applications(self):
