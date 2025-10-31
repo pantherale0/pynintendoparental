@@ -281,25 +281,18 @@ class Device:
             self.today_disabled_time = 0
             self.today_exceeded_time = 0
         else:
-            today_playing_time = self.daily_summaries[0].get("playingTime", 0)
-            self.today_playing_time = 0 if today_playing_time is None else today_playing_time
-            today_disabled_time = self.daily_summaries[0].get("disabledTime", 0)
-            self.today_disabled_time = 0 if today_disabled_time is None else today_disabled_time
-            today_exceeded_time = self.daily_summaries[0].get("exceededTime", 0)
-            self.today_exceeded_time = 0 if today_exceeded_time is None else today_exceeded_time
+            self.today_playing_time = self.daily_summaries[0].get("playingTime") or 0
+            self.today_disabled_time = self.daily_summaries[0].get("disabledTime") or 0
+            self.today_exceeded_time = self.daily_summaries[0].get("exceededTime") or 0
         _LOGGER.debug("Cached playing, disabled and exceeded time for today for device %s",
                         self.device_id)
         self._calculate_today_remaining_time(now)
 
-        current_month = datetime(
-            year=now.year,
-            month=now.month,
-            day=1)
         month_playing_time: int = 0
 
         for summary in self.daily_summaries:
             date_parsed = datetime.strptime(summary["date"], "%Y-%m-%d")
-            if date_parsed > current_month:
+            if date_parsed.year == now.year and date_parsed.month == now.month:
                 month_playing_time += summary["playingTime"]
         self.month_playing_time = month_playing_time
         _LOGGER.debug("Cached current month playing time for device %s", self.device_id)
@@ -329,34 +322,34 @@ class Device:
 
     def _calculate_today_remaining_time(self, now: datetime):
         """Calculates the remaining playing time for today."""
+        self.stats_update_failed = True # Assume failure until success
         try:
             minutes_in_day = 1440 # 24 * 60
             current_minutes_past_midnight = now.hour * 60 + now.minute
 
-            # 1. Calculate remaining time based on play limit
             if self.limit_time in (-1, None):
                 # No play limit, so remaining time is until end of day.
-                time_remaining_by_play_limit = float(minutes_in_day - current_minutes_past_midnight)
+                time_remaining_by_play_limit = minutes_in_day - current_minutes_past_midnight
             else:
-                time_remaining_by_play_limit = float(self.limit_time - self.today_playing_time)
+                time_remaining_by_play_limit = self.limit_time - self.today_playing_time
 
             # 2. Calculate remaining time until bedtime
-            time_remaining_by_bedtime = float(minutes_in_day - current_minutes_past_midnight)
-            if self.bedtime_alarm and self.bedtime_alarm != time(hour=0, minute=0):
+            if self.bedtime_alarm and self.bedtime_alarm != time(hour=0, minute=0) and self.alarms_enabled:
                 bedtime_dt = datetime.combine(now.date(), self.bedtime_alarm)
                 if bedtime_dt > now: # Bedtime is in the future today
                     time_remaining_by_bedtime = (bedtime_dt - now).total_seconds() / 60
                 else: # Bedtime has passed
                     time_remaining_by_bedtime = 0.0
+            else:
+                time_remaining_by_bedtime = minutes_in_day - current_minutes_past_midnight
 
             # Effective remaining time is the minimum of the two constraints
             effective_remaining_time = min(time_remaining_by_play_limit, time_remaining_by_bedtime)
             self.today_time_remaining = int(max(0.0, effective_remaining_time))
             _LOGGER.debug("Calculated today's remaining time: %s minutes", self.today_time_remaining)
             self.stats_update_failed = False
-        except (ValueError, TypeError) as err:
+        except (ValueError, TypeError, AttributeError) as err:
             _LOGGER.warning("Unable to calculate remaining time for device %s: %s", self.name, err)
-            self.stats_update_failed = True
 
     async def _get_parental_control_setting(self, now: datetime):
         """Retreives parental control settings from the API."""
@@ -439,6 +432,8 @@ class Device:
 
     def get_date_summary(self, input_date: datetime = datetime.now()) -> dict:
         """Returns usage for a given date."""
+        if not self.daily_summaries:
+            raise ValueError("No daily summaries available to search.")
         summary = [
             x for x in self.daily_summaries
             if x["date"] == input_date.strftime('%Y-%m-%d')
@@ -455,19 +450,17 @@ class Device:
 
     def get_application(self, application_id: str) -> Application:
         """Returns a single application."""
-        app = [x for x in self.applications
-                if x.application_id == application_id]
-        if len(app) == 1:
-            return app[0]
-        raise ValueError("Application not found.")
+        app = next((app for app in self.applications if app.application_id == application_id), None)
+        if app:
+            return app
+        raise ValueError(f"Application with id {application_id} not found.")
 
     def get_player(self, player_id: str) -> Player:
         """Returns a player."""
-        player = [x for x in self.players
-                  if x.player_id == player_id]
-        if len(player) == 1:
-            return player[0]
-        raise ValueError("Player not found.")
+        player = next((p for p in self.players if p.player_id == player_id), None)
+        if player:
+            return player
+        raise ValueError(f"Player with id {player_id} not found.")
 
     @classmethod
     async def from_devices_response(cls, raw: dict, api) -> list['Device']:
