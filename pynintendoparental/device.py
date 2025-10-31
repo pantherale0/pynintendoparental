@@ -166,7 +166,7 @@ class Device:
             ]["bedtime"] = bedtime
         await self._send_api_update(
             self._api.async_update_play_timer,
-            settings = {
+            settings={
                 "deviceId": self.device_id,
                 "playTimerRegulations": self.parental_control_settings["playTimerRegulations"]
             }
