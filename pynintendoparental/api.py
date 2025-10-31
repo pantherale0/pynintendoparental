@@ -97,6 +97,9 @@ class Api:
                     resp["json"] = {}
                 resp["headers"] = response.headers
             else:
+                if response.content_type == "application/problem+json":
+                    error = await response.json()
+                    raise HttpException(response.status, error["detail"], error["errorCode"])
                 raise HttpException(response.status, await response.text())
 
         # now return the resp dict
