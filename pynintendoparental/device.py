@@ -124,7 +124,7 @@ class Device:
         _LOGGER.debug(">> Device.add_extra_time(minutes=%s)", minutes)
         # This endpoint does not return parental control settings, so we call it directly.
         await self._api.async_update_extra_playing_time(self.device_id, minutes)
-        await self.update() # Refresh state
+        await self._get_parental_control_setting(datetime.now())
 
     async def set_restriction_mode(self, mode: RestrictionMode):
         """Updates the restriction mode of the device."""
