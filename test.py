@@ -39,8 +39,6 @@ async def main():
             _LOGGER.debug("Discovered device %s, label %s", device.device_id, device.name)
             _LOGGER.debug("Usage today %s", device.today_playing_time)
             _LOGGER.debug("Usage remaining %s", device.today_time_remaining)
-            await device.set_bedtime_alarm(time(hour=22, minute=59))
-            await device.set_bedtime_alarm(time(hour=0, minute=0))
 
         _LOGGER.debug("ping")
         await asyncio.sleep(15)
@@ -53,5 +51,4 @@ if __name__ == "__main__":
         format="%(asctime)s %(name)s %(levelname)s: %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
     )
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    asyncio.run(main())
