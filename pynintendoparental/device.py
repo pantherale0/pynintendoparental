@@ -229,7 +229,6 @@ class Device:
 
     def _get_today_regulation(self) -> dict:
         """Returns the regulation settings for the current day."""
-        self.timer_mode = self.parental_control_settings["playTimerRegulations"]["timerMode"]
         if self.timer_mode == "EACH_DAY_OF_THE_WEEK":
             day_of_week_regs = self.parental_control_settings["playTimerRegulations"].get("eachDayOfTheWeekRegulations", {})
             return day_of_week_regs.get(DAYS_OF_WEEK[datetime.now().weekday()], {})
@@ -250,6 +249,7 @@ class Device:
         )
 
         # Update limit and bedtime from regulations
+        self.timer_mode = self.parental_control_settings["playTimerRegulations"]["timerMode"]
         today_reg = self._get_today_regulation()
         limit_time = today_reg.get("timeToPlayInOneDay", {}).get("limitTime")
         self.limit_time = limit_time if limit_time is not None else -1
