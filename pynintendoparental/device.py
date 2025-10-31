@@ -8,8 +8,8 @@ from typing import Callable
 
 from .api import Api
 from .const import _LOGGER, DAYS_OF_WEEK
-from .exceptions import HttpException, BedtimeOutOfRangeError, DailyPlaytimeOutOfRangeError
-from .enum import AlarmSettingState, RestrictionMode
+from .exceptions import BedtimeOutOfRangeError, DailyPlaytimeOutOfRangeError, HttpException
+from .enum import AlarmSettingState, DeviceTimerMode, RestrictionMode
 from .player import Player
 from .utils import is_awaitable
 from .application import Application
@@ -28,7 +28,7 @@ class Device:
         self.parental_control_settings: dict = {}
         self.players: list[Player] = []
         self.limit_time: int | float | None = 0
-        self.timer_mode: str = ""
+        self.timer_mode: DeviceTimerMode | None = None
         self.today_playing_time: int | float = 0
         self.today_time_remaining: int | float = 0
         self.bedtime_alarm: time | None = None
@@ -162,7 +162,7 @@ class Device:
                     "minute": value.minute
                 }
             }
-        if self.timer_mode == "DAILY":
+        if self.timer_mode == DeviceTimerMode.DAILY:
             self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["bedtime"] = bedtime
         else:
             self.parental_control_settings["playTimerRegulations"]["eachDayOfTheWeekRegulations"][
@@ -175,6 +175,19 @@ class Device:
                 "playTimerRegulations": self.parental_control_settings["playTimerRegulations"]
             },
             now=now
+        )
+
+    async def set_timer_mode(self, mode: DeviceTimerMode):
+        """Updates the timer mode of the device."""
+        _LOGGER.debug(">> Device.set_timer_mode(mode=%s)", mode)
+        self.timer_mode = mode
+        self.parental_control_settings["playTimerRegulations"]["timerMode"] = str(mode)
+        await self._send_api_update(
+            self._api.async_update_play_timer,
+            settings={
+                "deviceId": self.device_id,
+                "playTimerRegulations": self.parental_control_settings["playTimerRegulations"]
+            }
         )
 
     async def update_max_daily_playtime(self, minutes: int | float = 0):
@@ -190,7 +203,7 @@ class Device:
         if minutes == -1:
             ttpiod = False
             minutes = None
-        if self.timer_mode == "DAILY":
+        if self.timer_mode == DeviceTimerMode.DAILY:
             _LOGGER.debug(
                 "Setting timeToPlayInOneDay.limitTime for device %s to value %s",
                 self.device_id,
@@ -236,7 +249,7 @@ class Device:
 
     def _get_today_regulation(self, now: datetime) -> dict:
         """Returns the regulation settings for the current day."""
-        if self.timer_mode == "EACH_DAY_OF_THE_WEEK":
+        if self.timer_mode == DeviceTimerMode.EACH_DAY_OF_THE_WEEK:
             day_of_week_regs = self.parental_control_settings["playTimerRegulations"].get("eachDayOfTheWeekRegulations", {})
             return day_of_week_regs.get(DAYS_OF_WEEK[now.weekday()], {})
         return self.parental_control_settings.get("playTimerRegulations", {}).get("dailyRegulations", {})
@@ -256,7 +269,9 @@ class Device:
         )
 
         # Update limit and bedtime from regulations
-        self.timer_mode = self.parental_control_settings["playTimerRegulations"]["timerMode"]
+        self.timer_mode = DeviceTimerMode(
+            self.parental_control_settings["playTimerRegulations"]["timerMode"]
+        )
         today_reg = self._get_today_regulation(now)
         limit_time = today_reg.get("timeToPlayInOneDay", {}).get("limitTime")
         self.limit_time = limit_time if limit_time is not None else -1
