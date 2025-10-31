@@ -98,8 +98,13 @@ class Api:
                 resp["headers"] = response.headers
             else:
                 if response.content_type == "application/problem+json":
-                    error = await response.json()
-                    raise HttpException(response.status, error["detail"], error["errorCode"])
+                    try:
+                        error = await response.json()
+                        if "detail" in error:
+                            raise HttpException(response.status, error["detail"], error.get("errorCode"))
+                    except (aiohttp.ContentTypeError, ValueError):
+                        # Fall through to the generic exception below on parsing failure.
+                        pass
                 raise HttpException(response.status, await response.text())
 
         # now return the resp dict
