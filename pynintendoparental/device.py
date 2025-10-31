@@ -66,9 +66,10 @@ class Device:
     async def update(self):
         """Update data."""
         _LOGGER.debug(">> Device.update()")
+        now = datetime.now()
         await asyncio.gather(
-                self._get_daily_summaries(),
-                self._get_parental_control_setting(),
+                self._get_daily_summaries(now),
+                self._get_parental_control_setting(now),
                 self.get_monthly_summary(),
                 self._get_extras()
         )
@@ -103,9 +104,10 @@ class Device:
 
     async def _send_api_update(self, api_call: Callable, *args, **kwargs):
         """Sends an update to the API and refreshes local state."""
+        now = datetime.now()
         response = await api_call(*args, **kwargs)
-        self._parse_parental_control_setting(response["json"])
-        self._calculate_times()
+        self._parse_parental_control_setting(response["json"], now)
+        self._calculate_times(now)
         await self._execute_callbacks()
 
     async def set_new_pin(self, pin: str):
@@ -134,7 +136,8 @@ class Device:
                 "playTimerRegulations": self.parental_control_settings["playTimerRegulations"]
             }
         )
-        self._parse_parental_control_setting(response["json"]) # Don't need to recalculate times
+        now = datetime.now()
+        self._parse_parental_control_setting(response["json"], now) # Don't need to recalculate times
         await self._execute_callbacks()
 
     async def set_bedtime_alarm(self, value: time):
@@ -227,14 +230,14 @@ class Device:
             except ValueError:
                 self.applications.append(app)
 
-    def _get_today_regulation(self) -> dict:
+    def _get_today_regulation(self, now: datetime) -> dict:
         """Returns the regulation settings for the current day."""
         if self.timer_mode == "EACH_DAY_OF_THE_WEEK":
             day_of_week_regs = self.parental_control_settings["playTimerRegulations"].get("eachDayOfTheWeekRegulations", {})
-            return day_of_week_regs.get(DAYS_OF_WEEK[datetime.now().weekday()], {})
+            return day_of_week_regs.get(DAYS_OF_WEEK[now.weekday()], {})
         return self.parental_control_settings.get("playTimerRegulations", {}).get("dailyRegulations", {})
 
-    def _parse_parental_control_setting(self, pcs: dict):
+    def _parse_parental_control_setting(self, pcs: dict, now: datetime):
         """Parse a parental control setting request response."""
         _LOGGER.debug(">> Device._parse_parental_control_setting()")
         self.parental_control_settings = pcs["parentalControlSetting"]
@@ -250,7 +253,7 @@ class Device:
 
         # Update limit and bedtime from regulations
         self.timer_mode = self.parental_control_settings["playTimerRegulations"]["timerMode"]
-        today_reg = self._get_today_regulation()
+        today_reg = self._get_today_regulation(now)
         limit_time = today_reg.get("timeToPlayInOneDay", {}).get("limitTime")
         self.limit_time = limit_time if limit_time is not None else -1
 
@@ -265,14 +268,13 @@ class Device:
 
         self._update_applications()
 
-    def _calculate_times(self):
+    def _calculate_times(self, now: datetime):
         """Calculate times from parental control settings."""
         if not isinstance(self.daily_summaries, list) or not self.daily_summaries:
             return
         if len(self.daily_summaries) == 0:
             return
         _LOGGER.debug(">> Device._calculate_times()")
-        now = datetime.now()
         if self.daily_summaries[0]["date"] != now.strftime("%Y-%m-%d"):
             _LOGGER.debug("No daily summary for today, assuming 0 playing time.")
             self.today_playing_time = 0
@@ -287,7 +289,7 @@ class Device:
             self.today_exceeded_time = 0 if today_exceeded_time is None else today_exceeded_time
         _LOGGER.debug("Cached playing, disabled and exceeded time for today for device %s",
                         self.device_id)
-        self._calculate_today_remaining_time()
+        self._calculate_today_remaining_time(now)
 
         current_month = datetime(
             year=now.year,
@@ -325,10 +327,9 @@ class Device:
             _LOGGER.debug("Unable to retrieve applications for device %s: %s", self.name, err)
             self.application_update_failed = True
 
-    def _calculate_today_remaining_time(self):
+    def _calculate_today_remaining_time(self, now: datetime):
         """Calculates the remaining playing time for today."""
         try:
-            now = datetime.now()
             minutes_in_day = 1440 # 24 * 60
             current_minutes_past_midnight = now.hour * 60 + now.minute
 
@@ -357,16 +358,16 @@ class Device:
             _LOGGER.warning("Unable to calculate remaining time for device %s: %s", self.name, err)
             self.stats_update_failed = True
 
-    async def _get_parental_control_setting(self):
+    async def _get_parental_control_setting(self, now: datetime):
         """Retreives parental control settings from the API."""
         _LOGGER.debug(">> Device._get_parental_control_setting()")
         response = await self._api.async_get_device_parental_control_setting(
             device_id=self.device_id
         )
-        self._parse_parental_control_setting(response["json"])
-        self._calculate_times()
+        self._parse_parental_control_setting(response["json"], now)
+        self._calculate_times(now)
 
-    async def _get_daily_summaries(self):
+    async def _get_daily_summaries(self, now: datetime):
         """Retrieve daily summaries."""
         _LOGGER.debug(">> Device._get_daily_summaries()")
         response = await self._api.async_get_device_daily_summaries(
@@ -374,7 +375,7 @@ class Device:
         )
         self.daily_summaries = response["json"]["dailySummaries"]
         _LOGGER.debug("New daily summary %s", self.daily_summaries)
-        self._calculate_times()
+        self._calculate_times(now)
 
     async def _get_extras(self):
         """Retrieve extra properties."""
