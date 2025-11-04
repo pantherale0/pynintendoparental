@@ -2,6 +2,8 @@
 
 import aiohttp
 
+from pynintendoauth.exceptions import HttpException
+
 from .authenticator import Authenticator
 from .const import (
     ENDPOINTS,
@@ -13,12 +15,13 @@ from .const import (
     OS_VERSION,
     OS_NAME,
     DEVICE_MODEL,
-    _LOGGER
+    _LOGGER,
 )
-from .exceptions import HttpException
+
 
 def _check_http_success(status: int) -> bool:
     return status >= 200 and status < 300
+
 
 class Api:
     """Nintendo Parental Controls API."""
@@ -48,10 +51,10 @@ class Api:
             "X-Moon-TimeZone": self._tz,
             "X-Moon-Os-Language": self._language,
             "X-Moon-App-Language": self._language,
-            "Authorization": self._auth.access_token
+            "Authorization": self._auth.access_token,
         }
 
-    async def send_request(self, endpoint: str, body: object=None, **kwargs):
+    async def send_request(self, endpoint: str, body: object = None, **kwargs):
         """Sends a request to a given endpoint."""
         _LOGGER.debug("Sending request to %s", endpoint)
         # Get the endpoint from the endpoints map
@@ -66,46 +69,45 @@ class Api:
         url = e_point.get("url").format(BASE_URL=BASE_URL, **kwargs)
         _LOGGER.debug("Built URL %s", url)
         # now send the HTTP request
-        resp: dict = {
-            "status": 0,
-            "text": "",
-            "json": "",
-            "headers": ""
-        }
-        async with self._auth.client_session.request(
-            method=e_point.get("method"),
-            url=url,
-            json=body,
-            headers=self._headers
-        ) as response:
-            _LOGGER.debug("%s request to %s status code %s",
-                            e_point.get("method"),
-                            url,
-                            response.status)
-            if _check_http_success(response.status):
-                resp["status"] = response.status
-                resp["text"] = await response.text()
+        resp: dict = {"status": 0, "text": "", "json": "", "headers": ""}
+        response = await self._auth.async_authenticated_request(
+            method=e_point.get("method"), url=url, headers=self._headers, body=body
+        )
+        _LOGGER.debug(
+            "%s request to %s status code %s",
+            e_point.get("method"),
+            url,
+            response.status,
+        )
+        if not _check_http_success(response.status):
+            if response.content_type == "application/problem+json":
                 try:
-                    resp["json"] = await response.json()
-                except (aiohttp.ContentTypeError, ValueError) as e:
-                    _LOGGER.warning(
-                        """Failed to decode JSON response from %s.
-                        Status: %s, Error: %s.
-                        Response text: %s...""",
-                        url, response.status, e, resp['text'][:200]
-                    )
-                    resp["json"] = {}
-                resp["headers"] = response.headers
-            else:
-                if response.content_type == "application/problem+json":
-                    try:
-                        error = await response.json()
-                        if "detail" in error:
-                            raise HttpException(response.status, error["detail"], error.get("errorCode"))
-                    except (aiohttp.ContentTypeError, ValueError):
-                        # Fall through to the generic exception below on parsing failure.
-                        pass
-                raise HttpException(response.status, await response.text())
+                    error: dict = await response.json()
+                    if "detail" in error:
+                        raise HttpException(
+                            response.status, error["detail"], error.get("errorCode")
+                        )
+                except (aiohttp.ContentTypeError, ValueError):
+                    # Fall through to the generic exception below on parsing failure.
+                    pass
+            raise HttpException(response.status, await response.text())
+
+        resp["status"] = response.status
+        resp["text"] = await response.text()
+        try:
+            resp["json"] = await response.json()
+        except (aiohttp.ContentTypeError, ValueError) as e:
+            _LOGGER.warning(
+                """Failed to decode JSON response from %s.
+                Status: %s, Error: %s.
+                Response text: %s...""",
+                url,
+                response.status,
+                e,
+                resp["text"][:200],
+            )
+            resp["json"] = {}
+        resp["headers"] = response.headers
 
         # now return the resp dict
         return resp
@@ -113,109 +115,83 @@ class Api:
     async def async_get_account_details(self) -> dict:
         """Get account details."""
         return await self.send_request(
-            endpoint="get_account_details",
-            ACCOUNT_ID=self.account_id
+            endpoint="get_account_details", ACCOUNT_ID=self.account_id
         )
 
     async def async_get_account_devices(self) -> dict:
         """Get account devices."""
-        return await self.send_request(
-            endpoint="get_account_devices"
-        )
+        return await self.send_request(endpoint="get_account_devices")
 
     async def async_get_account_device(self, device_id: str) -> dict:
         """Get account device."""
         return await self.send_request(
-            endpoint="get_account_device",
-            DEVICE_ID=device_id
+            endpoint="get_account_device", DEVICE_ID=device_id
         )
 
     async def async_get_device_daily_summaries(self, device_id: str) -> dict:
         """Get device daily summaries."""
         return await self.send_request(
-            endpoint="get_device_daily_summaries",
-            DEVICE_ID=device_id
+            endpoint="get_device_daily_summaries", DEVICE_ID=device_id
         )
 
     async def async_get_device_monthly_summaries(self, device_id: str) -> dict:
         """Get device monthly summaries."""
         return await self.send_request(
-            endpoint="get_device_monthly_summaries",
-            DEVICE_ID=device_id
+            endpoint="get_device_monthly_summaries", DEVICE_ID=device_id
         )
 
     async def async_get_device_parental_control_setting(self, device_id: str) -> dict:
         """Get device parental control setting."""
         return await self.send_request(
-            endpoint="get_device_parental_control_setting",
-            DEVICE_ID=device_id
+            endpoint="get_device_parental_control_setting", DEVICE_ID=device_id
         )
 
-    async def async_get_device_parental_control_setting_state(self, device_id: str) -> dict:
+    async def async_get_device_parental_control_setting_state(
+        self, device_id: str
+    ) -> dict:
         """Get device parental control setting state."""
         return await self.send_request(
-            endpoint="get_device_parental_control_setting_state",
-            DEVICE_ID=device_id
+            endpoint="get_device_parental_control_setting_state", DEVICE_ID=device_id
         )
 
-    async def async_get_device_monthly_summary(self, device_id: str, year: int, month: int) -> dict:
+    async def async_get_device_monthly_summary(
+        self, device_id: str, year: int, month: int
+    ) -> dict:
         """Get device monthly summary."""
         return await self.send_request(
             endpoint="get_device_monthly_summary",
             DEVICE_ID=device_id,
             YEAR=year,
-            MONTH=f"{month:02d}"
+            MONTH=f"{month:02d}",
         )
 
-    async def async_update_restriction_level(
-            self,
-            settings: dict
-        ) -> dict:
+    async def async_update_restriction_level(self, settings: dict) -> dict:
         """Update device restriction level."""
         return await self.send_request(
-            endpoint="update_restriction_level",
-            body=settings
+            endpoint="update_restriction_level", body=settings
         )
 
-    async def async_update_play_timer(
-            self,
-            settings: dict
-        ) -> dict:
+    async def async_update_play_timer(self, settings: dict) -> dict:
         """Update device play timer settings."""
-        return await self.send_request(
-            endpoint="update_play_timer",
-            body=settings
-        )
+        return await self.send_request(endpoint="update_play_timer", body=settings)
 
-    async def async_update_unlock_code(
-        self,
-        new_code: str,
-        device_id: str
-    ) -> dict:
+    async def async_update_unlock_code(self, new_code: str, device_id: str) -> dict:
         """Update device unlock code."""
         return await self.send_request(
             endpoint="update_unlock_code",
-            body={
-                "deviceId": device_id,
-                "unlockCode": new_code
-            }
+            body={"deviceId": device_id, "unlockCode": new_code},
         )
 
     async def async_update_extra_playing_time(
-        self,
-        device_id: str,
-        additional_time: int
+        self, device_id: str, additional_time: int
     ) -> dict:
         """Update device extra playing time."""
         body = {
             "deviceId": device_id,
             "additionalTime": additional_time,
-            "status": "TO_ADDED"
+            "status": "TO_ADDED",
         }
         if additional_time == -1:
             body["status"] = "TO_INFINITY"
             body.pop("additionalTime")
-        return await self.send_request(
-            endpoint="update_extra_playing_time",
-            body=body
-        )
+        return await self.send_request(endpoint="update_extra_playing_time", body=body)

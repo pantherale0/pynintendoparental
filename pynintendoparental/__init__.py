@@ -3,34 +3,33 @@
 
 import asyncio
 
-from pynintendoparental.exceptions import HttpException, NoDevicesFoundException
+from pynintendoauth.exceptions import HttpException
 
-from .authenticator import Authenticator
 from .api import Api
 from .const import _LOGGER
 from .device import Device
+from .exceptions import NoDevicesFoundException
+from .authenticator import Authenticator
+
 
 class NintendoParental:
     """Core Python API."""
 
-    def __init__(self,
-                 auth: Authenticator,
-                 timezone,
-                 lang) -> None:
+    def __init__(self, auth: Authenticator, timezone, lang) -> None:
         self._api: Api = Api(auth=auth, tz=timezone, lang=lang)
         self.account_id = auth.account_id
         self.devices: dict[str, Device] = {}
 
     async def _get_devices(self):
         """Gets devices from the API and stores in self.devices"""
+
         async def update_device(dev: Device):
             """Update a device."""
             try:
                 await dev.update()
             except Exception as err:
-                _LOGGER.exception("Error updating device %s: %s",
-                              dev.device_id,
-                              err)
+                _LOGGER.exception("Error updating device %s: %s", dev.device_id, err)
+
         try:
             response = await self._api.async_get_account_devices()
         except HttpException as err:
@@ -55,10 +54,9 @@ class NintendoParental:
         _LOGGER.debug("Update complete.")
 
     @classmethod
-    async def create(cls,
-                 auth: Authenticator,
-                 timezone: str = "Europe/London",
-                 lang: str = "en-GB") -> 'NintendoParental':
+    async def create(
+        cls, auth: Authenticator, timezone: str = "Europe/London", lang: str = "en-GB"
+    ) -> "NintendoParental":
         """Create an instance of NintendoParental."""
         self = cls(auth, timezone, lang)
         await self.update()
