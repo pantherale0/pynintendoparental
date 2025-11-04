@@ -21,7 +21,9 @@ async def main():
                 bool(int(os.environ.get("USE_SESSION_TOKEN", 0)))
                 or input("Should we use a session token? [N/y] ").upper() == "Y"
             ):
-                auth = Authenticator(session_token=os.environ.get("SESSION_TOKEN"))
+                auth = Authenticator(
+                    session_token=os.environ.get("SESSION_TOKEN") or input("Token: ")
+                )
                 await auth.async_complete_login(use_session_token=True)
             else:
                 auth = Authenticator()
