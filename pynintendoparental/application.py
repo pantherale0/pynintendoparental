@@ -4,6 +4,7 @@ from datetime import datetime
 
 from .const import _LOGGER
 
+
 class Application:
     """Model for an application"""
 
@@ -12,7 +13,7 @@ class Application:
         self.application_id: str = None
         self.first_played_date: datetime = None
         self.has_ugc: bool = None
-        self.image_url: str = None # uses small image from Nintendo
+        self.image_url: str = None  # uses small image from Nintendo
         self.playing_days: int = None
         self.shop_url: str = None
         self.name: str = None
@@ -20,11 +21,10 @@ class Application:
 
     def update_today_time_played(self, daily_summary: dict):
         """Updates the today time played for the given application."""
-        _LOGGER.debug("Updating today time played for app %s",
-                      self.application_id)
+        _LOGGER.debug("Updating today time played for app %s", self.application_id)
         self.today_time_played = daily_summary.get("playingTime", 0)
 
-    def update(self, updated: 'Application'):
+    def update(self, updated: "Application"):
         """Updates self with a given application."""
         _LOGGER.debug("Updating application %s", self.application_id)
         self.application_id = updated.application_id
@@ -37,7 +37,7 @@ class Application:
         self.today_time_played = updated.today_time_played
 
     @classmethod
-    def from_daily_summary(cls, raw: list) -> list['Application']:
+    def from_daily_summary(cls, raw: list) -> list["Application"]:
         """Converts a raw daily summary response into a list of applications."""
         built = []
         if "playedApps" in raw:
@@ -49,7 +49,7 @@ class Application:
         return built
 
     @staticmethod
-    def check_if_app_in_list(app_list: list['Application'], app: 'Application') -> bool:
+    def check_if_app_in_list(app_list: list["Application"], app: "Application") -> bool:
         """Checks if an app is in a list."""
         for app_li in app_list:
             if app_li.application_id == app.application_id:
@@ -57,7 +57,9 @@ class Application:
         return False
 
     @staticmethod
-    def return_app_from_list(app_list: list['Application'], application_id: str) -> 'Application':
+    def return_app_from_list(
+        app_list: list["Application"], application_id: str
+    ) -> "Application":
         """Returns a single app from a given list."""
         for app in app_list:
             if app.application_id == application_id:
@@ -65,28 +67,32 @@ class Application:
         return None
 
     @classmethod
-    def from_whitelist(cls, raw: dict) -> list['Application']:
+    def from_whitelist(cls, raw: dict) -> list["Application"]:
         """Converts a raw whitelist response into a list of applications."""
         parsed = []
         for app_id in raw:
             _LOGGER.debug("Parsing app %s", app_id)
             internal = cls()
             internal.application_id = raw[app_id]["applicationId"]
-            internal.first_played_date = datetime.strptime(raw[app_id]["firstPlayDate"], "%Y-%m-%d")
+            internal.first_played_date = datetime.strptime(
+                raw[app_id]["firstPlayDate"], "%Y-%m-%d"
+            )
             internal.image_url = raw[app_id]["imageUri"]
             internal.name = raw[app_id]["title"]
             parsed.append(internal)
         return parsed
 
     @classmethod
-    def from_monthly_summary(cls, raw: list) -> list['Application']:
+    def from_monthly_summary(cls, raw: list) -> list["Application"]:
         """Converts a raw monthly summary response into a list of applications."""
         parsed = []
         for app in raw:
             _LOGGER.debug("Parsing app %s", app)
             internal = cls()
             internal.application_id = app.get("applicationId").capitalize()
-            internal.first_played_date = datetime.strptime(app.get("firstPlayDate"), "%Y-%m-%d")
+            internal.first_played_date = datetime.strptime(
+                app.get("firstPlayDate"), "%Y-%m-%d"
+            )
             internal.has_ugc = app.get("hasUgc", False)
             internal.image_url = app.get("imageUri").get("small")
             internal.playing_days = app.get("playingDays", None)

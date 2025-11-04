@@ -2,8 +2,10 @@
 
 from .const import _LOGGER
 
+
 class Player:
     """Defines a single player on a Nintendo device."""
+
     def __init__(self):
         """Init a player."""
         self.player_image: str = None
@@ -25,7 +27,7 @@ class Player:
                 break
 
     @classmethod
-    def from_device_daily_summary(cls, raw: list[dict]) -> list['Player']:
+    def from_device_daily_summary(cls, raw: list[dict]) -> list["Player"]:
         """Converts a daily summary response into a list of players."""
         players = []
         _LOGGER.debug("Building players from device daily summary.")

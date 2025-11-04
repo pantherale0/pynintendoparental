@@ -16,6 +16,7 @@ with open('pynintendoparental/_version.py', 'r') as version_file:
 REQUIREMENTS = [
     # Add your list of production dependencies here, eg:
     # 'requests == 2.*',
+    'pynintendoauth == 1.0.0'
 ]
 
 DEV_REQUIREMENTS = [
