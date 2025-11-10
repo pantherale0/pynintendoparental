@@ -34,6 +34,7 @@ class Device:
         self.parental_control_settings: dict = {}
         self.players: list[Player] = []
         self.limit_time: int | float | None = 0
+        self.extra_playing_time: int | None = None
         self.timer_mode: DeviceTimerMode | None = None
         self.today_playing_time: int | float = 0
         self.today_time_remaining: int | float = 0
@@ -321,6 +322,13 @@ class Device:
         today_reg = self._get_today_regulation(now)
         limit_time = today_reg.get("timeToPlayInOneDay", {}).get("limitTime")
         self.limit_time = limit_time if limit_time is not None else -1
+        extra_playing_time = pcs["ownedDevice"]["device"]["extraPlayingTime"]
+        if extra_playing_time is None:
+            self.extra_playing_time = None
+        else:
+            self.extra_playing_time = extra_playing_time.get("inOneDay", {}).get(
+                "duration"
+            )
 
         bedtime_setting = today_reg.get("bedtime", {})
         if bedtime_setting.get("enabled"):
