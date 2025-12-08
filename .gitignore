@@ -2,8 +2,12 @@ __pycache__
 .coverage
 .DS_Store
 .env
+.venv
 *.egg-info
 *.lcov
 dist
 htmlcov
 venv
+build
+.pytest_cache
+.ruff_cache

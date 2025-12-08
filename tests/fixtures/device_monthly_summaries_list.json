@@ -1,0 +1,1724 @@
+{
+    "year": 2025,
+    "month": 11,
+    "available": [
+        {
+            "year": 2025,
+            "month": 11
+        },
+        {
+            "year": 2025,
+            "month": 10
+        },
+        {
+            "year": 2025,
+            "month": 9
+        },
+        {
+            "year": 2025,
+            "month": 8
+        },
+        {
+            "year": 2025,
+            "month": 7
+        },
+        {
+            "year": 2025,
+            "month": 6
+        },
+        {
+            "year": 2025,
+            "month": 5
+        },
+        {
+            "year": 2025,
+            "month": 4
+        },
+        {
+            "year": 2025,
+            "month": 3
+        },
+        {
+            "year": 2025,
+            "month": 2
+        },
+        {
+            "year": 2025,
+            "month": 1
+        },
+        {
+            "year": 2024,
+            "month": 12
+        }
+    ],
+    "summary": {
+        "overall": {
+            "stat": {
+                "totalDays": 11,
+                "averageTime": 125
+            },
+            "dailyStats": [
+                {
+                    "date": "2025-11-01",
+                    "totalTime": 0,
+                    "games": {}
+                },
+                {
+                    "date": "2025-11-02",
+                    "totalTime": 15,
+                    "games": {
+                        "01006F8002326000": {
+                            "totalTime": 10
+                        }
+                    }
+                },
+                {
+                    "date": "2025-11-03",
+                    "totalTime": 0,
+                    "games": {}
+                },
+                {
+                    "date": "2025-11-04",
+                    "totalTime": 0,
+                    "games": {}
+                },
+                {
+                    "date": "2025-11-05",
+                    "totalTime": 0,
+                    "games": {}
+                },
+                {
+                    "date": "2025-11-06",
+                    "totalTime": 15,
+                    "games": {
+                        "0100D71004694000": {
+                            "totalTime": 15
+                        }
+                    }
+                },
+                {
+                    "date": "2025-11-07",
+                    "totalTime": 0,
+                    "games": {}
+                },
+                {
+                    "date": "2025-11-08",
+                    "totalTime": 330,
+                    "games": {
+                        "010042D00D900000": {
+                            "totalTime": 220
+                        },
+                        "0100D2F00D5C0000": {
+                            "totalTime": 15
+                        },
+                        "01006F8002326000": {
+                            "totalTime": 25
+                        },
+                        "01007430037F6000": {
+                            "totalTime": 50
+                        }
+                    }
+                },
+                {
+                    "date": "2025-11-09",
+                    "totalTime": 480,
+                    "games": {
+                        "010042D00D900000": {
+                            "totalTime": 455
+                        },
+                        "0100152000022000": {
+                            "totalTime": 20
+                        }
+                    }
+                },
+                {
+                    "date": "2025-11-10",
+                    "totalTime": 155,
+                    "games": {
+                        "010042D00D900000": {
+                            "totalTime": 155
+                        }
+                    }
+                },
+                {
+                    "date": "2025-11-11",
+                    "totalTime": 0,
+                    "games": {}
+                },
+                {
+                    "date": "2025-11-12",
+                    "totalTime": 70,
+                    "games": {
+                        "010042D00D900000": {
+                            "totalTime": 50
+                        }
+                    }
+                },
+                {
+                    "date": "2025-11-13",
+                    "totalTime": 45,
+                    "games": {
+                        "010042D00D900000": {
+                            "totalTime": 40
+                        }
+                    }
+                },
+                {
+                    "date": "2025-11-14",
+                    "totalTime": 1,
+                    "games": {
+                        "010042D00D900000": {
+                            "totalTime": 1
+                        }
+                    }
+                },
+                {
+                    "date": "2025-11-15",
+                    "totalTime": 170,
+                    "games": {
+                        "010042D00D900000": {
+                            "totalTime": 75
+                        },
+                        "0100152000022000": {
+                            "totalTime": 70
+                        }
+                    }
+                },
+                {
+                    "date": "2025-11-16",
+                    "totalTime": 0,
+                    "games": {}
+                },
+                {
+                    "date": "2025-11-17",
+                    "totalTime": 0,
+                    "games": {}
+                },
+                {
+                    "date": "2025-11-18",
+                    "totalTime": 0,
+                    "games": {}
+                },
+                {
+                    "date": "2025-11-19",
+                    "totalTime": 0,
+                    "games": {}
+                },
+                {
+                    "date": "2025-11-20",
+                    "totalTime": 0,
+                    "games": {}
+                },
+                {
+                    "date": "2025-11-21",
+                    "totalTime": 0,
+                    "games": {}
+                },
+                {
+                    "date": "2025-11-22",
+                    "totalTime": 0,
+                    "games": {}
+                },
+                {
+                    "date": "2025-11-23",
+                    "totalTime": 45,
+                    "games": {
+                        "0100D71004694000": {
+                            "totalTime": 40
+                        }
+                    }
+                },
+                {
+                    "date": "2025-11-24",
+                    "totalTime": 0,
+                    "games": {}
+                },
+                {
+                    "date": "2025-11-25",
+                    "totalTime": 0,
+                    "games": {}
+                },
+                {
+                    "date": "2025-11-26",
+                    "totalTime": 0,
+                    "games": {}
+                },
+                {
+                    "date": "2025-11-27",
+                    "totalTime": 50,
+                    "games": {
+                        "01006F8002326000": {
+                            "totalTime": 50
+                        }
+                    }
+                },
+                {
+                    "date": "2025-11-28",
+                    "totalTime": 0,
+                    "games": {}
+                },
+                {
+                    "date": "2025-11-29",
+                    "totalTime": 0,
+                    "games": {}
+                },
+                {
+                    "date": "2025-11-30",
+                    "totalTime": 0,
+                    "games": {}
+                }
+            ],
+            "ranking": [
+                {
+                    "position": "UP",
+                    "stat": {
+                        "totalDays": 7,
+                        "meta": {
+                            "applicationId": "010042D00D900000",
+                            "title": "government",
+                            "imageUri": {
+                                "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_3",
+                                "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_512",
+                                "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_128",
+                                "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_1024",
+                                "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_256"
+                            },
+                            "hasUgc": false,
+                            "shopUri": "https://ec.nintendo.com/apps/010042d00d900000/GB?lang=en-GB"
+                        },
+                        "players": [
+                            {
+                                "playerId": "D0EF9C35BCB3C998BFFC1D00CE92943AC50",
+                                "nickname": "pwright",
+                                "imageUri": "https://dummyimage.com/187x821",
+                                "nsaId": null
+                            },
+                            {
+                                "playerId": "B276150DE6B18218C09E4D0CE4CFA0861A3",
+                                "nickname": "cheyenne19",
+                                "imageUri": "https://placekitten.com/785/428",
+                                "nsaId": null
+                            }
+                        ]
+                    }
+                },
+                {
+                    "position": "DOWN",
+                    "stat": {
+                        "totalDays": 3,
+                        "meta": {
+                            "applicationId": "01006F8002326000",
+                            "title": "poor",
+                            "imageUri": {
+                                "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_3",
+                                "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_512",
+                                "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_128",
+                                "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_1024",
+                                "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_256"
+                            },
+                            "hasUgc": true,
+                            "shopUri": "https://ec.nintendo.com/apps/01006f8002326000/GB?lang=en-GB"
+                        },
+                        "players": [
+                            {
+                                "playerId": "B276150DE6B18218C09E4D0CE4CFA0861A3",
+                                "nickname": "cheyenne19",
+                                "imageUri": "https://dummyimage.com/790x428",
+                                "nsaId": null
+                            }
+                        ]
+                    }
+                },
+                {
+                    "position": "DOWN",
+                    "stat": {
+                        "totalDays": 2,
+                        "meta": {
+                            "applicationId": "0100D71004694000",
+                            "title": "around",
+                            "imageUri": {
+                                "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_3",
+                                "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_512",
+                                "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_128",
+                                "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_1024",
+                                "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_256"
+                            },
+                            "hasUgc": true,
+                            "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/GB?lang=en-GB"
+                        },
+                        "players": [
+                            {
+                                "playerId": "B276150DE6B18218C09E4D0CE4CFA0861A3",
+                                "nickname": "cheyenne19",
+                                "imageUri": "https://placekitten.com/685/551",
+                                "nsaId": null
+                            }
+                        ]
+                    }
+                },
+                {
+                    "position": "UP",
+                    "stat": {
+                        "totalDays": 2,
+                        "meta": {
+                            "applicationId": "0100152000022000",
+                            "title": "five",
+                            "imageUri": {
+                                "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_3",
+                                "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_512",
+                                "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_128",
+                                "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_1024",
+                                "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_256"
+                            },
+                            "hasUgc": false,
+                            "shopUri": "https://ec.nintendo.com/apps/0100152000022000/GB?lang=en-GB"
+                        },
+                        "players": [
+                            {
+                                "playerId": "B276150DE6B18218C09E4D0CE4CFA0861A3",
+                                "nickname": "cheyenne19",
+                                "imageUri": "https://dummyimage.com/585x62",
+                                "nsaId": null
+                            }
+                        ]
+                    }
+                },
+                {
+                    "position": "UP",
+                    "stat": {
+                        "totalDays": 1,
+                        "meta": {
+                            "applicationId": "0100D2F00D5C0000",
+                            "title": "fish",
+                            "imageUri": {
+                                "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_3",
+                                "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_512",
+                                "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_128",
+                                "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_1024",
+                                "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_256"
+                            },
+                            "hasUgc": false,
+                            "shopUri": "https://ec.nintendo.com/apps/0100d2f00d5c0000/GB?lang=en-GB"
+                        },
+                        "players": [
+                            {
+                                "playerId": "B276150DE6B18218C09E4D0CE4CFA0861A3",
+                                "nickname": "cheyenne19",
+                                "imageUri": "https://dummyimage.com/292x138",
+                                "nsaId": null
+                            }
+                        ],
+                        "anonymousPlayed": true
+                    }
+                },
+                {
+                    "position": "DOWN",
+                    "stat": {
+                        "totalDays": 1,
+                        "meta": {
+                            "applicationId": "01007430037F6000",
+                            "title": "record",
+                            "imageUri": {
+                                "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_3",
+                                "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_512",
+                                "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_128",
+                                "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_1024",
+                                "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_256"
+                            },
+                            "hasUgc": false,
+                            "shopUri": "https://ec.nintendo.com/apps/01007430037f6000/GB?lang=en-GB"
+                        },
+                        "players": [
+                            {
+                                "playerId": "B276150DE6B18218C09E4D0CE4CFA0861A3",
+                                "nickname": "cheyenne19",
+                                "imageUri": "https://picsum.photos/733/424",
+                                "nsaId": null
+                            }
+                        ]
+                    }
+                }
+            ],
+            "chat": {
+                "players": []
+            }
+        },
+        "players": [
+            {
+                "profile": {
+                    "playerId": "D0EF9C35BCB3C998BFFC1D00CE92943AC50",
+                    "nickname": "pwright",
+                    "imageUri": "https://picsum.photos/372/132",
+                    "nsaId": null
+                },
+                "summary": {
+                    "stat": {
+                        "totalDays": 1,
+                        "averageTime": 4
+                    },
+                    "dailyStats": [
+                        {
+                            "date": "2025-11-01",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-02",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-03",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-04",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-05",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-06",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-07",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-08",
+                            "totalTime": 4,
+                            "games": {
+                                "010042D00D900000": {
+                                    "totalTime": 4
+                                }
+                            }
+                        },
+                        {
+                            "date": "2025-11-09",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-10",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-11",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-12",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-13",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-14",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-15",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-16",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-17",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-18",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-19",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-20",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-21",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-22",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-23",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-24",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-25",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-26",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-27",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-28",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-29",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-30",
+                            "totalTime": 0,
+                            "games": {}
+                        }
+                    ],
+                    "ranking": [
+                        {
+                            "position": "UP",
+                            "stat": {
+                                "totalDays": 1,
+                                "meta": {
+                                    "applicationId": "010042D00D900000",
+                                    "title": "government",
+                                    "imageUri": {
+                                        "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_3",
+                                        "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_512",
+                                        "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_128",
+                                        "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_1024",
+                                        "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_256"
+                                    },
+                                    "hasUgc": false,
+                                    "shopUri": "https://ec.nintendo.com/apps/010042d00d900000/GB?lang=en-GB"
+                                },
+                                "players": [
+                                    {
+                                        "playerId": "D0EF9C35BCB3C998BFFC1D00CE92943AC50",
+                                        "nickname": "pwright",
+                                        "imageUri": "https://placekitten.com/765/805",
+                                        "nsaId": null
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "chat": {
+                        "members": []
+                    }
+                }
+            },
+            {
+                "profile": {
+                    "playerId": "B276150DE6B18218C09E4D0CE4CFA0861A3",
+                    "nickname": "cheyenne19",
+                    "imageUri": "https://placekitten.com/48/181",
+                    "nsaId": null
+                },
+                "summary": {
+                    "stat": {
+                        "totalDays": 11,
+                        "averageTime": 115
+                    },
+                    "dailyStats": [
+                        {
+                            "date": "2025-11-01",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-02",
+                            "totalTime": 10,
+                            "games": {
+                                "01006F8002326000": {
+                                    "totalTime": 10
+                                }
+                            }
+                        },
+                        {
+                            "date": "2025-11-03",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-04",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-05",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-06",
+                            "totalTime": 15,
+                            "games": {
+                                "0100D71004694000": {
+                                    "totalTime": 15
+                                }
+                            }
+                        },
+                        {
+                            "date": "2025-11-07",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-08",
+                            "totalTime": 315,
+                            "games": {
+                                "010042D00D900000": {
+                                    "totalTime": 215
+                                },
+                                "0100D2F00D5C0000": {
+                                    "totalTime": 15
+                                },
+                                "01006F8002326000": {
+                                    "totalTime": 25
+                                },
+                                "01007430037F6000": {
+                                    "totalTime": 50
+                                }
+                            }
+                        },
+                        {
+                            "date": "2025-11-09",
+                            "totalTime": 475,
+                            "games": {
+                                "010042D00D900000": {
+                                    "totalTime": 455
+                                },
+                                "0100152000022000": {
+                                    "totalTime": 20
+                                }
+                            }
+                        },
+                        {
+                            "date": "2025-11-10",
+                            "totalTime": 155,
+                            "games": {
+                                "010042D00D900000": {
+                                    "totalTime": 155
+                                }
+                            }
+                        },
+                        {
+                            "date": "2025-11-11",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-12",
+                            "totalTime": 50,
+                            "games": {
+                                "010042D00D900000": {
+                                    "totalTime": 50
+                                }
+                            }
+                        },
+                        {
+                            "date": "2025-11-13",
+                            "totalTime": 40,
+                            "games": {
+                                "010042D00D900000": {
+                                    "totalTime": 40
+                                }
+                            }
+                        },
+                        {
+                            "date": "2025-11-14",
+                            "totalTime": 1,
+                            "games": {
+                                "010042D00D900000": {
+                                    "totalTime": 1
+                                }
+                            }
+                        },
+                        {
+                            "date": "2025-11-15",
+                            "totalTime": 150,
+                            "games": {
+                                "010042D00D900000": {
+                                    "totalTime": 75
+                                },
+                                "0100152000022000": {
+                                    "totalTime": 70
+                                }
+                            }
+                        },
+                        {
+                            "date": "2025-11-16",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-17",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-18",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-19",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-20",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-21",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-22",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-23",
+                            "totalTime": 40,
+                            "games": {
+                                "0100D71004694000": {
+                                    "totalTime": 40
+                                }
+                            }
+                        },
+                        {
+                            "date": "2025-11-24",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-25",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-26",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-27",
+                            "totalTime": 50,
+                            "games": {
+                                "01006F8002326000": {
+                                    "totalTime": 50
+                                }
+                            }
+                        },
+                        {
+                            "date": "2025-11-28",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-29",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-30",
+                            "totalTime": 0,
+                            "games": {}
+                        }
+                    ],
+                    "ranking": [
+                        {
+                            "position": "UP",
+                            "stat": {
+                                "totalDays": 7,
+                                "meta": {
+                                    "applicationId": "010042D00D900000",
+                                    "title": "government",
+                                    "imageUri": {
+                                        "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_3",
+                                        "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_512",
+                                        "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_128",
+                                        "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_1024",
+                                        "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_256"
+                                    },
+                                    "hasUgc": false,
+                                    "shopUri": "https://ec.nintendo.com/apps/010042d00d900000/GB?lang=en-GB"
+                                },
+                                "players": [
+                                    {
+                                        "playerId": "B276150DE6B18218C09E4D0CE4CFA0861A3",
+                                        "nickname": "cheyenne19",
+                                        "imageUri": "https://dummyimage.com/879x364",
+                                        "nsaId": null
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "position": "DOWN",
+                            "stat": {
+                                "totalDays": 3,
+                                "meta": {
+                                    "applicationId": "01006F8002326000",
+                                    "title": "poor",
+                                    "imageUri": {
+                                        "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_3",
+                                        "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_512",
+                                        "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_128",
+                                        "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_1024",
+                                        "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_256"
+                                    },
+                                    "hasUgc": true,
+                                    "shopUri": "https://ec.nintendo.com/apps/01006f8002326000/GB?lang=en-GB"
+                                },
+                                "players": [
+                                    {
+                                        "playerId": "B276150DE6B18218C09E4D0CE4CFA0861A3",
+                                        "nickname": "cheyenne19",
+                                        "imageUri": "https://dummyimage.com/706x872",
+                                        "nsaId": null
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "position": "DOWN",
+                            "stat": {
+                                "totalDays": 2,
+                                "meta": {
+                                    "applicationId": "0100D71004694000",
+                                    "title": "around",
+                                    "imageUri": {
+                                        "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_3",
+                                        "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_512",
+                                        "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_128",
+                                        "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_1024",
+                                        "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_256"
+                                    },
+                                    "hasUgc": true,
+                                    "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/GB?lang=en-GB"
+                                },
+                                "players": [
+                                    {
+                                        "playerId": "B276150DE6B18218C09E4D0CE4CFA0861A3",
+                                        "nickname": "cheyenne19",
+                                        "imageUri": "https://picsum.photos/558/554",
+                                        "nsaId": null
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "position": "UP",
+                            "stat": {
+                                "totalDays": 2,
+                                "meta": {
+                                    "applicationId": "0100152000022000",
+                                    "title": "five",
+                                    "imageUri": {
+                                        "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_3",
+                                        "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_512",
+                                        "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_128",
+                                        "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_1024",
+                                        "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_256"
+                                    },
+                                    "hasUgc": false,
+                                    "shopUri": "https://ec.nintendo.com/apps/0100152000022000/GB?lang=en-GB"
+                                },
+                                "players": [
+                                    {
+                                        "playerId": "B276150DE6B18218C09E4D0CE4CFA0861A3",
+                                        "nickname": "cheyenne19",
+                                        "imageUri": "https://placekitten.com/433/796",
+                                        "nsaId": null
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "position": "UP",
+                            "stat": {
+                                "totalDays": 1,
+                                "meta": {
+                                    "applicationId": "0100D2F00D5C0000",
+                                    "title": "fish",
+                                    "imageUri": {
+                                        "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_3",
+                                        "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_512",
+                                        "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_128",
+                                        "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_1024",
+                                        "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_256"
+                                    },
+                                    "hasUgc": false,
+                                    "shopUri": "https://ec.nintendo.com/apps/0100d2f00d5c0000/GB?lang=en-GB"
+                                },
+                                "players": [
+                                    {
+                                        "playerId": "B276150DE6B18218C09E4D0CE4CFA0861A3",
+                                        "nickname": "cheyenne19",
+                                        "imageUri": "https://placekitten.com/185/316",
+                                        "nsaId": null
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "position": "DOWN",
+                            "stat": {
+                                "totalDays": 1,
+                                "meta": {
+                                    "applicationId": "01007430037F6000",
+                                    "title": "record",
+                                    "imageUri": {
+                                        "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_3",
+                                        "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_512",
+                                        "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_128",
+                                        "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_1024",
+                                        "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_256"
+                                    },
+                                    "hasUgc": false,
+                                    "shopUri": "https://ec.nintendo.com/apps/01007430037f6000/GB?lang=en-GB"
+                                },
+                                "players": [
+                                    {
+                                        "playerId": "B276150DE6B18218C09E4D0CE4CFA0861A3",
+                                        "nickname": "cheyenne19",
+                                        "imageUri": "https://dummyimage.com/604x413",
+                                        "nsaId": null
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "chat": {
+                        "members": []
+                    }
+                }
+            },
+            {
+                "profile": {
+                    "playerId": "A1E2F6FE45A23D7B68BB6FB207CFEFE8513",
+                    "nickname": "jeremy97",
+                    "imageUri": "https://placekitten.com/802/25",
+                    "nsaId": null
+                },
+                "summary": {
+                    "stat": {
+                        "totalDays": 0,
+                        "averageTime": 0
+                    },
+                    "dailyStats": [
+                        {
+                            "date": "2025-11-01",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-02",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-03",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-04",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-05",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-06",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-07",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-08",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-09",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-10",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-11",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-12",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-13",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-14",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-15",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-16",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-17",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-18",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-19",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-20",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-21",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-22",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-23",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-24",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-25",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-26",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-27",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-28",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-29",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-30",
+                            "totalTime": 0,
+                            "games": {}
+                        }
+                    ],
+                    "ranking": [],
+                    "chat": {
+                        "members": []
+                    }
+                }
+            },
+            {
+                "profile": {
+                    "playerId": "B305B292C1FF28D9CD7052AE75441EEB6CA",
+                    "nickname": "james02",
+                    "imageUri": "https://picsum.photos/83/125",
+                    "nsaId": null
+                },
+                "summary": {
+                    "stat": {
+                        "totalDays": 0,
+                        "averageTime": 0
+                    },
+                    "dailyStats": [
+                        {
+                            "date": "2025-11-01",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-02",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-03",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-04",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-05",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-06",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-07",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-08",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-09",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-10",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-11",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-12",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-13",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-14",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-15",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-16",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-17",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-18",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-19",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-20",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-21",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-22",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-23",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-24",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-25",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-26",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-27",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-28",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-29",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-30",
+                            "totalTime": 0,
+                            "games": {}
+                        }
+                    ],
+                    "ranking": [],
+                    "chat": {
+                        "members": []
+                    }
+                }
+            },
+            {
+                "profile": {
+                    "playerId": "1BAF1455C37B27713215C98CAA92C100829",
+                    "nickname": "kfreeman",
+                    "imageUri": "https://picsum.photos/936/330",
+                    "nsaId": null
+                },
+                "summary": {
+                    "stat": {
+                        "totalDays": 0,
+                        "averageTime": 0
+                    },
+                    "dailyStats": [
+                        {
+                            "date": "2025-11-01",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-02",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-03",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-04",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-05",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-06",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-07",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-08",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-09",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-10",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-11",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-12",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-13",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-14",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-15",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-16",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-17",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-18",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-19",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-20",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-21",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-22",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-23",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-24",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-25",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-26",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-27",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-28",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-29",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-30",
+                            "totalTime": 0,
+                            "games": {}
+                        }
+                    ],
+                    "ranking": [],
+                    "chat": {
+                        "members": []
+                    }
+                }
+            },
+            {
+                "profile": {
+                    "playerId": "3A47B7E8899F27176A6186770D2F399BE66",
+                    "nickname": "vanderson",
+                    "imageUri": "https://placekitten.com/526/823",
+                    "nsaId": null
+                },
+                "summary": {
+                    "stat": {
+                        "totalDays": 0,
+                        "averageTime": 0
+                    },
+                    "dailyStats": [
+                        {
+                            "date": "2025-11-01",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-02",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-03",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-04",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-05",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-06",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-07",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-08",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-09",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-10",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-11",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-12",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-13",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-14",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-15",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-16",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-17",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-18",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-19",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-20",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-21",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-22",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-23",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-24",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-25",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-26",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-27",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-28",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-29",
+                            "totalTime": 0,
+                            "games": {}
+                        },
+                        {
+                            "date": "2025-11-30",
+                            "totalTime": 0,
+                            "games": {}
+                        }
+                    ],
+                    "ranking": [],
+                    "chat": {
+                        "members": []
+                    }
+                }
+            }
+        ]
+    },
+    "friendships": {}
+}
