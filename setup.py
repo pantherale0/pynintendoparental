@@ -20,14 +20,18 @@ REQUIREMENTS = [
 ]
 
 DEV_REQUIREMENTS = [
+    'aiofiles >= 23,< 26',
     'bandit >= 1.7,< 1.9',
     'black >= 23,< 26',
     'build >= 0.10,< 1.4',
+    'Faker >= 38,< 39',
     'flake8 >= 6,< 8',
     'isort >= 5,< 7',
     'mypy >= 1.5,< 1.19',
     'pytest >= 7,< 9',
     'pytest-cov >= 4,< 8',
+    'pytest-asyncio >= 0.21,< 1.0',
+    'syrupy >= 5,< 6',
     'twine >= 4,< 7',
 ]
 

@@ -1,0 +1,3307 @@
+# serializer version: 1
+# name: test_device_parsing
+  dict({
+    'alarms_enabled': True,
+    'application_update_failed': False,
+    'applications': list([
+    ]),
+    'bedtime_alarm': datetime.time(0, 0),
+    'daily_summaries': list([
+      dict({
+        'date': '2025-12-08',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'miscTime': 0,
+        'nonFeaturedGameCount': -1,
+        'players': list([
+        ]),
+        'playingTime': 0,
+        'result': 'CALCULATING',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-12-07',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'miscTime': 0,
+        'nonFeaturedGameCount': -1,
+        'players': list([
+        ]),
+        'playingTime': 0,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-12-06',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'miscTime': 0,
+        'nonFeaturedGameCount': -1,
+        'players': list([
+        ]),
+        'playingTime': 0,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-12-05',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'miscTime': 0,
+        'nonFeaturedGameCount': -1,
+        'players': list([
+        ]),
+        'playingTime': 0,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-12-04',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'featuredGameIconURL': dict({
+          'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_1024',
+          'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_3',
+          'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_512',
+          'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_256',
+          'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_128',
+        }),
+        'miscTime': 0,
+        'players': list([
+          dict({
+            'chatHistory': list([
+            ]),
+            'firstChattedFriendshipIds': list([
+            ]),
+            'playedGames': list([
+              dict({
+                'meta': dict({
+                  'applicationId': '0100152000022000',
+                  'hasUgc': False,
+                  'imageUri': dict({
+                    'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_1024',
+                    'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_3',
+                    'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_512',
+                    'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_256',
+                    'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_128',
+                  }),
+                  'shopUri': 'https://ec.nintendo.com/apps/0100152000022000/GB?lang=en-GB',
+                  'title': 'five',
+                }),
+                'playingTime': 15,
+              }),
+            ]),
+            'playingTime': 15,
+            'profile': dict({
+              'imageUri': 'https://placekitten.com/861/237',
+              'nickname': 'cheyenne19',
+              'nsaId': None,
+              'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+            }),
+          }),
+        ]),
+        'playingTime': 15,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-12-03',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'miscTime': 0,
+        'nonFeaturedGameCount': -1,
+        'players': list([
+        ]),
+        'playingTime': 0,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-12-02',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'miscTime': 0,
+        'nonFeaturedGameCount': -1,
+        'players': list([
+        ]),
+        'playingTime': 0,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-12-01',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'miscTime': 0,
+        'nonFeaturedGameCount': -1,
+        'players': list([
+        ]),
+        'playingTime': 0,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-11-30',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'miscTime': 0,
+        'nonFeaturedGameCount': -1,
+        'players': list([
+        ]),
+        'playingTime': 0,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-11-29',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'miscTime': 0,
+        'nonFeaturedGameCount': -1,
+        'players': list([
+        ]),
+        'playingTime': 0,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-11-28',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'miscTime': 0,
+        'nonFeaturedGameCount': -1,
+        'players': list([
+        ]),
+        'playingTime': 0,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-11-27',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'featuredGameIconURL': dict({
+          'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_1024',
+          'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_3',
+          'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_512',
+          'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_256',
+          'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_128',
+        }),
+        'miscTime': 1,
+        'players': list([
+          dict({
+            'chatHistory': list([
+            ]),
+            'firstChattedFriendshipIds': list([
+            ]),
+            'playedGames': list([
+              dict({
+                'meta': dict({
+                  'applicationId': '01006F8002326000',
+                  'hasUgc': True,
+                  'imageUri': dict({
+                    'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_1024',
+                    'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_3',
+                    'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_512',
+                    'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_256',
+                    'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_128',
+                  }),
+                  'shopUri': 'https://ec.nintendo.com/apps/01006f8002326000/GB?lang=en-GB',
+                  'title': 'poor',
+                }),
+                'playingTime': 50,
+              }),
+            ]),
+            'playingTime': 50,
+            'profile': dict({
+              'imageUri': 'https://dummyimage.com/369x939',
+              'nickname': 'cheyenne19',
+              'nsaId': None,
+              'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+            }),
+          }),
+        ]),
+        'playingTime': 50,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-11-26',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'miscTime': 0,
+        'nonFeaturedGameCount': -1,
+        'players': list([
+        ]),
+        'playingTime': 0,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-11-25',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'miscTime': 0,
+        'nonFeaturedGameCount': -1,
+        'players': list([
+        ]),
+        'playingTime': 0,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-11-24',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'miscTime': 0,
+        'nonFeaturedGameCount': -1,
+        'players': list([
+        ]),
+        'playingTime': 0,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-11-23',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'featuredGameIconURL': dict({
+          'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_1024',
+          'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_3',
+          'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_512',
+          'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_256',
+          'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_128',
+        }),
+        'miscTime': 3,
+        'players': list([
+          dict({
+            'chatHistory': list([
+            ]),
+            'firstChattedFriendshipIds': list([
+            ]),
+            'playedGames': list([
+              dict({
+                'meta': dict({
+                  'applicationId': '0100D71004694000',
+                  'hasUgc': True,
+                  'imageUri': dict({
+                    'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_1024',
+                    'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_3',
+                    'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_512',
+                    'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_256',
+                    'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_128',
+                  }),
+                  'shopUri': 'https://ec.nintendo.com/apps/0100d71004694000/GB?lang=en-GB',
+                  'title': 'around',
+                }),
+                'playingTime': 40,
+              }),
+            ]),
+            'playingTime': 40,
+            'profile': dict({
+              'imageUri': 'https://picsum.photos/108/69',
+              'nickname': 'cheyenne19',
+              'nsaId': None,
+              'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+            }),
+          }),
+        ]),
+        'playingTime': 45,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-11-22',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'miscTime': 0,
+        'nonFeaturedGameCount': -1,
+        'players': list([
+        ]),
+        'playingTime': 0,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-11-21',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'miscTime': 0,
+        'nonFeaturedGameCount': -1,
+        'players': list([
+        ]),
+        'playingTime': 0,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-11-20',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'miscTime': 0,
+        'nonFeaturedGameCount': -1,
+        'players': list([
+        ]),
+        'playingTime': 0,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-11-19',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'miscTime': 0,
+        'nonFeaturedGameCount': -1,
+        'players': list([
+        ]),
+        'playingTime': 0,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-11-18',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'miscTime': 0,
+        'nonFeaturedGameCount': -1,
+        'players': list([
+        ]),
+        'playingTime': 0,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-11-17',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'miscTime': 0,
+        'nonFeaturedGameCount': -1,
+        'players': list([
+        ]),
+        'playingTime': 0,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-11-16',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'miscTime': 0,
+        'nonFeaturedGameCount': -1,
+        'players': list([
+        ]),
+        'playingTime': 0,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-11-15',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'featuredGameIconURL': dict({
+          'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_1024',
+          'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_3',
+          'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_512',
+          'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_256',
+          'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_128',
+        }),
+        'miscTime': 15,
+        'nonFeaturedGameCount': 1,
+        'players': list([
+          dict({
+            'chatHistory': list([
+            ]),
+            'firstChattedFriendshipIds': list([
+            ]),
+            'playedGames': list([
+              dict({
+                'meta': dict({
+                  'applicationId': '010042D00D900000',
+                  'hasUgc': False,
+                  'imageUri': dict({
+                    'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_1024',
+                    'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_3',
+                    'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_512',
+                    'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_256',
+                    'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_128',
+                  }),
+                  'shopUri': 'https://ec.nintendo.com/apps/010042d00d900000/GB?lang=en-GB',
+                  'title': 'government',
+                }),
+                'playingTime': 75,
+              }),
+              dict({
+                'meta': dict({
+                  'applicationId': '0100152000022000',
+                  'hasUgc': False,
+                  'imageUri': dict({
+                    'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_1024',
+                    'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_3',
+                    'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_512',
+                    'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_256',
+                    'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_128',
+                  }),
+                  'shopUri': 'https://ec.nintendo.com/apps/0100152000022000/GB?lang=en-GB',
+                  'title': 'five',
+                }),
+                'playingTime': 70,
+              }),
+            ]),
+            'playingTime': 150,
+            'profile': dict({
+              'imageUri': 'https://dummyimage.com/406x657',
+              'nickname': 'cheyenne19',
+              'nsaId': None,
+              'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+            }),
+          }),
+        ]),
+        'playingTime': 170,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-11-14',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'featuredGameIconURL': dict({
+          'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_1024',
+          'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_3',
+          'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_512',
+          'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_256',
+          'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_128',
+        }),
+        'miscTime': 0,
+        'players': list([
+          dict({
+            'chatHistory': list([
+            ]),
+            'firstChattedFriendshipIds': list([
+            ]),
+            'playedGames': list([
+              dict({
+                'meta': dict({
+                  'applicationId': '010042D00D900000',
+                  'hasUgc': False,
+                  'imageUri': dict({
+                    'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_1024',
+                    'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_3',
+                    'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_512',
+                    'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_256',
+                    'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_128',
+                  }),
+                  'shopUri': 'https://ec.nintendo.com/apps/010042d00d900000/GB?lang=en-GB',
+                  'title': 'government',
+                }),
+                'playingTime': 1,
+              }),
+            ]),
+            'playingTime': 1,
+            'profile': dict({
+              'imageUri': 'https://dummyimage.com/248x849',
+              'nickname': 'cheyenne19',
+              'nsaId': None,
+              'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+            }),
+          }),
+        ]),
+        'playingTime': 1,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-11-13',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'featuredGameIconURL': dict({
+          'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_1024',
+          'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_3',
+          'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_512',
+          'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_256',
+          'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_128',
+        }),
+        'miscTime': 3,
+        'players': list([
+          dict({
+            'chatHistory': list([
+            ]),
+            'firstChattedFriendshipIds': list([
+            ]),
+            'playedGames': list([
+              dict({
+                'meta': dict({
+                  'applicationId': '010042D00D900000',
+                  'hasUgc': False,
+                  'imageUri': dict({
+                    'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_1024',
+                    'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_3',
+                    'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_512',
+                    'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_256',
+                    'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_128',
+                  }),
+                  'shopUri': 'https://ec.nintendo.com/apps/010042d00d900000/GB?lang=en-GB',
+                  'title': 'government',
+                }),
+                'playingTime': 40,
+              }),
+            ]),
+            'playingTime': 40,
+            'profile': dict({
+              'imageUri': 'https://placekitten.com/497/103',
+              'nickname': 'cheyenne19',
+              'nsaId': None,
+              'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+            }),
+          }),
+        ]),
+        'playingTime': 45,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-11-12',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'featuredGameIconURL': dict({
+          'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_1024',
+          'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_3',
+          'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_512',
+          'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_256',
+          'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_128',
+        }),
+        'miscTime': 20,
+        'players': list([
+          dict({
+            'chatHistory': list([
+            ]),
+            'firstChattedFriendshipIds': list([
+            ]),
+            'playedGames': list([
+              dict({
+                'meta': dict({
+                  'applicationId': '010042D00D900000',
+                  'hasUgc': False,
+                  'imageUri': dict({
+                    'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_1024',
+                    'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_3',
+                    'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_512',
+                    'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_256',
+                    'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_128',
+                  }),
+                  'shopUri': 'https://ec.nintendo.com/apps/010042d00d900000/GB?lang=en-GB',
+                  'title': 'government',
+                }),
+                'playingTime': 50,
+              }),
+            ]),
+            'playingTime': 50,
+            'profile': dict({
+              'imageUri': 'https://picsum.photos/22/977',
+              'nickname': 'cheyenne19',
+              'nsaId': None,
+              'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+            }),
+          }),
+        ]),
+        'playingTime': 70,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-11-11',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'miscTime': 0,
+        'nonFeaturedGameCount': -1,
+        'players': list([
+        ]),
+        'playingTime': 0,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-11-10',
+        'disabledTime': 0,
+        'events': dict({
+          'addedExtraPlayingTime': True,
+        }),
+        'exceededTime': 0,
+        'featuredGameIconURL': dict({
+          'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_1024',
+          'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_3',
+          'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_512',
+          'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_256',
+          'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_128',
+        }),
+        'miscTime': 1,
+        'players': list([
+          dict({
+            'chatHistory': list([
+            ]),
+            'firstChattedFriendshipIds': list([
+            ]),
+            'playedGames': list([
+              dict({
+                'meta': dict({
+                  'applicationId': '010042D00D900000',
+                  'hasUgc': False,
+                  'imageUri': dict({
+                    'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_1024',
+                    'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_3',
+                    'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_512',
+                    'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_256',
+                    'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_128',
+                  }),
+                  'shopUri': 'https://ec.nintendo.com/apps/010042d00d900000/GB?lang=en-GB',
+                  'title': 'government',
+                }),
+                'playingTime': 155,
+              }),
+            ]),
+            'playingTime': 155,
+            'profile': dict({
+              'imageUri': 'https://placekitten.com/888/936',
+              'nickname': 'cheyenne19',
+              'nsaId': None,
+              'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+            }),
+          }),
+        ]),
+        'playingTime': 155,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-11-09',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'featuredGameIconURL': dict({
+          'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_1024',
+          'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_3',
+          'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_512',
+          'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_256',
+          'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_128',
+        }),
+        'miscTime': 1,
+        'nonFeaturedGameCount': 1,
+        'players': list([
+          dict({
+            'chatHistory': list([
+            ]),
+            'firstChattedFriendshipIds': list([
+            ]),
+            'playedGames': list([
+              dict({
+                'meta': dict({
+                  'applicationId': '010042D00D900000',
+                  'hasUgc': False,
+                  'imageUri': dict({
+                    'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_1024',
+                    'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_3',
+                    'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_512',
+                    'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_256',
+                    'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_128',
+                  }),
+                  'shopUri': 'https://ec.nintendo.com/apps/010042d00d900000/GB?lang=en-GB',
+                  'title': 'government',
+                }),
+                'playingTime': 455,
+              }),
+              dict({
+                'meta': dict({
+                  'applicationId': '0100152000022000',
+                  'hasUgc': False,
+                  'imageUri': dict({
+                    'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_1024',
+                    'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_3',
+                    'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_512',
+                    'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_256',
+                    'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_128',
+                  }),
+                  'shopUri': 'https://ec.nintendo.com/apps/0100152000022000/GB?lang=en-GB',
+                  'title': 'five',
+                }),
+                'playingTime': 20,
+              }),
+            ]),
+            'playingTime': 475,
+            'profile': dict({
+              'imageUri': 'https://dummyimage.com/520x36',
+              'nickname': 'cheyenne19',
+              'nsaId': None,
+              'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+            }),
+          }),
+        ]),
+        'playingTime': 480,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+      dict({
+        'date': '2025-11-08',
+        'disabledTime': 0,
+        'events': dict({
+        }),
+        'exceededTime': 0,
+        'featuredGameIconURL': dict({
+          'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_1024',
+          'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_3',
+          'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_512',
+          'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_256',
+          'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_128',
+        }),
+        'miscTime': 10,
+        'nonFeaturedGameCount': 3,
+        'players': list([
+          dict({
+            'chatHistory': list([
+            ]),
+            'firstChattedFriendshipIds': list([
+            ]),
+            'playedGames': list([
+              dict({
+                'meta': dict({
+                  'applicationId': '010042D00D900000',
+                  'hasUgc': False,
+                  'imageUri': dict({
+                    'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_1024',
+                    'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_3',
+                    'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_512',
+                    'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_256',
+                    'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_128',
+                  }),
+                  'shopUri': 'https://ec.nintendo.com/apps/010042d00d900000/GB?lang=en-GB',
+                  'title': 'government',
+                }),
+                'playingTime': 215,
+              }),
+              dict({
+                'meta': dict({
+                  'applicationId': '01007430037F6000',
+                  'hasUgc': False,
+                  'imageUri': dict({
+                    'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_1024',
+                    'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_3',
+                    'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_512',
+                    'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_256',
+                    'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_128',
+                  }),
+                  'shopUri': 'https://ec.nintendo.com/apps/01007430037f6000/GB?lang=en-GB',
+                  'title': 'record',
+                }),
+                'playingTime': 50,
+              }),
+              dict({
+                'meta': dict({
+                  'applicationId': '01006F8002326000',
+                  'hasUgc': True,
+                  'imageUri': dict({
+                    'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_1024',
+                    'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_3',
+                    'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_512',
+                    'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_256',
+                    'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_128',
+                  }),
+                  'shopUri': 'https://ec.nintendo.com/apps/01006f8002326000/GB?lang=en-GB',
+                  'title': 'poor',
+                }),
+                'playingTime': 25,
+              }),
+              dict({
+                'meta': dict({
+                  'applicationId': '0100D2F00D5C0000',
+                  'hasUgc': False,
+                  'imageUri': dict({
+                    'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_1024',
+                    'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_3',
+                    'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_512',
+                    'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_256',
+                    'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_128',
+                  }),
+                  'shopUri': 'https://ec.nintendo.com/apps/0100d2f00d5c0000/GB?lang=en-GB',
+                  'title': 'fish',
+                }),
+                'playingTime': 15,
+              }),
+            ]),
+            'playingTime': 315,
+            'profile': dict({
+              'imageUri': 'https://placekitten.com/46/491',
+              'nickname': 'cheyenne19',
+              'nsaId': None,
+              'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+            }),
+          }),
+          dict({
+            'chatHistory': list([
+            ]),
+            'firstChattedFriendshipIds': list([
+            ]),
+            'playedGames': list([
+              dict({
+                'meta': dict({
+                  'applicationId': '010042D00D900000',
+                  'hasUgc': False,
+                  'imageUri': dict({
+                    'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_1024',
+                    'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_3',
+                    'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_512',
+                    'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_256',
+                    'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_128',
+                  }),
+                  'shopUri': 'https://ec.nintendo.com/apps/010042d00d900000/GB?lang=en-GB',
+                  'title': 'government',
+                }),
+                'playingTime': 4,
+              }),
+            ]),
+            'playingTime': 4,
+            'profile': dict({
+              'imageUri': 'https://placekitten.com/881/472',
+              'nickname': 'pwright',
+              'nsaId': None,
+              'playerId': 'D0EF9C35BCB3C998BFFC1D00CE92943AC50',
+            }),
+          }),
+        ]),
+        'playingTime': 330,
+        'result': 'ACHIEVED',
+        'timeZoneUtcOffsetSeconds': 0,
+      }),
+    ]),
+    'device_id': '567D0B5EA9582FB7',
+    'extra': dict({
+      'activated': True,
+      'alarmSetting': dict({
+        'invisibleUntil': 0,
+        'visibility': 'VISIBLE',
+      }),
+      'createdAt': 1644690103,
+      'externalNickname': 'lauren11',
+      'extraPlayingTime': None,
+      'firmwareVersion': dict({
+        'displayedVersion': '21.0.1',
+        'internalVersion': 1376257,
+      }),
+      'iconUri': dict({
+        'darkTheme': dict({
+          'middle': 'https://wb.lp1.chameleon.srv.nintendo.net/img?pc=HAD&size=m&hmsDisplay=D8D8D8&theme=dark&hmsMain=323232&hmsSub=ffffff&hmsBezel=000000&hmsModel=0&lcMain=0ab9e6&lcSub=001e1e&rcMain=ff3c28&rcSub=1e0a0a',
+          'small': 'https://wb.lp1.chameleon.srv.nintendo.net/img?pc=HAD&size=s&hmsDisplay=D8D8D8&theme=dark&hmsMain=323232&hmsSub=ffffff&hmsBezel=000000&hmsModel=0&lcMain=0ab9e6&lcSub=001e1e&rcMain=ff3c28&rcSub=1e0a0a',
+        }),
+        'lightTheme': dict({
+          'middle': 'https://wb.lp1.chameleon.srv.nintendo.net/img?pc=HAD&size=m&hmsDisplay=D8D8D8&theme=light&hmsMain=323232&hmsSub=ffffff&hmsBezel=000000&hmsModel=0&lcMain=0ab9e6&lcSub=001e1e&rcMain=ff3c28&rcSub=1e0a0a',
+          'small': 'https://wb.lp1.chameleon.srv.nintendo.net/img?pc=HAD&size=s&hmsDisplay=D8D8D8&theme=light&hmsMain=323232&hmsSub=ffffff&hmsBezel=000000&hmsModel=0&lcMain=0ab9e6&lcSub=001e1e&rcMain=ff3c28&rcSub=1e0a0a',
+        }),
+      }),
+      'id': '567D0B5EA9582FB7',
+      'language': None,
+      'lastOnlineCheckedAt': 1644690127,
+      'links': dict({
+        'pairingCode': dict({
+          'code': '5228',
+          'createdAt': 1644690103,
+          'expiresAt': 1644690128,
+        }),
+      }),
+      'notificationToken': 'T7v8I3X9o7R5U2l3',
+      'platformGeneration': 'P00',
+      'region': 'EUROPE',
+      'serialNumber': '2583005768963',
+      'synchronizedParentalControlSetting': dict({
+        'synchronizedAt': 1764260259,
+        'synchronizedEtag': '2205768906795',
+      }),
+      'synchronizedUnlockCode': '5857',
+      'timeZone': 'Europe/London',
+      'updatedAt': 1764668290,
+    }),
+    'extra_playing_time': None,
+    'forced_termination_mode': False,
+    'last_month_playing_time': 0,
+    'last_month_summary': dict({
+      'overall': dict({
+        'chat': dict({
+          'players': list([
+          ]),
+        }),
+        'dailyStats': list([
+          dict({
+            'date': '2025-11-01',
+            'games': dict({
+            }),
+            'totalTime': 0,
+          }),
+          dict({
+            'date': '2025-11-02',
+            'games': dict({
+              '01006F8002326000': dict({
+                'totalTime': 10,
+              }),
+            }),
+            'totalTime': 15,
+          }),
+          dict({
+            'date': '2025-11-03',
+            'games': dict({
+            }),
+            'totalTime': 0,
+          }),
+          dict({
+            'date': '2025-11-04',
+            'games': dict({
+            }),
+            'totalTime': 0,
+          }),
+          dict({
+            'date': '2025-11-05',
+            'games': dict({
+            }),
+            'totalTime': 0,
+          }),
+          dict({
+            'date': '2025-11-06',
+            'games': dict({
+              '0100D71004694000': dict({
+                'totalTime': 15,
+              }),
+            }),
+            'totalTime': 15,
+          }),
+          dict({
+            'date': '2025-11-07',
+            'games': dict({
+            }),
+            'totalTime': 0,
+          }),
+          dict({
+            'date': '2025-11-08',
+            'games': dict({
+              '010042D00D900000': dict({
+                'totalTime': 220,
+              }),
+              '01006F8002326000': dict({
+                'totalTime': 25,
+              }),
+              '01007430037F6000': dict({
+                'totalTime': 50,
+              }),
+              '0100D2F00D5C0000': dict({
+                'totalTime': 15,
+              }),
+            }),
+            'totalTime': 330,
+          }),
+          dict({
+            'date': '2025-11-09',
+            'games': dict({
+              '0100152000022000': dict({
+                'totalTime': 20,
+              }),
+              '010042D00D900000': dict({
+                'totalTime': 455,
+              }),
+            }),
+            'totalTime': 480,
+          }),
+          dict({
+            'date': '2025-11-10',
+            'games': dict({
+              '010042D00D900000': dict({
+                'totalTime': 155,
+              }),
+            }),
+            'totalTime': 155,
+          }),
+          dict({
+            'date': '2025-11-11',
+            'games': dict({
+            }),
+            'totalTime': 0,
+          }),
+          dict({
+            'date': '2025-11-12',
+            'games': dict({
+              '010042D00D900000': dict({
+                'totalTime': 50,
+              }),
+            }),
+            'totalTime': 70,
+          }),
+          dict({
+            'date': '2025-11-13',
+            'games': dict({
+              '010042D00D900000': dict({
+                'totalTime': 40,
+              }),
+            }),
+            'totalTime': 45,
+          }),
+          dict({
+            'date': '2025-11-14',
+            'games': dict({
+              '010042D00D900000': dict({
+                'totalTime': 1,
+              }),
+            }),
+            'totalTime': 1,
+          }),
+          dict({
+            'date': '2025-11-15',
+            'games': dict({
+              '0100152000022000': dict({
+                'totalTime': 70,
+              }),
+              '010042D00D900000': dict({
+                'totalTime': 75,
+              }),
+            }),
+            'totalTime': 170,
+          }),
+          dict({
+            'date': '2025-11-16',
+            'games': dict({
+            }),
+            'totalTime': 0,
+          }),
+          dict({
+            'date': '2025-11-17',
+            'games': dict({
+            }),
+            'totalTime': 0,
+          }),
+          dict({
+            'date': '2025-11-18',
+            'games': dict({
+            }),
+            'totalTime': 0,
+          }),
+          dict({
+            'date': '2025-11-19',
+            'games': dict({
+            }),
+            'totalTime': 0,
+          }),
+          dict({
+            'date': '2025-11-20',
+            'games': dict({
+            }),
+            'totalTime': 0,
+          }),
+          dict({
+            'date': '2025-11-21',
+            'games': dict({
+            }),
+            'totalTime': 0,
+          }),
+          dict({
+            'date': '2025-11-22',
+            'games': dict({
+            }),
+            'totalTime': 0,
+          }),
+          dict({
+            'date': '2025-11-23',
+            'games': dict({
+              '0100D71004694000': dict({
+                'totalTime': 40,
+              }),
+            }),
+            'totalTime': 45,
+          }),
+          dict({
+            'date': '2025-11-24',
+            'games': dict({
+            }),
+            'totalTime': 0,
+          }),
+          dict({
+            'date': '2025-11-25',
+            'games': dict({
+            }),
+            'totalTime': 0,
+          }),
+          dict({
+            'date': '2025-11-26',
+            'games': dict({
+            }),
+            'totalTime': 0,
+          }),
+          dict({
+            'date': '2025-11-27',
+            'games': dict({
+              '01006F8002326000': dict({
+                'totalTime': 50,
+              }),
+            }),
+            'totalTime': 50,
+          }),
+          dict({
+            'date': '2025-11-28',
+            'games': dict({
+            }),
+            'totalTime': 0,
+          }),
+          dict({
+            'date': '2025-11-29',
+            'games': dict({
+            }),
+            'totalTime': 0,
+          }),
+          dict({
+            'date': '2025-11-30',
+            'games': dict({
+            }),
+            'totalTime': 0,
+          }),
+        ]),
+        'ranking': list([
+          dict({
+            'position': 'UP',
+            'stat': dict({
+              'meta': dict({
+                'applicationId': '010042D00D900000',
+                'hasUgc': False,
+                'imageUri': dict({
+                  'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_1024',
+                  'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_3',
+                  'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_512',
+                  'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_256',
+                  'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_128',
+                }),
+                'shopUri': 'https://ec.nintendo.com/apps/010042d00d900000/GB?lang=en-GB',
+                'title': 'government',
+              }),
+              'players': list([
+                dict({
+                  'imageUri': 'https://dummyimage.com/364x803',
+                  'nickname': 'pwright',
+                  'nsaId': None,
+                  'playerId': 'D0EF9C35BCB3C998BFFC1D00CE92943AC50',
+                }),
+                dict({
+                  'imageUri': 'https://placekitten.com/247/706',
+                  'nickname': 'cheyenne19',
+                  'nsaId': None,
+                  'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+                }),
+              ]),
+              'totalDays': 7,
+            }),
+          }),
+          dict({
+            'position': 'DOWN',
+            'stat': dict({
+              'meta': dict({
+                'applicationId': '01006F8002326000',
+                'hasUgc': True,
+                'imageUri': dict({
+                  'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_1024',
+                  'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_3',
+                  'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_512',
+                  'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_256',
+                  'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_128',
+                }),
+                'shopUri': 'https://ec.nintendo.com/apps/01006f8002326000/GB?lang=en-GB',
+                'title': 'poor',
+              }),
+              'players': list([
+                dict({
+                  'imageUri': 'https://picsum.photos/767/671',
+                  'nickname': 'cheyenne19',
+                  'nsaId': None,
+                  'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+                }),
+              ]),
+              'totalDays': 3,
+            }),
+          }),
+          dict({
+            'position': 'DOWN',
+            'stat': dict({
+              'meta': dict({
+                'applicationId': '0100D71004694000',
+                'hasUgc': True,
+                'imageUri': dict({
+                  'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_1024',
+                  'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_3',
+                  'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_512',
+                  'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_256',
+                  'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_128',
+                }),
+                'shopUri': 'https://ec.nintendo.com/apps/0100d71004694000/GB?lang=en-GB',
+                'title': 'around',
+              }),
+              'players': list([
+                dict({
+                  'imageUri': 'https://picsum.photos/304/669',
+                  'nickname': 'cheyenne19',
+                  'nsaId': None,
+                  'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+                }),
+              ]),
+              'totalDays': 2,
+            }),
+          }),
+          dict({
+            'position': 'UP',
+            'stat': dict({
+              'meta': dict({
+                'applicationId': '0100152000022000',
+                'hasUgc': False,
+                'imageUri': dict({
+                  'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_1024',
+                  'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_3',
+                  'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_512',
+                  'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_256',
+                  'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_128',
+                }),
+                'shopUri': 'https://ec.nintendo.com/apps/0100152000022000/GB?lang=en-GB',
+                'title': 'five',
+              }),
+              'players': list([
+                dict({
+                  'imageUri': 'https://dummyimage.com/783x233',
+                  'nickname': 'cheyenne19',
+                  'nsaId': None,
+                  'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+                }),
+              ]),
+              'totalDays': 2,
+            }),
+          }),
+          dict({
+            'position': 'UP',
+            'stat': dict({
+              'anonymousPlayed': True,
+              'meta': dict({
+                'applicationId': '0100D2F00D5C0000',
+                'hasUgc': False,
+                'imageUri': dict({
+                  'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_1024',
+                  'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_3',
+                  'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_512',
+                  'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_256',
+                  'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_128',
+                }),
+                'shopUri': 'https://ec.nintendo.com/apps/0100d2f00d5c0000/GB?lang=en-GB',
+                'title': 'fish',
+              }),
+              'players': list([
+                dict({
+                  'imageUri': 'https://picsum.photos/56/862',
+                  'nickname': 'cheyenne19',
+                  'nsaId': None,
+                  'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+                }),
+              ]),
+              'totalDays': 1,
+            }),
+          }),
+          dict({
+            'position': 'DOWN',
+            'stat': dict({
+              'meta': dict({
+                'applicationId': '01007430037F6000',
+                'hasUgc': False,
+                'imageUri': dict({
+                  'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_1024',
+                  'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_3',
+                  'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_512',
+                  'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_256',
+                  'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_128',
+                }),
+                'shopUri': 'https://ec.nintendo.com/apps/01007430037f6000/GB?lang=en-GB',
+                'title': 'record',
+              }),
+              'players': list([
+                dict({
+                  'imageUri': 'https://placekitten.com/27/663',
+                  'nickname': 'cheyenne19',
+                  'nsaId': None,
+                  'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+                }),
+              ]),
+              'totalDays': 1,
+            }),
+          }),
+        ]),
+        'stat': dict({
+          'averageTime': 125,
+          'totalDays': 11,
+        }),
+      }),
+      'players': list([
+        dict({
+          'profile': dict({
+            'imageUri': 'https://picsum.photos/170/917',
+            'nickname': 'pwright',
+            'nsaId': None,
+            'playerId': 'D0EF9C35BCB3C998BFFC1D00CE92943AC50',
+          }),
+          'summary': dict({
+            'chat': dict({
+              'members': list([
+              ]),
+            }),
+            'dailyStats': list([
+              dict({
+                'date': '2025-11-01',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-02',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-03',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-04',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-05',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-06',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-07',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-08',
+                'games': dict({
+                  '010042D00D900000': dict({
+                    'totalTime': 4,
+                  }),
+                }),
+                'totalTime': 4,
+              }),
+              dict({
+                'date': '2025-11-09',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-10',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-11',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-12',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-13',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-14',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-15',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-16',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-17',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-18',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-19',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-20',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-21',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-22',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-23',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-24',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-25',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-26',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-27',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-28',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-29',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-30',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+            ]),
+            'ranking': list([
+              dict({
+                'position': 'UP',
+                'stat': dict({
+                  'meta': dict({
+                    'applicationId': '010042D00D900000',
+                    'hasUgc': False,
+                    'imageUri': dict({
+                      'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_1024',
+                      'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_3',
+                      'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_512',
+                      'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_256',
+                      'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_128',
+                    }),
+                    'shopUri': 'https://ec.nintendo.com/apps/010042d00d900000/GB?lang=en-GB',
+                    'title': 'government',
+                  }),
+                  'players': list([
+                    dict({
+                      'imageUri': 'https://picsum.photos/674/86',
+                      'nickname': 'pwright',
+                      'nsaId': None,
+                      'playerId': 'D0EF9C35BCB3C998BFFC1D00CE92943AC50',
+                    }),
+                  ]),
+                  'totalDays': 1,
+                }),
+              }),
+            ]),
+            'stat': dict({
+              'averageTime': 4,
+              'totalDays': 1,
+            }),
+          }),
+        }),
+        dict({
+          'profile': dict({
+            'imageUri': 'https://dummyimage.com/435x620',
+            'nickname': 'cheyenne19',
+            'nsaId': None,
+            'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+          }),
+          'summary': dict({
+            'chat': dict({
+              'members': list([
+              ]),
+            }),
+            'dailyStats': list([
+              dict({
+                'date': '2025-11-01',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-02',
+                'games': dict({
+                  '01006F8002326000': dict({
+                    'totalTime': 10,
+                  }),
+                }),
+                'totalTime': 10,
+              }),
+              dict({
+                'date': '2025-11-03',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-04',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-05',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-06',
+                'games': dict({
+                  '0100D71004694000': dict({
+                    'totalTime': 15,
+                  }),
+                }),
+                'totalTime': 15,
+              }),
+              dict({
+                'date': '2025-11-07',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-08',
+                'games': dict({
+                  '010042D00D900000': dict({
+                    'totalTime': 215,
+                  }),
+                  '01006F8002326000': dict({
+                    'totalTime': 25,
+                  }),
+                  '01007430037F6000': dict({
+                    'totalTime': 50,
+                  }),
+                  '0100D2F00D5C0000': dict({
+                    'totalTime': 15,
+                  }),
+                }),
+                'totalTime': 315,
+              }),
+              dict({
+                'date': '2025-11-09',
+                'games': dict({
+                  '0100152000022000': dict({
+                    'totalTime': 20,
+                  }),
+                  '010042D00D900000': dict({
+                    'totalTime': 455,
+                  }),
+                }),
+                'totalTime': 475,
+              }),
+              dict({
+                'date': '2025-11-10',
+                'games': dict({
+                  '010042D00D900000': dict({
+                    'totalTime': 155,
+                  }),
+                }),
+                'totalTime': 155,
+              }),
+              dict({
+                'date': '2025-11-11',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-12',
+                'games': dict({
+                  '010042D00D900000': dict({
+                    'totalTime': 50,
+                  }),
+                }),
+                'totalTime': 50,
+              }),
+              dict({
+                'date': '2025-11-13',
+                'games': dict({
+                  '010042D00D900000': dict({
+                    'totalTime': 40,
+                  }),
+                }),
+                'totalTime': 40,
+              }),
+              dict({
+                'date': '2025-11-14',
+                'games': dict({
+                  '010042D00D900000': dict({
+                    'totalTime': 1,
+                  }),
+                }),
+                'totalTime': 1,
+              }),
+              dict({
+                'date': '2025-11-15',
+                'games': dict({
+                  '0100152000022000': dict({
+                    'totalTime': 70,
+                  }),
+                  '010042D00D900000': dict({
+                    'totalTime': 75,
+                  }),
+                }),
+                'totalTime': 150,
+              }),
+              dict({
+                'date': '2025-11-16',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-17',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-18',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-19',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-20',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-21',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-22',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-23',
+                'games': dict({
+                  '0100D71004694000': dict({
+                    'totalTime': 40,
+                  }),
+                }),
+                'totalTime': 40,
+              }),
+              dict({
+                'date': '2025-11-24',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-25',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-26',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-27',
+                'games': dict({
+                  '01006F8002326000': dict({
+                    'totalTime': 50,
+                  }),
+                }),
+                'totalTime': 50,
+              }),
+              dict({
+                'date': '2025-11-28',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-29',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-30',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+            ]),
+            'ranking': list([
+              dict({
+                'position': 'UP',
+                'stat': dict({
+                  'meta': dict({
+                    'applicationId': '010042D00D900000',
+                    'hasUgc': False,
+                    'imageUri': dict({
+                      'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_1024',
+                      'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_3',
+                      'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_512',
+                      'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_256',
+                      'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_128',
+                    }),
+                    'shopUri': 'https://ec.nintendo.com/apps/010042d00d900000/GB?lang=en-GB',
+                    'title': 'government',
+                  }),
+                  'players': list([
+                    dict({
+                      'imageUri': 'https://dummyimage.com/141x987',
+                      'nickname': 'cheyenne19',
+                      'nsaId': None,
+                      'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+                    }),
+                  ]),
+                  'totalDays': 7,
+                }),
+              }),
+              dict({
+                'position': 'DOWN',
+                'stat': dict({
+                  'meta': dict({
+                    'applicationId': '01006F8002326000',
+                    'hasUgc': True,
+                    'imageUri': dict({
+                      'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_1024',
+                      'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_3',
+                      'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_512',
+                      'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_256',
+                      'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_128',
+                    }),
+                    'shopUri': 'https://ec.nintendo.com/apps/01006f8002326000/GB?lang=en-GB',
+                    'title': 'poor',
+                  }),
+                  'players': list([
+                    dict({
+                      'imageUri': 'https://dummyimage.com/416x560',
+                      'nickname': 'cheyenne19',
+                      'nsaId': None,
+                      'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+                    }),
+                  ]),
+                  'totalDays': 3,
+                }),
+              }),
+              dict({
+                'position': 'DOWN',
+                'stat': dict({
+                  'meta': dict({
+                    'applicationId': '0100D71004694000',
+                    'hasUgc': True,
+                    'imageUri': dict({
+                      'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_1024',
+                      'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_3',
+                      'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_512',
+                      'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_256',
+                      'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_128',
+                    }),
+                    'shopUri': 'https://ec.nintendo.com/apps/0100d71004694000/GB?lang=en-GB',
+                    'title': 'around',
+                  }),
+                  'players': list([
+                    dict({
+                      'imageUri': 'https://dummyimage.com/920x958',
+                      'nickname': 'cheyenne19',
+                      'nsaId': None,
+                      'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+                    }),
+                  ]),
+                  'totalDays': 2,
+                }),
+              }),
+              dict({
+                'position': 'UP',
+                'stat': dict({
+                  'meta': dict({
+                    'applicationId': '0100152000022000',
+                    'hasUgc': False,
+                    'imageUri': dict({
+                      'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_1024',
+                      'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_3',
+                      'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_512',
+                      'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_256',
+                      'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_128',
+                    }),
+                    'shopUri': 'https://ec.nintendo.com/apps/0100152000022000/GB?lang=en-GB',
+                    'title': 'five',
+                  }),
+                  'players': list([
+                    dict({
+                      'imageUri': 'https://placekitten.com/172/168',
+                      'nickname': 'cheyenne19',
+                      'nsaId': None,
+                      'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+                    }),
+                  ]),
+                  'totalDays': 2,
+                }),
+              }),
+              dict({
+                'position': 'UP',
+                'stat': dict({
+                  'meta': dict({
+                    'applicationId': '0100D2F00D5C0000',
+                    'hasUgc': False,
+                    'imageUri': dict({
+                      'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_1024',
+                      'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_3',
+                      'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_512',
+                      'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_256',
+                      'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_128',
+                    }),
+                    'shopUri': 'https://ec.nintendo.com/apps/0100d2f00d5c0000/GB?lang=en-GB',
+                    'title': 'fish',
+                  }),
+                  'players': list([
+                    dict({
+                      'imageUri': 'https://dummyimage.com/945x511',
+                      'nickname': 'cheyenne19',
+                      'nsaId': None,
+                      'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+                    }),
+                  ]),
+                  'totalDays': 1,
+                }),
+              }),
+              dict({
+                'position': 'DOWN',
+                'stat': dict({
+                  'meta': dict({
+                    'applicationId': '01007430037F6000',
+                    'hasUgc': False,
+                    'imageUri': dict({
+                      'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_1024',
+                      'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_3',
+                      'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_512',
+                      'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_256',
+                      'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_128',
+                    }),
+                    'shopUri': 'https://ec.nintendo.com/apps/01007430037f6000/GB?lang=en-GB',
+                    'title': 'record',
+                  }),
+                  'players': list([
+                    dict({
+                      'imageUri': 'https://dummyimage.com/818x486',
+                      'nickname': 'cheyenne19',
+                      'nsaId': None,
+                      'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+                    }),
+                  ]),
+                  'totalDays': 1,
+                }),
+              }),
+            ]),
+            'stat': dict({
+              'averageTime': 115,
+              'totalDays': 11,
+            }),
+          }),
+        }),
+        dict({
+          'profile': dict({
+            'imageUri': 'https://picsum.photos/749/284',
+            'nickname': 'jeremy97',
+            'nsaId': None,
+            'playerId': 'A1E2F6FE45A23D7B68BB6FB207CFEFE8513',
+          }),
+          'summary': dict({
+            'chat': dict({
+              'members': list([
+              ]),
+            }),
+            'dailyStats': list([
+              dict({
+                'date': '2025-11-01',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-02',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-03',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-04',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-05',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-06',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-07',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-08',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-09',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-10',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-11',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-12',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-13',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-14',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-15',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-16',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-17',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-18',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-19',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-20',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-21',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-22',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-23',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-24',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-25',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-26',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-27',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-28',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-29',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-30',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+            ]),
+            'ranking': list([
+            ]),
+            'stat': dict({
+              'averageTime': 0,
+              'totalDays': 0,
+            }),
+          }),
+        }),
+        dict({
+          'profile': dict({
+            'imageUri': 'https://dummyimage.com/465x317',
+            'nickname': 'james02',
+            'nsaId': None,
+            'playerId': 'B305B292C1FF28D9CD7052AE75441EEB6CA',
+          }),
+          'summary': dict({
+            'chat': dict({
+              'members': list([
+              ]),
+            }),
+            'dailyStats': list([
+              dict({
+                'date': '2025-11-01',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-02',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-03',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-04',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-05',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-06',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-07',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-08',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-09',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-10',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-11',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-12',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-13',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-14',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-15',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-16',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-17',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-18',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-19',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-20',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-21',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-22',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-23',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-24',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-25',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-26',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-27',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-28',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-29',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-30',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+            ]),
+            'ranking': list([
+            ]),
+            'stat': dict({
+              'averageTime': 0,
+              'totalDays': 0,
+            }),
+          }),
+        }),
+        dict({
+          'profile': dict({
+            'imageUri': 'https://picsum.photos/150/863',
+            'nickname': 'kfreeman',
+            'nsaId': None,
+            'playerId': '1BAF1455C37B27713215C98CAA92C100829',
+          }),
+          'summary': dict({
+            'chat': dict({
+              'members': list([
+              ]),
+            }),
+            'dailyStats': list([
+              dict({
+                'date': '2025-11-01',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-02',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-03',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-04',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-05',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-06',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-07',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-08',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-09',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-10',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-11',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-12',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-13',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-14',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-15',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-16',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-17',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-18',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-19',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-20',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-21',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-22',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-23',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-24',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-25',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-26',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-27',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-28',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-29',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-30',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+            ]),
+            'ranking': list([
+            ]),
+            'stat': dict({
+              'averageTime': 0,
+              'totalDays': 0,
+            }),
+          }),
+        }),
+        dict({
+          'profile': dict({
+            'imageUri': 'https://picsum.photos/986/61',
+            'nickname': 'vanderson',
+            'nsaId': None,
+            'playerId': '3A47B7E8899F27176A6186770D2F399BE66',
+          }),
+          'summary': dict({
+            'chat': dict({
+              'members': list([
+              ]),
+            }),
+            'dailyStats': list([
+              dict({
+                'date': '2025-11-01',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-02',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-03',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-04',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-05',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-06',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-07',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-08',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-09',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-10',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-11',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-12',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-13',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-14',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-15',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-16',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-17',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-18',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-19',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-20',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-21',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-22',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-23',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-24',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-25',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-26',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-27',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-28',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-29',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+              dict({
+                'date': '2025-11-30',
+                'games': dict({
+                }),
+                'totalTime': 0,
+              }),
+            ]),
+            'ranking': list([
+            ]),
+            'stat': dict({
+              'averageTime': 0,
+              'totalDays': 0,
+            }),
+          }),
+        }),
+      ]),
+    }),
+    'limit_time': -1,
+    'month_playing_time': 15,
+    'name': 'early',
+    'parental_control_settings': dict({
+      'createdAt': 1644690128,
+      'customSettings': dict({
+        'ageRestriction': dict({
+          'ratingAge': 2,
+          'restriction': 'UNRESTRICTED',
+        }),
+        'ratingOrganization': 'PEGI_BBFC',
+        'snsPostRestriction': 'UNRESTRICTED',
+        'ugcRestriction': dict({
+          'applicationList': list([
+            dict({
+              'applicationId': '0100D71004694000',
+              'imageUri': 'https://picsum.photos/1012/13',
+              'restriction': 'UNRESTRICTED',
+              'title': 'around',
+            }),
+            dict({
+              'applicationId': '0100C9A00ECE6000',
+              'imageUri': 'https://dummyimage.com/940x436',
+              'restriction': 'UNRESTRICTED',
+              'title': 'too',
+            }),
+            dict({
+              'applicationId': '0100C3C015738000',
+              'imageUri': 'https://dummyimage.com/358x640',
+              'restriction': 'UNRESTRICTED',
+              'title': 'lead',
+            }),
+            dict({
+              'applicationId': '010096F00FF22000',
+              'imageUri': 'https://dummyimage.com/32x697',
+              'restriction': 'UNRESTRICTED',
+              'title': 'often',
+            }),
+            dict({
+              'applicationId': '01006F8002326000',
+              'imageUri': 'https://picsum.photos/379/370',
+              'restriction': 'UNRESTRICTED',
+              'title': 'poor',
+            }),
+            dict({
+              'applicationId': '010064800F66A000',
+              'imageUri': 'https://picsum.photos/671/317',
+              'restriction': 'UNRESTRICTED',
+              'title': 'particularly',
+            }),
+            dict({
+              'applicationId': '010029B0118E8000',
+              'imageUri': 'https://dummyimage.com/747x3',
+              'restriction': 'UNRESTRICTED',
+              'title': 'show',
+            }),
+            dict({
+              'applicationId': '010025400AECE000',
+              'imageUri': 'https://picsum.photos/837/9',
+              'restriction': 'UNRESTRICTED',
+              'title': 'dog',
+            }),
+            dict({
+              'applicationId': '010016A010396000',
+              'imageUri': 'https://placekitten.com/754/150',
+              'restriction': 'UNRESTRICTED',
+              'title': 'vote',
+            }),
+            dict({
+              'applicationId': '010012F017576000',
+              'imageUri': 'https://dummyimage.com/549x144',
+              'restriction': 'UNRESTRICTED',
+              'title': 'especially',
+            }),
+            dict({
+              'applicationId': '010007400FF24000',
+              'imageUri': 'https://placekitten.com/422/115',
+              'restriction': 'UNRESTRICTED',
+              'title': 'whether',
+            }),
+          ]),
+          'restriction': 'UNRESTRICTED',
+        }),
+        'vrRestriction': 'RESTRICTED',
+        'vrRestrictionEtag': '"d55d9d0cfb841330935109664cfb21a4933dd228c8e12cfd696ef0e5dc885425"',
+      }),
+      'deviceId': '567D0B5EA9582FB7',
+      'etag': '"7ed37dcd6e4aad33578c059e2de762512fcd59352189aa59e95f1e1fb7a82568"',
+      'functionalRestrictionLevel': 'CHILDREN',
+      'playTimerRegulations': dict({
+        'bedtimeStartingTime': dict({
+          'hour': 6,
+          'minute': 0,
+        }),
+        'dailyRegulations': dict({
+          'bedtime': dict({
+            'enabled': False,
+            'endingTime': None,
+            'startingTime': dict({
+              'hour': 6,
+              'minute': 0,
+            }),
+          }),
+          'timeToPlayInOneDay': dict({
+            'enabled': False,
+            'limitTime': None,
+          }),
+        }),
+        'eachDayOfTheWeekRegulations': dict({
+          'friday': dict({
+            'bedtime': dict({
+              'enabled': False,
+              'endingTime': None,
+              'startingTime': dict({
+                'hour': 6,
+                'minute': 0,
+              }),
+            }),
+            'timeToPlayInOneDay': dict({
+              'enabled': True,
+              'limitTime': 0,
+            }),
+          }),
+          'monday': dict({
+            'bedtime': dict({
+              'enabled': False,
+              'endingTime': None,
+              'startingTime': dict({
+                'hour': 6,
+                'minute': 0,
+              }),
+            }),
+            'timeToPlayInOneDay': dict({
+              'enabled': False,
+              'limitTime': None,
+            }),
+          }),
+          'saturday': dict({
+            'bedtime': dict({
+              'enabled': True,
+              'endingTime': dict({
+                'hour': 20,
+                'minute': 30,
+              }),
+              'startingTime': dict({
+                'hour': 6,
+                'minute': 0,
+              }),
+            }),
+            'timeToPlayInOneDay': dict({
+              'enabled': True,
+              'limitTime': 360,
+            }),
+          }),
+          'sunday': dict({
+            'bedtime': dict({
+              'enabled': False,
+              'endingTime': None,
+              'startingTime': dict({
+                'hour': 6,
+                'minute': 0,
+              }),
+            }),
+            'timeToPlayInOneDay': dict({
+              'enabled': False,
+              'limitTime': None,
+            }),
+          }),
+          'thursday': dict({
+            'bedtime': dict({
+              'enabled': False,
+              'endingTime': None,
+              'startingTime': dict({
+                'hour': 6,
+                'minute': 0,
+              }),
+            }),
+            'timeToPlayInOneDay': dict({
+              'enabled': False,
+              'limitTime': None,
+            }),
+          }),
+          'tuesday': dict({
+            'bedtime': dict({
+              'enabled': False,
+              'endingTime': None,
+              'startingTime': dict({
+                'hour': 6,
+                'minute': 0,
+              }),
+            }),
+            'timeToPlayInOneDay': dict({
+              'enabled': True,
+              'limitTime': 360,
+            }),
+          }),
+          'wednesday': dict({
+            'bedtime': dict({
+              'enabled': False,
+              'endingTime': None,
+              'startingTime': dict({
+                'hour': 6,
+                'minute': 0,
+              }),
+            }),
+            'timeToPlayInOneDay': dict({
+              'enabled': False,
+              'limitTime': None,
+            }),
+          }),
+        }),
+        'restrictionMode': 'ALARM',
+        'timerMode': 'EACH_DAY_OF_THE_WEEK',
+      }),
+      'unlockCode': '9684',
+      'updatedAt': 1762798350,
+      'whitelistedApplicationList': list([
+        dict({
+          'applicationId': '010042D00D900000',
+          'firstPlayDate': '2025-03-01',
+          'imageUri': 'https://picsum.photos/124/516',
+          'safeLaunch': 'ALLOW',
+          'title': 'government',
+        }),
+        dict({
+          'applicationId': '01003FB00C5A8000',
+          'firstPlayDate': '2025-03-01',
+          'imageUri': 'https://dummyimage.com/381x822',
+          'safeLaunch': 'NONE',
+          'title': 'deep',
+        }),
+        dict({
+          'applicationId': '01006F8002326000',
+          'firstPlayDate': '2025-01-11',
+          'imageUri': 'https://dummyimage.com/518x265',
+          'safeLaunch': 'ALLOW',
+          'title': 'poor',
+        }),
+        dict({
+          'applicationId': '0100C3C015738000',
+          'firstPlayDate': '2024-12-29',
+          'imageUri': 'https://dummyimage.com/418x308',
+          'safeLaunch': 'NONE',
+          'title': 'lead',
+        }),
+        dict({
+          'applicationId': '0100B6E012EBE000',
+          'firstPlayDate': '2024-12-19',
+          'imageUri': 'https://picsum.photos/1003/756',
+          'safeLaunch': 'NONE',
+          'title': 'arrive',
+        }),
+        dict({
+          'applicationId': '010025400AECE000',
+          'firstPlayDate': '2024-08-30',
+          'imageUri': 'https://picsum.photos/456/589',
+          'safeLaunch': 'ALLOW',
+          'title': 'dog',
+        }),
+        dict({
+          'applicationId': '0100D8C017D4A000',
+          'firstPlayDate': '2022-12-25',
+          'imageUri': 'https://picsum.photos/516/821',
+          'safeLaunch': 'NONE',
+          'title': 'share',
+        }),
+        dict({
+          'applicationId': '0100D2F00D5C0000',
+          'firstPlayDate': '2022-04-29',
+          'imageUri': 'https://dummyimage.com/473x725',
+          'safeLaunch': 'ALLOW',
+          'title': 'fish',
+        }),
+        dict({
+          'applicationId': '0100D4900E82C000',
+          'firstPlayDate': '2022-04-01',
+          'imageUri': 'https://picsum.photos/701/356',
+          'safeLaunch': 'NONE',
+          'title': 'trade',
+        }),
+        dict({
+          'applicationId': '0100D71004694000',
+          'firstPlayDate': '2022-03-13',
+          'imageUri': 'https://picsum.photos/478/980',
+          'safeLaunch': 'ALLOW',
+          'title': 'around',
+        }),
+        dict({
+          'applicationId': '0100CB00125B6000',
+          'firstPlayDate': '2022-03-13',
+          'imageUri': 'https://picsum.photos/908/724',
+          'safeLaunch': 'NONE',
+          'title': 'talk',
+        }),
+        dict({
+          'applicationId': '010032D01641E000',
+          'firstPlayDate': '2022-03-13',
+          'imageUri': 'https://dummyimage.com/765x795',
+          'safeLaunch': 'NONE',
+          'title': 'go',
+        }),
+        dict({
+          'applicationId': '01001FA00FBBC000',
+          'firstPlayDate': '2022-03-05',
+          'imageUri': 'https://placekitten.com/641/295',
+          'safeLaunch': 'NONE',
+          'title': 'behavior',
+        }),
+        dict({
+          'applicationId': '0100D0B00FB74000',
+          'firstPlayDate': '2022-03-04',
+          'imageUri': 'https://dummyimage.com/535x870',
+          'safeLaunch': 'NONE',
+          'title': 'whether',
+        }),
+        dict({
+          'applicationId': '010096F00FF22000',
+          'firstPlayDate': '2022-02-27',
+          'imageUri': 'https://placekitten.com/822/317',
+          'safeLaunch': 'NONE',
+          'title': 'often',
+        }),
+        dict({
+          'applicationId': '01003F200D0F2000',
+          'firstPlayDate': '2022-02-27',
+          'imageUri': 'https://picsum.photos/377/169',
+          'safeLaunch': 'NONE',
+          'title': 'seek',
+        }),
+        dict({
+          'applicationId': '010029B0118E8000',
+          'firstPlayDate': '2022-02-27',
+          'imageUri': 'https://placekitten.com/91/365',
+          'safeLaunch': 'NONE',
+          'title': 'show',
+        }),
+        dict({
+          'applicationId': '010007400FF24000',
+          'firstPlayDate': '2022-02-27',
+          'imageUri': 'https://placekitten.com/257/739',
+          'safeLaunch': 'NONE',
+          'title': 'whether',
+        }),
+        dict({
+          'applicationId': '01009AA000FAA000',
+          'firstPlayDate': '2022-02-26',
+          'imageUri': 'https://picsum.photos/26/22',
+          'safeLaunch': 'NONE',
+          'title': 'this',
+        }),
+        dict({
+          'applicationId': '01006FB00EBE0000',
+          'firstPlayDate': '2022-02-26',
+          'imageUri': 'https://picsum.photos/821/886',
+          'safeLaunch': 'NONE',
+          'title': 'west',
+        }),
+        dict({
+          'applicationId': '010067300059A000',
+          'firstPlayDate': '2022-02-18',
+          'imageUri': 'https://picsum.photos/781/69',
+          'safeLaunch': 'NONE',
+          'title': 'drug',
+        }),
+        dict({
+          'applicationId': '0100C9A00ECE6000',
+          'firstPlayDate': '2022-02-16',
+          'imageUri': 'https://picsum.photos/791/419',
+          'safeLaunch': 'NONE',
+          'title': 'too',
+        }),
+        dict({
+          'applicationId': '010064800F66A000',
+          'firstPlayDate': '2022-02-16',
+          'imageUri': 'https://dummyimage.com/415x1015',
+          'safeLaunch': 'NONE',
+          'title': 'particularly',
+        }),
+        dict({
+          'applicationId': '010099700D750000',
+          'firstPlayDate': '2022-02-15',
+          'imageUri': 'https://picsum.photos/165/125',
+          'safeLaunch': 'NONE',
+          'title': 'whatever',
+        }),
+        dict({
+          'applicationId': '01007FC012FD4000',
+          'firstPlayDate': '2022-02-15',
+          'imageUri': 'https://placekitten.com/675/257',
+          'safeLaunch': 'NONE',
+          'title': 'herself',
+        }),
+        dict({
+          'applicationId': '01008CE00FDCC000',
+          'firstPlayDate': '2022-02-13',
+          'imageUri': 'https://dummyimage.com/448x865',
+          'safeLaunch': 'NONE',
+          'title': 'information',
+        }),
+        dict({
+          'applicationId': '010088C0092FE000',
+          'firstPlayDate': '2022-02-13',
+          'imageUri': 'https://placekitten.com/569/477',
+          'safeLaunch': 'NONE',
+          'title': 'card',
+        }),
+        dict({
+          'applicationId': '010016A010396000',
+          'firstPlayDate': '2022-02-13',
+          'imageUri': 'https://picsum.photos/487/225',
+          'safeLaunch': 'NONE',
+          'title': 'vote',
+        }),
+        dict({
+          'applicationId': '0100AD9012510000',
+          'firstPlayDate': '2022-02-12',
+          'imageUri': 'https://picsum.photos/346/534',
+          'safeLaunch': 'NONE',
+          'title': 'road',
+        }),
+        dict({
+          'applicationId': '01007430037F6000',
+          'firstPlayDate': '2022-02-12',
+          'imageUri': 'https://placekitten.com/834/584',
+          'safeLaunch': 'NONE',
+          'title': 'record',
+        }),
+        dict({
+          'applicationId': '01001AE005166000',
+          'firstPlayDate': '2022-02-12',
+          'imageUri': 'https://placekitten.com/400/771',
+          'safeLaunch': 'NONE',
+          'title': 'finally',
+        }),
+        dict({
+          'applicationId': '0100152000022000',
+          'firstPlayDate': '2022-02-12',
+          'imageUri': 'https://picsum.photos/237/540',
+          'safeLaunch': 'ALLOW',
+          'title': 'five',
+        }),
+      ]),
+    }),
+    'players': list([
+    ]),
+    'stats_update_failed': False,
+    'sync_state': 1762884750,
+    'timer_mode': dict({
+    }),
+    'today_disabled_time': 0,
+    'today_exceeded_time': 0,
+    'today_important_info': list([
+    ]),
+    'today_notices': list([
+    ]),
+    'today_observations': list([
+    ]),
+    'today_playing_time': 0,
+    'whitelisted_applications': dict({
+    }),
+  })
+# ---

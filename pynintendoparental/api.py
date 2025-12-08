@@ -112,12 +112,6 @@ class Api:
         # now return the resp dict
         return resp
 
-    async def async_get_account_details(self) -> dict:
-        """Get account details."""
-        return await self.send_request(
-            endpoint="get_account_details", ACCOUNT_ID=self.account_id
-        )
-
     async def async_get_account_devices(self) -> dict:
         """Get account devices."""
         return await self.send_request(endpoint="get_account_devices")
@@ -144,14 +138,6 @@ class Api:
         """Get device parental control setting."""
         return await self.send_request(
             endpoint="get_device_parental_control_setting", DEVICE_ID=device_id
-        )
-
-    async def async_get_device_parental_control_setting_state(
-        self, device_id: str
-    ) -> dict:
-        """Get device parental control setting state."""
-        return await self.send_request(
-            endpoint="get_device_parental_control_setting_state", DEVICE_ID=device_id
         )
 
     async def async_get_device_monthly_summary(
