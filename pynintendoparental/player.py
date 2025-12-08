@@ -8,11 +8,12 @@ class Player:
 
     def __init__(self):
         """Init a player."""
-        self.player_image: str = None
-        self.nickname: str = None
+        self.player_image: str
+        self.nickname: str
         self.apps: list = []
-        self.player_id: str = None
-        self.playing_time: int = None
+        self.month_summary: dict = {}
+        self.player_id: str
+        self.playing_time: int = 0
 
     def update_from_daily_summary(self, raw: list[dict]):
         """Update the current instance of the player from the daily summery"""
@@ -41,3 +42,12 @@ class Player:
             players.append(parsed)
             _LOGGER.debug("Built player %s", parsed.player_id)
         return players
+
+    @classmethod
+    def from_profile(cls, raw: dict) -> "Player":
+        """Converts a profile response into a player."""
+        parsed = cls()
+        parsed.player_id = raw.get("playerId")
+        parsed.player_image = raw.get("imageUri")
+        parsed.nickname = raw.get("nickname")
+        return parsed

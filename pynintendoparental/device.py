@@ -32,7 +32,7 @@ class Device:
         self._api: Api = api
         self.daily_summaries: dict = {}
         self.parental_control_settings: dict = {}
-        self.players: list[Player] = []
+        self.players: dict[str, Player] = {}
         self.limit_time: int | float | None = 0
         self.extra_playing_time: int | None = None
         self.timer_mode: DeviceTimerMode | None = None
@@ -77,11 +77,8 @@ class Device:
             self.get_monthly_summary(),
             self._get_extras(),
         )
-        if not self.players:
-            self.players = Player.from_device_daily_summary(self.daily_summaries)
-        else:
-            for player in self.players:
-                player.update_from_daily_summary(self.daily_summaries)
+        for player in self.players.values():
+            player.update_from_daily_summary(self.daily_summaries)
         await self._execute_callbacks()
 
     def add_device_callback(self, callback):
@@ -532,6 +529,13 @@ class Device:
             )
             if latest:
                 self.last_month_summary = summary = response["json"]["summary"]
+                # Generate player objects
+                for player in response["json"]["summary"]["players"]:
+                    if player["profile"]["playerId"] not in self.players:
+                        self.players[player["profile"]["playerId"]] = Player.from_profile(
+                            player["profile"]
+                        )
+                    self.players[player["profile"]["playerId"]].month_summary = player["summary"]
                 return summary
             return response["json"]["summary"]
 
