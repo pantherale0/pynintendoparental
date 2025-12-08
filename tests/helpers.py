@@ -14,6 +14,7 @@ async def load_fixture(filename: str) -> dict:
         contents = await f.read()
     return json.loads(contents)
 
+
 def clean_device_for_snapshot(device: Device) -> dict:
     """
     Cleans the device object to a dict for snapshot testing,

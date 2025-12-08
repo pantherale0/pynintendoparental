@@ -23,7 +23,7 @@ class Player:
                 self.player_image = player["profile"].get("imageUri")
                 self.nickname = player["profile"].get("nickname")
                 self.playing_time = player.get("playingTime")
-                self.apps = player.get("playedApps")
+                self.apps = player.get("playedGames")
                 break
 
     @classmethod

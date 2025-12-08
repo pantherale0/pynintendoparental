@@ -10,6 +10,7 @@ from pynintendoparental.authenticator import Authenticator
 
 from .helpers import load_fixture
 
+
 @pytest.fixture(name="mock_api_init")
 def fixture_mock_api_init():
     """Fixture to mock the Api class."""
@@ -41,7 +42,9 @@ async def test_no_devices_found(
 ):
     """Test the create class method when no devices are found."""
     mock_api_instance = mock_api_init.return_value
-    mock_api_instance.async_get_account_devices.side_effect = HttpException(404, "Not Found")
+    mock_api_instance.async_get_account_devices.side_effect = HttpException(
+        404, "Not Found"
+    )
 
     with pytest.raises(NoDevicesFoundException):
         await NintendoParental.create(mock_authenticator)
@@ -52,7 +55,9 @@ async def test_device_fetch_http_exception(
 ):
     """Test an HttpException when fetching devices."""
     mock_api_instance = mock_api_init.return_value
-    mock_api_instance.async_get_account_devices.side_effect = HttpException(500, "Internal Server Error")
+    mock_api_instance.async_get_account_devices.side_effect = HttpException(
+        500, "Internal Server Error"
+    )
 
     with pytest.raises(HttpException):
         await NintendoParental.create(mock_authenticator)
@@ -66,7 +71,10 @@ async def test_device_update_exception(
     device_id = devices_fixture["ownedDevices"][0]["deviceId"]
     mock_api_instance = mock_api_init.return_value
     mock_api_instance.async_get_account_devices.return_value = {"json": devices_fixture}
-    with patch("pynintendoparental.device.Device.update", new=AsyncMock(side_effect=Exception("Update Failed"))):
+    with patch(
+        "pynintendoparental.device.Device.update",
+        new=AsyncMock(side_effect=Exception("Update Failed")),
+    ):
         parental = await NintendoParental.create(mock_authenticator)
         assert len(parental.devices) == 1
         assert device_id in parental.devices

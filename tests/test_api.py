@@ -188,5 +188,6 @@ async def test_api_methods(mock_authenticator: Authenticator):
 
     await api.async_update_unlock_code("1234", "DEVICE_ID")
     api.send_request.assert_called_with(
-        endpoint="update_unlock_code", body={"deviceId": "DEVICE_ID", "unlockCode": "1234"}
+        endpoint="update_unlock_code",
+        body={"deviceId": "DEVICE_ID", "unlockCode": "1234"},
     )

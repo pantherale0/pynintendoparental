@@ -50,6 +50,7 @@ async def mock_api(mock_authenticator: Authenticator) -> Api:
     }
     return api
 
+
 @pytest.fixture
 def mock_client(mock_api: Api) -> NintendoParental:
     """Fixture for a mocked client."""
