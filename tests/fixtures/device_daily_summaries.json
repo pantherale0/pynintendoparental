@@ -10,7 +10,37 @@
             "timeZoneUtcOffsetSeconds": 0,
             "events": {},
             "nonFeaturedGameCount": -1,
-            "players": []
+            "players": [
+                {
+                    "profile": {
+                        "playerId": "B276150DE6B18218C09E4D0CE4CFA0861A3",
+                        "nickname": "cheyenne19",
+                        "imageUri": "https://placekitten.com/861/237",
+                        "nsaId": null
+                    },
+                    "playingTime": 15,
+                    "playedGames": [
+                        {
+                            "meta": {
+                                "applicationId": "0100152000022000",
+                                "title": "five",
+                                "imageUri": {
+                                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_3",
+                                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_512",
+                                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_128",
+                                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_1024",
+                                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_256"
+                                },
+                                "hasUgc": false,
+                                "shopUri": "https://ec.nintendo.com/apps/0100152000022000/GB?lang=en-GB"
+                            },
+                            "playingTime": 15
+                        }
+                    ],
+                    "firstChattedFriendshipIds": [],
+                    "chatHistory": []
+                }
+            ]
         },
         {
             "date": "2025-12-07",

@@ -16,6 +16,37 @@
         'miscTime': 0,
         'nonFeaturedGameCount': -1,
         'players': list([
+          dict({
+            'chatHistory': list([
+            ]),
+            'firstChattedFriendshipIds': list([
+            ]),
+            'playedGames': list([
+              dict({
+                'meta': dict({
+                  'applicationId': '0100152000022000',
+                  'hasUgc': False,
+                  'imageUri': dict({
+                    'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_1024',
+                    'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_3',
+                    'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_512',
+                    'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_256',
+                    'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_128',
+                  }),
+                  'shopUri': 'https://ec.nintendo.com/apps/0100152000022000/GB?lang=en-GB',
+                  'title': 'five',
+                }),
+                'playingTime': 15,
+              }),
+            ]),
+            'playingTime': 15,
+            'profile': dict({
+              'imageUri': 'https://placekitten.com/861/237',
+              'nickname': 'cheyenne19',
+              'nsaId': None,
+              'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+            }),
+          }),
         ]),
         'playingTime': 0,
         'result': 'CALCULATING',
@@ -3287,6 +3318,30 @@
       ]),
     }),
     'players': list([
+      dict({
+        'apps': list([
+          dict({
+            'meta': dict({
+              'applicationId': '0100152000022000',
+              'hasUgc': False,
+              'imageUri': dict({
+                'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_1024',
+                'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_3',
+                'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_512',
+                'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_256',
+                'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_128',
+              }),
+              'shopUri': 'https://ec.nintendo.com/apps/0100152000022000/GB?lang=en-GB',
+              'title': 'five',
+            }),
+            'playingTime': 15,
+          }),
+        ]),
+        'nickname': 'cheyenne19',
+        'player_id': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+        'player_image': 'https://placekitten.com/861/237',
+        'playing_time': 15,
+      }),
     ]),
     'stats_update_failed': False,
     'sync_state': 1762884750,
