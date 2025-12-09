@@ -1,0 +1,504 @@
+{
+    "parentalControlSetting": {
+        "deviceId": "567D0B5EA9582FB7",
+        "unlockCode": "9684",
+        "functionalRestrictionLevel": "CHILDREN",
+        "customSettings": {
+            "ageRestriction": {
+                "restriction": "UNRESTRICTED",
+                "ratingAge": 2
+            },
+            "ugcRestriction": {
+                "restriction": "UNRESTRICTED",
+                "applicationList": [
+                    {
+                        "applicationId": "0100D71004694000",
+                        "restriction": "UNRESTRICTED",
+                        "title": "around",
+                        "imageUri": "https://picsum.photos/1012/13"
+                    },
+                    {
+                        "applicationId": "0100C9A00ECE6000",
+                        "restriction": "UNRESTRICTED",
+                        "title": "too",
+                        "imageUri": "https://dummyimage.com/940x436"
+                    },
+                    {
+                        "applicationId": "0100C3C015738000",
+                        "restriction": "UNRESTRICTED",
+                        "title": "lead",
+                        "imageUri": "https://dummyimage.com/358x640"
+                    },
+                    {
+                        "applicationId": "010096F00FF22000",
+                        "restriction": "UNRESTRICTED",
+                        "title": "often",
+                        "imageUri": "https://dummyimage.com/32x697"
+                    },
+                    {
+                        "applicationId": "01006F8002326000",
+                        "restriction": "UNRESTRICTED",
+                        "title": "poor",
+                        "imageUri": "https://picsum.photos/379/370"
+                    },
+                    {
+                        "applicationId": "010064800F66A000",
+                        "restriction": "UNRESTRICTED",
+                        "title": "particularly",
+                        "imageUri": "https://picsum.photos/671/317"
+                    },
+                    {
+                        "applicationId": "010029B0118E8000",
+                        "restriction": "UNRESTRICTED",
+                        "title": "show",
+                        "imageUri": "https://dummyimage.com/747x3"
+                    },
+                    {
+                        "applicationId": "010025400AECE000",
+                        "restriction": "UNRESTRICTED",
+                        "title": "dog",
+                        "imageUri": "https://picsum.photos/837/9"
+                    },
+                    {
+                        "applicationId": "010016A010396000",
+                        "restriction": "UNRESTRICTED",
+                        "title": "vote",
+                        "imageUri": "https://placekitten.com/754/150"
+                    },
+                    {
+                        "applicationId": "010012F017576000",
+                        "restriction": "UNRESTRICTED",
+                        "title": "especially",
+                        "imageUri": "https://dummyimage.com/549x144"
+                    },
+                    {
+                        "applicationId": "010007400FF24000",
+                        "restriction": "UNRESTRICTED",
+                        "title": "whether",
+                        "imageUri": "https://placekitten.com/422/115"
+                    }
+                ]
+            },
+            "snsPostRestriction": "UNRESTRICTED",
+            "ratingOrganization": "PEGI_BBFC",
+            "vrRestriction": "RESTRICTED",
+            "vrRestrictionEtag": "\"d55d9d0cfb841330935109664cfb21a4933dd228c8e12cfd696ef0e5dc885425\""
+        },
+        "playTimerRegulations": {
+            "timerMode": "EACH_DAY_OF_THE_WEEK",
+            "restrictionMode": "ALARM",
+            "dailyRegulations": {
+                "timeToPlayInOneDay": {
+                    "enabled": false,
+                    "limitTime": null
+                },
+                "bedtime": {
+                    "enabled": false,
+                    "endingTime": null,
+                    "startingTime": {
+                        "hour": 6,
+                        "minute": 0
+                    }
+                }
+            },
+            "eachDayOfTheWeekRegulations": {
+                "sunday": {
+                    "timeToPlayInOneDay": {
+                        "enabled": false,
+                        "limitTime": null
+                    },
+                    "bedtime": {
+                        "enabled": false,
+                        "endingTime": null,
+                        "startingTime": {
+                            "hour": 6,
+                            "minute": 0
+                        }
+                    }
+                },
+                "monday": {
+                    "timeToPlayInOneDay": {
+                        "enabled": false,
+                        "limitTime": null
+                    },
+                    "bedtime": {
+                        "enabled": false,
+                        "endingTime": null,
+                        "startingTime": {
+                            "hour": 6,
+                            "minute": 0
+                        }
+                    }
+                },
+                "tuesday": {
+                    "timeToPlayInOneDay": {
+                        "enabled": true,
+                        "limitTime": 360
+                    },
+                    "bedtime": {
+                        "enabled": false,
+                        "endingTime": null,
+                        "startingTime": {
+                            "hour": 6,
+                            "minute": 0
+                        }
+                    }
+                },
+                "wednesday": {
+                    "timeToPlayInOneDay": {
+                        "enabled": false,
+                        "limitTime": null
+                    },
+                    "bedtime": {
+                        "enabled": false,
+                        "endingTime": null,
+                        "startingTime": {
+                            "hour": 6,
+                            "minute": 0
+                        }
+                    }
+                },
+                "thursday": {
+                    "timeToPlayInOneDay": {
+                        "enabled": false,
+                        "limitTime": null
+                    },
+                    "bedtime": {
+                        "enabled": false,
+                        "endingTime": null,
+                        "startingTime": {
+                            "hour": 6,
+                            "minute": 0
+                        }
+                    }
+                },
+                "friday": {
+                    "timeToPlayInOneDay": {
+                        "enabled": true,
+                        "limitTime": 0
+                    },
+                    "bedtime": {
+                        "enabled": false,
+                        "endingTime": null,
+                        "startingTime": {
+                            "hour": 6,
+                            "minute": 0
+                        }
+                    }
+                },
+                "saturday": {
+                    "timeToPlayInOneDay": {
+                        "enabled": true,
+                        "limitTime": 360
+                    },
+                    "bedtime": {
+                        "enabled": true,
+                        "endingTime": {
+                            "hour": 20,
+                            "minute": 30
+                        },
+                        "startingTime": {
+                            "hour": 6,
+                            "minute": 0
+                        }
+                    }
+                }
+            },
+            "bedtimeStartingTime": {
+                "hour": 6,
+                "minute": 0
+            }
+        },
+        "whitelistedApplicationList": [
+            {
+                "applicationId": "010042D00D900000",
+                "title": "government",
+                "imageUri": "https://picsum.photos/124/516",
+                "firstPlayDate": "2025-03-01",
+                "safeLaunch": "ALLOW"
+            },
+            {
+                "applicationId": "01003FB00C5A8000",
+                "title": "deep",
+                "imageUri": "https://dummyimage.com/381x822",
+                "firstPlayDate": "2025-03-01",
+                "safeLaunch": "NONE"
+            },
+            {
+                "applicationId": "01006F8002326000",
+                "title": "poor",
+                "imageUri": "https://dummyimage.com/518x265",
+                "firstPlayDate": "2025-01-11",
+                "safeLaunch": "ALLOW"
+            },
+            {
+                "applicationId": "0100C3C015738000",
+                "title": "lead",
+                "imageUri": "https://dummyimage.com/418x308",
+                "firstPlayDate": "2024-12-29",
+                "safeLaunch": "NONE"
+            },
+            {
+                "applicationId": "0100B6E012EBE000",
+                "title": "arrive",
+                "imageUri": "https://picsum.photos/1003/756",
+                "firstPlayDate": "2024-12-19",
+                "safeLaunch": "NONE"
+            },
+            {
+                "applicationId": "010025400AECE000",
+                "title": "dog",
+                "imageUri": "https://picsum.photos/456/589",
+                "firstPlayDate": "2024-08-30",
+                "safeLaunch": "ALLOW"
+            },
+            {
+                "applicationId": "0100D8C017D4A000",
+                "title": "share",
+                "imageUri": "https://picsum.photos/516/821",
+                "firstPlayDate": "2022-12-25",
+                "safeLaunch": "NONE"
+            },
+            {
+                "applicationId": "0100D2F00D5C0000",
+                "title": "fish",
+                "imageUri": "https://dummyimage.com/473x725",
+                "firstPlayDate": "2022-04-29",
+                "safeLaunch": "ALLOW"
+            },
+            {
+                "applicationId": "0100D4900E82C000",
+                "title": "trade",
+                "imageUri": "https://picsum.photos/701/356",
+                "firstPlayDate": "2022-04-01",
+                "safeLaunch": "NONE"
+            },
+            {
+                "applicationId": "0100D71004694000",
+                "title": "around",
+                "imageUri": "https://picsum.photos/478/980",
+                "firstPlayDate": "2022-03-13",
+                "safeLaunch": "ALLOW"
+            },
+            {
+                "applicationId": "0100CB00125B6000",
+                "title": "talk",
+                "imageUri": "https://picsum.photos/908/724",
+                "firstPlayDate": "2022-03-13",
+                "safeLaunch": "NONE"
+            },
+            {
+                "applicationId": "010032D01641E000",
+                "title": "go",
+                "imageUri": "https://dummyimage.com/765x795",
+                "firstPlayDate": "2022-03-13",
+                "safeLaunch": "NONE"
+            },
+            {
+                "applicationId": "01001FA00FBBC000",
+                "title": "behavior",
+                "imageUri": "https://placekitten.com/641/295",
+                "firstPlayDate": "2022-03-05",
+                "safeLaunch": "NONE"
+            },
+            {
+                "applicationId": "0100D0B00FB74000",
+                "title": "whether",
+                "imageUri": "https://dummyimage.com/535x870",
+                "firstPlayDate": "2022-03-04",
+                "safeLaunch": "NONE"
+            },
+            {
+                "applicationId": "010096F00FF22000",
+                "title": "often",
+                "imageUri": "https://placekitten.com/822/317",
+                "firstPlayDate": "2022-02-27",
+                "safeLaunch": "NONE"
+            },
+            {
+                "applicationId": "01003F200D0F2000",
+                "title": "seek",
+                "imageUri": "https://picsum.photos/377/169",
+                "firstPlayDate": "2022-02-27",
+                "safeLaunch": "NONE"
+            },
+            {
+                "applicationId": "010029B0118E8000",
+                "title": "show",
+                "imageUri": "https://placekitten.com/91/365",
+                "firstPlayDate": "2022-02-27",
+                "safeLaunch": "NONE"
+            },
+            {
+                "applicationId": "010007400FF24000",
+                "title": "whether",
+                "imageUri": "https://placekitten.com/257/739",
+                "firstPlayDate": "2022-02-27",
+                "safeLaunch": "NONE"
+            },
+            {
+                "applicationId": "01009AA000FAA000",
+                "title": "this",
+                "imageUri": "https://picsum.photos/26/22",
+                "firstPlayDate": "2022-02-26",
+                "safeLaunch": "NONE"
+            },
+            {
+                "applicationId": "01006FB00EBE0000",
+                "title": "west",
+                "imageUri": "https://picsum.photos/821/886",
+                "firstPlayDate": "2022-02-26",
+                "safeLaunch": "NONE"
+            },
+            {
+                "applicationId": "010067300059A000",
+                "title": "drug",
+                "imageUri": "https://picsum.photos/781/69",
+                "firstPlayDate": "2022-02-18",
+                "safeLaunch": "NONE"
+            },
+            {
+                "applicationId": "0100C9A00ECE6000",
+                "title": "too",
+                "imageUri": "https://picsum.photos/791/419",
+                "firstPlayDate": "2022-02-16",
+                "safeLaunch": "NONE"
+            },
+            {
+                "applicationId": "010064800F66A000",
+                "title": "particularly",
+                "imageUri": "https://dummyimage.com/415x1015",
+                "firstPlayDate": "2022-02-16",
+                "safeLaunch": "NONE"
+            },
+            {
+                "applicationId": "010099700D750000",
+                "title": "whatever",
+                "imageUri": "https://picsum.photos/165/125",
+                "firstPlayDate": "2022-02-15",
+                "safeLaunch": "NONE"
+            },
+            {
+                "applicationId": "01007FC012FD4000",
+                "title": "herself",
+                "imageUri": "https://placekitten.com/675/257",
+                "firstPlayDate": "2022-02-15",
+                "safeLaunch": "NONE"
+            },
+            {
+                "applicationId": "01008CE00FDCC000",
+                "title": "information",
+                "imageUri": "https://dummyimage.com/448x865",
+                "firstPlayDate": "2022-02-13",
+                "safeLaunch": "NONE"
+            },
+            {
+                "applicationId": "010088C0092FE000",
+                "title": "card",
+                "imageUri": "https://placekitten.com/569/477",
+                "firstPlayDate": "2022-02-13",
+                "safeLaunch": "NONE"
+            },
+            {
+                "applicationId": "010016A010396000",
+                "title": "vote",
+                "imageUri": "https://picsum.photos/487/225",
+                "firstPlayDate": "2022-02-13",
+                "safeLaunch": "NONE"
+            },
+            {
+                "applicationId": "0100AD9012510000",
+                "title": "road",
+                "imageUri": "https://picsum.photos/346/534",
+                "firstPlayDate": "2022-02-12",
+                "safeLaunch": "NONE"
+            },
+            {
+                "applicationId": "01007430037F6000",
+                "title": "record",
+                "imageUri": "https://placekitten.com/834/584",
+                "firstPlayDate": "2022-02-12",
+                "safeLaunch": "NONE"
+            },
+            {
+                "applicationId": "01001AE005166000",
+                "title": "finally",
+                "imageUri": "https://placekitten.com/400/771",
+                "firstPlayDate": "2022-02-12",
+                "safeLaunch": "NONE"
+            },
+            {
+                "applicationId": "0100152000022000",
+                "title": "five",
+                "imageUri": "https://picsum.photos/237/540",
+                "firstPlayDate": "2022-02-12",
+                "safeLaunch": "ALLOW"
+            }
+        ],
+        "etag": "\"7ed37dcd6e4aad33578c059e2de762512fcd59352189aa59e95f1e1fb7a82568\"",
+        "createdAt": 1644690128,
+        "updatedAt": 1762798350
+    },
+    "ownedDevice": {
+        "deviceId": "567D0B5EA9582FB7",
+        "device": {
+            "id": "567D0B5EA9582FB7",
+            "notificationToken": "T7v8I3X9o7R5U2l3",
+            "timeZone": "Europe/London",
+            "language": null,
+            "region": "EUROPE",
+            "serialNumber": "2583005768963",
+            "firmwareVersion": {
+                "displayedVersion": "21.0.1",
+                "internalVersion": 1376257
+            },
+            "links": {
+                "pairingCode": {
+                    "code": "5228",
+                    "createdAt": 1644690103,
+                    "expiresAt": 1644690128
+                }
+            },
+            "activated": true,
+            "synchronizedUnlockCode": "5857",
+            "synchronizedParentalControlSetting": {
+                "synchronizedEtag": "2205768906795",
+                "synchronizedAt": 1764260259
+            },
+            "lastOnlineCheckedAt": 1644690127,
+            "alarmSetting": {
+                "visibility": "VISIBLE",
+                "invisibleUntil": 0
+            },
+            "extraPlayingTime": null,
+            "platformGeneration": "P00",
+            "externalNickname": "lauren11",
+            "iconUri": {
+                "lightTheme": {
+                    "small": "https://wb.lp1.chameleon.srv.nintendo.net/img?pc=HAD&size=s&hmsDisplay=D8D8D8&theme=light&hmsMain=323232&hmsSub=ffffff&hmsBezel=000000&hmsModel=0&lcMain=0ab9e6&lcSub=001e1e&rcMain=ff3c28&rcSub=1e0a0a",
+                    "middle": "https://wb.lp1.chameleon.srv.nintendo.net/img?pc=HAD&size=m&hmsDisplay=D8D8D8&theme=light&hmsMain=323232&hmsSub=ffffff&hmsBezel=000000&hmsModel=0&lcMain=0ab9e6&lcSub=001e1e&rcMain=ff3c28&rcSub=1e0a0a"
+                },
+                "darkTheme": {
+                    "small": "https://wb.lp1.chameleon.srv.nintendo.net/img?pc=HAD&size=s&hmsDisplay=D8D8D8&theme=dark&hmsMain=323232&hmsSub=ffffff&hmsBezel=000000&hmsModel=0&lcMain=0ab9e6&lcSub=001e1e&rcMain=ff3c28&rcSub=1e0a0a",
+                    "middle": "https://wb.lp1.chameleon.srv.nintendo.net/img?pc=HAD&size=m&hmsDisplay=D8D8D8&theme=dark&hmsMain=323232&hmsSub=ffffff&hmsBezel=000000&hmsModel=0&lcMain=0ab9e6&lcSub=001e1e&rcMain=ff3c28&rcSub=1e0a0a"
+                }
+            },
+            "createdAt": 1644690103,
+            "updatedAt": 1764668290
+        },
+        "nintendoAccountId": "E73B4188E5C72B43",
+        "label": "early",
+        "parentalControlSettingState": {
+            "deviceId": "567D0B5EA9582FB7",
+            "targetEtag": "2205768906795",
+            "synchronizationStatus": "SYNCHRONIZED",
+            "createdAt": 1644690128,
+            "updatedAt": 1762884750
+        },
+        "hasNewMonthlySummary": true,
+        "hasFirstDailySummary": false,
+        "createdAt": 1644690103,
+        "updatedAt": 1644690128,
+        "sortOrder": null
+    }
+}

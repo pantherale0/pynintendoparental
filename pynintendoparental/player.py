@@ -18,13 +18,12 @@ class Player:
     def update_from_daily_summary(self, raw: list[dict]):
         """Update the current instance of the player from the daily summery"""
         _LOGGER.debug("Updating player %s daily summary", self.player_id)
-        for player in raw[0].get("devicePlayers", []):
-            if self.player_id is player["profile"].get("playerId"):
-                self.player_id = player["profile"].get("playerId")
+        for player in raw[0].get("players", []):
+            if self.player_id == player["profile"].get("playerId"):
                 self.player_image = player["profile"].get("imageUri")
                 self.nickname = player["profile"].get("nickname")
                 self.playing_time = player.get("playingTime")
-                self.apps = player.get("playedApps")
+                self.apps = player.get("playedGames")
                 break
 
     @classmethod

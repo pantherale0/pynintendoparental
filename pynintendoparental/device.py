@@ -319,10 +319,14 @@ class Device:
         today_reg = self._get_today_regulation(now)
         limit_time = today_reg.get("timeToPlayInOneDay", {}).get("limitTime")
         self.limit_time = limit_time if limit_time is not None else -1
-        extra_playing_time_data = pcs.get("ownedDevice", {}).get("device", {}).get("extraPlayingTime")
+        extra_playing_time_data = (
+            pcs.get("ownedDevice", {}).get("device", {}).get("extraPlayingTime")
+        )
         self.extra_playing_time = None
         if extra_playing_time_data:
-            self.extra_playing_time = extra_playing_time_data.get("inOneDay", {}).get("duration")
+            self.extra_playing_time = extra_playing_time_data.get("inOneDay", {}).get(
+                "duration"
+            )
 
         bedtime_setting = today_reg.get("bedtime", {})
         if bedtime_setting.get("enabled"):

@@ -2,11 +2,13 @@
 
 from enum import StrEnum
 
+
 class RangeErrorKeys(StrEnum):
     """Keys for range errors."""
 
     DAILY_PLAYTIME = "daily_playtime_out_of_range"
     BEDTIME = "bedtime_alarm_out_of_range"
+
 
 class NoDevicesFoundException(Exception):
     """No devices were found for the account."""
