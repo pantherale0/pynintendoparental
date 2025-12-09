@@ -579,7 +579,7 @@ class Device:
 
     def get_player(self, player_id: str) -> Player:
         """Returns a player."""
-        player = next((p for p in self.players if p.player_id == player_id), None)
+        player = self.players.get(player_id)
         if player:
             return player
         raise ValueError(f"Player with id {player_id} not found.")
