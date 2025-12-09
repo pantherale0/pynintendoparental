@@ -70,7 +70,7 @@ async def test_get_monthly_summary_error(
     side_effect: Exception,
     expected_log: str
 ):
-    """Test that the get_monthly_summary calls will correctly"""
+    """Test that get_monthly_summary calls correctly handle and log HTTP exceptions."""
     devices_response = await load_fixture("account_devices")
     devices = await Device.from_devices_response(devices_response, mock_api)
     assert len(devices) > 0
