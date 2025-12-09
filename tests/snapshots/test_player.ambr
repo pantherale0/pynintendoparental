@@ -19,6 +19,8 @@
         'playingTime': 15,
       }),
     ]),
+    month_summary=dict({
+    }),
     nickname='cheyenne19',
     player_id='B276150DE6B18218C09E4D0CE4CFA0861A3',
     player_image='https://placekitten.com/861/237',
@@ -32,6 +34,8 @@
         'app': 'new_app',
       }),
     ]),
+    month_summary=dict({
+    }),
     nickname='cheyenne19',
     player_id='B276150DE6B18218C09E4D0CE4CFA0861A3',
     player_image='https://placekitten.com/861/237',
