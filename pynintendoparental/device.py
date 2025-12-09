@@ -534,12 +534,14 @@ class Device:
             if latest:
                 self.last_month_summary = summary = response["json"]["summary"]
                 # Generate player objects
-                for player in response["json"]["summary"]["players"]:
-                    if player["profile"]["playerId"] not in self.players:
-                        self.players[player["profile"]["playerId"]] = Player.from_profile(
-                            player["profile"]
-                        )
-                    self.players[player["profile"]["playerId"]].month_summary = player["summary"]
+                for player in response.get("json", {}).get("summary", {}).get("players", []):
+                    profile = player.get("profile")
+                    if not profile or "playerId" not in profile:
+                        continue
+                    player_id = profile["playerId"]
+                    if player_id not in self.players:
+                        self.players[player_id] = Player.from_profile(profile)
+                    self.players[player_id].month_summary = player.get("summary", {})
                 return summary
             return response["json"]["summary"]
 
