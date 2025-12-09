@@ -1,4 +1,26 @@
 include-pre-releases: true
+prerelease-identifier: 'alpha'
+tag-template: '$RESOLVED_VERSION'
+name-template: '$RESOLVED_VERSION'
+version-resolver:
+  major:
+    labels:
+      - 'major'
+      - breaking-change
+  minor:
+    labels:
+      - 'minor'
+      - 'enhancement'
+      - 'feature'
+  patch:
+    labels:
+      - 'patch'
+      - 'fix'
+      - 'bugfix'
+      - 'bug'
+      - 'chore'
+      - 'dependencies'
+  default: patch
 categories:
   - title: Breaking Changes 🛠
     labels:
@@ -41,6 +63,13 @@ autolabeler:
     branch:
       - '/feature\/.+/'
       - '/feat\/.+/'
+  - label: 'breaking-change'
+    branch:
+      - '/break\/.+/'
+      - '/breaking\/.+/'
+replacers:
+  - search: '/CVE-(\d{4})-(\d+)/g'
+    replace: 'https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-$1-$2'
 template: |
   ## Changes
 
