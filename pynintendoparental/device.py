@@ -536,7 +536,7 @@ class Device:
                 # Generate player objects
                 for player in response.get("json", {}).get("summary", {}).get("players", []):
                     profile = player.get("profile")
-                    if not profile or "playerId" not in profile:
+                    if not profile or not profile.get("playerId"):
                         continue
                     player_id = profile["playerId"]
                     if player_id not in self.players:
