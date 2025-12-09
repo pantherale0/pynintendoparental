@@ -8,8 +8,8 @@ class Player:
 
     def __init__(self):
         """Init a player."""
-        self.player_image: str
-        self.nickname: str
+        self.player_image: str | None = None
+        self.nickname: str | None = None
         self.apps: list = []
         self.month_summary: dict = {}
         self.player_id: str
