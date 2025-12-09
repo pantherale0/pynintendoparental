@@ -2874,7 +2874,7 @@
         }),
       ]),
     }),
-    'limit_time': -1,
+    'limit_time': 360,
     'month_playing_time': 15,
     'name': 'early',
     'parental_control_settings': dict({
@@ -3317,9 +3317,615 @@
         }),
       ]),
     }),
-    'players': list([
-      dict({
-        'apps': list([
+    'players': dict({
+      '1BAF1455C37B27713215C98CAA92C100829': Player(
+        apps=list([
+        ]),
+        month_summary=dict({
+          'chat': dict({
+            'members': list([
+            ]),
+          }),
+          'dailyStats': list([
+            dict({
+              'date': '2025-11-01',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-02',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-03',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-04',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-05',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-06',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-07',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-08',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-09',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-10',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-11',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-12',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-13',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-14',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-15',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-16',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-17',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-18',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-19',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-20',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-21',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-22',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-23',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-24',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-25',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-26',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-27',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-28',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-29',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-30',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+          ]),
+          'ranking': list([
+          ]),
+          'stat': dict({
+            'averageTime': 0,
+            'totalDays': 0,
+          }),
+        }),
+        nickname='kfreeman',
+        player_id='1BAF1455C37B27713215C98CAA92C100829',
+        player_image='https://picsum.photos/150/863',
+        playing_time=0,
+      ),
+      '3A47B7E8899F27176A6186770D2F399BE66': Player(
+        apps=list([
+        ]),
+        month_summary=dict({
+          'chat': dict({
+            'members': list([
+            ]),
+          }),
+          'dailyStats': list([
+            dict({
+              'date': '2025-11-01',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-02',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-03',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-04',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-05',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-06',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-07',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-08',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-09',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-10',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-11',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-12',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-13',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-14',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-15',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-16',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-17',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-18',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-19',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-20',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-21',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-22',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-23',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-24',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-25',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-26',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-27',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-28',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-29',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-30',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+          ]),
+          'ranking': list([
+          ]),
+          'stat': dict({
+            'averageTime': 0,
+            'totalDays': 0,
+          }),
+        }),
+        nickname='vanderson',
+        player_id='3A47B7E8899F27176A6186770D2F399BE66',
+        player_image='https://picsum.photos/986/61',
+        playing_time=0,
+      ),
+      'A1E2F6FE45A23D7B68BB6FB207CFEFE8513': Player(
+        apps=list([
+        ]),
+        month_summary=dict({
+          'chat': dict({
+            'members': list([
+            ]),
+          }),
+          'dailyStats': list([
+            dict({
+              'date': '2025-11-01',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-02',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-03',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-04',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-05',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-06',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-07',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-08',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-09',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-10',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-11',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-12',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-13',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-14',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-15',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-16',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-17',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-18',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-19',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-20',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-21',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-22',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-23',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-24',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-25',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-26',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-27',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-28',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-29',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-30',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+          ]),
+          'ranking': list([
+          ]),
+          'stat': dict({
+            'averageTime': 0,
+            'totalDays': 0,
+          }),
+        }),
+        nickname='jeremy97',
+        player_id='A1E2F6FE45A23D7B68BB6FB207CFEFE8513',
+        player_image='https://picsum.photos/749/284',
+        playing_time=0,
+      ),
+      'B276150DE6B18218C09E4D0CE4CFA0861A3': Player(
+        apps=list([
           dict({
             'meta': dict({
               'applicationId': '0100152000022000',
@@ -3337,12 +3943,850 @@
             'playingTime': 15,
           }),
         ]),
-        'nickname': 'cheyenne19',
-        'player_id': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
-        'player_image': 'https://placekitten.com/861/237',
-        'playing_time': 15,
-      }),
-    ]),
+        month_summary=dict({
+          'chat': dict({
+            'members': list([
+            ]),
+          }),
+          'dailyStats': list([
+            dict({
+              'date': '2025-11-01',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-02',
+              'games': dict({
+                '01006F8002326000': dict({
+                  'totalTime': 10,
+                }),
+              }),
+              'totalTime': 10,
+            }),
+            dict({
+              'date': '2025-11-03',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-04',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-05',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-06',
+              'games': dict({
+                '0100D71004694000': dict({
+                  'totalTime': 15,
+                }),
+              }),
+              'totalTime': 15,
+            }),
+            dict({
+              'date': '2025-11-07',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-08',
+              'games': dict({
+                '010042D00D900000': dict({
+                  'totalTime': 215,
+                }),
+                '01006F8002326000': dict({
+                  'totalTime': 25,
+                }),
+                '01007430037F6000': dict({
+                  'totalTime': 50,
+                }),
+                '0100D2F00D5C0000': dict({
+                  'totalTime': 15,
+                }),
+              }),
+              'totalTime': 315,
+            }),
+            dict({
+              'date': '2025-11-09',
+              'games': dict({
+                '0100152000022000': dict({
+                  'totalTime': 20,
+                }),
+                '010042D00D900000': dict({
+                  'totalTime': 455,
+                }),
+              }),
+              'totalTime': 475,
+            }),
+            dict({
+              'date': '2025-11-10',
+              'games': dict({
+                '010042D00D900000': dict({
+                  'totalTime': 155,
+                }),
+              }),
+              'totalTime': 155,
+            }),
+            dict({
+              'date': '2025-11-11',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-12',
+              'games': dict({
+                '010042D00D900000': dict({
+                  'totalTime': 50,
+                }),
+              }),
+              'totalTime': 50,
+            }),
+            dict({
+              'date': '2025-11-13',
+              'games': dict({
+                '010042D00D900000': dict({
+                  'totalTime': 40,
+                }),
+              }),
+              'totalTime': 40,
+            }),
+            dict({
+              'date': '2025-11-14',
+              'games': dict({
+                '010042D00D900000': dict({
+                  'totalTime': 1,
+                }),
+              }),
+              'totalTime': 1,
+            }),
+            dict({
+              'date': '2025-11-15',
+              'games': dict({
+                '0100152000022000': dict({
+                  'totalTime': 70,
+                }),
+                '010042D00D900000': dict({
+                  'totalTime': 75,
+                }),
+              }),
+              'totalTime': 150,
+            }),
+            dict({
+              'date': '2025-11-16',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-17',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-18',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-19',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-20',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-21',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-22',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-23',
+              'games': dict({
+                '0100D71004694000': dict({
+                  'totalTime': 40,
+                }),
+              }),
+              'totalTime': 40,
+            }),
+            dict({
+              'date': '2025-11-24',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-25',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-26',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-27',
+              'games': dict({
+                '01006F8002326000': dict({
+                  'totalTime': 50,
+                }),
+              }),
+              'totalTime': 50,
+            }),
+            dict({
+              'date': '2025-11-28',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-29',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-30',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+          ]),
+          'ranking': list([
+            dict({
+              'position': 'UP',
+              'stat': dict({
+                'meta': dict({
+                  'applicationId': '010042D00D900000',
+                  'hasUgc': False,
+                  'imageUri': dict({
+                    'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_1024',
+                    'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_3',
+                    'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_512',
+                    'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_256',
+                    'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_128',
+                  }),
+                  'shopUri': 'https://ec.nintendo.com/apps/010042d00d900000/GB?lang=en-GB',
+                  'title': 'government',
+                }),
+                'players': list([
+                  dict({
+                    'imageUri': 'https://dummyimage.com/141x987',
+                    'nickname': 'cheyenne19',
+                    'nsaId': None,
+                    'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+                  }),
+                ]),
+                'totalDays': 7,
+              }),
+            }),
+            dict({
+              'position': 'DOWN',
+              'stat': dict({
+                'meta': dict({
+                  'applicationId': '01006F8002326000',
+                  'hasUgc': True,
+                  'imageUri': dict({
+                    'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_1024',
+                    'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_3',
+                    'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_512',
+                    'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_256',
+                    'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/a5290ca4456f4321bfa68480f7755ca1_128',
+                  }),
+                  'shopUri': 'https://ec.nintendo.com/apps/01006f8002326000/GB?lang=en-GB',
+                  'title': 'poor',
+                }),
+                'players': list([
+                  dict({
+                    'imageUri': 'https://dummyimage.com/416x560',
+                    'nickname': 'cheyenne19',
+                    'nsaId': None,
+                    'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+                  }),
+                ]),
+                'totalDays': 3,
+              }),
+            }),
+            dict({
+              'position': 'DOWN',
+              'stat': dict({
+                'meta': dict({
+                  'applicationId': '0100D71004694000',
+                  'hasUgc': True,
+                  'imageUri': dict({
+                    'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_1024',
+                    'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_3',
+                    'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_512',
+                    'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_256',
+                    'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/d73ffaaff51741a7a27690e7687eccb0_128',
+                  }),
+                  'shopUri': 'https://ec.nintendo.com/apps/0100d71004694000/GB?lang=en-GB',
+                  'title': 'around',
+                }),
+                'players': list([
+                  dict({
+                    'imageUri': 'https://dummyimage.com/920x958',
+                    'nickname': 'cheyenne19',
+                    'nsaId': None,
+                    'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+                  }),
+                ]),
+                'totalDays': 2,
+              }),
+            }),
+            dict({
+              'position': 'UP',
+              'stat': dict({
+                'meta': dict({
+                  'applicationId': '0100152000022000',
+                  'hasUgc': False,
+                  'imageUri': dict({
+                    'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_1024',
+                    'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_3',
+                    'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_512',
+                    'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_256',
+                    'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/fd75c85d0465407cba8249e93c21e831_128',
+                  }),
+                  'shopUri': 'https://ec.nintendo.com/apps/0100152000022000/GB?lang=en-GB',
+                  'title': 'five',
+                }),
+                'players': list([
+                  dict({
+                    'imageUri': 'https://placekitten.com/172/168',
+                    'nickname': 'cheyenne19',
+                    'nsaId': None,
+                    'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+                  }),
+                ]),
+                'totalDays': 2,
+              }),
+            }),
+            dict({
+              'position': 'UP',
+              'stat': dict({
+                'meta': dict({
+                  'applicationId': '0100D2F00D5C0000',
+                  'hasUgc': False,
+                  'imageUri': dict({
+                    'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_1024',
+                    'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_3',
+                    'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_512',
+                    'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_256',
+                    'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/cfc9434412ae4d0b90c1247e2b9ae5a0_128',
+                  }),
+                  'shopUri': 'https://ec.nintendo.com/apps/0100d2f00d5c0000/GB?lang=en-GB',
+                  'title': 'fish',
+                }),
+                'players': list([
+                  dict({
+                    'imageUri': 'https://dummyimage.com/945x511',
+                    'nickname': 'cheyenne19',
+                    'nsaId': None,
+                    'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+                  }),
+                ]),
+                'totalDays': 1,
+              }),
+            }),
+            dict({
+              'position': 'DOWN',
+              'stat': dict({
+                'meta': dict({
+                  'applicationId': '01007430037F6000',
+                  'hasUgc': False,
+                  'imageUri': dict({
+                    'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_1024',
+                    'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_3',
+                    'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_512',
+                    'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_256',
+                    'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/60813d4e11554cd5a84712d74dee1be0_128',
+                  }),
+                  'shopUri': 'https://ec.nintendo.com/apps/01007430037f6000/GB?lang=en-GB',
+                  'title': 'record',
+                }),
+                'players': list([
+                  dict({
+                    'imageUri': 'https://dummyimage.com/818x486',
+                    'nickname': 'cheyenne19',
+                    'nsaId': None,
+                    'playerId': 'B276150DE6B18218C09E4D0CE4CFA0861A3',
+                  }),
+                ]),
+                'totalDays': 1,
+              }),
+            }),
+          ]),
+          'stat': dict({
+            'averageTime': 115,
+            'totalDays': 11,
+          }),
+        }),
+        nickname='cheyenne19',
+        player_id='B276150DE6B18218C09E4D0CE4CFA0861A3',
+        player_image='https://placekitten.com/861/237',
+        playing_time=15,
+      ),
+      'B305B292C1FF28D9CD7052AE75441EEB6CA': Player(
+        apps=list([
+        ]),
+        month_summary=dict({
+          'chat': dict({
+            'members': list([
+            ]),
+          }),
+          'dailyStats': list([
+            dict({
+              'date': '2025-11-01',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-02',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-03',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-04',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-05',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-06',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-07',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-08',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-09',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-10',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-11',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-12',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-13',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-14',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-15',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-16',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-17',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-18',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-19',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-20',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-21',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-22',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-23',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-24',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-25',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-26',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-27',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-28',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-29',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-30',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+          ]),
+          'ranking': list([
+          ]),
+          'stat': dict({
+            'averageTime': 0,
+            'totalDays': 0,
+          }),
+        }),
+        nickname='james02',
+        player_id='B305B292C1FF28D9CD7052AE75441EEB6CA',
+        player_image='https://dummyimage.com/465x317',
+        playing_time=0,
+      ),
+      'D0EF9C35BCB3C998BFFC1D00CE92943AC50': Player(
+        apps=list([
+        ]),
+        month_summary=dict({
+          'chat': dict({
+            'members': list([
+            ]),
+          }),
+          'dailyStats': list([
+            dict({
+              'date': '2025-11-01',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-02',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-03',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-04',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-05',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-06',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-07',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-08',
+              'games': dict({
+                '010042D00D900000': dict({
+                  'totalTime': 4,
+                }),
+              }),
+              'totalTime': 4,
+            }),
+            dict({
+              'date': '2025-11-09',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-10',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-11',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-12',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-13',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-14',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-15',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-16',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-17',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-18',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-19',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-20',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-21',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-22',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-23',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-24',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-25',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-26',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-27',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-28',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-29',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+            dict({
+              'date': '2025-11-30',
+              'games': dict({
+              }),
+              'totalTime': 0,
+            }),
+          ]),
+          'ranking': list([
+            dict({
+              'position': 'UP',
+              'stat': dict({
+                'meta': dict({
+                  'applicationId': '010042D00D900000',
+                  'hasUgc': False,
+                  'imageUri': dict({
+                    'extraLarge': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_1024',
+                    'extraSmall': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_3',
+                    'large': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_512',
+                    'medium': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_256',
+                    'small': 'https://atum-img-lp1.cdn.nintendo.net/i/c/70d5df4d933a42029e4e752dea3070c7_128',
+                  }),
+                  'shopUri': 'https://ec.nintendo.com/apps/010042d00d900000/GB?lang=en-GB',
+                  'title': 'government',
+                }),
+                'players': list([
+                  dict({
+                    'imageUri': 'https://picsum.photos/674/86',
+                    'nickname': 'pwright',
+                    'nsaId': None,
+                    'playerId': 'D0EF9C35BCB3C998BFFC1D00CE92943AC50',
+                  }),
+                ]),
+                'totalDays': 1,
+              }),
+            }),
+          ]),
+          'stat': dict({
+            'averageTime': 4,
+            'totalDays': 1,
+          }),
+        }),
+        nickname='pwright',
+        player_id='D0EF9C35BCB3C998BFFC1D00CE92943AC50',
+        player_image='https://picsum.photos/170/917',
+        playing_time=0,
+      ),
+    }),
     'stats_update_failed': False,
     'sync_state': 1762884750,
     'timer_mode': dict({

@@ -32,7 +32,7 @@ class Device:
         self._api: Api = api
         self.daily_summaries: dict = {}
         self.parental_control_settings: dict = {}
-        self.players: list[Player] = []
+        self.players: dict[str, Player] = {}
         self.limit_time: int | float | None = 0
         self.extra_playing_time: int | None = None
         self.timer_mode: DeviceTimerMode | None = None
@@ -77,11 +77,8 @@ class Device:
             self.get_monthly_summary(),
             self._get_extras(),
         )
-        if not self.players:
-            self.players = Player.from_device_daily_summary(self.daily_summaries)
-        else:
-            for player in self.players:
-                player.update_from_daily_summary(self.daily_summaries)
+        for player in self.players.values():
+            player.update_from_daily_summary(self.daily_summaries)
         await self._execute_callbacks()
 
     def add_device_callback(self, callback):
@@ -536,6 +533,15 @@ class Device:
             )
             if latest:
                 self.last_month_summary = summary = response["json"]["summary"]
+                # Generate player objects
+                for player in response.get("json", {}).get("summary", {}).get("players", []):
+                    profile = player.get("profile")
+                    if not profile or not profile.get("playerId"):
+                        continue
+                    player_id = profile["playerId"]
+                    if player_id not in self.players:
+                        self.players[player_id] = Player.from_profile(profile)
+                    self.players[player_id].month_summary = player.get("summary", {})
                 return summary
             return response["json"]["summary"]
 
@@ -573,7 +579,7 @@ class Device:
 
     def get_player(self, player_id: str) -> Player:
         """Returns a player."""
-        player = next((p for p in self.players if p.player_id == player_id), None)
+        player = self.players.get(player_id)
         if player:
             return player
         raise ValueError(f"Player with id {player_id} not found.")
