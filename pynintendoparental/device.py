@@ -67,6 +67,13 @@ class Device:
         """Return the generation."""
         return self.extra.get("platformGeneration", None)
 
+    @property
+    def last_sync(self) -> float | None:
+        """Return the last time this device was synced."""
+        return self.extra.get("synchronizedParentalControlSetting", {}).get(
+            "synchronizedAt", None
+        )
+
     async def update(self):
         """Update data."""
         _LOGGER.debug(">> Device.update()")

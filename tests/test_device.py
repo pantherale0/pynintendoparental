@@ -22,6 +22,16 @@ async def test_device_parsing(mock_api: Api, snapshot: SnapshotAssertion):
 
     mock_api.async_get_device_monthly_summary.assert_called_once()
 
+    test_device = copy.deepcopy(device)
+    assert test_device.last_sync is not None
+    assert test_device.last_sync == device.extra["synchronizedParentalControlSetting"][
+        "synchronizedAt"
+    ]
+    del test_device.extra["synchronizedParentalControlSetting"]["synchronizedAt"]
+    assert test_device.last_sync is None
+    del test_device.extra["synchronizedParentalControlSetting"]
+    assert test_device.last_sync is None
+
     assert clean_device_for_snapshot(device) == snapshot(
         exclude=props("today_time_remaining")
     )
