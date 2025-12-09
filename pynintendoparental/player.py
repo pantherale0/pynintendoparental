@@ -12,7 +12,7 @@ class Player:
         self.nickname: str | None = None
         self.apps: list = []
         self.month_summary: dict = {}
-        self.player_id: str
+        self.player_id: str | None = None
         self.playing_time: int = 0
 
     def update_from_daily_summary(self, raw: list[dict]):
