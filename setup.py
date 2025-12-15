@@ -30,7 +30,7 @@ DEV_REQUIREMENTS = [
     'mypy >= 1.5,< 1.20',
     'pytest >= 7,< 9',
     'pytest-cov >= 4,< 8',
-    'pytest-asyncio >= 0.21,< 1.0',
+    'pytest-asyncio >= 0.21,< 2.0',
     'syrupy >= 5,< 6',
     'twine >= 4,< 7',
 ]
