@@ -61,10 +61,6 @@ class Api:
         e_point = ENDPOINTS.get(endpoint, None)
         if e_point is None:
             raise ValueError("Endpoint does not exist")
-        # refresh the token if it has expired.
-        if self._auth.access_token_expired:
-            _LOGGER.debug("Access token expired, requesting refresh.")
-            await self._auth.perform_refresh()
         # format the URL using the kwargs
         url = e_point.get("url").format(BASE_URL=BASE_URL, **kwargs)
         _LOGGER.debug("Built URL %s", url)

@@ -1,6 +1,6 @@
 """Pytest fixtures."""
 
-from unittest.mock import AsyncMock, create_autospec
+from unittest.mock import AsyncMock, PropertyMock, create_autospec
 
 import pytest
 
@@ -17,7 +17,8 @@ def mock_authenticator() -> Authenticator:
     mock = create_autospec(Authenticator)
     mock.access_token = "ACCESS_TOKEN"
     mock.account_id = "ACCOUNT_ID"
-    mock.perform_refresh = AsyncMock()
+    mock._perform_refresh = AsyncMock()
+    type(mock).access_token_expired = PropertyMock(return_value=False)
     return mock
 
 

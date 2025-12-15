@@ -2,7 +2,7 @@
 # name: test_device_parsing
   dict({
     'alarms_enabled': True,
-    'application_update_failed': False,
+    'application_update_failed': True,
     'applications': list([
     ]),
     'bedtime_alarm': datetime.time(0, 0),
@@ -2874,7 +2874,7 @@
         }),
       ]),
     }),
-    'limit_time': 360,
+    'limit_time': -1,
     'month_playing_time': 15,
     'name': 'early',
     'parental_control_settings': dict({
