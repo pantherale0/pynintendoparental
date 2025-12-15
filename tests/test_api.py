@@ -1,6 +1,6 @@
 """Tests for the API class."""
 
-from unittest.mock import AsyncMock, MagicMock, Mock
+from unittest.mock import AsyncMock, MagicMock, Mock, PropertyMock
 
 import pytest
 from aiohttp import ContentTypeError
@@ -37,16 +37,21 @@ async def test_send_request_invalid_endpoint(mock_authenticator: Authenticator):
 
 async def test_send_request_token_refresh(mock_authenticator: Authenticator):
     """Test that the token is refreshed if it's expired."""
-    mock_authenticator.access_token_expired = True
+    type(mock_authenticator).access_token_expired = PropertyMock(return_value=True)
     api = Api(auth=mock_authenticator, tz="Europe/London", lang="en-GB")
 
     mock_response = MagicMock()
     mock_response.status = 200
     mock_response.json = AsyncMock(return_value={"status": "ok"})
     mock_response.text = AsyncMock(return_value='{"status": "ok"}')
-    mock_authenticator.async_authenticated_request = AsyncMock(
-        return_value=mock_response
-    )
+
+    # Use side_effect to replicate the internal logic of the real method.
+    async def mock_auth_request(*args, **kwargs):
+        if mock_authenticator.access_token_expired:
+            await mock_authenticator._perform_refresh()
+        return mock_response
+
+    mock_authenticator.async_authenticated_request.side_effect = mock_auth_request
 
     await api.send_request("get_account_devices")
     mock_authenticator._perform_refresh.assert_called_once()
