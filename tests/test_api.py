@@ -49,7 +49,7 @@ async def test_send_request_token_refresh(mock_authenticator: Authenticator):
     )
 
     await api.send_request("get_account_devices")
-    mock_authenticator.perform_refresh.assert_called_once()
+    mock_authenticator._perform_refresh.assert_called_once()
 
 
 async def test_send_request_http_exception(mock_authenticator: Authenticator):
