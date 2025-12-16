@@ -9,6 +9,7 @@ from syrupy.assertion import SnapshotAssertion
 from syrupy.filters import props
 
 from pynintendoauth.exceptions import HttpException
+from pynintendoparental.exceptions import BedtimeOutOfRangeError
 from pynintendoparental.device import Device
 from pynintendoparental.api import Api
 
@@ -95,12 +96,9 @@ async def test_update_device_bedtime_end_time(
     new_bedtime = time(hour=6, minute=30)
     await device.set_bedtime_end_time(new_bedtime)
 
-    pcs_response["json"]["parentalControlSetting"]["playTimerRegulations"][
-        "dailyRegulations"
-    ]["bedtime"]["startingTime"]["hour"] = new_bedtime.hour
-    pcs_response["json"]["parentalControlSetting"]["playTimerRegulations"][
-        "dailyRegulations"
-    ]["bedtime"]["startingTime"]["minute"] = new_bedtime.minute
+    pcs_response["json"]["parentalControlSetting"]["playTimerRegulations"][  
+        "dailyRegulations"  
+    ]["bedtime"]["startingTime"] = {"hour": new_bedtime.hour, "minute": new_bedtime.minute} 
     mock_api.async_update_play_timer.assert_called_with(
         device.device_id,
         pcs_response["json"]["parentalControlSetting"]["playTimerRegulations"],
@@ -109,6 +107,39 @@ async def test_update_device_bedtime_end_time(
     assert clean_device_for_snapshot(device) == snapshot(
         exclude=props("today_time_remaining")
     )
+
+@pytest.mark.parametrize(
+    "side_effect,function_name,expected_log",
+    [
+        pytest.param(
+            BedtimeOutOfRangeError(value=time(4, 0)),
+            "set_bedtime_end_time",
+            "Bedtime is outside of the allowed range."
+        ),
+        pytest.param(
+            BedtimeOutOfRangeError(value=time(4, 0)),
+            "set_bedtime_alarm",
+            "Bedtime is outside of the allowed range."
+        ),
+    ]
+)
+async def test_update_device_exceptions(
+    mock_api: Api,
+    side_effect: Exception,
+    function_name: str,
+    expected_log: str
+):
+    """Test that updating the device bedtime end time raises exceptions as expected."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+    assert len(device.players) > 0
+
+    with pytest.raises(type(side_effect)) as err:
+        await getattr(device, function_name)(side_effect.value)
+
+    assert str(err.value) == f"{expected_log} Received value: {side_effect.value}"
 
 @pytest.mark.parametrize(
     "mock_api_function,side_effect,expected_log",

@@ -185,23 +185,16 @@ class Device:
     async def set_bedtime_end_time(self, value: time):
         """Update the bedtime end time for the device."""
         _LOGGER.debug(">> Device.set_bedtime_end_time(value=%s)", value)
-        if not (
-            (5 <= value.hour <= 9)
-            or (value.hour == 9 and value.minute == 0)
-            or (value.hour == 5 and value.minute == 0)
-        ):
+        if not time(5, 0) <= value <= time(9, 0):
             raise BedtimeOutOfRangeError(value=value)
         now = datetime.now()
-        if self.timer_mode == DeviceTimerMode.DAILY:
-            self.parental_control_settings["playTimerRegulations"]["dailyRegulations"][
-                "bedtime"
-            ]["startingTime"] = {"hour": value.hour, "minute": value.minute}
-        else:
-            self.parental_control_settings["playTimerRegulations"][
-                "eachDayOfTheWeekRegulations"
-            ][DAYS_OF_WEEK[now.weekday()]]["bedtime"][
-                "startingTime"
-            ] = {"hour": value.hour, "minute": value.minute}
+        if self.timer_mode == DeviceTimerMode.DAILY:  
+            regulation = self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]  
+        else:  
+            regulation = self.parental_control_settings["playTimerRegulations"][  
+                "eachDayOfTheWeekRegulations"  
+            ][DAYS_OF_WEEK[now.weekday()]]  
+        regulation["bedtime"]["startingTime"] = {"hour": value.hour, "minute": value.minute} 
         await self._send_api_update(
             self._api.async_update_play_timer,
             self.device_id,
