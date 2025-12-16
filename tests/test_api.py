@@ -186,9 +186,12 @@ async def test_api_methods(mock_authenticator: Authenticator):
         body={"deviceId": "DEVICE_ID", "additionalTime": 60, "status": "TO_ADDED"},
     )
 
-    await api.async_update_play_timer({"some": "setting"})
+    await api.async_update_play_timer("DEVICE_ID", {"some": "setting"})
     api.send_request.assert_called_with(
-        endpoint="update_play_timer", body={"some": "setting"}
+        endpoint="update_play_timer", body={
+            "deviceId": "DEVICE_ID",
+            "playTimerRegulations": {"some": "setting"},
+        }
     )
 
     await api.async_update_unlock_code("1234", "DEVICE_ID")

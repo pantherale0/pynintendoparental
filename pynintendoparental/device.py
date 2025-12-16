@@ -39,6 +39,7 @@ class Device:
         self.today_playing_time: int | float = 0
         self.today_time_remaining: int | float = 0
         self.bedtime_alarm: time | None = None
+        self.bedtime_end: time | None = None
         self.month_playing_time: int | float = 0
         self.today_disabled_time: int | float = 0
         self.today_exceeded_time: int | float = 0
@@ -139,12 +140,8 @@ class Device:
             mode
         )
         response = await self._api.async_update_play_timer(
-            settings={
-                "deviceId": self.device_id,
-                "playTimerRegulations": self.parental_control_settings[
-                    "playTimerRegulations"
-                ],
-            }
+            self.device_id,
+            self.parental_control_settings["playTimerRegulations"],
         )
         now = datetime.now()
         self._parse_parental_control_setting(
@@ -180,12 +177,28 @@ class Device:
             ][DAYS_OF_WEEK[now.weekday()]]["bedtime"] = bedtime
         await self._send_api_update(
             self._api.async_update_play_timer,
-            settings={
-                "deviceId": self.device_id,
-                "playTimerRegulations": self.parental_control_settings[
-                    "playTimerRegulations"
-                ],
-            },
+            self.device_id,
+            self.parental_control_settings["playTimerRegulations"],
+            now=now,
+        )
+
+    async def set_bedtime_end_time(self, value: time):
+        """Update the bedtime end time for the device."""
+        _LOGGER.debug(">> Device.set_bedtime_end_time(value=%s)", value)
+        if not time(5, 0) <= value <= time(9, 0):
+            raise BedtimeOutOfRangeError(value=value)
+        now = datetime.now()
+        if self.timer_mode == DeviceTimerMode.DAILY:  
+            regulation = self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]  
+        else:  
+            regulation = self.parental_control_settings["playTimerRegulations"][  
+                "eachDayOfTheWeekRegulations"  
+            ][DAYS_OF_WEEK[now.weekday()]]  
+        regulation["bedtime"]["startingTime"] = {"hour": value.hour, "minute": value.minute} 
+        await self._send_api_update(
+            self._api.async_update_play_timer,
+            self.device_id,
+            self.parental_control_settings["playTimerRegulations"],
             now=now,
         )
 
@@ -196,12 +209,8 @@ class Device:
         self.parental_control_settings["playTimerRegulations"]["timerMode"] = str(mode)
         await self._send_api_update(
             self._api.async_update_play_timer,
-            settings={
-                "deviceId": self.device_id,
-                "playTimerRegulations": self.parental_control_settings[
-                    "playTimerRegulations"
-                ],
-            },
+            self.device_id,
+            self.parental_control_settings["playTimerRegulations"],
         )
 
     async def update_max_daily_playtime(self, minutes: int | float = 0):
@@ -262,12 +271,8 @@ class Device:
 
         await self._send_api_update(
             self._api.async_update_play_timer,
-            settings={
-                "deviceId": self.device_id,
-                "playTimerRegulations": self.parental_control_settings[
-                    "playTimerRegulations"
-                ],
-            },
+            self.device_id,
+            self.parental_control_settings["playTimerRegulations"],
             now=now,
         )
 
@@ -341,9 +346,13 @@ class Device:
                 hour=bedtime_setting["endingTime"]["hour"],
                 minute=bedtime_setting["endingTime"]["minute"],
             )
+            self.bedtime_end = time(
+                hour=bedtime_setting["startingTime"]["hour"],
+                minute=bedtime_setting["startingTime"]["minute"],
+            )
         else:
             self.bedtime_alarm = time(hour=0, minute=0)
-
+            self.bedtime_end = time(hour=0, minute=0)
         self._update_applications()
 
     def _calculate_times(self, now: datetime):

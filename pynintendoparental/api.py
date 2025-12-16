@@ -153,8 +153,12 @@ class Api:
             endpoint="update_restriction_level", body=settings
         )
 
-    async def async_update_play_timer(self, settings: dict) -> dict:
+    async def async_update_play_timer(self, device_id: str, play_timer_regulations: dict) -> dict:
         """Update device play timer settings."""
+        settings = {
+            "deviceId": device_id,
+            "playTimerRegulations": play_timer_regulations,
+        }
         return await self.send_request(endpoint="update_play_timer", body=settings)
 
     async def async_update_unlock_code(self, new_code: str, device_id: str) -> dict:
