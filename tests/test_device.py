@@ -3,6 +3,8 @@
 import copy
 import pytest
 
+from datetime import time
+
 from syrupy.assertion import SnapshotAssertion
 from syrupy.filters import props
 
@@ -74,6 +76,39 @@ async def test_get_player(mock_api: Api):
     # Now test that it errors
     with pytest.raises(ValueError):
         device.get_player("invalid_player_id")
+
+async def test_update_device_bedtime_end_time(
+    mock_api: Api,
+    snapshot: SnapshotAssertion
+):
+    """Test that updating the device bedtime end time works as expected."""
+    devices_response = await load_fixture("account_devices")
+    pcs_response = {
+        "json": await load_fixture("device_parental_control_setting")
+    }
+    mock_api.async_update_play_timer.return_value = pcs_response
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+    assert len(device.players) > 0
+
+    new_bedtime = time(hour=6, minute=30)
+    await device.set_bedtime_end_time(new_bedtime)
+
+    pcs_response["json"]["parentalControlSetting"]["playTimerRegulations"][
+        "dailyRegulations"
+    ]["bedtime"]["startingTime"]["hour"] = new_bedtime.hour
+    pcs_response["json"]["parentalControlSetting"]["playTimerRegulations"][
+        "dailyRegulations"
+    ]["bedtime"]["startingTime"]["minute"] = new_bedtime.minute
+    mock_api.async_update_play_timer.assert_called_with(
+        device.device_id,
+        pcs_response["json"]["parentalControlSetting"]["playTimerRegulations"],
+    )
+
+    assert clean_device_for_snapshot(device) == snapshot(
+        exclude=props("today_time_remaining")
+    )
 
 @pytest.mark.parametrize(
     "mock_api_function,side_effect,expected_log",

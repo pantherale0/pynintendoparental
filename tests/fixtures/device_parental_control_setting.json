@@ -85,7 +85,7 @@
             "vrRestrictionEtag": "\"d55d9d0cfb841330935109664cfb21a4933dd228c8e12cfd696ef0e5dc885425\""
         },
         "playTimerRegulations": {
-            "timerMode": "EACH_DAY_OF_THE_WEEK",
+            "timerMode": "DAILY",
             "restrictionMode": "ALARM",
             "dailyRegulations": {
                 "timeToPlayInOneDay": {
