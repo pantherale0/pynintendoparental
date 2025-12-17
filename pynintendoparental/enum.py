@@ -8,6 +8,10 @@ class NintendoEnum(Enum):
     def __str__(self) -> str:
         return self.name
 
+    def options(self) -> list[str]:
+        """Return a list of option names."""
+        return [e.name for e in self.__class__]
+
 class AlarmSettingState(NintendoEnum):
     """Alarm setting states."""
 
