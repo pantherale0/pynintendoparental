@@ -208,6 +208,16 @@ async def test_get_monthly_summary_error(
             DeviceTimerMode.EACH_DAY_OF_THE_WEEK,
             {
                 "enabled": True,
+                "bedtime_enabled": False,
+                "day_of_week": "monday",
+                "max_daily_playtime": None
+            }
+        ),
+        pytest.param(
+            None,
+            DeviceTimerMode.EACH_DAY_OF_THE_WEEK,
+            {
+                "enabled": True,
                 "bedtime_enabled": True,
                 "bedtime_end": time(hour=20, minute=0),
                 "bedtime_start": time(hour=7, minute=0),

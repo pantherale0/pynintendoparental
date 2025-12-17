@@ -267,6 +267,8 @@ class Device:
             if not 0 <= max_daily_playtime <= 360:
                 raise DailyPlaytimeOutOfRangeError(max_daily_playtime)
             regulation["timeToPlayInOneDay"]["limitTime"] = max_daily_playtime
+        else:
+            regulation["timeToPlayInOneDay"]["limitTime"] = None
 
         await self._send_api_update(
             self._api.async_update_play_timer,
