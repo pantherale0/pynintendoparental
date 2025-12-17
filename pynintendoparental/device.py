@@ -53,7 +53,7 @@ class Device:
         self.today_important_info: list = []
         self.today_observations: list = []
         self.last_month_summary: dict = {}
-        self.applications: list[Application] = []
+        self.applications: dict[str, Application] = {}
         self.whitelisted_applications: dict[str, bool] = {}
         self.last_month_playing_time: int = 0
         self.forced_termination_mode: bool = False
@@ -358,14 +358,16 @@ class Device:
         """Updates applications from daily summary."""
         _LOGGER.debug(">> Device._update_applications()")
         parsed_apps = Application.from_whitelist(
-            self.parental_control_settings.get("whitelistedApplications", [])
+            self.parental_control_settings.get("whitelistedApplications", []),
+            self.device_id,
+            self._api
         )
         for app in parsed_apps:
-            try:
-                self.get_application(app.application_id).update(app)
+            if app.application_id in self.applications:
+                self.applications[app.application_id].update(app, self.parental_control_settings)
                 # self.get_application(app.application_id).update_today_time_played(self.daily_summaries[0])
-            except ValueError:
-                self.applications.append(app)
+            else:
+                self.applications[app.application_id] = app
 
     def _get_today_regulation(self, now: datetime) -> dict:
         """Returns the regulation settings for the current day."""
@@ -463,23 +465,26 @@ class Device:
                 month_playing_time += summary["playingTime"]
         self.month_playing_time = month_playing_time
         _LOGGER.debug("Cached current month playing time for device %s", self.device_id)
-        parsed_apps = Application.from_daily_summary(self.daily_summaries)
+        parsed_apps = Application.from_daily_summary(
+            self.daily_summaries,
+            self.device_id,
+            self._api,
+        )
         for app in parsed_apps:
-            try:
-                int_app = self.get_application(app.application_id)
+            if app.application_id in self.applications:
                 _LOGGER.debug(
                     "Updating cached app state %s for device %s",
-                    int_app.application_id,
+                    app.application_id,
                     self.device_id,
                 )
-                int_app.update(app)
-            except ValueError:
+                self.applications[app.application_id].update(app)
+            else:
                 _LOGGER.debug(
                     "Creating new cached application entry %s for device %s",
                     app.application_id,
                     self.device_id,
                 )
-                self.applications.append(app)
+                self.applications[app.application_id] = app
 
         # update application playtime
         try:
@@ -664,7 +669,7 @@ class Device:
     def get_application(self, application_id: str) -> Application:
         """Returns a single application."""
         app = next(
-            (app for app in self.applications if app.application_id == application_id),
+            (app for app in self.applications.values() if app.application_id == application_id),
             None,
         )
         if app:

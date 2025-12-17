@@ -3,8 +3,8 @@
   dict({
     'alarms_enabled': True,
     'application_update_failed': True,
-    'applications': list([
-    ]),
+    'applications': dict({
+    }),
     'bedtime_alarm': datetime.time(0, 0),
     'bedtime_end': datetime.time(0, 0),
     'daily_summaries': list([
@@ -4809,8 +4809,8 @@
   dict({
     'alarms_enabled': True,
     'application_update_failed': True,
-    'applications': list([
-    ]),
+    'applications': dict({
+    }),
     'bedtime_alarm': datetime.time(0, 0),
     'bedtime_end': datetime.time(0, 0),
     'daily_summaries': list([

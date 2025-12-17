@@ -2,15 +2,19 @@
 
 from datetime import datetime
 
+from .api import Api
 from .const import _LOGGER
+from .enum import SafeLaunchSetting
 
 
 class Application:
     """Model for an application"""
 
-    def __init__(self) -> None:
+    def __init__(self, device_id: str, api: Api) -> None:
         """Initialise a application."""
         self.application_id: str = None
+        self._device_id: str = device_id
+        self._api: Api = api
         self.first_played_date: datetime = None
         self.has_ugc: bool = None
         self.image_url: str = None  # uses small image from Nintendo
@@ -18,13 +22,14 @@ class Application:
         self.shop_url: str = None
         self.name: str = None
         self.today_time_played: int = None
+        self.self_launch_setting: SafeLaunchSetting = SafeLaunchSetting.NONE
 
     def update_today_time_played(self, daily_summary: dict):
         """Updates the today time played for the given application."""
         _LOGGER.debug("Updating today time played for app %s", self.application_id)
         self.today_time_played = daily_summary.get("playingTime", 0)
 
-    def update(self, updated: "Application"):
+    def update(self, updated: "Application", parental_control_settings: dict):
         """Updates self with a given application."""
         _LOGGER.debug("Updating application %s", self.application_id)
         self.application_id = updated.application_id
@@ -35,15 +40,29 @@ class Application:
         self.shop_url = updated.shop_url
         self.name = updated.name
         self.today_time_played = updated.today_time_played
+        for app in parental_control_settings["whitelistedApplicationList"]:
+            if app["applicationId"].capitalize() == self.application_id:
+                self.self_launch_setting = SafeLaunchSetting(
+                    app.get("safeLaunch", "NONE")
+                )
+                break
 
     @classmethod
-    def from_daily_summary(cls, raw: list) -> list["Application"]:
+    def from_daily_summary(cls, raw: list, device_id: str, api: Api) -> list["Application"]:
         """Converts a raw daily summary response into a list of applications."""
         built = []
         if "playedApps" in raw:
-            return cls.from_monthly_summary(raw.get("playedApps", []))
+            return cls.from_monthly_summary(
+                raw.get("playedApps", []),
+                device_id=device_id,
+                api=api
+            )
         for summary in raw:
-            for app in cls.from_monthly_summary(summary.get("playedApps", [])):
+            for app in cls.from_monthly_summary(
+                summary.get("playedApps", []),
+                device_id=device_id,
+                api=api
+            ):
                 if not cls.check_if_app_in_list(built, app):
                     built.append(app)
         return built
@@ -67,12 +86,15 @@ class Application:
         return None
 
     @classmethod
-    def from_whitelist(cls, raw: dict) -> list["Application"]:
+    def from_whitelist(cls, raw: dict, device_id: str, api: Api) -> list["Application"]:
         """Converts a raw whitelist response into a list of applications."""
         parsed = []
         for app_id in raw:
             _LOGGER.debug("Parsing app %s", app_id)
-            internal = cls()
+            internal = cls(
+                device_id=device_id,
+                api=api,
+            )
             internal.application_id = raw[app_id]["applicationId"]
             internal.first_played_date = datetime.strptime(
                 raw[app_id]["firstPlayDate"], "%Y-%m-%d"
@@ -83,12 +105,15 @@ class Application:
         return parsed
 
     @classmethod
-    def from_monthly_summary(cls, raw: list) -> list["Application"]:
+    def from_monthly_summary(cls, raw: list, device_id: str, api: Api) -> list["Application"]:
         """Converts a raw monthly summary response into a list of applications."""
         parsed = []
         for app in raw:
             _LOGGER.debug("Parsing app %s", app)
-            internal = cls()
+            internal = cls(
+                device_id=device_id,
+                api=api,
+            )
             internal.application_id = app.get("applicationId").capitalize()
             internal.first_played_date = datetime.strptime(
                 app.get("firstPlayDate"), "%Y-%m-%d"
