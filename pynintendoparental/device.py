@@ -15,7 +15,12 @@ from .exceptions import (
     DailyPlaytimeOutOfRangeError,
     InvalidDeviceStateError,
 )
-from .enum import AlarmSettingState, DeviceTimerMode, RestrictionMode
+from .enum import (
+    AlarmSettingState,
+    DeviceTimerMode,
+    FunctionalRestrictionLevel,
+    RestrictionMode
+)
 from .player import Player
 from .utils import is_awaitable
 from .application import Application
@@ -274,6 +279,16 @@ class Device:
             self._api.async_update_play_timer,
             self.device_id,
             self.parental_control_settings["playTimerRegulations"],
+        )
+
+    async def set_functional_restriction_level(self, level: FunctionalRestrictionLevel):
+        """Updates the functional restriction level of a device."""
+        _LOGGER.debug(">> Device.set_functional_restriction_level(level=%s)", level)
+        self.parental_control_settings["functionalRestrictionLevel"] = str(level)
+        await self._send_api_update(
+            self._api.async_update_restriction_level,
+            self.device_id,
+            self.parental_control_settings,
         )
 
     async def update_max_daily_playtime(self, minutes: int | float = 0):
