@@ -8,9 +8,10 @@ class NintendoEnum(Enum):
     def __str__(self) -> str:
         return self.name
 
-    def options(self) -> list[str]:
+    @classmethod
+    def options(cls) -> list[str]:
         """Return a list of option names."""
-        return [e.name for e in self.__class__]
+        return [e.name for e in cls]
 
 class AlarmSettingState(NintendoEnum):
     """Alarm setting states."""
@@ -44,3 +45,6 @@ class FunctionalRestrictionLevel(StrEnum, NintendoEnum):
     YOUNG_TEENS = "YOUNG_TEENS"
     TEEN = "OLDER_TEENS"
     CUSTOM = "CUSTOM"
+
+    def __str__(self) -> str:
+        return self.value
