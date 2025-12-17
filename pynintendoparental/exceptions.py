@@ -8,6 +8,7 @@ class RangeErrorKeys(StrEnum):
 
     DAILY_PLAYTIME = "daily_playtime_out_of_range"
     BEDTIME = "bedtime_alarm_out_of_range"
+    INVALID_DEVICE_STATE = "invalid_device_state"
 
 
 class NoDevicesFoundException(Exception):
@@ -35,3 +36,8 @@ class DailyPlaytimeOutOfRangeError(InputValidationError):
     """Daily playtime is outside of the allowed range."""
 
     error_key = RangeErrorKeys.DAILY_PLAYTIME
+
+class InvalidDeviceStateError(InputValidationError):
+    """The device is in an invalid state for the requested operation."""
+
+    error_key = RangeErrorKeys.INVALID_DEVICE_STATE
