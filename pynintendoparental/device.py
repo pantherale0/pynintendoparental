@@ -13,6 +13,7 @@ from .const import _LOGGER, DAYS_OF_WEEK
 from .exceptions import (
     BedtimeOutOfRangeError,
     DailyPlaytimeOutOfRangeError,
+    InvalidDeviceStateError,
 )
 from .enum import AlarmSettingState, DeviceTimerMode, RestrictionMode
 from .player import Player
@@ -207,6 +208,68 @@ class Device:
         _LOGGER.debug(">> Device.set_timer_mode(mode=%s)", mode)
         self.timer_mode = mode
         self.parental_control_settings["playTimerRegulations"]["timerMode"] = str(mode)
+        await self._send_api_update(
+            self._api.async_update_play_timer,
+            self.device_id,
+            self.parental_control_settings["playTimerRegulations"],
+        )
+
+    async def set_daily_restrictions(
+            self,
+            enabled: bool,
+            bedtime_enabled: bool,
+            day_of_week: str,
+            bedtime_start: time | None = None,
+            bedtime_end: time | None = None,
+            max_daily_playtime: int | float | None = None,
+    ):
+        """Updates the daily restrictions of a device."""
+        _LOGGER.debug(
+            ">> Device.set_daily_restrictions(enabled=%s, bedtime_enabled=%s, day_of_week=%s, bedtime_start=%s, bedtime_end=%s, max_daily_playtime=%s)",
+            enabled, bedtime_enabled, day_of_week, bedtime_start, bedtime_end, max_daily_playtime
+        )
+        if self.timer_mode != DeviceTimerMode.EACH_DAY_OF_THE_WEEK:
+            raise InvalidDeviceStateError("Daily restrictions can only be set when timer_mode is EACH_DAY_OF_THE_WEEK.")
+        if day_of_week not in DAYS_OF_WEEK:
+            raise ValueError(f"Invalid day_of_week: {day_of_week}")
+        regulation = self.parental_control_settings["playTimerRegulations"][
+                "eachDayOfTheWeekRegulations"  
+            ][day_of_week]
+
+        if bedtime_enabled and bedtime_start is not None and bedtime_end is not None:
+            if not time(5, 0) <= bedtime_start <= time(9, 0):
+                raise BedtimeOutOfRangeError(value=bedtime_start)
+            if not (
+                (16 <= bedtime_end.hour <= 22)
+                or (bedtime_end.hour == 23 and bedtime_end.minute == 0)
+                or (bedtime_end.hour == 0 and bedtime_end.minute == 0)
+            ):
+                raise BedtimeOutOfRangeError(value=bedtime_end)
+            regulation["bedtime"] = {
+                "enabled": True,
+                "startingTime": {"hour": bedtime_start.hour, "minute": bedtime_start.minute},
+                "endingTime": {"hour": bedtime_end.hour, "minute": bedtime_end.minute},
+            }
+        elif bedtime_enabled:
+            raise BedtimeOutOfRangeError(value=None)
+        else:
+            # Even when disabled, the API seems to expect a starting time.
+            regulation["bedtime"] = {
+                "enabled": False,
+                "startingTime": None,
+                "endingTime": None,
+            }
+
+        regulation["timeToPlayInOneDay"] = {"enabled": enabled}
+        if enabled and max_daily_playtime is not None:
+            if isinstance(max_daily_playtime, float):
+                max_daily_playtime = int(max_daily_playtime)
+            if not 0 <= max_daily_playtime <= 360:
+                raise DailyPlaytimeOutOfRangeError(max_daily_playtime)
+            regulation["timeToPlayInOneDay"]["limitTime"] = max_daily_playtime
+        else:
+            regulation["timeToPlayInOneDay"]["limitTime"] = None
+
         await self._send_api_update(
             self._api.async_update_play_timer,
             self.device_id,

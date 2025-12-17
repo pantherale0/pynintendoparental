@@ -1,15 +1,20 @@
 """Tests for the Device class."""
 
 import copy
-import pytest
+from datetime import datetime, time
 
-from datetime import time
+import pytest
 
 from syrupy.assertion import SnapshotAssertion
 from syrupy.filters import props
 
 from pynintendoauth.exceptions import HttpException
-from pynintendoparental.exceptions import BedtimeOutOfRangeError
+from pynintendoparental.enum import DeviceTimerMode
+from pynintendoparental.exceptions import (
+    BedtimeOutOfRangeError,
+    DailyPlaytimeOutOfRangeError,
+    InvalidDeviceStateError
+)
 from pynintendoparental.device import Device
 from pynintendoparental.api import Api
 
@@ -174,3 +179,153 @@ async def test_get_monthly_summary_error(
 
     await device.get_monthly_summary()
     assert expected_log.format(DEVICE_ID=device.device_id) in caplog.text
+
+@pytest.mark.parametrize(
+    "side_effect,timer_state,kwargs",
+    [
+        pytest.param(
+            None,
+            DeviceTimerMode.EACH_DAY_OF_THE_WEEK,
+            {
+                "enabled": True,
+                "bedtime_enabled": False,
+                "day_of_week": "monday",
+                "max_daily_playtime": 260
+            }
+        ),
+        pytest.param(
+            None,
+            DeviceTimerMode.EACH_DAY_OF_THE_WEEK,
+            {
+                "enabled": True,
+                "bedtime_enabled": False,
+                "day_of_week": "monday",
+                "max_daily_playtime": 260.0
+            }
+        ),
+        pytest.param(
+            None,
+            DeviceTimerMode.EACH_DAY_OF_THE_WEEK,
+            {
+                "enabled": True,
+                "bedtime_enabled": False,
+                "day_of_week": "monday",
+                "max_daily_playtime": None
+            }
+        ),
+        pytest.param(
+            None,
+            DeviceTimerMode.EACH_DAY_OF_THE_WEEK,
+            {
+                "enabled": True,
+                "bedtime_enabled": True,
+                "bedtime_end": time(hour=20, minute=0),
+                "bedtime_start": time(hour=7, minute=0),
+                "day_of_week": "monday",
+                "max_daily_playtime": 260
+            }
+        ),
+        pytest.param(
+            InvalidDeviceStateError,
+            DeviceTimerMode.DAILY,
+            {
+                "enabled": True,
+                "bedtime_enabled": False,
+                "day_of_week": "monday",
+                "max_daily_playtime": 260
+            }
+        ),
+        pytest.param(
+            ValueError,
+            DeviceTimerMode.EACH_DAY_OF_THE_WEEK,
+            {
+                "enabled": True,
+                "bedtime_enabled": False,
+                "day_of_week": "invalid_day",
+                "max_daily_playtime": 260
+            }
+        ),
+        pytest.param(
+            DailyPlaytimeOutOfRangeError,
+            DeviceTimerMode.EACH_DAY_OF_THE_WEEK,
+            {
+                "enabled": True,
+                "bedtime_enabled": False,
+                "day_of_week": "monday",
+                "max_daily_playtime": 380
+            }
+        ),
+        pytest.param(
+            BedtimeOutOfRangeError,
+            DeviceTimerMode.EACH_DAY_OF_THE_WEEK,
+            {
+                "enabled": True,
+                "bedtime_enabled": True,
+                "bedtime_start": time(hour=3, minute=0),
+                "bedtime_end": time(hour=8, minute=0),
+                "day_of_week": "monday",
+                "max_daily_playtime": 380
+            }
+        ),
+        pytest.param(
+            BedtimeOutOfRangeError,
+            DeviceTimerMode.EACH_DAY_OF_THE_WEEK,
+            {
+                "enabled": True,
+                "bedtime_enabled": True,
+                "bedtime_start": time(hour=6, minute=0),
+                "bedtime_end": time(hour=8, minute=0),
+                "day_of_week": "monday",
+                "max_daily_playtime": 380
+            }
+        ),
+        pytest.param(
+            BedtimeOutOfRangeError,
+            DeviceTimerMode.EACH_DAY_OF_THE_WEEK,
+            {
+                "enabled": True,
+                "bedtime_enabled": True,
+                "day_of_week": "monday",
+                "max_daily_playtime": 280
+            }
+        )
+    ]
+)
+async def test_set_daily_restrictions(
+    mock_api: Api,
+    caplog: pytest.LogCaptureFixture,
+    side_effect: Exception | None,
+    timer_state: DeviceTimerMode,
+    kwargs: dict,
+):
+    """Test that set_daily_restrictions calls correctly raises exceptions."""
+    devices_response = await load_fixture("account_devices")
+    pcs_response = await load_fixture("device_parental_control_setting")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+    device._parse_parental_control_setting(  # pylint: disable=protected-access
+        pcs_response,
+        datetime(2023, 10, 30, 12, 0, 0)  # A Monday
+    )
+    assert len(device.players) > 0
+
+    # Override the device timer mode for testing
+    device.timer_mode = timer_state
+    mock_api.async_update_play_timer.return_value = {
+        "json": pcs_response
+    }
+
+    if side_effect is None:
+        await device.set_daily_restrictions(
+            **kwargs
+        )
+        mock_api.async_update_play_timer.assert_called_once()
+    else:
+        with pytest.raises(side_effect):
+            await device.set_daily_restrictions(
+                **kwargs
+            )
+
+    assert ">> Device.set_daily_restrictions" in caplog.text
+    assert ">> Device._parse_parental_control_setting" in caplog.text
