@@ -169,9 +169,9 @@ async def test_api_methods(mock_authenticator: Authenticator):
         MONTH="11",
     )
 
-    await api.async_update_restriction_level({"some": "setting"})
+    await api.async_update_restriction_level("DEVICE_ID", {"some": "setting"})
     api.send_request.assert_called_with(
-        endpoint="update_restriction_level", body={"some": "setting"}
+        endpoint="update_restriction_level", body={"deviceId": "DEVICE_ID", "some": "setting"}
     )
 
     await api.async_update_extra_playing_time("DEVICE_ID", -1)

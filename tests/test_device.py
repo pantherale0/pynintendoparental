@@ -9,7 +9,7 @@ from syrupy.assertion import SnapshotAssertion
 from syrupy.filters import props
 
 from pynintendoauth.exceptions import HttpException
-from pynintendoparental.enum import DeviceTimerMode
+from pynintendoparental.enum import DeviceTimerMode, FunctionalRestrictionLevel
 from pynintendoparental.exceptions import (
     BedtimeOutOfRangeError,
     DailyPlaytimeOutOfRangeError,
@@ -328,4 +328,36 @@ async def test_set_daily_restrictions(
             )
 
     assert ">> Device.set_daily_restrictions" in caplog.text
+    assert ">> Device._parse_parental_control_setting" in caplog.text
+
+async def test_set_functional_restriction_level(
+    mock_api: Api,
+    caplog: pytest.LogCaptureFixture,
+):
+    """Test that set_functional_restriction_level calls correctly."""
+    devices_response = await load_fixture("account_devices")
+    pcs_response = await load_fixture("device_parental_control_setting")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+    device._parse_parental_control_setting(  # pylint: disable=protected-access
+        pcs_response,
+        datetime(2023, 10, 30, 12, 0, 0)
+    )
+    assert len(device.players) > 0
+
+    new_level = FunctionalRestrictionLevel.TEEN
+    expected_response = copy.deepcopy(pcs_response)
+    expected_response["parentalControlSetting"]["functionalRestrictionLevel"] = "OLDER_TEENS"
+    mock_api.async_update_restriction_level.return_value = {
+        "json": expected_response
+    }
+
+    await device.set_functional_restriction_level(new_level)
+    mock_api.async_update_restriction_level.assert_called_with(
+        device.device_id,
+        device.parental_control_settings,
+    )
+
+    assert ">> Device.set_functional_restriction_level" in caplog.text
     assert ">> Device._parse_parental_control_setting" in caplog.text

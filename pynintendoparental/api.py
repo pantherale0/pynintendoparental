@@ -147,8 +147,12 @@ class Api:
             MONTH=f"{month:02d}",
         )
 
-    async def async_update_restriction_level(self, settings: dict) -> dict:
+    async def async_update_restriction_level(self, device_id: str, parental_control_setting: dict) -> dict:
         """Update device restriction level."""
+        settings = {
+            "deviceId": device_id,
+            **parental_control_setting,
+        }
         return await self.send_request(
             endpoint="update_restriction_level", body=settings
         )
