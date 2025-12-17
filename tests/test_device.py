@@ -296,7 +296,7 @@ async def test_set_daily_restrictions(
     device = devices[0]
     device._parse_parental_control_setting(  # pylint: disable=protected-access
         pcs_response,
-        datetime.now()
+        datetime(2023, 10, 30, 12, 0, 0)  # A Monday
     )
     assert len(device.players) > 0
 
