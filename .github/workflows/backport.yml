@@ -7,8 +7,8 @@ on:
 jobs:
   backport:
     name: Backport
-    # This job will run if the PR was merged and has a label starting with 'backport/release'
-    if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'backport/release')
+    # This job will run if the PR was merged and has a label starting with 'backport/'
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.labels.*.name, 'backport/')
     runs-on: ubuntu-latest
     permissions:
       contents: write       # To create branches and commit
@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           # We need to fetch all history and tags to be able to checkout branches
           fetch-depth: 0
