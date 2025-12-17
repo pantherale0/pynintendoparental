@@ -1,0 +1,32 @@
+name: Backport Pull Request
+
+on:
+  pull_request:
+    types: [closed, labeled]
+
+jobs:
+  backport:
+    name: Backport
+    # This job will run if the PR was merged and has a label starting with 'backport/'
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.labels.*.name, 'backport/')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write       # To create branches and commit
+      pull-requests: write  # To create pull requests
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          # We need to fetch all history and tags to be able to checkout branches
+          fetch-depth: 0
+
+      - name: Create backport pull requests
+        uses: korthout/backport-action@v4
+        with:
+          # The GITHUB_TOKEN is automatically created by Actions
+          # to perform actions on your repository.
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # The label prefix to identify backport requests
+          label_pattern: '^backport/(.+)$'
+          add_labels: 'backport'

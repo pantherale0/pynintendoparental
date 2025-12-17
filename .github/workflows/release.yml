@@ -6,7 +6,7 @@ on:
       - "published"
 
 jobs:
-  release:
+  pypi-publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -25,3 +25,60 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}
+
+  create-release-branch:
+    name: Create Release Branch
+    runs-on: ubuntu-latest
+    # This job will only run for tags that look like X.Y.0
+    if: github.event.release.prerelease == false && endsWith(github.event.release.tag_name, '.0')
+    permissions:
+      contents: write # Required to create a branch
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Get version from tag
+        id: get_version
+        # This step extracts the major and minor version from a tag like '2.1.0' -> '2.1'
+        run: |
+          TAG=${{ github.event.release.tag_name }}
+          VERSION=$(echo "$TAG" | sed -E 's/([0-9]+\.[0-9]+)\.0/\1/')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create release branch
+        # This step creates a new branch like 'release/2.1.x' from the release tag
+        run: |
+          BRANCH_NAME="release/${{ steps.get_version.outputs.version }}.x"
+          TAG_NAME="${{ github.event.release.tag_name }}"
+          echo "Creating branch ${BRANCH_NAME} from tag ${TAG_NAME}"
+          git branch "${BRANCH_NAME}" "${TAG_NAME}"
+          git push origin "${BRANCH_NAME}"
+
+  update-release-branch:
+    name: Update Release Branch
+    runs-on: ubuntu-latest
+    # This job will only run for patch releases (e.g., X.Y.Z where Z > 0)
+    if: github.event.release.prerelease == false && !endsWith(github.event.release.tag_name, '.0')
+    permissions:
+      contents: write # Required to update a branch
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Get version from tag
+        id: get_version
+        # This step extracts the major and minor version from a tag like '2.1.1' -> '2.1'
+        run: |
+          TAG=${{ github.event.release.tag_name }}
+          VERSION=$(echo "$TAG" | sed -E 's/^([0-9]+\.[0-9]+)\..*$/\1/')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Update release branch
+        # This step force-pushes the branch to the new tag, updating it.
+        run: |
+          BRANCH_NAME="release/${{ steps.get_version.outputs.version }}.x"
+          TAG_NAME="${{ github.event.release.tag_name }}"
+          echo "Updating branch ${BRANCH_NAME} to tag ${TAG_NAME}"
+          git push origin "refs/tags/${TAG_NAME}:refs/heads/${BRANCH_NAME}" --force
