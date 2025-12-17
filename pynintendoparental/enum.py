@@ -11,7 +11,7 @@ class NintendoEnum(Enum):
     @classmethod
     def options(cls) -> list[str]:
         """Return a list of option names."""
-        return [e.name for e in cls]
+        return [str(e) for e in cls]
 
 class AlarmSettingState(NintendoEnum):
     """Alarm setting states."""
