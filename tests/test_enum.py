@@ -7,16 +7,22 @@ from pynintendoparental.enum import (
     FunctionalRestrictionLevel,
 )
 
-def test_nintendo_enum_str():
+@pytest.mark.parametrize(
+    "enum_member, expected_str",
+    [
+        (AlarmSettingState.SUCCESS, "SUCCESS"),
+        (RestrictionMode.ALARM, "ALARM"),
+        (DeviceTimerMode.DAILY, "DAILY"),
+        (FunctionalRestrictionLevel.CUSTOM, "CUSTOM"),
+        (FunctionalRestrictionLevel.TEEN, "OLDER_TEENS"),
+        (FunctionalRestrictionLevel.YOUNG_TEENS, "YOUNG_TEENS"),
+        (FunctionalRestrictionLevel.YOUNG_CHILD, "CHILDREN"),
+        (FunctionalRestrictionLevel.NONE, "NONE"),
+    ],
+)
+def test_nintendo_enum_str(enum_member, expected_str):
     """Test NintendoEnum __str__ method."""
-    assert str(AlarmSettingState.SUCCESS) == "SUCCESS"
-    assert str(RestrictionMode.ALARM) == "ALARM"
-    assert str(DeviceTimerMode.DAILY) == "DAILY"
-    assert str(FunctionalRestrictionLevel.CUSTOM) == "CUSTOM"
-    assert str(FunctionalRestrictionLevel.TEEN) == "OLDER_TEENS"
-    assert str(FunctionalRestrictionLevel.YOUNG_TEENS) == "YOUNG_TEENS"
-    assert str(FunctionalRestrictionLevel.YOUNG_CHILD) == "CHILDREN"
-    assert str(FunctionalRestrictionLevel.NONE) == "NONE"
+    assert str(enum_member) == expected_str
 
 def test_nintendo_enum_options():
     """Test NintendoEnum options method."""
