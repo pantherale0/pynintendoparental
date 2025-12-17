@@ -250,6 +250,8 @@ class Device:
                 "startingTime": {"hour": bedtime_start.hour, "minute": bedtime_start.minute},
                 "endingTime": {"hour": bedtime_end.hour, "minute": bedtime_end.minute},
             }
+        elif bedtime_enabled:
+            raise BedtimeOutOfRangeError(value=None)
         else:
             # Even when disabled, the API seems to expect a starting time.
             regulation["bedtime"] = {

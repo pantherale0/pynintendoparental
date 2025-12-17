@@ -268,6 +268,16 @@ async def test_get_monthly_summary_error(
                 "day_of_week": "monday",
                 "max_daily_playtime": 380
             }
+        ),
+        pytest.param(
+            BedtimeOutOfRangeError,
+            DeviceTimerMode.EACH_DAY_OF_THE_WEEK,
+            {
+                "enabled": True,
+                "bedtime_enabled": True,
+                "day_of_week": "monday",
+                "max_daily_playtime": 280
+            }
         )
     ]
 )
@@ -292,11 +302,11 @@ async def test_set_daily_restrictions(
 
     # Override the device timer mode for testing
     device.timer_mode = timer_state
+    mock_api.async_update_play_timer.return_value = {
+        "json": pcs_response
+    }
 
     if side_effect is None:
-        mock_api.async_update_play_timer.return_value = {
-            "json": pcs_response
-        }
         await device.set_daily_restrictions(
             **kwargs
         )
