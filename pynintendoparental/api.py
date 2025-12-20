@@ -147,7 +147,9 @@ class Api:
             MONTH=f"{month:02d}",
         )
 
-    async def async_update_restriction_level(self, device_id: str, parental_control_setting: dict) -> dict:
+    async def async_update_restriction_level(
+        self, device_id: str, parental_control_setting: dict
+    ) -> dict:
         """Update device restriction level."""
         settings = {
             "deviceId": device_id,
@@ -157,7 +159,9 @@ class Api:
             endpoint="update_restriction_level", body=settings
         )
 
-    async def async_update_play_timer(self, device_id: str, play_timer_regulations: dict) -> dict:
+    async def async_update_play_timer(
+        self, device_id: str, play_timer_regulations: dict
+    ) -> dict:
         """Update device play timer settings."""
         settings = {
             "deviceId": device_id,

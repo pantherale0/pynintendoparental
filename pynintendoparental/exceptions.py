@@ -14,6 +14,7 @@ class RangeErrorKeys(StrEnum):
 class NoDevicesFoundException(Exception):
     """No devices were found for the account."""
 
+
 class DeviceError(Exception):
     """Generic Device Error."""
 
@@ -22,6 +23,7 @@ class DeviceError(Exception):
     def __init__(self, message: str) -> None:
         super().__init__(f"{self.__doc__} {message}")
         self.message = message
+
 
 class InputValidationError(DeviceError):
     """Input Validation Failed."""
@@ -33,6 +35,7 @@ class InputValidationError(DeviceError):
         super().__init__(f"Received value: {value}")
         self.value = value
 
+
 class BedtimeOutOfRangeError(InputValidationError):
     """Bedtime is outside of the allowed range."""
 
@@ -43,6 +46,7 @@ class DailyPlaytimeOutOfRangeError(InputValidationError):
     """Daily playtime is outside of the allowed range."""
 
     error_key = RangeErrorKeys.DAILY_PLAYTIME
+
 
 class InvalidDeviceStateError(DeviceError):
     """The device is in an invalid state for the requested operation."""

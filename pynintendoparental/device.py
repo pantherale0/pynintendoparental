@@ -19,7 +19,7 @@ from .enum import (
     AlarmSettingState,
     DeviceTimerMode,
     FunctionalRestrictionLevel,
-    RestrictionMode
+    RestrictionMode,
 )
 from .player import Player
 from .utils import is_awaitable
@@ -158,29 +158,39 @@ class Device:
     async def set_bedtime_alarm(self, value: time):
         """Update the bedtime alarm for the device."""
         _LOGGER.debug(">> Device.set_bedtime_alarm(value=%s)", value)
-        if not (
-            (16 <= value.hour <= 22)
-            or (value.hour == 23 and value.minute == 0)
-            or (value.hour == 0 and value.minute == 0)
-        ):
+        if not ((16 <= value.hour <= 23) or (value.hour == 0 and value.minute == 0)):
             raise BedtimeOutOfRangeError(value=value)
         now = datetime.now()
-        bedtime = {
-            "enabled": value.hour != 0 and value.minute != 0,
-        }
-        if bedtime["enabled"]:
-            bedtime = {
-                **bedtime,
+        regulation = self._get_today_regulation(now).get("bedtime", {})
+        regulation["enabled"] = 16 <= value.hour <= 23
+
+        if regulation["enabled"]:
+            _LOGGER.debug(">> Device.set_bedtime_alarm(value=%s): Enabled", value)
+            regulation = {
+                **regulation,
                 "endingTime": {"hour": value.hour, "minute": value.minute},
             }
+        else:
+            regulation = {**regulation, "endingTime": None}
         if self.timer_mode == DeviceTimerMode.DAILY:
+            _LOGGER.debug(
+                ">> Device.set_bedtime_alarm(value=%s): Daily timer mode", value
+            )
             self.parental_control_settings["playTimerRegulations"]["dailyRegulations"][
                 "bedtime"
-            ] = bedtime
+            ] = regulation
         else:
+            _LOGGER.debug(
+                ">> Device.set_bedtime_alarm(value=%s): Each day timer mode", value
+            )
             self.parental_control_settings["playTimerRegulations"][
                 "eachDayOfTheWeekRegulations"
-            ][DAYS_OF_WEEK[now.weekday()]]["bedtime"] = bedtime
+            ][DAYS_OF_WEEK[now.weekday()]]["bedtime"] = regulation
+        _LOGGER.debug(
+            ">> Device.set_bedtime_alarm(value=%s): Updating bedtime with object %s",
+            value,
+            regulation,
+        )
         await self._send_api_update(
             self._api.async_update_play_timer,
             self.device_id,
@@ -194,13 +204,18 @@ class Device:
         if not time(5, 0) <= value <= time(9, 0):
             raise BedtimeOutOfRangeError(value=value)
         now = datetime.now()
-        if self.timer_mode == DeviceTimerMode.DAILY:  
-            regulation = self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]  
-        else:  
-            regulation = self.parental_control_settings["playTimerRegulations"][  
-                "eachDayOfTheWeekRegulations"  
-            ][DAYS_OF_WEEK[now.weekday()]]  
-        regulation["bedtime"]["startingTime"] = {"hour": value.hour, "minute": value.minute} 
+        if self.timer_mode == DeviceTimerMode.DAILY:
+            regulation = self.parental_control_settings["playTimerRegulations"][
+                "dailyRegulations"
+            ]
+        else:
+            regulation = self.parental_control_settings["playTimerRegulations"][
+                "eachDayOfTheWeekRegulations"
+            ][DAYS_OF_WEEK[now.weekday()]]
+        regulation["bedtime"]["startingTime"] = {
+            "hour": value.hour,
+            "minute": value.minute,
+        }
         await self._send_api_update(
             self._api.async_update_play_timer,
             self.device_id,
@@ -220,26 +235,33 @@ class Device:
         )
 
     async def set_daily_restrictions(
-            self,
-            enabled: bool,
-            bedtime_enabled: bool,
-            day_of_week: str,
-            bedtime_start: time | None = None,
-            bedtime_end: time | None = None,
-            max_daily_playtime: int | float | None = None,
+        self,
+        enabled: bool,
+        bedtime_enabled: bool,
+        day_of_week: str,
+        bedtime_start: time | None = None,
+        bedtime_end: time | None = None,
+        max_daily_playtime: int | float | None = None,
     ):
         """Updates the daily restrictions of a device."""
         _LOGGER.debug(
             ">> Device.set_daily_restrictions(enabled=%s, bedtime_enabled=%s, day_of_week=%s, bedtime_start=%s, bedtime_end=%s, max_daily_playtime=%s)",
-            enabled, bedtime_enabled, day_of_week, bedtime_start, bedtime_end, max_daily_playtime
+            enabled,
+            bedtime_enabled,
+            day_of_week,
+            bedtime_start,
+            bedtime_end,
+            max_daily_playtime,
         )
         if self.timer_mode != DeviceTimerMode.EACH_DAY_OF_THE_WEEK:
-            raise InvalidDeviceStateError("Daily restrictions can only be set when timer_mode is EACH_DAY_OF_THE_WEEK.")
+            raise InvalidDeviceStateError(
+                "Daily restrictions can only be set when timer_mode is EACH_DAY_OF_THE_WEEK."
+            )
         if day_of_week not in DAYS_OF_WEEK:
             raise ValueError(f"Invalid day_of_week: {day_of_week}")
         regulation = self.parental_control_settings["playTimerRegulations"][
-                "eachDayOfTheWeekRegulations"  
-            ][day_of_week]
+            "eachDayOfTheWeekRegulations"
+        ][day_of_week]
 
         if bedtime_enabled and bedtime_start is not None and bedtime_end is not None:
             if not time(5, 0) <= bedtime_start <= time(9, 0):
@@ -252,7 +274,10 @@ class Device:
                 raise BedtimeOutOfRangeError(value=bedtime_end)
             regulation["bedtime"] = {
                 "enabled": True,
-                "startingTime": {"hour": bedtime_start.hour, "minute": bedtime_start.minute},
+                "startingTime": {
+                    "hour": bedtime_start.hour,
+                    "minute": bedtime_start.minute,
+                },
                 "endingTime": {"hour": bedtime_end.hour, "minute": bedtime_end.minute},
             }
         elif bedtime_enabled:
@@ -419,17 +444,19 @@ class Device:
             )
 
         bedtime_setting = today_reg.get("bedtime", {})
-        if bedtime_setting.get("enabled"):
+        if bedtime_setting.get("enabled") and bedtime_setting["endingTime"]:
             self.bedtime_alarm = time(
                 hour=bedtime_setting["endingTime"]["hour"],
                 minute=bedtime_setting["endingTime"]["minute"],
             )
+        else:
+            self.bedtime_alarm = time(hour=0, minute=0)
+        if bedtime_setting.get("enabled") and bedtime_setting["startingTime"]:
             self.bedtime_end = time(
                 hour=bedtime_setting["startingTime"]["hour"],
                 minute=bedtime_setting["startingTime"]["minute"],
             )
         else:
-            self.bedtime_alarm = time(hour=0, minute=0)
             self.bedtime_end = time(hour=0, minute=0)
         self._update_applications()
 
@@ -628,7 +655,9 @@ class Device:
             if latest:
                 self.last_month_summary = summary = response["json"]["summary"]
                 # Generate player objects
-                for player in response.get("json", {}).get("summary", {}).get("players", []):
+                for player in (
+                    response.get("json", {}).get("summary", {}).get("players", [])
+                ):
                     profile = player.get("profile")
                     if not profile or not profile.get("playerId"):
                         continue
