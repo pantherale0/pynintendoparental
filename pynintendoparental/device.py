@@ -171,10 +171,7 @@ class Device:
                 "endingTime": {"hour": value.hour, "minute": value.minute},
             }
         else:
-            regulation = {
-                **regulation,
-                "endingTime": None
-            }
+            regulation = {**regulation, "endingTime": None}
         if self.timer_mode == DeviceTimerMode.DAILY:
             _LOGGER.debug(
                 ">> Device.set_bedtime_alarm(value=%s): Daily timer mode", value

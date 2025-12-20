@@ -128,6 +128,7 @@ async def test_update_device_bedtime_end_time(
             time(hour=23, minute=0)  # Upper bound
         ),
         pytest.param(time(hour=21, minute=30)),
+        pytest.param(time(hour=0, minute=0)),
     ],
 )
 async def test_update_device_bedtime_alarm(
@@ -148,12 +149,16 @@ async def test_update_device_bedtime_alarm(
     assert device.bedtime_alarm == time(0, 0)
 
     expected_pcs = copy.deepcopy(pcs_response)
+    if new_bedtime == time(0, 0):
+        ending_time = None
+    else:
+        ending_time = {"hour": new_bedtime.hour, "minute": new_bedtime.minute}
     expected_pcs["json"]["parentalControlSetting"]["playTimerRegulations"][
         "dailyRegulations"
     ]["bedtime"].update(
         {
-            "enabled": True,
-            "endingTime": {"hour": new_bedtime.hour, "minute": new_bedtime.minute},
+            "enabled": (new_bedtime != time(0, 0)),
+            "endingTime": ending_time,
         }
     )
     mock_api.async_update_play_timer.return_value = expected_pcs
@@ -167,7 +172,7 @@ async def test_update_device_bedtime_alarm(
 
     assert device.parental_control_settings["playTimerRegulations"]["dailyRegulations"][
         "bedtime"
-    ]["enabled"]
+    ]["enabled"] == (new_bedtime != time(0, 0))
     assert device.bedtime_alarm == new_bedtime
 
 
