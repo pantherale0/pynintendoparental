@@ -158,29 +158,29 @@ class Device:
     async def set_bedtime_alarm(self, value: time):
         """Update the bedtime alarm for the device."""
         _LOGGER.debug(">> Device.set_bedtime_alarm(value=%s)", value)
-        if not (
-            (16 <= value.hour <= 22)
-            or (value.hour == 23 and value.minute == 0)
-            or (value.hour == 0 and value.minute == 0)
-        ):
+        if not ((16 <= value.hour <= 23) or (value.hour == 0 and value.minute == 0)):
             raise BedtimeOutOfRangeError(value=value)
         now = datetime.now()
-        bedtime = {
-            "enabled": value.hour != 0 and value.minute != 0,
-        }
-        if bedtime["enabled"]:
-            bedtime = {
-                **bedtime,
+        regulation = self._get_today_regulation(now).get("bedtime", {})
+        regulation["enabled"] = 16 <= value.hour <= 23
+
+        if regulation["enabled"]:
+            _LOGGER.debug(">> Device.set_bedtime_alarm(value=%s): Enabled", value)
+            regulation = {
+                **regulation,
                 "endingTime": {"hour": value.hour, "minute": value.minute},
             }
         if self.timer_mode == DeviceTimerMode.DAILY:
+            _LOGGER.debug(">> Device.set_bedtime_alarm(value=%s): Daily timer mode", value)
             self.parental_control_settings["playTimerRegulations"]["dailyRegulations"][
                 "bedtime"
-            ] = bedtime
+            ] = regulation
         else:
+            _LOGGER.debug(">> Device.set_bedtime_alarm(value=%s): Each day timer mode", value)
             self.parental_control_settings["playTimerRegulations"][
                 "eachDayOfTheWeekRegulations"
-            ][DAYS_OF_WEEK[now.weekday()]]["bedtime"] = bedtime
+            ][DAYS_OF_WEEK[now.weekday()]]["bedtime"] = regulation
+        _LOGGER.debug(">> Device.set_bedtime_alarm(value=%s): Updating bedtime with object %s", value, regulation)
         await self._send_api_update(
             self._api.async_update_play_timer,
             self.device_id,
@@ -419,17 +419,19 @@ class Device:
             )
 
         bedtime_setting = today_reg.get("bedtime", {})
-        if bedtime_setting.get("enabled"):
+        if bedtime_setting.get("enabled") and bedtime_setting["endingTime"]:
             self.bedtime_alarm = time(
                 hour=bedtime_setting["endingTime"]["hour"],
                 minute=bedtime_setting["endingTime"]["minute"],
             )
+        else:
+            self.bedtime_alarm = time(hour=0, minute=0)
+        if bedtime_setting.get("enabled") and bedtime_setting["startingTime"]:
             self.bedtime_end = time(
                 hour=bedtime_setting["startingTime"]["hour"],
                 minute=bedtime_setting["startingTime"]["minute"],
             )
         else:
-            self.bedtime_alarm = time(hour=0, minute=0)
             self.bedtime_end = time(hour=0, minute=0)
         self._update_applications()
 

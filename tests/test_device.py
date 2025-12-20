@@ -114,6 +114,59 @@ async def test_update_device_bedtime_end_time(
     )
 
 @pytest.mark.parametrize(
+    "new_bedtime",
+    [
+        pytest.param(
+            time(hour=20, minute=0) # Lower bound
+        ),
+        pytest.param(
+            time(hour=23, minute=0) # Upper bound
+        ),
+        pytest.param(
+            time(hour=21, minute=30)
+        )
+    ]
+)
+async def test_update_device_bedtime_alarm(
+    mock_api: Api,
+    new_bedtime: time,
+    caplog: pytest.LogCaptureFixture,
+):
+    """Test that updating the device bedtime alarm works as expected."""
+    devices_response = await load_fixture("account_devices")
+    pcs_response = {
+        "json": await load_fixture("device_parental_control_setting")
+    }
+    mock_api.async_update_play_timer.return_value = pcs_response
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+    assert len(device.players) > 0
+
+    assert device.timer_mode is DeviceTimerMode.DAILY
+    assert device.bedtime_alarm == time(0,0)
+
+    expected_pcs = copy.deepcopy(pcs_response)
+    expected_pcs["json"]["parentalControlSetting"]["playTimerRegulations"][
+        "dailyRegulations"
+    ]["bedtime"].update({
+        "enabled": True,
+        "endingTime": {"hour": new_bedtime.hour, "minute": new_bedtime.minute}
+    })
+    mock_api.async_update_play_timer.return_value = expected_pcs
+
+    await device.set_bedtime_alarm(new_bedtime)
+    assert f">> Device.set_bedtime_alarm(value={new_bedtime})" in caplog.text
+    mock_api.async_update_play_timer.assert_called_with(
+        device.device_id,
+        expected_pcs["json"]["parentalControlSetting"]["playTimerRegulations"],
+    )
+
+    assert device.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["bedtime"]["enabled"]
+    assert device.bedtime_alarm == new_bedtime
+
+
+@pytest.mark.parametrize(
     "side_effect,function_name,expected_log",
     [
         pytest.param(
@@ -122,7 +175,7 @@ async def test_update_device_bedtime_end_time(
             "Bedtime is outside of the allowed range."
         ),
         pytest.param(
-            BedtimeOutOfRangeError(value=time(4, 0)),
+            BedtimeOutOfRangeError(value=time(14, 30)),
             "set_bedtime_alarm",
             "Bedtime is outside of the allowed range."
         ),
