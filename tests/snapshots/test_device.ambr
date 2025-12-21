@@ -3316,10 +3316,6 @@
       'etag': '"7ed37dcd6e4aad33578c059e2de762512fcd59352189aa59e95f1e1fb7a82568"',
       'functionalRestrictionLevel': 'CHILDREN',
       'playTimerRegulations': dict({
-        'bedtimeStartingTime': dict({
-          'hour': 6,
-          'minute': 0,
-        }),
         'dailyRegulations': dict({
           'bedtime': dict({
             'enabled': False,
@@ -8473,10 +8469,6 @@
       'etag': '"7ed37dcd6e4aad33578c059e2de762512fcd59352189aa59e95f1e1fb7a82568"',
       'functionalRestrictionLevel': 'CHILDREN',
       'playTimerRegulations': dict({
-        'bedtimeStartingTime': dict({
-          'hour': 6,
-          'minute': 0,
-        }),
         'dailyRegulations': dict({
           'bedtime': dict({
             'enabled': False,
