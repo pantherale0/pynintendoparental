@@ -189,3 +189,5 @@ async def test_application_set_safe_launch_setting_whitelist_errors(
     )
     with pytest.raises(exception):
         await application.set_safe_launch_setting(setting)
+
+    mock_api.async_update_restriction_level.assert_not_called()
