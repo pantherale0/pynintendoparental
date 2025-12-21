@@ -50,7 +50,11 @@ class Application:
         self._monthly_summary = device.last_month_summary
         self._daily_summary = device.daily_summaries
         if "whitelistedApplicationList" not in self._parental_control_settings:
-            _LOGGER.warning(">> Device %s is missing a application whitelist, unable to update safe launch settings for %s", device.device_id, self.application_id)
+            _LOGGER.warning(
+                ">> Device %s is missing a application whitelist, unable to update safe launch settings for %s",
+                device.device_id,
+                self.application_id,
+            )
         for app in self._parental_control_settings.get(
             "whitelistedApplicationList", []
         ):

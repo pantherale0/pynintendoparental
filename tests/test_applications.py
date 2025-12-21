@@ -86,9 +86,7 @@ async def test_application_update_scenarios(
 
     # Scenario 2: Empty whitelistedApplicationList
     mock_device.daily_summaries = [{"players": []}]
-    mock_device.parental_control_settings = {
-        "whitelistedApplicationList": []
-    }
+    mock_device.parental_control_settings = {"whitelistedApplicationList": []}
     app.image_url = "initial"  # set a value to check it's not overwritten
 
     await cb_handler(mock_device)
@@ -100,4 +98,7 @@ async def test_application_update_scenarios(
 
     await cb_handler(mock_device)
     assert app.image_url == "initial_2"
-    assert ">> Device DEV123 is missing a application whitelist, unable to update safe launch settings for 01009B90006DC000" in caplog.text
+    assert (
+        ">> Device DEV123 is missing a application whitelist, unable to update safe launch settings for 01009B90006DC000"
+        in caplog.text
+    )
