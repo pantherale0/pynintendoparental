@@ -416,7 +416,7 @@ class Device:
         """Parse a parental control setting request response."""
         _LOGGER.debug(">> Device._parse_parental_control_setting()")
         self.parental_control_settings = pcs["parentalControlSetting"]
-
+        self.parental_control_settings["playTimerRegulations"].pop("bedtimeStartingTime", None)
         self.forced_termination_mode = self.parental_control_settings[
             "playTimerRegulations"
         ]["restrictionMode"] == str(RestrictionMode.FORCED_TERMINATION)
