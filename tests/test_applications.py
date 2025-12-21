@@ -156,4 +156,4 @@ async def test_application_set_safe_launch_setting_errors(
     application_2 = Application("TESTAPPID", "TESTAPPNAME", "TESTDEVICEID", AsyncMock())
     setattr(application_2, "_device", True)
     with pytest.raises(exception):
-        await application_1.set_safe_launch_setting(setting)
+        await application_2.set_safe_launch_setting(setting)
