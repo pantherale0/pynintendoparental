@@ -29,6 +29,8 @@ async def test_device_parsing(mock_api: Api, snapshot: SnapshotAssertion):
     device = devices[0]
 
     mock_api.async_get_device_monthly_summary.assert_called_once()
+    mock_api.async_get_device_daily_summaries.assert_called_once()
+    mock_api.async_get_device_parental_control_setting.assert_called_once()
 
     test_device = copy.deepcopy(device)
     assert test_device.last_sync is not None
@@ -40,6 +42,8 @@ async def test_device_parsing(mock_api: Api, snapshot: SnapshotAssertion):
     assert test_device.last_sync is None
     del test_device.extra["synchronizedParentalControlSetting"]
     assert test_device.last_sync is None
+
+    assert len(getattr(device, "_internal_callbacks")) == len(device.applications)
 
     assert clean_device_for_snapshot(device) == snapshot(
         exclude=props("today_time_remaining")
@@ -85,6 +89,24 @@ async def test_get_player(mock_api: Api):
     # Now test that it errors
     with pytest.raises(ValueError):
         device.get_player("invalid_player_id")
+
+
+async def test_get_application(mock_api: Api):
+    """Test that the get_application method works as expected."""
+    devices_response = await load_fixture("account_devices")
+    devices: list[Device] = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+    assert len(device.applications) > 0
+
+    # Get the ID of the first application in the dict
+    first_app_id = list(device.applications.keys())[0]
+    application = device.get_application(first_app_id)
+    assert application.application_id == first_app_id
+
+    # Now test the errors
+    with pytest.raises(ValueError):
+        device.get_application("invalid_application_id")
 
 
 async def test_update_device_bedtime_end_time(

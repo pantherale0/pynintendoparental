@@ -53,14 +53,14 @@ class Device:
         self.today_important_info: list = []
         self.today_observations: list = []
         self.last_month_summary: dict = {}
-        self.applications: list[Application] = []
+        self.applications: dict[str, Application] = {}
         self.whitelisted_applications: dict[str, bool] = {}
         self.last_month_playing_time: int = 0
         self.forced_termination_mode: bool = False
         self.alarms_enabled: bool = False
         self.stats_update_failed: bool = False
-        self.application_update_failed: bool = False
         self._callbacks: list[Callable] = []
+        self._internal_callbacks: list[Callable] = []
         _LOGGER.debug("Device init complete for %s", self.device_id)
 
     @property
@@ -93,6 +93,7 @@ class Device:
         )
         for player in self.players.values():
             player.update_from_daily_summary(self.daily_summaries)
+        self._update_applications()
         await self._execute_callbacks()
 
     def add_device_callback(self, callback):
@@ -111,6 +112,12 @@ class Device:
 
     async def _execute_callbacks(self):
         """Execute all callbacks."""
+        for cb in self._internal_callbacks:
+            if is_awaitable(cb):
+                await cb(device=self)
+            else:
+                cb(device=self)
+
         for cb in self._callbacks:
             if is_awaitable(cb):
                 await cb()
@@ -380,17 +387,18 @@ class Device:
         )
 
     def _update_applications(self):
-        """Updates applications from daily summary."""
+        """Updates applications from whitelisted applications list."""
         _LOGGER.debug(">> Device._update_applications()")
-        parsed_apps = Application.from_whitelist(
-            self.parental_control_settings.get("whitelistedApplications", [])
-        )
-        for app in parsed_apps:
-            try:
-                self.get_application(app.application_id).update(app)
-                # self.get_application(app.application_id).update_today_time_played(self.daily_summaries[0])
-            except ValueError:
-                self.applications.append(app)
+        for app in self.parental_control_settings.get("whitelistedApplicationList", []):
+            if app["applicationId"] in self.applications:
+                continue
+            self.applications[app["applicationId"]] = napp = Application(
+                app_id=app["applicationId"],
+                name=app["title"],
+                device_id=self.device_id,
+                api=self._api,
+            )
+            self._internal_callbacks.append(napp._internal_update_callback)
 
     def _get_today_regulation(self, now: datetime) -> dict:
         """Returns the regulation settings for the current day."""
@@ -458,7 +466,6 @@ class Device:
             )
         else:
             self.bedtime_end = time(hour=0, minute=0)
-        self._update_applications()
 
     def _calculate_times(self, now: datetime):
         """Calculate times from parental control settings."""
@@ -490,37 +497,6 @@ class Device:
                 month_playing_time += summary["playingTime"]
         self.month_playing_time = month_playing_time
         _LOGGER.debug("Cached current month playing time for device %s", self.device_id)
-        parsed_apps = Application.from_daily_summary(self.daily_summaries)
-        for app in parsed_apps:
-            try:
-                int_app = self.get_application(app.application_id)
-                _LOGGER.debug(
-                    "Updating cached app state %s for device %s",
-                    int_app.application_id,
-                    self.device_id,
-                )
-                int_app.update(app)
-            except ValueError:
-                _LOGGER.debug(
-                    "Creating new cached application entry %s for device %s",
-                    app.application_id,
-                    self.device_id,
-                )
-                self.applications.append(app)
-
-        # update application playtime
-        try:
-            for player in self.get_date_summary()[0].get("devicePlayers", []):
-                for app in player.get("playedApps", []):
-                    self.get_application(app["applicationId"]).update_today_time_played(
-                        app
-                    )
-            self.application_update_failed = False
-        except ValueError as err:
-            _LOGGER.debug(
-                "Unable to retrieve applications for device %s: %s", self.name, err
-            )
-            self.application_update_failed = True
 
     def _calculate_today_remaining_time(self, now: datetime):
         """Calculates the remaining playing time for today."""
@@ -692,12 +668,8 @@ class Device:
 
     def get_application(self, application_id: str) -> Application:
         """Returns a single application."""
-        app = next(
-            (app for app in self.applications if app.application_id == application_id),
-            None,
-        )
-        if app:
-            return app
+        if application_id in self.applications:
+            return self.applications[application_id]
         raise ValueError(f"Application with id {application_id} not found.")
 
     def get_player(self, player_id: str) -> Player:
