@@ -1,5 +1,6 @@
 """A Nintendo application."""
 
+import copy
 from datetime import datetime
 from typing import Callable, TYPE_CHECKING
 
@@ -54,7 +55,8 @@ class Application:
         ):
             raise ValueError("Unable to set SafeLaunchSetting, callbacks not executed.")
         # Update the application safe_launch_setting in the PCS
-        for app in self._parental_control_settings["whitelistedApplicationList"]:
+        pcs = copy.deepcopy(self._parental_control_settings)
+        for app in pcs["whitelistedApplicationList"]:
             if app["applicationId"].upper() == self.application_id.upper():
                 app["safeLaunch"] = str(safe_launch_setting)
                 break
@@ -66,7 +68,7 @@ class Application:
         await self._send_api_update(
             self._api.async_update_restriction_level,
             self._device_id,
-            self._parental_control_settings,
+            pcs,
             now=datetime.now(),
         )
 
