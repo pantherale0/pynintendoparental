@@ -46,6 +46,7 @@ async def main():
             )
             _LOGGER.debug("Usage today %s", device.today_playing_time)
             _LOGGER.debug("Usage remaining %s", device.today_time_remaining)
+            await device.set_timer_mode(DeviceTimerMode.EACH_DAY_OF_THE_WEEK)
 
         _LOGGER.debug("ping")
         await asyncio.sleep(15)
