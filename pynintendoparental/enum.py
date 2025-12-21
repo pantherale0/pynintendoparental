@@ -31,11 +31,13 @@ class RestrictionMode(NintendoEnum):
     FORCED_TERMINATION = 0
     ALARM = 1
 
+
 class SafeLaunchSetting(StrEnum, NintendoEnum):
     """Safe launch settings."""
 
     NONE = "NONE"
     ALLOW = "ALLOW"
+
 
 class DeviceTimerMode(StrEnum, NintendoEnum):
     """Device timer modes."""

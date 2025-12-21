@@ -385,11 +385,13 @@ class Device:
         parsed_apps = Application.from_whitelist(
             self.parental_control_settings.get("whitelistedApplications", []),
             self.device_id,
-            self._api
+            self._api,
         )
         for app in parsed_apps:
             if app.application_id in self.applications:
-                self.applications[app.application_id].update(app, self.parental_control_settings)
+                self.applications[app.application_id].update(
+                    app, self.parental_control_settings
+                )
                 # self.get_application(app.application_id).update_today_time_played(self.daily_summaries[0])
             else:
                 self.applications[app.application_id] = app
@@ -698,7 +700,11 @@ class Device:
     def get_application(self, application_id: str) -> Application:
         """Returns a single application."""
         app = next(
-            (app for app in self.applications.values() if app.application_id == application_id),
+            (
+                app
+                for app in self.applications.values()
+                if app.application_id == application_id
+            ),
             None,
         )
         if app:

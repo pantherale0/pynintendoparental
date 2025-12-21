@@ -48,20 +48,18 @@ class Application:
                 break
 
     @classmethod
-    def from_daily_summary(cls, raw: list, device_id: str, api: Api) -> list["Application"]:
+    def from_daily_summary(
+        cls, raw: list, device_id: str, api: Api
+    ) -> list["Application"]:
         """Converts a raw daily summary response into a list of applications."""
         built = []
         if "playedApps" in raw:
             return cls.from_monthly_summary(
-                raw.get("playedApps", []),
-                device_id=device_id,
-                api=api
+                raw.get("playedApps", []), device_id=device_id, api=api
             )
         for summary in raw:
             for app in cls.from_monthly_summary(
-                summary.get("playedApps", []),
-                device_id=device_id,
-                api=api
+                summary.get("playedApps", []), device_id=device_id, api=api
             ):
                 if not cls.check_if_app_in_list(built, app):
                     built.append(app)
@@ -105,7 +103,9 @@ class Application:
         return parsed
 
     @classmethod
-    def from_monthly_summary(cls, raw: list, device_id: str, api: Api) -> list["Application"]:
+    def from_monthly_summary(
+        cls, raw: list, device_id: str, api: Api
+    ) -> list["Application"]:
         """Converts a raw monthly summary response into a list of applications."""
         parsed = []
         for app in raw:
