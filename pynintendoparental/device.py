@@ -669,16 +669,8 @@ class Device:
 
     def get_application(self, application_id: str) -> Application:
         """Returns a single application."""
-        app = next(
-            (
-                app
-                for app in self.applications.values()
-                if app.application_id == application_id
-            ),
-            None,
-        )
-        if app:
-            return app
+        if application_id in self.applications:
+            return self.applications[application_id]
         raise ValueError(f"Application with id {application_id} not found.")
 
     def get_player(self, player_id: str) -> Player:
