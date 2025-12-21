@@ -1,6 +1,6 @@
 """Unit tests for the Application class."""
 
-from unittest.mock import AsyncMock, Mock
+from unittest.mock import AsyncMock, MagicMock, Mock
 
 import pytest
 
@@ -60,3 +60,41 @@ async def test_application_callback_no_device():
     cb_handler = getattr(app, "_internal_update_callback")
     response = await cb_handler(None)
     assert response is None
+
+
+async def test_application_update_scenarios():
+    """Test application update callback with various data scenarios for coverage."""
+    app = Application(
+        app_id="01009B90006DC000",
+        name="Super Mario Bros. Wonder",
+        device_id="DEV123",
+        api=AsyncMock(),
+    )
+    cb_handler = getattr(app, "_internal_update_callback")
+
+    # Scenario 1: Empty daily summary
+    mock_device = MagicMock(spec=Device)
+    mock_device.device_id = "DEV123"
+    mock_device.parental_control_settings = {"whitelistedApplicationList": []}
+    mock_device.last_month_summary = {}
+    mock_device.daily_summaries = []  # This is the key part for this test
+
+    await cb_handler(mock_device)
+    assert app.today_time_played == 0
+
+    # Scenario 2: Empty whitelistedApplicationList
+    mock_device.daily_summaries = [{"players": []}]
+    mock_device.parental_control_settings = {
+        "whitelistedApplicationList": []
+    }
+    app.image_url = "initial"  # set a value to check it's not overwritten
+
+    await cb_handler(mock_device)
+    assert app.image_url == "initial"
+
+    # Scenario 3: Missing whitelistedApplicationList key
+    mock_device.parental_control_settings = {}
+    app.image_url = "initial_2"
+
+    await cb_handler(mock_device)
+    assert app.image_url == "initial_2"
