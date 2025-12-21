@@ -56,6 +56,8 @@ async def test_application_callback_no_device():
         name="Test App",
         device_id="test_device_id",
         api=AsyncMock(),
+        send_api_update=None,
+        callbacks=[]
     )
 
     cb_handler = getattr(app, "_internal_update_callback")
@@ -72,6 +74,8 @@ async def test_application_update_scenarios(
         name="Super Mario Bros. Wonder",
         device_id="DEV123",
         api=AsyncMock(),
+        send_api_update=None,
+        callbacks=[]
     )
     cb_handler = getattr(app, "_internal_update_callback")
 
@@ -148,12 +152,26 @@ async def test_application_set_safe_launch_setting_init_errors(
     """Test the application set_safe_launch_setting correctly errors for init."""
 
     # Test with no device
-    application_1 = Application("TESTAPPID", "TESTAPPNAME", "TESTDEVICEID", AsyncMock())
+    application_1 = Application(
+        app_id="TESTAPPID",
+        name="TESTAPPNAME",
+        device_id="TESTDEVICEID",
+        api=AsyncMock(),
+        send_api_update=None,
+        callbacks=[]
+    )
     with pytest.raises(exception):
         await application_1.set_safe_launch_setting(setting)
 
     # Test with no application list
-    application_2 = Application("TESTAPPID", "TESTAPPNAME", "TESTDEVICEID", AsyncMock())
+    application_2 = Application(
+        app_id="TESTAPPID",
+        name="TESTAPPNAME",
+        device_id="TESTDEVICEID",
+        api=AsyncMock(),
+        send_api_update=None,
+        callbacks=[]
+    )
     setattr(application_2, "_device", True)
     with pytest.raises(exception):
         await application_2.set_safe_launch_setting(setting)

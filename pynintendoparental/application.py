@@ -21,11 +21,14 @@ class Application:
         name: str,
         device_id: str,
         api: Api,
+        send_api_update: Callable,
+        callbacks: list,
     ) -> None:
         """Initialise a application."""
         self.application_id: str = app_id
         self._device_id: str = device_id
         self._api: Api = api
+        self._send_api_update: Callable = send_api_update
         self.first_played_date: datetime = None
         self.has_ugc: bool = None
         self.image_url: str = None  # uses small image from Nintendo
@@ -39,6 +42,9 @@ class Application:
         self._monthly_summary: dict = {}
         self._daily_summary: dict = {}
         self._device: "Device" | None = None
+
+        # Register internal callbacks
+        callbacks.append(self._internal_update_callback)
 
     async def set_safe_launch_setting(self, safe_launch_setting: SafeLaunchSetting):
         """Set the safe launch setting for the application."""
@@ -57,7 +63,7 @@ class Application:
                 "Unable to set SafeLaunchSetting, application no longer in whitelist."
             )
 
-        await self._device._send_api_update(
+        await self._send_api_update(
             self._api.async_update_restriction_level,
             self._device_id,
             self._parental_control_settings,
