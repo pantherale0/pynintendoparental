@@ -91,6 +91,24 @@ async def test_get_player(mock_api: Api):
         device.get_player("invalid_player_id")
 
 
+async def test_get_application(mock_api: Api):
+    """Test that the get_application method works as expected."""
+    devices_response = await load_fixture("account_devices")
+    devices: list[Device] = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+    assert len(device.applications) > 0
+
+    # Get the ID of the first application in the dict
+    first_app_id = list(device.applications.keys())[0]
+    application = device.get_application(first_app_id)
+    assert application.application_id == first_app_id
+
+    # Now test the errors
+    with pytest.raises(ValueError):
+        device.get_application("invalid_application_id")
+
+
 async def test_update_device_bedtime_end_time(
     mock_api: Api, snapshot: SnapshotAssertion
 ):
