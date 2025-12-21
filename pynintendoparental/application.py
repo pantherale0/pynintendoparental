@@ -50,7 +50,7 @@ class Application:
         self._monthly_summary = device.last_month_summary
         self._daily_summary = device.daily_summaries
         for app in self._parental_control_settings["whitelistedApplicationList"]:
-            if app["applicationId"].capitalize() == self.application_id:
+            if app["applicationId"].upper() == self.application_id.upper():
                 self.safe_launch_setting = SafeLaunchSetting(
                     app.get("safeLaunch", "NONE")
                 )
