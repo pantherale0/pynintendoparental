@@ -398,8 +398,7 @@ class Device:
                 device_id=self.device_id,
                 api=self._api,
             )
-            int_update = getattr(napp, "_internal_update_callback")
-            self._internal_callbacks.append(int_update)
+            self._internal_callbacks.append(napp._internal_update_callback)
 
     def _get_today_regulation(self, now: datetime) -> dict:
         """Returns the regulation settings for the current day."""
