@@ -2,6 +2,7 @@
 
 from enum import Enum, StrEnum
 
+
 class NintendoEnum(Enum):
     """Base enum for Nintendo-related enums."""
 
@@ -12,6 +13,7 @@ class NintendoEnum(Enum):
     def options(cls) -> list[str]:
         """Return a list of string representations of the enum members."""
         return [str(e) for e in cls]
+
 
 class AlarmSettingState(NintendoEnum):
     """Alarm setting states."""
