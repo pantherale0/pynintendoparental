@@ -392,13 +392,14 @@ class Device:
         for app in self.parental_control_settings.get("whitelistedApplicationList", []):
             if app["applicationId"] in self.applications:
                 continue
-            self.applications[app["applicationId"]] = napp = Application(
+            self.applications[app["applicationId"]] = Application(
                 app_id=app["applicationId"],
                 name=app["title"],
                 device_id=self.device_id,
                 api=self._api,
+                send_api_update=self._send_api_update,
+                callbacks=self._internal_callbacks,
             )
-            self._internal_callbacks.append(napp._internal_update_callback)
 
     def _get_today_regulation(self, now: datetime) -> dict:
         """Returns the regulation settings for the current day."""
