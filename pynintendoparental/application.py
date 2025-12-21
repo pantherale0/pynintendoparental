@@ -66,8 +66,8 @@ class Application:
                 break
         total_time_played: int = 0
         if self._daily_summary:
-            for app in self._daily_summary[0].get("players", []):
-                for player_app in app.get("playedGames", []):
+            for player_summary in self._daily_summary[0].get("players", []):
+                for player_app in player_summary.get("playedGames", []):
                     if player_app["meta"]["applicationId"] == self.application_id:
                         total_time_played += player_app["playingTime"]
                         break
