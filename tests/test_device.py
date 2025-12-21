@@ -94,7 +94,9 @@ async def test_get_player(mock_api: Api):
 async def test_get_application(mock_api: Api):
     """Test that the get_application method works as expected."""
     devices_response = await load_fixture("account_devices")
-    devices: list[Device] = await Device.from_devices_response(devices_response, mock_api)
+    devices: list[Device] = await Device.from_devices_response(
+        devices_response, mock_api
+    )
     assert len(devices) > 0
     device = devices[0]
     assert len(device.applications) > 0
