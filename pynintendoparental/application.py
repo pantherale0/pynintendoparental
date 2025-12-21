@@ -36,7 +36,7 @@ class Application:
         self._monthly_summary: dict = {}
         self._daily_summary: dict = {}
 
-    async def _internal_update_callback(self, device):
+    async def _internal_update_callback(self, device: "Device"):
         """Internal update callback method for the Device object to inform this Application has been updated."""
         if not device:
             return
