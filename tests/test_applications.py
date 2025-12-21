@@ -62,7 +62,9 @@ async def test_application_callback_no_device():
     assert response is None
 
 
-async def test_application_update_scenarios():
+async def test_application_update_scenarios(
+    caplog: pytest.LogCaptureFixture,
+):
     """Test application update callback with various data scenarios for coverage."""
     app = Application(
         app_id="01009B90006DC000",
@@ -98,3 +100,4 @@ async def test_application_update_scenarios():
 
     await cb_handler(mock_device)
     assert app.image_url == "initial_2"
+    assert ">> Device DEV123 is missing a application whitelist, unable to update safe launch settings for 01009B90006DC000" in caplog.text
