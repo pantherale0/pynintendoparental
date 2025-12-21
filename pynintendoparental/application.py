@@ -1,13 +1,15 @@
 """A Nintendo application."""
 
 from datetime import datetime
-from typing import Callable
+from typing import Callable, TYPE_CHECKING
 
 from .api import Api
 from .const import _LOGGER
 from .enum import SafeLaunchSetting
 from .utils import is_awaitable
 
+if TYPE_CHECKING:
+    from .device import Device
 
 class Application:
     """Model for an application"""
