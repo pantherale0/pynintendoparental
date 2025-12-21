@@ -52,6 +52,10 @@ class Application:
             if app["applicationId"].upper() == self.application_id.upper():
                 app["safeLaunch"] = str(safe_launch_setting)
                 break
+        else:
+            raise LookupError(
+                "Unable to set SafeLaunchSetting, application no longer in whitelist."
+            )
 
         await self._device._send_api_update(
             self._api.async_update_restriction_level,

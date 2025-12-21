@@ -142,10 +142,10 @@ async def test_application_set_safe_launch_setting(
         pytest.param(SafeLaunchSetting.ALLOW, ValueError),
     ],
 )
-async def test_application_set_safe_launch_setting_errors(
+async def test_application_set_safe_launch_setting_init_errors(
     setting: SafeLaunchSetting, exception: Exception
 ):
-    """Test the application correctly errors."""
+    """Test the application set_safe_launch_setting correctly errors for init."""
 
     # Test with no device
     application_1 = Application("TESTAPPID", "TESTAPPNAME", "TESTDEVICEID", AsyncMock())
@@ -157,3 +157,35 @@ async def test_application_set_safe_launch_setting_errors(
     setattr(application_2, "_device", True)
     with pytest.raises(exception):
         await application_2.set_safe_launch_setting(setting)
+
+
+@pytest.mark.parametrize(
+    "setting,exception",
+    [
+        pytest.param(SafeLaunchSetting.NONE, LookupError),
+        pytest.param(SafeLaunchSetting.ALLOW, LookupError),
+    ],
+)
+async def test_application_set_safe_launch_setting_whitelist_errors(
+    mock_api: Api, setting: SafeLaunchSetting, exception: Exception
+):
+    """Test the application set_safe_launch_setting correctly errors for whitelist problems."""
+    devices_response = await load_fixture("account_devices")
+    pcs_response = {"json": await load_fixture("device_parental_control_setting")}
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+    assert len(device.applications) > 0
+
+    # Select the first application
+    application = list(device.applications.values())[0]
+    # Update pcs_response
+    pcs_response["json"]["parentalControlSetting"]["whitelistedApplicationList"][0][
+        "safeLaunch"
+    ] = str(setting)
+    # Override application pcs
+    application._parental_control_settings["whitelistedApplicationList"] = (
+        application._parental_control_settings["whitelistedApplicationList"][1:-1]
+    )
+    with pytest.raises(exception):
+        await application.set_safe_launch_setting(setting)
