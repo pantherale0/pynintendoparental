@@ -11,3 +11,4 @@ venv
 build
 .pytest_cache
 .ruff_cache
+test.py
