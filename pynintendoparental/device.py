@@ -219,7 +219,7 @@ class Device:
             regulation = self.parental_control_settings["playTimerRegulations"][
                 "eachDayOfTheWeekRegulations"
             ][DAYS_OF_WEEK[now.weekday()]]
-        value = {
+        new_bedtime_settings = {
             **regulation["bedtime"],
             "enabled": regulation["bedtime"]["endingTime"] or value != time(0, 0),
             "startingTime": {
@@ -229,7 +229,7 @@ class Device:
             if value != time(0, 0)
             else None,
         }
-        regulation["bedtime"] = value
+        regulation["bedtime"] = new_bedtime_settings
         await self._send_api_update(
             self._api.async_update_play_timer,
             self.device_id,
