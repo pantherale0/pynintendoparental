@@ -57,7 +57,7 @@ async def test_application_callback_no_device():
         device_id="test_device_id",
         api=AsyncMock(),
         send_api_update=None,
-        callbacks=[]
+        callbacks=[],
     )
 
     cb_handler = getattr(app, "_internal_update_callback")
@@ -75,7 +75,7 @@ async def test_application_update_scenarios(
         device_id="DEV123",
         api=AsyncMock(),
         send_api_update=None,
-        callbacks=[]
+        callbacks=[],
     )
     cb_handler = getattr(app, "_internal_update_callback")
 
@@ -158,7 +158,7 @@ async def test_application_set_safe_launch_setting_init_errors(
         device_id="TESTDEVICEID",
         api=AsyncMock(),
         send_api_update=None,
-        callbacks=[]
+        callbacks=[],
     )
     with pytest.raises(exception):
         await application_1.set_safe_launch_setting(setting)
@@ -170,7 +170,7 @@ async def test_application_set_safe_launch_setting_init_errors(
         device_id="TESTDEVICEID",
         api=AsyncMock(),
         send_api_update=None,
-        callbacks=[]
+        callbacks=[],
     )
     setattr(application_2, "_device", True)
     with pytest.raises(exception):
