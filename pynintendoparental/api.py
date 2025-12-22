@@ -151,9 +151,16 @@ class Api:
         self, device_id: str, parental_control_setting: dict
     ) -> dict:
         """Update device restriction level."""
+        allowed_keys = (
+            "vrRestrictionEtag",
+            "whitelistedApplicationList",
+            "functionalRestrictionLevel",
+            "parentalControlSettingEtag",
+        )
         settings = {
             "deviceId": device_id,
-            **parental_control_setting,
+            "customSettings": parental_control_setting.get("customSettings", {}),
+            **{key: parental_control_setting.get(key) for key in allowed_keys},
         }
         return await self.send_request(
             endpoint="update_restriction_level", body=settings

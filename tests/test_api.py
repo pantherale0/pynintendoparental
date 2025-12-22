@@ -172,7 +172,14 @@ async def test_api_methods(mock_authenticator: Authenticator):
     await api.async_update_restriction_level("DEVICE_ID", {"some": "setting"})
     api.send_request.assert_called_with(
         endpoint="update_restriction_level",
-        body={"deviceId": "DEVICE_ID", "some": "setting"},
+        body={
+            "deviceId": "DEVICE_ID",
+            "customSettings": {},
+            "vrRestrictionEtag": None,
+            "whitelistedApplicationList": None,
+            "functionalRestrictionLevel": None,
+            "parentalControlSettingEtag": None
+        },
     )
 
     await api.async_update_extra_playing_time("DEVICE_ID", -1)
