@@ -223,6 +223,11 @@ async def test_update_device_bedtime_alarm(
             "Bedtime is outside of the allowed range.",
         ),
         pytest.param(
+            BedtimeOutOfRangeError(value=time(0, 1)),
+            "set_bedtime_end_time",
+            "Bedtime is outside of the allowed range.",
+        ),
+        pytest.param(
             BedtimeOutOfRangeError(value=time(14, 30)),
             "set_bedtime_alarm",
             "Bedtime is outside of the allowed range.",
