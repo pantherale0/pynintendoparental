@@ -778,37 +778,41 @@ async def test_calculate_times(
 
     daily_summaries = copy.deepcopy(device.daily_summaries)
 
+    caplog.clear()
+
     # Test with invalid data
     device.daily_summaries = "not a list"
     with caplog.at_level(logging.DEBUG):
         device._calculate_times(dt)
     matching_logs = [r for r in caplog.records if r.message == ">> Device._calculate_times()"]
-    assert len(matching_logs) == 2
+    assert len(matching_logs) == 0
 
     # Test with empty data
     device.daily_summaries = []
     with caplog.at_level(logging.DEBUG):
         device._calculate_times(dt)
     matching_logs = [r for r in caplog.records if r.message == ">> Device._calculate_times()"]
-    assert len(matching_logs) == 2
+    assert len(matching_logs) == 0
 
     # Test with null data
     device.daily_summaries = None
     with caplog.at_level(logging.DEBUG):
         device._calculate_times(dt)
     matching_logs = [r for r in caplog.records if r.message == ">> Device._calculate_times()"]
-    assert len(matching_logs) == 2
+    assert len(matching_logs) == 0
 
     # Test with no current day summary
     device.daily_summaries = daily_summaries
     with caplog.at_level(logging.DEBUG):
         device._calculate_times(dt)
     matching_logs = [r for r in caplog.records if r.message == ">> Device._calculate_times()"]
-    assert len(matching_logs) == 3
+    assert len(matching_logs) == 1
     assert "No daily summary for today, assuming 0 playing time." in caplog.text
     assert device.today_playing_time == 0
     assert device.today_disabled_time == 0
     assert device.today_exceeded_time == 0
+
+    caplog.clear()
 
     # Test with a daily summary
     dt = datetime(2025, 12, 8, 12, 0, 0)
@@ -816,12 +820,12 @@ async def test_calculate_times(
     with caplog.at_level(logging.DEBUG):
         device._calculate_times(dt)
     matching_logs = [r for r in caplog.records if r.message == ">> Device._calculate_times()"]
-    assert len(matching_logs) == 4
+    assert len(matching_logs) == 1
     assert device.today_playing_time == 60
     assert device.today_disabled_time == 15
     assert device.today_exceeded_time == 20
 
     matching_logs = [r for r in caplog.records if r.message == f"Cached playing, disabled and exceeded time for today for device {device.device_id}"]
-    assert len(matching_logs) == 4
+    assert len(matching_logs) == 1
 
     assert device.month_playing_time == 75
