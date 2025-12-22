@@ -164,7 +164,7 @@ All methods are asynchronous.
     - `RestrictionMode.FORCED_TERMINATION`: The software will be suspended when the playtime limit is reached.
     - `RestrictionMode.ALARM`: An alarm will be shown, but the software will not be suspended.
 - `set_bedtime_alarm(value: datetime.time)`: Sets the bedtime alarm.
-- `set_bedtime_end_time(value: datetime.time)`: Sets the time when bedtime restrictions end.
+- `set_bedtime_end_time(value: datetime.time)`: Sets the time when bedtime restrictions end. Pass `datetime.time(0, 0)` to disable.
 - `set_timer_mode(mode: DeviceTimerMode)`: Sets the timer mode.
     - `DeviceTimerMode.DAILY`: A single playtime limit for all days.
     - `DeviceTimerMode.EACH_DAY_OF_THE_WEEK`: Different playtime limits for each day of the week.
