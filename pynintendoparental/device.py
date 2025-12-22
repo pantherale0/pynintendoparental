@@ -208,7 +208,7 @@ class Device:
     async def set_bedtime_end_time(self, value: time):
         """Update the bedtime end time for the device."""
         _LOGGER.debug(">> Device.set_bedtime_end_time(value=%s)", value)
-        if not time(5, 0) <= value <= time(9, 0):
+        if not time(5, 0) <= value <= time(9, 0) and value != time(0, 0):
             raise BedtimeOutOfRangeError(value=value)
         now = datetime.now()
         if self.timer_mode == DeviceTimerMode.DAILY:
@@ -219,10 +219,17 @@ class Device:
             regulation = self.parental_control_settings["playTimerRegulations"][
                 "eachDayOfTheWeekRegulations"
             ][DAYS_OF_WEEK[now.weekday()]]
-        regulation["bedtime"]["startingTime"] = {
-            "hour": value.hour,
-            "minute": value.minute,
+        new_bedtime_settings = {
+            **regulation["bedtime"],
+            "enabled": regulation["bedtime"]["endingTime"] or value != time(0, 0),
+            "startingTime": {
+                "hour": value.hour,
+                "minute": value.minute,
+            }
+            if value != time(0, 0)
+            else None,
         }
+        regulation["bedtime"] = new_bedtime_settings
         await self._send_api_update(
             self._api.async_update_play_timer,
             self.device_id,
@@ -416,8 +423,12 @@ class Device:
         """Parse a parental control setting request response."""
         _LOGGER.debug(">> Device._parse_parental_control_setting()")
         self.parental_control_settings = pcs["parentalControlSetting"]
-        self.parental_control_settings["playTimerRegulations"].pop("bedtimeStartingTime", None)
-        self.parental_control_settings["playTimerRegulations"].pop("bedtimeEndingTime", None)
+        self.parental_control_settings["playTimerRegulations"].pop(
+            "bedtimeStartingTime", None
+        )
+        self.parental_control_settings["playTimerRegulations"].pop(
+            "bedtimeEndingTime", None
+        )
         self.forced_termination_mode = self.parental_control_settings[
             "playTimerRegulations"
         ]["restrictionMode"] == str(RestrictionMode.FORCED_TERMINATION)

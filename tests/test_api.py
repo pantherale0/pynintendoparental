@@ -178,7 +178,7 @@ async def test_api_methods(mock_authenticator: Authenticator):
             "vrRestrictionEtag": None,
             "whitelistedApplicationList": None,
             "functionalRestrictionLevel": None,
-            "parentalControlSettingEtag": None
+            "parentalControlSettingEtag": None,
         },
     )
 

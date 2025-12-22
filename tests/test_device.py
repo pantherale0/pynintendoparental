@@ -111,35 +111,49 @@ async def test_get_application(mock_api: Api):
         device.get_application("invalid_application_id")
 
 
-async def test_update_device_bedtime_end_time(
-    mock_api: Api, snapshot: SnapshotAssertion
-):
+@pytest.mark.parametrize(
+    "value",
+    [
+        pytest.param(time(hour=6, minute=30)),
+        pytest.param(time(hour=5, minute=0)),  # lower bound
+        pytest.param(time(hour=9, minute=0)),  # upper bound
+        pytest.param(time(hour=0, minute=0)),  # Disable
+    ],
+)
+async def test_update_device_bedtime_end_time(mock_api: Api, value: time):
     """Test that updating the device bedtime end time works as expected."""
     devices_response = await load_fixture("account_devices")
     pcs_response = {"json": await load_fixture("device_parental_control_setting")}
-    mock_api.async_update_play_timer.return_value = pcs_response
     devices = await Device.from_devices_response(devices_response, mock_api)
     assert len(devices) > 0
     device = devices[0]
     assert len(device.players) > 0
 
-    new_bedtime = time(hour=6, minute=30)
-    await device.set_bedtime_end_time(new_bedtime)
-
-    pcs_response["json"]["parentalControlSetting"]["playTimerRegulations"][
+    expected_pcs = copy.deepcopy(pcs_response)
+    bedtime = expected_pcs["json"]["parentalControlSetting"]["playTimerRegulations"][
         "dailyRegulations"
-    ]["bedtime"]["startingTime"] = {
-        "hour": new_bedtime.hour,
-        "minute": new_bedtime.minute,
-    }
+    ]["bedtime"]
+    if value == time(0, 0):
+        bedtime["startingTime"] = None
+        bedtime["enabled"] = False
+    else:
+        bedtime["enabled"] = True
+        bedtime["startingTime"] = {
+            "hour": value.hour,
+            "minute": value.minute,
+        }
+
+    mock_api.async_update_play_timer.return_value = (
+        expected_pcs  # Override the response to correctly parse the data
+    )
+    await device.set_bedtime_end_time(value)
+
     mock_api.async_update_play_timer.assert_called_with(
         device.device_id,
-        pcs_response["json"]["parentalControlSetting"]["playTimerRegulations"],
+        expected_pcs["json"]["parentalControlSetting"]["playTimerRegulations"],
     )
 
-    assert clean_device_for_snapshot(device) == snapshot(
-        exclude=props("today_time_remaining")
-    )
+    assert device.bedtime_end == value
 
 
 @pytest.mark.parametrize(
@@ -205,6 +219,11 @@ async def test_update_device_bedtime_alarm(
     [
         pytest.param(
             BedtimeOutOfRangeError(value=time(4, 0)),
+            "set_bedtime_end_time",
+            "Bedtime is outside of the allowed range.",
+        ),
+        pytest.param(
+            BedtimeOutOfRangeError(value=time(0, 1)),
             "set_bedtime_end_time",
             "Bedtime is outside of the allowed range.",
         ),
