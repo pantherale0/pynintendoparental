@@ -2,7 +2,7 @@
 
 # Python Nintendo Parental Controls
 
-A simple, Python API to connect to Nintento Switch Parental Controls.
+A simple, Python API to connect to Nintendo Switch Parental Controls.
 
 [![Test Status](https://github.com/pantherale0/pynintendoparental/actions/workflows/test.yml/badge.svg)](https://github.com/pantherale0/pynintendoparental/actions/workflows/test.yml)
 [![Coverage Status](https://codecov.io/gh/pantherale0/pynintendoparental/branch/main/graph/badge.svg?token=SO6VDF7951)](https://codecov.io/gh/pantherale0/pynintendoparental)
