@@ -145,7 +145,7 @@ The `Device` object contains information about a specific Nintendo Switch consol
 - `applications` (dict): A dictionary of `Application` objects that have been played on the device.
 - `timer_mode` (DeviceTimerMode): The current timer mode (`DAILY` or `EACH_DAY_OF_THE_WEEK`).
 - `bedtime_alarm` (datetime.time): The time when the bedtime alarm will sound.
-- `bedtime_end` (datetime.time): The time when the bedtime restrictions end.
+- `bedtime_end` (datetime.time): The time when the bedtime restrictions end. Set to `datetime.time(0, 0)` if disabled.
 - `forced_termination_mode` (bool): `True` if the software will be suspended when the playtime limit is reached.
 - `alarms_enabled` (bool): `True` if alarms are enabled.
 - `last_sync` (float): The timestamp of the last sync with the device.
