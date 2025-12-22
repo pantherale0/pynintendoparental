@@ -79,6 +79,10 @@ class Api:
             if response.content_type == "application/problem+json":
                 try:
                     error: dict = await response.json()
+                    if error["errorCode"] == "conflict":
+                        raise HttpException(
+                            response.status, "Device has been modified by another device.", "conflict"
+                        )
                     if "detail" in error:
                         raise HttpException(
                             response.status, error["detail"], error.get("errorCode")
@@ -155,11 +159,11 @@ class Api:
             "vrRestrictionEtag",
             "whitelistedApplicationList",
             "functionalRestrictionLevel",
-            "parentalControlSettingEtag",
         )
         settings = {
             "deviceId": device_id,
             "customSettings": parental_control_setting.get("customSettings", {}),
+            "parentalControlSettingEtag": parental_control_setting.get("etag")
             **{key: parental_control_setting.get(key) for key in allowed_keys},
         }
         return await self.send_request(
