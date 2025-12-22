@@ -199,7 +199,12 @@ async def test_api_methods(mock_authenticator: Authenticator):
         endpoint="update_play_timer",
         body={
             "deviceId": "DEVICE_ID",
-            "playTimerRegulations": {"some": "setting"},
+            "playTimerRegulations": {
+                "timerMode": None,
+                "restrictionMode": None,
+                "dailyRegulations": None,
+                "eachDayOfTheWeekRegulations": None,
+            },
         },
     )
 

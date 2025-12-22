@@ -152,14 +152,16 @@ class Api:
     ) -> dict:
         """Update device restriction level."""
         allowed_keys = (
-            "vrRestrictionEtag",
             "whitelistedApplicationList",
             "functionalRestrictionLevel",
-            "parentalControlSettingEtag",
         )
         settings = {
             "deviceId": device_id,
             "customSettings": parental_control_setting.get("customSettings", {}),
+            "parentalControlSettingEtag": parental_control_setting.get("etag"),
+            "vrRestrictionEtag": parental_control_setting.get("customSettings", {}).get(
+                "vrRestrictionEtag"
+            ),
             **{key: parental_control_setting.get(key) for key in allowed_keys},
         }
         return await self.send_request(
@@ -170,9 +172,17 @@ class Api:
         self, device_id: str, play_timer_regulations: dict
     ) -> dict:
         """Update device play timer settings."""
+        allowed_ptr_keys = (
+            "timerMode",
+            "restrictionMode",
+            "dailyRegulations",
+            "eachDayOfTheWeekRegulations",
+        )
         settings = {
             "deviceId": device_id,
-            "playTimerRegulations": play_timer_regulations,
+            "playTimerRegulations": {
+                key: play_timer_regulations.get(key) for key in allowed_ptr_keys
+            },
         }
         return await self.send_request(endpoint="update_play_timer", body=settings)
 
