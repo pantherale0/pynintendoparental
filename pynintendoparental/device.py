@@ -335,7 +335,7 @@ class Device:
         _LOGGER.debug(">> Device.update_max_daily_playtime(minutes=%s)", minutes)
         if isinstance(minutes, float):
             minutes = int(minutes)
-        if minutes > 360 or minutes < -1:
+        if not (-1 <= minutes <= 360):
             raise DailyPlaytimeOutOfRangeError(minutes)
         now = datetime.now()
         ttpiod = True

@@ -361,10 +361,10 @@
     'daily_summaries': list([
       dict({
         'date': '2025-12-08',
-        'disabledTime': 0,
+        'disabledTime': 15,
         'events': dict({
         }),
-        'exceededTime': 0,
+        'exceededTime': 20,
         'miscTime': 0,
         'nonFeaturedGameCount': -1,
         'players': list([
@@ -400,7 +400,7 @@
             }),
           }),
         ]),
-        'playingTime': 0,
+        'playingTime': 60,
         'result': 'CALCULATING',
         'timeZoneUtcOffsetSeconds': 0,
       }),
@@ -3227,7 +3227,7 @@
       ]),
     }),
     'limit_time': -1,
-    'month_playing_time': 15,
+    'month_playing_time': 75,
     'name': 'early',
     'parental_control_settings': dict({
       'createdAt': 1644690128,

@@ -190,7 +190,7 @@ class Api:
         """Update device unlock code."""
         return await self.send_request(
             endpoint="update_unlock_code",
-            body={"deviceId": device_id, "unlockCode": new_code},
+            body={"deviceId": device_id, "unlockCode": str(new_code)},
         )
 
     async def async_update_extra_playing_time(

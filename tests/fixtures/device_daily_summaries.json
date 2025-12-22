@@ -3,9 +3,9 @@
         {
             "date": "2025-12-08",
             "result": "CALCULATING",
-            "playingTime": 0,
-            "exceededTime": 0,
-            "disabledTime": 0,
+            "playingTime": 60,
+            "exceededTime": 20,
+            "disabledTime": 15,
             "miscTime": 0,
             "timeZoneUtcOffsetSeconds": 0,
             "events": {},
