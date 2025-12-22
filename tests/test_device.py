@@ -1,7 +1,9 @@
 """Tests for the Device class."""
 
 import copy
+import logging
 from datetime import datetime, time
+from unittest.mock import AsyncMock, Mock
 
 import pytest
 
@@ -9,7 +11,7 @@ from syrupy.assertion import SnapshotAssertion
 from syrupy.filters import props
 
 from pynintendoauth.exceptions import HttpException
-from pynintendoparental.enum import DeviceTimerMode, FunctionalRestrictionLevel
+from pynintendoparental.enum import DeviceTimerMode, FunctionalRestrictionLevel, RestrictionMode
 from pynintendoparental.exceptions import (
     BedtimeOutOfRangeError,
     DailyPlaytimeOutOfRangeError,
@@ -460,3 +462,366 @@ async def test_set_functional_restriction_level(
 
     assert ">> Device.set_functional_restriction_level" in caplog.text
     assert ">> Device._parse_parental_control_setting" in caplog.text
+
+async def test_model_map(
+    mock_api: Api,
+):
+    """Test that the model map works as expected."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+
+    device.extra["platformGeneration"] = "P01"
+    assert device.model == "Switch 2"
+
+    device.extra["platformGeneration"] = "P00"
+    assert device.model == "Switch"
+
+    device.extra["platformGeneration"] = "invalid"
+    assert device.model == "Unknown"
+
+    device.extra.pop("platformGeneration")
+    assert device.model == "Unknown"
+
+async def test_device_callbacks(
+    mock_api: Api,
+):
+    """Test that the device callbacks work as expected."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+
+    assert len(device._callbacks) == 0
+    assert len(device._internal_callbacks) == len(device.applications)
+
+    sync_callback = Mock()
+    async_callback = AsyncMock()
+    device.add_device_callback(sync_callback)
+    device.add_device_callback(async_callback)
+    assert len(device._callbacks) == 2
+
+    await device.update()
+    sync_callback.assert_called_once()
+    async_callback.assert_called_once()
+
+    # Remove a callback
+    sync_callback.reset_mock()
+    async_callback.reset_mock()
+    device.remove_device_callback(sync_callback)
+    device.remove_device_callback(async_callback)
+    assert len(device._callbacks) == 0
+    await device.update()
+    sync_callback.assert_not_called()
+    async_callback.assert_not_called()
+
+    # Test removing a non-callable
+    with pytest.raises(ValueError, match="Object must be callable."):
+        device.remove_device_callback("not a function")
+
+    # Test adding a non-callable
+    with pytest.raises(ValueError, match="Object must be callable."):
+        device.add_device_callback("not a function")
+
+async def test_internal_callbacks(
+    mock_api: Api,
+):
+    """Test that the internal callbacks work as expected."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+
+    sync_callback = Mock()
+    async_callback = AsyncMock()
+
+    device._internal_callbacks.append(sync_callback)
+    device._internal_callbacks.append(async_callback)
+    assert len(device._internal_callbacks) == len(device.applications)+2
+
+    await device.update()
+    sync_callback.assert_called_once_with(device=device)
+    async_callback.assert_called_once_with(device=device)
+
+@pytest.mark.parametrize(
+    "pin",
+    [
+        pytest.param("1234"),
+        pytest.param("2359434069346"),
+    ],
+)
+async def test_set_new_pin(
+    mock_api: Api,
+    caplog: pytest.LogCaptureFixture,
+    pin
+):
+    """Test that the set_new_pin method works as expected."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+
+    mock_api.async_update_unlock_code.return_value = {"json": await load_fixture("device_parental_control_setting")}
+    await device.set_new_pin(pin)
+    mock_api.async_update_unlock_code.assert_called_with(
+        new_code=pin,
+        device_id=device.device_id
+    )
+    assert ">> Device.set_new_pin(pin=REDACTED)" in caplog.text
+
+@pytest.mark.parametrize(
+    "extra_time",
+    [
+        pytest.param(10),
+        pytest.param(0),
+    ],
+)
+async def test_add_extra_time(
+    mock_api: Api,
+    caplog: pytest.LogCaptureFixture,
+    extra_time: int,
+):
+    """Test that the add_extra_time method works as expected."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+
+    mock_api.async_update_extra_playing_time.return_value = None
+
+    await device.add_extra_time(extra_time)
+    mock_api.async_update_extra_playing_time.assert_called_with(device.device_id, extra_time)
+    assert f">> Device.add_extra_time(minutes={extra_time})" in caplog.text
+
+@pytest.mark.parametrize(
+    "restriction_mode,expected_restriction_state_flag",
+    [
+        pytest.param(
+            RestrictionMode.ALARM,
+            False
+        ),
+        pytest.param(
+            RestrictionMode.FORCED_TERMINATION,
+            True
+        ),
+    ]
+)
+async def test_set_restriction_mode(
+    mock_api: Api,
+    caplog: pytest.LogCaptureFixture,
+    restriction_mode: RestrictionMode,
+    expected_restriction_state_flag: bool
+):
+    """Test that the set_restriction_mode method works as expected."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+
+    expected_pcs = await load_fixture("device_parental_control_setting")
+    expected_pcs["parentalControlSetting"]["playTimerRegulations"]["restrictionMode"] = str(restriction_mode)
+
+    mock_api.async_update_play_timer.return_value = {"json": expected_pcs}
+
+    await device.set_restriction_mode(restriction_mode)
+    mock_api.async_update_play_timer.assert_called_with(
+        device.device_id,
+        device.parental_control_settings["playTimerRegulations"],
+    )
+    assert f">> Device.set_restriction_mode(mode={restriction_mode})" in caplog.text
+    assert device.forced_termination_mode == expected_restriction_state_flag
+
+@pytest.mark.parametrize(
+    "new_mode",
+    [
+        pytest.param(DeviceTimerMode.DAILY),
+        pytest.param(DeviceTimerMode.EACH_DAY_OF_THE_WEEK),
+    ]
+)
+async def test_set_timer_mode(
+    mock_api: Api,
+    caplog: pytest.LogCaptureFixture,
+    new_mode: DeviceTimerMode,
+):
+    """Test that the set_timer_mode method works as expected."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+
+    expected_pcs = {
+        "json": await load_fixture("device_parental_control_setting")
+    }
+    expected_pcs["json"]["parentalControlSetting"]["playTimerRegulations"]["timerMode"] = str(new_mode)
+    mock_api.async_update_play_timer.return_value = expected_pcs
+    await device.set_timer_mode(new_mode)
+    mock_api.async_update_play_timer.assert_called_with(
+        device.device_id,
+        device.parental_control_settings["playTimerRegulations"],
+    )
+
+    assert device.timer_mode == new_mode
+    assert f">> Device.set_timer_mode(mode={new_mode})" in caplog.text
+
+
+@pytest.mark.parametrize(
+    "minutes,expected_exception",
+    [
+        pytest.param(
+            -2,
+            DailyPlaytimeOutOfRangeError
+        ),
+        pytest.param(
+            -1,
+            None
+        ),
+        pytest.param(
+            0,
+            None
+        ),
+        pytest.param(
+            1,
+            None
+        ),
+        pytest.param(
+            1.5,
+            None
+        ),
+        pytest.param(
+            360,
+            None
+        ),
+        pytest.param(
+            361,
+            DailyPlaytimeOutOfRangeError
+        ),
+    ]
+)
+async def test_update_max_daily_playtime(
+    mock_api: Api,
+    caplog: pytest.LogCaptureFixture,
+    minutes: int,
+    expected_exception: Exception | None,
+):
+    """Test that the update_max_daily_playtime method works as expected."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+
+    pcs_response = await load_fixture("device_parental_control_setting")
+    ttpiod = pcs_response["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"][
+        "timeToPlayInOneDay"
+    ]
+    if minutes == -1:
+        ttpiod["enabled"] = False
+        ttpiod.pop("limitTime")
+    else:
+        ttpiod["enabled"] = True
+        ttpiod["limitTime"] = int(minutes)
+
+    mock_api.async_update_play_timer.return_value = {"json": pcs_response}
+
+    if expected_exception is None:
+        await device.update_max_daily_playtime(minutes)
+        mock_api.async_update_play_timer.assert_called_with(
+            device.device_id,
+            pcs_response["parentalControlSetting"]["playTimerRegulations"],
+        )
+
+    else:
+        with pytest.raises(expected_exception):
+            await device.update_max_daily_playtime(minutes)
+
+    assert f">> Device.update_max_daily_playtime(minutes={minutes})" in caplog.text
+
+async def test_parse_with_extra_playing_time(
+    mock_api: Api
+):
+    """Test that the `extra_playing_time` property is correctly set in the PCS parser."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+
+    # Default to None if not set.
+    assert device.extra_playing_time is None
+
+    # Now override with extra time.
+    pcs_response = await load_fixture("device_parental_control_setting")
+    pcs_response["ownedDevice"]["device"]["extraPlayingTime"] = {
+        "inOneDay": {
+            "duration": 50
+        }
+    }
+
+    # Set the pcs response and call the update method
+    mock_api.async_get_device_parental_control_setting.return_value = {
+        "json": pcs_response
+    }
+    await device.update()
+
+    assert device.extra_playing_time == 50
+
+async def test_calculate_times(
+    mock_api: Api,
+    caplog: pytest.LogCaptureFixture,
+):
+    """Test that the `_calculate_times` method works as expected."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+
+    dt = datetime(2023, 10, 30, 12, 0, 0)
+
+    daily_summaries = copy.deepcopy(device.daily_summaries)
+
+    # Test with invalid data
+    device.daily_summaries = "not a list"
+    with caplog.at_level(logging.DEBUG):
+        device._calculate_times(dt)
+    matching_logs = [r for r in caplog.records if r.message == ">> Device._calculate_times()"]
+    assert len(matching_logs) == 2
+
+    # Test with empty data
+    device.daily_summaries = []
+    with caplog.at_level(logging.DEBUG):
+        device._calculate_times(dt)
+    matching_logs = [r for r in caplog.records if r.message == ">> Device._calculate_times()"]
+    assert len(matching_logs) == 2
+
+    # Test with null data
+    device.daily_summaries = None
+    with caplog.at_level(logging.DEBUG):
+        device._calculate_times(dt)
+    matching_logs = [r for r in caplog.records if r.message == ">> Device._calculate_times()"]
+    assert len(matching_logs) == 2
+
+    # Test with no current day summary
+    device.daily_summaries = daily_summaries
+    with caplog.at_level(logging.DEBUG):
+        device._calculate_times(dt)
+    matching_logs = [r for r in caplog.records if r.message == ">> Device._calculate_times()"]
+    assert len(matching_logs) == 3
+    assert "No daily summary for today, assuming 0 playing time." in caplog.text
+    assert device.today_playing_time == 0
+    assert device.today_disabled_time == 0
+    assert device.today_exceeded_time == 0
+
+    # Test with a daily summary
+    dt = datetime(2025, 12, 8, 12, 0, 0)
+    device.daily_summaries = daily_summaries
+    with caplog.at_level(logging.DEBUG):
+        device._calculate_times(dt)
+    matching_logs = [r for r in caplog.records if r.message == ">> Device._calculate_times()"]
+    assert len(matching_logs) == 4
+    assert device.today_playing_time == 60
+    assert device.today_disabled_time == 15
+    assert device.today_exceeded_time == 20
+
+    matching_logs = [r for r in caplog.records if r.message == f"Cached playing, disabled and exceeded time for today for device {device.device_id}"]
+    assert len(matching_logs) == 4
+
+    assert device.month_playing_time == 75
