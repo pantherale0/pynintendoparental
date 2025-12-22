@@ -153,17 +153,17 @@ class Api:
         """Update device restriction level."""
         settings = {
             "deviceId": device_id,
-            "customSettings": parental_control_setting["customSettings"],
-            "vrRestrictionEtag": parental_control_setting["vrRestrictionEtag"],
-            "whitelistedApplicationList": parental_control_setting[
+            "customSettings": parental_control_setting.get("customSettings", {}),
+            "vrRestrictionEtag": parental_control_setting.get("vrRestrictionEtag"),
+            "whitelistedApplicationList": parental_control_setting.get(
                 "whitelistedApplicationList"
-            ],
-            "functionalRestrictionLevel": parental_control_setting[
+            ),
+            "functionalRestrictionLevel": parental_control_setting.get(
                 "functionalRestrictionLevel"
-            ],
-            "parentalControlSettingEtag": parental_control_setting[
+            ),
+            "parentalControlSettingEtag": parental_control_setting.get(
                 "parentalControlSettingEtag"
-            ],
+            ),
         }
         return await self.send_request(
             endpoint="update_restriction_level", body=settings
