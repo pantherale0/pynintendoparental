@@ -21,7 +21,7 @@ REQUIREMENTS = [
 
 DEV_REQUIREMENTS = [
     'aiofiles >= 23,< 26',
-    'bandit >= 1.7,< 1.9',
+    'bandit >= 1.7,< 1.10',
     'black >= 23,< 26',
     'build >= 0.10,< 1.4',
     'Faker >= 38,< 41',
