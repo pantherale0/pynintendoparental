@@ -81,10 +81,11 @@ class Device:
             "synchronizedAt", None
         )
 
-    async def update(self):
+    async def update(self, now: datetime = None):
         """Update data."""
         _LOGGER.debug(">> Device.update()")
-        now = datetime.now()
+        if now is None:
+            now = datetime.now()
         await asyncio.gather(
             self._get_daily_summaries(now),
             self._get_parental_control_setting(now),
@@ -678,7 +679,7 @@ class Device:
         raise ValueError(f"Player with id {player_id} not found.")
 
     @classmethod
-    async def from_devices_response(cls, raw: dict, api) -> list["Device"]:
+    async def from_devices_response(cls, raw: dict, api, now: datetime = None) -> list["Device"]:
         """Parses a device request response body."""
         _LOGGER.debug("Parsing device list response")
         if "ownedDevices" not in raw.keys():
@@ -690,7 +691,7 @@ class Device:
             parsed.name = device["label"]
             parsed.sync_state = device["parentalControlSettingState"]["updatedAt"]
             parsed.extra = device
-            await parsed.update()
+            await parsed.update(now=now)
             devices.append(parsed)
 
         return devices

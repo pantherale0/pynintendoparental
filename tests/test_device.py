@@ -30,7 +30,9 @@ from .helpers import load_fixture, clean_device_for_snapshot
 async def test_device_parsing(mock_api: Api, snapshot: SnapshotAssertion):
     """Test that the device class parsing works as expected."""
     devices_response = await load_fixture("account_devices")
-    devices = await Device.from_devices_response(devices_response, mock_api)
+    # Use a fixed datetime that matches the fixture dates to avoid flakiness
+    fixed_now = datetime(2025, 12, 8, 12, 0, 0)
+    devices = await Device.from_devices_response(devices_response, mock_api, now=fixed_now)
     assert len(devices) > 0
     device = devices[0]
 
