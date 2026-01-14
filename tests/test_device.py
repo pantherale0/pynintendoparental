@@ -6,11 +6,12 @@ from datetime import datetime, time
 from unittest.mock import AsyncMock, Mock
 
 import pytest
-
+from pynintendoauth.exceptions import HttpException
 from syrupy.assertion import SnapshotAssertion
 from syrupy.filters import props
 
-from pynintendoauth.exceptions import HttpException
+from pynintendoparental.api import Api
+from pynintendoparental.device import Device
 from pynintendoparental.enum import (
     DeviceTimerMode,
     FunctionalRestrictionLevel,
@@ -21,10 +22,8 @@ from pynintendoparental.exceptions import (
     DailyPlaytimeOutOfRangeError,
     InvalidDeviceStateError,
 )
-from pynintendoparental.device import Device
-from pynintendoparental.api import Api
 
-from .helpers import load_fixture, clean_device_for_snapshot
+from .helpers import clean_device_for_snapshot, load_fixture
 
 
 async def test_device_parsing(mock_api: Api, snapshot: SnapshotAssertion):
@@ -42,10 +41,7 @@ async def test_device_parsing(mock_api: Api, snapshot: SnapshotAssertion):
 
     test_device = copy.deepcopy(device)
     assert test_device.last_sync is not None
-    assert (
-        test_device.last_sync
-        == device.extra["synchronizedParentalControlSetting"]["synchronizedAt"]
-    )
+    assert test_device.last_sync == device.extra["synchronizedParentalControlSetting"]["synchronizedAt"]
     del test_device.extra["synchronizedParentalControlSetting"]["synchronizedAt"]
     assert test_device.last_sync is None
     del test_device.extra["synchronizedParentalControlSetting"]
@@ -53,9 +49,7 @@ async def test_device_parsing(mock_api: Api, snapshot: SnapshotAssertion):
 
     assert len(getattr(device, "_internal_callbacks")) == len(device.applications)
 
-    assert clean_device_for_snapshot(device) == snapshot(
-        exclude=props("today_time_remaining")
-    )
+    assert clean_device_for_snapshot(device) == snapshot(exclude=props("today_time_remaining"))
 
 
 async def test_player_discovery(mock_api: Api):
@@ -102,9 +96,7 @@ async def test_get_player(mock_api: Api):
 async def test_get_application(mock_api: Api):
     """Test that the get_application method works as expected."""
     devices_response = await load_fixture("account_devices")
-    devices: list[Device] = await Device.from_devices_response(
-        devices_response, mock_api
-    )
+    devices: list[Device] = await Device.from_devices_response(devices_response, mock_api)
     assert len(devices) > 0
     device = devices[0]
     assert len(device.applications) > 0
@@ -138,9 +130,7 @@ async def test_update_device_bedtime_end_time(mock_api: Api, value: time):
     assert len(device.players) > 0
 
     expected_pcs = copy.deepcopy(pcs_response)
-    bedtime = expected_pcs["json"]["parentalControlSetting"]["playTimerRegulations"][
-        "dailyRegulations"
-    ]["bedtime"]
+    bedtime = expected_pcs["json"]["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["bedtime"]
     if value == time(0, 0):
         bedtime["startingTime"] = None
         bedtime["enabled"] = False
@@ -151,9 +141,7 @@ async def test_update_device_bedtime_end_time(mock_api: Api, value: time):
             "minute": value.minute,
         }
 
-    mock_api.async_update_play_timer.return_value = (
-        expected_pcs  # Override the response to correctly parse the data
-    )
+    mock_api.async_update_play_timer.return_value = expected_pcs  # Override the response to correctly parse the data
     await device.set_bedtime_end_time(value)
 
     mock_api.async_update_play_timer.assert_called_with(
@@ -167,12 +155,8 @@ async def test_update_device_bedtime_end_time(mock_api: Api, value: time):
 @pytest.mark.parametrize(
     "new_bedtime",
     [
-        pytest.param(
-            time(hour=20, minute=0)  # Lower bound
-        ),
-        pytest.param(
-            time(hour=23, minute=0)  # Upper bound
-        ),
+        pytest.param(time(hour=20, minute=0)),  # Lower bound
+        pytest.param(time(hour=23, minute=0)),  # Upper bound
         pytest.param(time(hour=21, minute=30)),
         pytest.param(time(hour=0, minute=0)),
     ],
@@ -199,11 +183,9 @@ async def test_update_device_bedtime_alarm(
         ending_time = None
     else:
         ending_time = {"hour": new_bedtime.hour, "minute": new_bedtime.minute}
-    expected_pcs["json"]["parentalControlSetting"]["playTimerRegulations"][
-        "dailyRegulations"
-    ]["bedtime"].update(
+    expected_pcs["json"]["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["bedtime"].update(
         {
-            "enabled": (new_bedtime != time(0, 0)),
+            "enabled": new_bedtime != time(0, 0),
             "endingTime": ending_time,
         }
     )
@@ -216,9 +198,9 @@ async def test_update_device_bedtime_alarm(
         expected_pcs["json"]["parentalControlSetting"]["playTimerRegulations"],
     )
 
-    assert device.parental_control_settings["playTimerRegulations"]["dailyRegulations"][
-        "bedtime"
-    ]["enabled"] == (new_bedtime != time(0, 0))
+    assert device.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["bedtime"]["enabled"] == (
+        new_bedtime != time(0, 0)
+    )
     assert device.bedtime_alarm == new_bedtime
 
 
@@ -242,9 +224,7 @@ async def test_update_device_bedtime_alarm(
         ),
     ],
 )
-async def test_update_device_exceptions(
-    mock_api: Api, side_effect: Exception, function_name: str, expected_log: str
-):
+async def test_update_device_exceptions(mock_api: Api, side_effect: Exception, function_name: str, expected_log: str):
     """Test that updating the device bedtime end time raises exceptions as expected."""
     devices_response = await load_fixture("account_devices")
     devices = await Device.from_devices_response(devices_response, mock_api)
@@ -455,9 +435,7 @@ async def test_set_functional_restriction_level(
 
     new_level = FunctionalRestrictionLevel.TEEN
     expected_response = copy.deepcopy(pcs_response)
-    expected_response["parentalControlSetting"]["functionalRestrictionLevel"] = (
-        "OLDER_TEENS"
-    )
+    expected_response["parentalControlSetting"]["functionalRestrictionLevel"] = "OLDER_TEENS"
     mock_api.async_update_restriction_level.return_value = {"json": expected_response}
 
     await device.set_functional_restriction_level(new_level)
@@ -568,13 +546,9 @@ async def test_set_new_pin(mock_api: Api, caplog: pytest.LogCaptureFixture, pin)
     assert len(devices) > 0
     device = devices[0]
 
-    mock_api.async_update_unlock_code.return_value = {
-        "json": await load_fixture("device_parental_control_setting")
-    }
+    mock_api.async_update_unlock_code.return_value = {"json": await load_fixture("device_parental_control_setting")}
     await device.set_new_pin(pin)
-    mock_api.async_update_unlock_code.assert_called_with(
-        new_code=pin, device_id=device.device_id
-    )
+    mock_api.async_update_unlock_code.assert_called_with(new_code=pin, device_id=device.device_id)
     assert ">> Device.set_new_pin(pin=REDACTED)" in caplog.text
 
 
@@ -599,9 +573,7 @@ async def test_add_extra_time(
     mock_api.async_update_extra_playing_time.return_value = None
 
     await device.add_extra_time(extra_time)
-    mock_api.async_update_extra_playing_time.assert_called_with(
-        device.device_id, extra_time
-    )
+    mock_api.async_update_extra_playing_time.assert_called_with(device.device_id, extra_time)
     assert f">> Device.add_extra_time(minutes={extra_time})" in caplog.text
 
 
@@ -625,9 +597,7 @@ async def test_set_restriction_mode(
     device = devices[0]
 
     expected_pcs = await load_fixture("device_parental_control_setting")
-    expected_pcs["parentalControlSetting"]["playTimerRegulations"][
-        "restrictionMode"
-    ] = str(restriction_mode)
+    expected_pcs["parentalControlSetting"]["playTimerRegulations"]["restrictionMode"] = str(restriction_mode)
 
     mock_api.async_update_play_timer.return_value = {"json": expected_pcs}
 
@@ -659,9 +629,7 @@ async def test_set_timer_mode(
     device = devices[0]
 
     expected_pcs = {"json": await load_fixture("device_parental_control_setting")}
-    expected_pcs["json"]["parentalControlSetting"]["playTimerRegulations"][
-        "timerMode"
-    ] = str(new_mode)
+    expected_pcs["json"]["parentalControlSetting"]["playTimerRegulations"]["timerMode"] = str(new_mode)
     mock_api.async_update_play_timer.return_value = expected_pcs
     await device.set_timer_mode(new_mode)
     mock_api.async_update_play_timer.assert_called_with(
@@ -698,9 +666,7 @@ async def test_update_max_daily_playtime(
     device = devices[0]
 
     pcs_response = await load_fixture("device_parental_control_setting")
-    ttpiod = pcs_response["parentalControlSetting"]["playTimerRegulations"][
-        "dailyRegulations"
-    ]["timeToPlayInOneDay"]
+    ttpiod = pcs_response["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]
     if minutes == -1:
         ttpiod["enabled"] = False
         ttpiod.pop("limitTime")
@@ -736,14 +702,10 @@ async def test_parse_with_extra_playing_time(mock_api: Api):
 
     # Now override with extra time.
     pcs_response = await load_fixture("device_parental_control_setting")
-    pcs_response["ownedDevice"]["device"]["extraPlayingTime"] = {
-        "inOneDay": {"duration": 50}
-    }
+    pcs_response["ownedDevice"]["device"]["extraPlayingTime"] = {"inOneDay": {"duration": 50}}
 
     # Set the pcs response and call the update method
-    mock_api.async_get_device_parental_control_setting.return_value = {
-        "json": pcs_response
-    }
+    mock_api.async_get_device_parental_control_setting.return_value = {"json": pcs_response}
     await device.update()
 
     assert device.extra_playing_time == 50
@@ -769,36 +731,28 @@ async def test_calculate_times(
     device.daily_summaries = "not a list"
     with caplog.at_level(logging.DEBUG):
         device._calculate_times(dt)
-    matching_logs = [
-        r for r in caplog.records if r.message == ">> Device._calculate_times()"
-    ]
+    matching_logs = [r for r in caplog.records if r.message == ">> Device._calculate_times()"]
     assert len(matching_logs) == 0
 
     # Test with empty data
     device.daily_summaries = []
     with caplog.at_level(logging.DEBUG):
         device._calculate_times(dt)
-    matching_logs = [
-        r for r in caplog.records if r.message == ">> Device._calculate_times()"
-    ]
+    matching_logs = [r for r in caplog.records if r.message == ">> Device._calculate_times()"]
     assert len(matching_logs) == 0
 
     # Test with null data
     device.daily_summaries = None
     with caplog.at_level(logging.DEBUG):
         device._calculate_times(dt)
-    matching_logs = [
-        r for r in caplog.records if r.message == ">> Device._calculate_times()"
-    ]
+    matching_logs = [r for r in caplog.records if r.message == ">> Device._calculate_times()"]
     assert len(matching_logs) == 0
 
     # Test with no current day summary
     device.daily_summaries = daily_summaries
     with caplog.at_level(logging.DEBUG):
         device._calculate_times(dt)
-    matching_logs = [
-        r for r in caplog.records if r.message == ">> Device._calculate_times()"
-    ]
+    matching_logs = [r for r in caplog.records if r.message == ">> Device._calculate_times()"]
     assert len(matching_logs) == 1
     assert "No daily summary for today, assuming 0 playing time." in caplog.text
     assert device.today_playing_time == 0
@@ -812,9 +766,7 @@ async def test_calculate_times(
     device.daily_summaries = daily_summaries
     with caplog.at_level(logging.DEBUG):
         device._calculate_times(dt)
-    matching_logs = [
-        r for r in caplog.records if r.message == ">> Device._calculate_times()"
-    ]
+    matching_logs = [r for r in caplog.records if r.message == ">> Device._calculate_times()"]
     assert len(matching_logs) == 1
     assert device.today_playing_time == 60
     assert device.today_disabled_time == 15
@@ -823,8 +775,7 @@ async def test_calculate_times(
     matching_logs = [
         r
         for r in caplog.records
-        if r.message
-        == f"Cached playing, disabled and exceeded time for today for device {device.device_id}"
+        if r.message == f"Cached playing, disabled and exceeded time for today for device {device.device_id}"
     ]
     assert len(matching_logs) == 1
 
