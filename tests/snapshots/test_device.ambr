@@ -5139,15 +5139,15 @@
     'sync_state': 1762884750,
     'timer_mode': dict({
     }),
-    'today_disabled_time': 0,
-    'today_exceeded_time': 0,
+    'today_disabled_time': 15,
+    'today_exceeded_time': 20,
     'today_important_info': list([
     ]),
     'today_notices': list([
     ]),
     'today_observations': list([
     ]),
-    'today_playing_time': 0,
+    'today_playing_time': 60,
     'whitelisted_applications': dict({
     }),
   })

@@ -2,28 +2,27 @@
 """Defines a single Nintendo Switch device."""
 
 import asyncio
-
-from datetime import datetime, timedelta, time
+from datetime import datetime, time, timedelta
 from typing import Callable
 
 from pynintendoauth.exceptions import HttpException
 
 from .api import Api
+from .application import Application
 from .const import _LOGGER, DAYS_OF_WEEK
-from .exceptions import (
-    BedtimeOutOfRangeError,
-    DailyPlaytimeOutOfRangeError,
-    InvalidDeviceStateError,
-)
 from .enum import (
     AlarmSettingState,
     DeviceTimerMode,
     FunctionalRestrictionLevel,
     RestrictionMode,
 )
+from .exceptions import (
+    BedtimeOutOfRangeError,
+    DailyPlaytimeOutOfRangeError,
+    InvalidDeviceStateError,
+)
 from .player import Player
 from .utils import is_awaitable
-from .application import Application
 
 
 class Device:
@@ -77,14 +76,13 @@ class Device:
     @property
     def last_sync(self) -> float | None:
         """Return the last time this device was synced."""
-        return self.extra.get("synchronizedParentalControlSetting", {}).get(
-            "synchronizedAt", None
-        )
+        return self.extra.get("synchronizedParentalControlSetting", {}).get("synchronizedAt", None)
 
-    async def update(self):
+    async def update(self, now: datetime = None):
         """Update data."""
         _LOGGER.debug(">> Device.update()")
-        now = datetime.now()
+        if now is None:
+            now = datetime.now()
         await asyncio.gather(
             self._get_daily_summaries(now),
             self._get_parental_control_setting(now),
@@ -135,9 +133,7 @@ class Device:
     async def set_new_pin(self, pin: str):
         """Updates the pin for the device."""
         _LOGGER.debug(">> Device.set_new_pin(pin=REDACTED)")
-        await self._send_api_update(
-            self._api.async_update_unlock_code, new_code=pin, device_id=self.device_id
-        )
+        await self._send_api_update(self._api.async_update_unlock_code, new_code=pin, device_id=self.device_id)
 
     async def add_extra_time(self, minutes: int):
         """Add extra time to the device."""
@@ -149,17 +145,13 @@ class Device:
     async def set_restriction_mode(self, mode: RestrictionMode):
         """Updates the restriction mode of the device."""
         _LOGGER.debug(">> Device.set_restriction_mode(mode=%s)", mode)
-        self.parental_control_settings["playTimerRegulations"]["restrictionMode"] = str(
-            mode
-        )
+        self.parental_control_settings["playTimerRegulations"]["restrictionMode"] = str(mode)
         response = await self._api.async_update_play_timer(
             self.device_id,
             self.parental_control_settings["playTimerRegulations"],
         )
         now = datetime.now()
-        self._parse_parental_control_setting(
-            response["json"], now
-        )  # Don't need to recalculate times
+        self._parse_parental_control_setting(response["json"], now)  # Don't need to recalculate times
         await self._execute_callbacks()
 
     async def set_bedtime_alarm(self, value: time):
@@ -180,19 +172,13 @@ class Device:
         else:
             regulation = {**regulation, "endingTime": None}
         if self.timer_mode == DeviceTimerMode.DAILY:
-            _LOGGER.debug(
-                ">> Device.set_bedtime_alarm(value=%s): Daily timer mode", value
-            )
-            self.parental_control_settings["playTimerRegulations"]["dailyRegulations"][
-                "bedtime"
-            ] = regulation
+            _LOGGER.debug(">> Device.set_bedtime_alarm(value=%s): Daily timer mode", value)
+            self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["bedtime"] = regulation
         else:
-            _LOGGER.debug(
-                ">> Device.set_bedtime_alarm(value=%s): Each day timer mode", value
-            )
-            self.parental_control_settings["playTimerRegulations"][
-                "eachDayOfTheWeekRegulations"
-            ][DAYS_OF_WEEK[now.weekday()]]["bedtime"] = regulation
+            _LOGGER.debug(">> Device.set_bedtime_alarm(value=%s): Each day timer mode", value)
+            self.parental_control_settings["playTimerRegulations"]["eachDayOfTheWeekRegulations"][
+                DAYS_OF_WEEK[now.weekday()]
+            ]["bedtime"] = regulation
         _LOGGER.debug(
             ">> Device.set_bedtime_alarm(value=%s): Updating bedtime with object %s",
             value,
@@ -212,22 +198,22 @@ class Device:
             raise BedtimeOutOfRangeError(value=value)
         now = datetime.now()
         if self.timer_mode == DeviceTimerMode.DAILY:
-            regulation = self.parental_control_settings["playTimerRegulations"][
-                "dailyRegulations"
-            ]
+            regulation = self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]
         else:
-            regulation = self.parental_control_settings["playTimerRegulations"][
-                "eachDayOfTheWeekRegulations"
-            ][DAYS_OF_WEEK[now.weekday()]]
+            regulation = self.parental_control_settings["playTimerRegulations"]["eachDayOfTheWeekRegulations"][
+                DAYS_OF_WEEK[now.weekday()]
+            ]
         new_bedtime_settings = {
             **regulation["bedtime"],
             "enabled": regulation["bedtime"]["endingTime"] or value != time(0, 0),
-            "startingTime": {
-                "hour": value.hour,
-                "minute": value.minute,
-            }
-            if value != time(0, 0)
-            else None,
+            "startingTime": (
+                {
+                    "hour": value.hour,
+                    "minute": value.minute,
+                }
+                if value != time(0, 0)
+                else None
+            ),
         }
         regulation["bedtime"] = new_bedtime_settings
         await self._send_api_update(
@@ -259,7 +245,8 @@ class Device:
     ):
         """Updates the daily restrictions of a device."""
         _LOGGER.debug(
-            ">> Device.set_daily_restrictions(enabled=%s, bedtime_enabled=%s, day_of_week=%s, bedtime_start=%s, bedtime_end=%s, max_daily_playtime=%s)",
+            ">> Device.set_daily_restrictions(enabled=%s, bedtime_enabled=%s, day_of_week=%s, "
+            "bedtime_start=%s, bedtime_end=%s, max_daily_playtime=%s)",
             enabled,
             bedtime_enabled,
             day_of_week,
@@ -268,14 +255,10 @@ class Device:
             max_daily_playtime,
         )
         if self.timer_mode != DeviceTimerMode.EACH_DAY_OF_THE_WEEK:
-            raise InvalidDeviceStateError(
-                "Daily restrictions can only be set when timer_mode is EACH_DAY_OF_THE_WEEK."
-            )
+            raise InvalidDeviceStateError("Daily restrictions can only be set when timer_mode is EACH_DAY_OF_THE_WEEK.")
         if day_of_week not in DAYS_OF_WEEK:
             raise ValueError(f"Invalid day_of_week: {day_of_week}")
-        regulation = self.parental_control_settings["playTimerRegulations"][
-            "eachDayOfTheWeekRegulations"
-        ][day_of_week]
+        regulation = self.parental_control_settings["playTimerRegulations"]["eachDayOfTheWeekRegulations"][day_of_week]
 
         if bedtime_enabled and bedtime_start is not None and bedtime_end is not None:
             if not time(5, 0) <= bedtime_start <= time(9, 0):
@@ -348,43 +331,34 @@ class Device:
                 self.device_id,
                 minutes,
             )
-            self.parental_control_settings["playTimerRegulations"]["dailyRegulations"][
-                "timeToPlayInOneDay"
-            ]["enabled"] = ttpiod
+            self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"][
+                "enabled"
+            ] = ttpiod
             if (
                 "limitTime"
-                in self.parental_control_settings["playTimerRegulations"][
-                    "dailyRegulations"
-                ]["timeToPlayInOneDay"]
+                in self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]
                 and minutes is None
             ):
-                self.parental_control_settings["playTimerRegulations"][
-                    "dailyRegulations"
-                ]["timeToPlayInOneDay"].pop("limitTime")
+                self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"].pop(
+                    "limitTime"
+                )
             else:
-                self.parental_control_settings["playTimerRegulations"][
-                    "dailyRegulations"
-                ]["timeToPlayInOneDay"]["limitTime"] = minutes
+                self.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"][
+                    "limitTime"
+                ] = minutes
         else:
             _LOGGER.debug(
                 "Setting timeToPlayInOneDay.limitTime for device %s to value %s",
                 self.device_id,
                 minutes,
             )
-            day_of_week_regs = self.parental_control_settings["playTimerRegulations"][
-                "eachDayOfTheWeekRegulations"
-            ]
+            day_of_week_regs = self.parental_control_settings["playTimerRegulations"]["eachDayOfTheWeekRegulations"]
             current_day = DAYS_OF_WEEK[now.weekday()]
             day_of_week_regs[current_day]["timeToPlayInOneDay"]["enabled"] = ttpiod
-            if (
-                "limitTime" in day_of_week_regs[current_day]["timeToPlayInOneDay"]
-                and minutes is None
-            ):
+            if "limitTime" in day_of_week_regs[current_day]["timeToPlayInOneDay"] and minutes is None:
                 day_of_week_regs[current_day]["timeToPlayInOneDay"].pop("limitTime")
             else:
-                day_of_week_regs[current_day]["timeToPlayInOneDay"]["limitTime"] = (
-                    minutes
-                )
+                day_of_week_regs[current_day]["timeToPlayInOneDay"]["limitTime"] = minutes
 
         await self._send_api_update(
             self._api.async_update_play_timer,
@@ -411,43 +385,31 @@ class Device:
     def _get_today_regulation(self, now: datetime) -> dict:
         """Returns the regulation settings for the current day."""
         if self.timer_mode == DeviceTimerMode.EACH_DAY_OF_THE_WEEK:
-            day_of_week_regs = self.parental_control_settings[
-                "playTimerRegulations"
-            ].get("eachDayOfTheWeekRegulations", {})
+            day_of_week_regs = self.parental_control_settings["playTimerRegulations"].get(
+                "eachDayOfTheWeekRegulations", {}
+            )
             return day_of_week_regs.get(DAYS_OF_WEEK[now.weekday()], {})
-        return self.parental_control_settings.get("playTimerRegulations", {}).get(
-            "dailyRegulations", {}
-        )
+        return self.parental_control_settings.get("playTimerRegulations", {}).get("dailyRegulations", {})
 
     def _parse_parental_control_setting(self, pcs: dict, now: datetime):
         """Parse a parental control setting request response."""
         _LOGGER.debug(">> Device._parse_parental_control_setting()")
         self.parental_control_settings = pcs["parentalControlSetting"]
-        self.parental_control_settings["playTimerRegulations"].pop(
-            "bedtimeStartingTime", None
+        self.parental_control_settings["playTimerRegulations"].pop("bedtimeStartingTime", None)
+        self.parental_control_settings["playTimerRegulations"].pop("bedtimeEndingTime", None)
+        self.forced_termination_mode = self.parental_control_settings["playTimerRegulations"]["restrictionMode"] == str(
+            RestrictionMode.FORCED_TERMINATION
         )
-        self.parental_control_settings["playTimerRegulations"].pop(
-            "bedtimeEndingTime", None
-        )
-        self.forced_termination_mode = self.parental_control_settings[
-            "playTimerRegulations"
-        ]["restrictionMode"] == str(RestrictionMode.FORCED_TERMINATION)
 
         # Update limit and bedtime from regulations
-        self.timer_mode = DeviceTimerMode(
-            self.parental_control_settings["playTimerRegulations"]["timerMode"]
-        )
+        self.timer_mode = DeviceTimerMode(self.parental_control_settings["playTimerRegulations"]["timerMode"])
         today_reg = self._get_today_regulation(now)
         limit_time = today_reg.get("timeToPlayInOneDay", {}).get("limitTime")
         self.limit_time = limit_time if limit_time is not None else -1
-        extra_playing_time_data = (
-            pcs.get("ownedDevice", {}).get("device", {}).get("extraPlayingTime")
-        )
+        extra_playing_time_data = pcs.get("ownedDevice", {}).get("device", {}).get("extraPlayingTime")
         self.extra_playing_time = None
         if extra_playing_time_data:
-            self.extra_playing_time = extra_playing_time_data.get("inOneDay", {}).get(
-                "duration"
-            )
+            self.extra_playing_time = extra_playing_time_data.get("inOneDay", {}).get("duration")
 
         bedtime_setting = today_reg.get("bedtime", {})
         if bedtime_setting.get("enabled") and bedtime_setting["endingTime"]:
@@ -505,32 +467,22 @@ class Device:
 
             if self.limit_time in (-1, None):
                 # No play limit, so remaining time is until end of day.
-                time_remaining_by_play_limit = (
-                    minutes_in_day - current_minutes_past_midnight
-                )
+                time_remaining_by_play_limit = minutes_in_day - current_minutes_past_midnight
             else:
                 time_remaining_by_play_limit = self.limit_time - self.today_playing_time
 
             # 2. Calculate remaining time until bedtime
-            if (
-                self.bedtime_alarm
-                and self.bedtime_alarm != time(hour=0, minute=0)
-                and self.alarms_enabled
-            ):
+            if self.bedtime_alarm and self.bedtime_alarm != time(hour=0, minute=0) and self.alarms_enabled:
                 bedtime_dt = datetime.combine(now.date(), self.bedtime_alarm)
                 if bedtime_dt > now:  # Bedtime is in the future today
                     time_remaining_by_bedtime = (bedtime_dt - now).total_seconds() / 60
                 else:  # Bedtime has passed
                     time_remaining_by_bedtime = 0.0
             else:
-                time_remaining_by_bedtime = (
-                    minutes_in_day - current_minutes_past_midnight
-                )
+                time_remaining_by_bedtime = minutes_in_day - current_minutes_past_midnight
 
             # Effective remaining time is the minimum of the two constraints
-            effective_remaining_time = min(
-                time_remaining_by_play_limit, time_remaining_by_bedtime
-            )
+            effective_remaining_time = min(time_remaining_by_play_limit, time_remaining_by_bedtime)
             self.today_time_remaining = int(max(0.0, effective_remaining_time))
             _LOGGER.debug(
                 "Calculated today's remaining time: %s minutes",
@@ -538,25 +490,19 @@ class Device:
             )
             self.stats_update_failed = False
         except (ValueError, TypeError, AttributeError) as err:
-            _LOGGER.warning(
-                "Unable to calculate remaining time for device %s: %s", self.name, err
-            )
+            _LOGGER.warning("Unable to calculate remaining time for device %s: %s", self.name, err)
 
     async def _get_parental_control_setting(self, now: datetime):
         """Retreives parental control settings from the API."""
         _LOGGER.debug(">> Device._get_parental_control_setting()")
-        response = await self._api.async_get_device_parental_control_setting(
-            device_id=self.device_id
-        )
+        response = await self._api.async_get_device_parental_control_setting(device_id=self.device_id)
         self._parse_parental_control_setting(response["json"], now)
         self._calculate_times(now)
 
     async def _get_daily_summaries(self, now: datetime):
         """Retrieve daily summaries."""
         _LOGGER.debug(">> Device._get_daily_summaries()")
-        response = await self._api.async_get_device_daily_summaries(
-            device_id=self.device_id
-        )
+        response = await self._api.async_get_device_daily_summaries(device_id=self.device_id)
         self.daily_summaries = response["json"]["dailySummaries"]
         _LOGGER.debug("New daily summary %s", self.daily_summaries)
         self._calculate_times(now)
@@ -566,9 +512,7 @@ class Device:
         _LOGGER.debug(">> Device._get_extras()")
         if self.alarms_enabled is not None:
             # first refresh can come from self.extra without http request
-            response = await self._api.async_get_account_device(
-                device_id=self.device_id
-            )
+            response = await self._api.async_get_account_device(device_id=self.device_id)
             self.extra = response["json"]["ownedDevice"]["device"]
         status = self.extra["alarmSetting"]["visibility"]
         self.alarms_enabled = status == str(AlarmSettingState.VISIBLE)
@@ -584,9 +528,7 @@ class Device:
         latest = False
         if search_date is None:
             try:
-                response = await self._api.async_get_device_monthly_summaries(
-                    device_id=self.device_id
-                )
+                response = await self._api.async_get_device_monthly_summaries(device_id=self.device_id)
             except HttpException as exc:
                 _LOGGER.debug("Could not retrieve monthly summaries: %s", exc)
                 return
@@ -594,9 +536,7 @@ class Device:
                 available_summaries = response["json"]["available"]
                 _LOGGER.debug("Available monthly summaries: %s", available_summaries)
                 if not available_summaries:
-                    _LOGGER.debug(
-                        "No monthly summaries available for device %s", self.device_id
-                    )
+                    _LOGGER.debug("No monthly summaries available for device %s", self.device_id)
                     return None
                 # Use the most recent available summary
                 available_summary = available_summaries[0]
@@ -604,9 +544,7 @@ class Device:
                     f"{available_summary['year']}-{available_summary['month']}-01",
                     "%Y-%m-%d",
                 )
-                _LOGGER.debug(
-                    "Using search date %s for monthly summary request", search_date
-                )
+                _LOGGER.debug("Using search date %s for monthly summary request", search_date)
                 latest = True
 
         try:
@@ -629,9 +567,7 @@ class Device:
             if latest:
                 self.last_month_summary = summary = response["json"]["summary"]
                 # Generate player objects
-                for player in (
-                    response.get("json", {}).get("summary", {}).get("players", [])
-                ):
+                for player in response.get("json", {}).get("summary", {}).get("players", []):
                     profile = player.get("profile")
                     if not profile or not profile.get("playerId"):
                         continue
@@ -646,22 +582,12 @@ class Device:
         """Returns usage for a given date."""
         if not self.daily_summaries:
             raise ValueError("No daily summaries available to search.")
-        summary = [
-            x
-            for x in self.daily_summaries
-            if x["date"] == input_date.strftime("%Y-%m-%d")
-        ]
+        summary = [x for x in self.daily_summaries if x["date"] == input_date.strftime("%Y-%m-%d")]
         if len(summary) == 0:
             input_date -= timedelta(days=1)
-            summary = [
-                x
-                for x in self.daily_summaries
-                if x["date"] == input_date.strftime("%Y-%m-%d")
-            ]
+            summary = [x for x in self.daily_summaries if x["date"] == input_date.strftime("%Y-%m-%d")]
         if len(summary) == 0:
-            raise ValueError(
-                f"A summary for the given date {input_date} does not exist"
-            )
+            raise ValueError(f"A summary for the given date {input_date} does not exist")
         return summary
 
     def get_application(self, application_id: str) -> Application:
@@ -678,7 +604,7 @@ class Device:
         raise ValueError(f"Player with id {player_id} not found.")
 
     @classmethod
-    async def from_devices_response(cls, raw: dict, api) -> list["Device"]:
+    async def from_devices_response(cls, raw: dict, api, now: datetime = None) -> list["Device"]:
         """Parses a device request response body."""
         _LOGGER.debug("Parsing device list response")
         if "ownedDevices" not in raw.keys():
@@ -690,7 +616,7 @@ class Device:
             parsed.name = device["label"]
             parsed.sync_state = device["parentalControlSettingState"]["updatedAt"]
             parsed.extra = device
-            await parsed.update()
+            await parsed.update(now=now)
             devices.append(parsed)
 
         return devices
