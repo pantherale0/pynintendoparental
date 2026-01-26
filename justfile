@@ -25,8 +25,18 @@ coverage:
 
 # Cleans the project
 clean:
-    rm -rf {{VIRTUAL_ENV}} dist *.egg-info .coverage htmlcov .*cache
+    rm -rf {{VIRTUAL_ENV}} dist *.egg-info .coverage htmlcov .*cache site
     find . -name '*.pyc' -delete
+
+# Builds the documentation
+docs-build:
+    {{PYTHON_BINARY}} -m pip install -q -r requirements.docs.txt
+    mkdocs build --strict
+
+# Serves the documentation locally
+docs-serve:
+    {{PYTHON_BINARY}} -m pip install -q -r requirements.docs.txt
+    mkdocs serve
 
 # Run flake8 checks against the project
 flake8:

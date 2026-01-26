@@ -14,7 +14,20 @@ if TYPE_CHECKING:
 
 
 class Application:
-    """Model for an application"""
+    """A Nintendo Switch game or application.
+    
+    Represents a game or application on a Nintendo Switch console with parental control settings.
+    
+    Attributes:
+        application_id: Unique identifier for the application.
+        name: Display name of the application.
+        image_url: URL to the application's icon image.
+        safe_launch_setting: Whether the app is on the Allow List (bypasses age restrictions).
+        today_time_played: Total time played today across all players in minutes.
+        first_played_date: Date when the application was first played.
+        playing_days: Number of days the application has been played.
+        shop_url: URL to the application in the Nintendo eShop.
+    """
 
     def __init__(
         self,
@@ -48,7 +61,26 @@ class Application:
         callbacks.append(self._internal_update_callback)
 
     async def set_safe_launch_setting(self, safe_launch_setting: SafeLaunchSetting):
-        """Set the safe launch setting for the application."""
+        """Set the application's status on the Allow List.
+        
+        Applications on the Allow List can bypass general age/content restrictions.
+        
+        Args:
+            safe_launch_setting: The setting to apply. Options are:
+                - SafeLaunchSetting.NONE: Remove from Allow List (apply normal restrictions).
+                - SafeLaunchSetting.ALLOW: Add to Allow List (bypass restrictions).
+                
+        Raises:
+            ValueError: If the application data is not properly initialized.
+            LookupError: If the application is no longer in the whitelist.
+            
+        Example:
+            ```python
+            from pynintendoparental.enum import SafeLaunchSetting
+            
+            await app.set_safe_launch_setting(SafeLaunchSetting.ALLOW)
+            ```
+        """
         if (
             not self._device
             or "whitelistedApplicationList" not in self._parental_control_settings
@@ -119,14 +151,36 @@ class Application:
             else:
                 cb(self)
 
-    def add_application_callback(self, callback):
-        """Add a callback to the application."""
+    def add_application_callback(self, callback: Callable):
+        """Add a callback function to be called when application state changes.
+        
+        Args:
+            callback: A callable function. Can be sync or async.
+            
+        Raises:
+            ValueError: If the provided object is not callable.
+            
+        Example:
+            ```python
+            async def on_app_update(app):
+                print(f"App {app.name} updated!")
+            
+            app.add_application_callback(on_app_update)
+            ```
+        """
         if not callable(callback):
             raise ValueError("Object must be callable.")
         self._callbacks.append(callback)
 
-    def remove_application_callback(self, callback):
-        """Remove a callback from the application."""
+    def remove_application_callback(self, callback: Callable):
+        """Remove a previously registered application callback.
+        
+        Args:
+            callback: The callback function to remove.
+            
+        Raises:
+            ValueError: If the callback is not found.
+        """
         if callback not in self._callbacks:
             raise ValueError("Callback not found.")
         self._callbacks.remove(callback)
