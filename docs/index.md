@@ -7,6 +7,12 @@ A simple, Python API to connect to Nintendo Switch Parental Controls.
 [![PyPi](https://img.shields.io/pypi/v/pynintendoparental)](https://pypi.org/project/pynintendoparental)
 [![Licence](https://img.shields.io/github/license/pantherale0/pynintendoparental)](https://github.com/pantherale0/pynintendoparental/blob/main/LICENSE)
 
+## Home Assistant Integration
+
+This library powers the Nintendo Parental Controls integration for Home Assistant:
+
+[![Open your Home Assistant instance and start setting up a new integration.](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=nintendo_parental_controls)
+
 ## Overview
 
 `pynintendoparental` is a Python library that provides an asynchronous API client for interacting with Nintendo Switch Parental Controls. It allows you to:

@@ -4,7 +4,18 @@ from .const import _LOGGER
 
 
 class Player:
-    """Defines a single player on a Nintendo device."""
+    """A Nintendo Switch user profile.
+    
+    Represents a player profile on a Nintendo Switch console with their gaming activity.
+    
+    Attributes:
+        player_id: Unique identifier for the player.
+        nickname: Player's display name.
+        player_image: URL to the player's Mii image.
+        playing_time: Total playing time for the current day in minutes.
+        apps: List of applications played today with playtime details.
+        month_summary: Monthly usage summary data for this player.
+    """
 
     def __init__(self):
         """Init a player."""
@@ -16,7 +27,11 @@ class Player:
         self.playing_time: int = 0
 
     def update_from_daily_summary(self, raw: list[dict]):
-        """Update the current instance of the player from the daily summery"""
+        """Update player data from a daily summary response.
+        
+        Args:
+            raw: List of daily summary dictionaries from the API.
+        """
         _LOGGER.debug("Updating player %s daily summary", self.player_id)
         for player in raw[0].get("players", []):
             if self.player_id == player["profile"].get("playerId"):
@@ -28,7 +43,14 @@ class Player:
 
     @classmethod
     def from_device_daily_summary(cls, raw: list[dict]) -> list["Player"]:
-        """Converts a daily summary response into a list of players."""
+        """Create Player objects from a device daily summary response.
+        
+        Args:
+            raw: List of daily summary dictionaries from the API.
+            
+        Returns:
+            List of Player objects parsed from the summary.
+        """
         players = []
         _LOGGER.debug("Building players from device daily summary.")
         for player in raw[0].get("players", []):
@@ -44,7 +66,14 @@ class Player:
 
     @classmethod
     def from_profile(cls, raw: dict) -> "Player":
-        """Converts a profile response into a player."""
+        """Create a Player object from a profile response.
+        
+        Args:
+            raw: Profile dictionary from the API.
+            
+        Returns:
+            A Player object parsed from the profile data.
+        """
         parsed = cls()
         parsed.player_id = raw.get("playerId")
         parsed.player_image = raw.get("imageUri")
