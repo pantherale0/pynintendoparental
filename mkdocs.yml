@@ -1,0 +1,76 @@
+site_name: pynintendoparental
+site_description: Python API for Nintendo Switch Parental Controls
+site_author: pantherale0
+site_url: https://pantherale0.github.io/pynintendoparental
+repo_url: https://github.com/pantherale0/pynintendoparental
+repo_name: pantherale0/pynintendoparental
+
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - toc.integrate
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/lightbulb-outline
+        name: Switch to dark mode
+      primary: blue
+      accent: light blue
+    - scheme: slate
+      toggle:
+        icon: material/lightbulb
+        name: Switch to light mode
+      primary: blue
+      accent: light blue
+  logo: assets/images/logo.png
+  favicon: assets/images/favicon.png
+
+extra_css:
+  - stylesheets/extra.css
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            show_source: true
+            show_root_heading: true
+
+markdown_extensions:
+  - pymdownx.highlight:
+      use_pygments: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - admonition
+  - pymdownx.details
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - User Guide:
+    - Getting Started: guide/getting-started.md
+    - Authentication: guide/authentication.md
+    - Usage Examples: guide/examples.md
+  - API Reference:
+    - NintendoParental: api/nintendoparental.md
+    - Device: api/device.md
+    - Player: api/player.md
+    - Application: api/application.md
+    - Authenticator: api/authenticator.md
+    - Enums: api/enums.md
+    - Exceptions: api/exceptions.md
