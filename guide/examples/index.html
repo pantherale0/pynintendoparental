@@ -1,0 +1,1708 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Python API for Nintendo Switch Parental Controls">
+      
+      
+        <meta name="author" content="pantherale0">
+      
+      
+        <link rel="canonical" href="https://pantherale0.github.io/pynintendoparental/guide/examples/">
+      
+      
+        <link rel="prev" href="../authentication/">
+      
+      
+        <link rel="next" href="../../api/nintendoparental/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Usage Examples - pynintendoparental</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#usage-examples" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="pynintendoparental" class="md-header__button md-logo" aria-label="pynintendoparental" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            pynintendoparental
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Usage Examples
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/pantherale0/pynintendoparental" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pantherale0/pynintendoparental
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../getting-started/" class="md-tabs__link">
+          
+  
+  
+  User Guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../api/nintendoparental/" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="pynintendoparental" class="md-nav__button md-logo" aria-label="pynintendoparental" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    pynintendoparental
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/pantherale0/pynintendoparental" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pantherale0/pynintendoparental
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Guide
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User Guide
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usage Examples
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usage Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#basic-device-information" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Basic Device Information
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managing-playtime-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Managing Playtime Limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Managing Playtime Limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#set-daily-playtime-limit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Set Daily Playtime Limit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remove-playtime-limit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Remove Playtime Limit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-extra-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add Extra Time
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bedtime-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bedtime Settings
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bedtime Settings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#set-bedtime-alarm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Set Bedtime Alarm
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configure-bedtime-restrictions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configure Bedtime Restrictions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disable-bedtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Disable Bedtime
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#restriction-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restriction Modes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Restriction Modes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#set-forced-termination-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Set Forced Termination Mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set-alarm-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Set Alarm Mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#timer-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Timer Modes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Timer Modes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#set-daily-timer-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Set Daily Timer Mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set-weekly-timer-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Set Weekly Timer Mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configure-day-specific-restrictions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configure Day-Specific Restrictions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#player-information" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Player Information
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Player Information">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#list-all-players" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        List All Players
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-players-apps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Get Player's Apps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#application-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Application Management
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Application Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#list-all-applications" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        List All Applications
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allow-an-application" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Allow an Application
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remove-application-from-allow-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Remove Application from Allow List
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#content-restrictions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Content Restrictions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Content Restrictions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#set-age-restriction-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Set Age Restriction Level
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage-reports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usage Reports
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage Reports">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-monthly-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Get Monthly Summary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-daily-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Get Daily Summary
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#callbacks-and-real-time-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Callbacks and Real-time Updates
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Callbacks and Real-time Updates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#device-state-change-callbacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Device State Change Callbacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#application-state-change-callbacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Application State Change Callbacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pin-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PIN Management
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PIN Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#set-a-new-pin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Set a New PIN
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complete-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Complete Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/nintendoparental/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NintendoParental
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/device/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Device
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/player/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Player
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/application/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Application
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/authenticator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authenticator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/enums/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enums
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/exceptions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Exceptions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="usage-examples">Usage Examples<a class="headerlink" href="#usage-examples" title="Permanent link">&para;</a></h1>
+<p>This guide provides comprehensive examples of common tasks using <code>pynintendoparental</code>.</p>
+<h2 id="basic-device-information">Basic Device Information<a class="headerlink" href="#basic-device-information" title="Permanent link">&para;</a></h2>
+<p>Get information about all devices linked to your Nintendo account:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">aiohttp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pynintendoparental</span><span class="w"> </span><span class="kn">import</span> <span class="n">NintendoParental</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pynintendoparental.authenticator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Authenticator</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">list_devices</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;List all devices and their information.&quot;&quot;&quot;</span>
+    <span class="n">session_token</span> <span class="o">=</span> <span class="s2">&quot;YOUR_SESSION_TOKEN&quot;</span>
+
+    <span class="k">async</span> <span class="k">with</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+        <span class="n">auth</span> <span class="o">=</span> <span class="n">Authenticator</span><span class="p">(</span><span class="n">session_token</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">auth</span><span class="o">.</span><span class="n">async_complete_login</span><span class="p">(</span><span class="n">use_session_token</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">nintendo</span> <span class="o">=</span> <span class="k">await</span> <span class="n">NintendoParental</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">auth</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">nintendo</span><span class="o">.</span><span class="n">devices</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Device: </span><span class="si">{</span><span class="n">device</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  ID: </span><span class="si">{</span><span class="n">device</span><span class="o">.</span><span class="n">device_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Model: </span><span class="si">{</span><span class="n">device</span><span class="o">.</span><span class="n">model</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Daily limit: </span><span class="si">{</span><span class="n">device</span><span class="o">.</span><span class="n">limit_time</span><span class="si">}</span><span class="s2"> minutes&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Today&#39;s playtime: </span><span class="si">{</span><span class="n">device</span><span class="o">.</span><span class="n">today_playing_time</span><span class="si">}</span><span class="s2"> minutes&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Time remaining: </span><span class="si">{</span><span class="n">device</span><span class="o">.</span><span class="n">today_time_remaining</span><span class="si">}</span><span class="s2"> minutes&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Last sync: </span><span class="si">{</span><span class="n">device</span><span class="o">.</span><span class="n">last_sync</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">list_devices</span><span class="p">())</span>
+</code></pre></div>
+<h2 id="managing-playtime-limits">Managing Playtime Limits<a class="headerlink" href="#managing-playtime-limits" title="Permanent link">&para;</a></h2>
+<h3 id="set-daily-playtime-limit">Set Daily Playtime Limit<a class="headerlink" href="#set-daily-playtime-limit" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">set_playtime_limit</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">minutes</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set daily playtime limit in minutes.&quot;&quot;&quot;</span>
+    <span class="k">await</span> <span class="n">device</span><span class="o">.</span><span class="n">update_max_daily_playtime</span><span class="p">(</span><span class="n">minutes</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Set playtime limit to </span><span class="si">{</span><span class="n">minutes</span><span class="si">}</span><span class="s2"> minutes&quot;</span><span class="p">)</span>
+
+<span class="c1"># Usage</span>
+<span class="n">device</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nintendo</span><span class="o">.</span><span class="n">devices</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">await</span> <span class="n">set_playtime_limit</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="mi">180</span><span class="p">)</span>  <span class="c1"># 3 hours</span>
+</code></pre></div>
+<h3 id="remove-playtime-limit">Remove Playtime Limit<a class="headerlink" href="#remove-playtime-limit" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">remove_playtime_limit</span><span class="p">(</span><span class="n">device</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove daily playtime limit.&quot;&quot;&quot;</span>
+    <span class="k">await</span> <span class="n">device</span><span class="o">.</span><span class="n">update_max_daily_playtime</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Playtime limit removed&quot;</span><span class="p">)</span>
+
+<span class="c1"># Usage</span>
+<span class="k">await</span> <span class="n">remove_playtime_limit</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="add-extra-time">Add Extra Time<a class="headerlink" href="#add-extra-time" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">add_extra_time</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">minutes</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add extra playing time for today.&quot;&quot;&quot;</span>
+    <span class="k">await</span> <span class="n">device</span><span class="o">.</span><span class="n">add_extra_time</span><span class="p">(</span><span class="n">minutes</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Added </span><span class="si">{</span><span class="n">minutes</span><span class="si">}</span><span class="s2"> minutes of extra time&quot;</span><span class="p">)</span>
+
+<span class="c1"># Usage</span>
+<span class="k">await</span> <span class="n">add_extra_time</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>  <span class="c1"># Add 30 minutes</span>
+</code></pre></div>
+<h2 id="bedtime-settings">Bedtime Settings<a class="headerlink" href="#bedtime-settings" title="Permanent link">&para;</a></h2>
+<h3 id="set-bedtime-alarm">Set Bedtime Alarm<a class="headerlink" href="#set-bedtime-alarm" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">time</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">set_bedtime_alarm</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">alarm_time</span><span class="p">:</span> <span class="n">time</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set bedtime alarm.&quot;&quot;&quot;</span>
+    <span class="k">await</span> <span class="n">device</span><span class="o">.</span><span class="n">set_bedtime_alarm</span><span class="p">(</span><span class="n">alarm_time</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Bedtime alarm set to </span><span class="si">{</span><span class="n">alarm_time</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Usage</span>
+<span class="k">await</span> <span class="n">set_bedtime_alarm</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">time</span><span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>  <span class="c1"># 9:00 PM</span>
+</code></pre></div>
+<h3 id="configure-bedtime-restrictions">Configure Bedtime Restrictions<a class="headerlink" href="#configure-bedtime-restrictions" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">time</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">configure_bedtime</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">start_time</span><span class="p">:</span> <span class="n">time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">:</span> <span class="n">time</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configure bedtime start and end times.&quot;&quot;&quot;</span>
+    <span class="k">await</span> <span class="n">device</span><span class="o">.</span><span class="n">set_bedtime_alarm</span><span class="p">(</span><span class="n">start_time</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">device</span><span class="o">.</span><span class="n">set_bedtime_end_time</span><span class="p">(</span><span class="n">end_time</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Bedtime configured: </span><span class="si">{</span><span class="n">start_time</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">end_time</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Usage</span>
+<span class="k">await</span> <span class="n">configure_bedtime</span><span class="p">(</span>
+    <span class="n">device</span><span class="p">,</span>
+    <span class="n">time</span><span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>   <span class="c1"># 9:00 PM start</span>
+    <span class="n">time</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>     <span class="c1"># 7:00 AM end</span>
+<span class="p">)</span>
+</code></pre></div>
+<h3 id="disable-bedtime">Disable Bedtime<a class="headerlink" href="#disable-bedtime" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">time</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">disable_bedtime</span><span class="p">(</span><span class="n">device</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Disable bedtime restrictions.&quot;&quot;&quot;</span>
+    <span class="k">await</span> <span class="n">device</span><span class="o">.</span><span class="n">set_bedtime_end_time</span><span class="p">(</span><span class="n">time</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Bedtime restrictions disabled&quot;</span><span class="p">)</span>
+
+<span class="c1"># Usage</span>
+<span class="k">await</span> <span class="n">disable_bedtime</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="restriction-modes">Restriction Modes<a class="headerlink" href="#restriction-modes" title="Permanent link">&para;</a></h2>
+<h3 id="set-forced-termination-mode">Set Forced Termination Mode<a class="headerlink" href="#set-forced-termination-mode" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pynintendoparental.enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">RestrictionMode</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">set_forced_termination</span><span class="p">(</span><span class="n">device</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Enable forced termination when playtime limit is reached.&quot;&quot;&quot;</span>
+    <span class="k">await</span> <span class="n">device</span><span class="o">.</span><span class="n">set_restriction_mode</span><span class="p">(</span><span class="n">RestrictionMode</span><span class="o">.</span><span class="n">FORCED_TERMINATION</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Forced termination enabled&quot;</span><span class="p">)</span>
+
+<span class="c1"># Usage</span>
+<span class="k">await</span> <span class="n">set_forced_termination</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="set-alarm-mode">Set Alarm Mode<a class="headerlink" href="#set-alarm-mode" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pynintendoparental.enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">RestrictionMode</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">set_alarm_mode</span><span class="p">(</span><span class="n">device</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Enable alarm mode (no forced termination).&quot;&quot;&quot;</span>
+    <span class="k">await</span> <span class="n">device</span><span class="o">.</span><span class="n">set_restriction_mode</span><span class="p">(</span><span class="n">RestrictionMode</span><span class="o">.</span><span class="n">ALARM</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Alarm mode enabled (no forced termination)&quot;</span><span class="p">)</span>
+
+<span class="c1"># Usage</span>
+<span class="k">await</span> <span class="n">set_alarm_mode</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="timer-modes">Timer Modes<a class="headerlink" href="#timer-modes" title="Permanent link">&para;</a></h2>
+<h3 id="set-daily-timer-mode">Set Daily Timer Mode<a class="headerlink" href="#set-daily-timer-mode" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pynintendoparental.enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeviceTimerMode</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">set_daily_timer</span><span class="p">(</span><span class="n">device</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set a single playtime limit for all days.&quot;&quot;&quot;</span>
+    <span class="k">await</span> <span class="n">device</span><span class="o">.</span><span class="n">set_timer_mode</span><span class="p">(</span><span class="n">DeviceTimerMode</span><span class="o">.</span><span class="n">DAILY</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Timer mode set to DAILY&quot;</span><span class="p">)</span>
+
+<span class="c1"># Usage</span>
+<span class="k">await</span> <span class="n">set_daily_timer</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="set-weekly-timer-mode">Set Weekly Timer Mode<a class="headerlink" href="#set-weekly-timer-mode" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pynintendoparental.enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeviceTimerMode</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">set_weekly_timer</span><span class="p">(</span><span class="n">device</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set different playtime limits for each day of the week.&quot;&quot;&quot;</span>
+    <span class="k">await</span> <span class="n">device</span><span class="o">.</span><span class="n">set_timer_mode</span><span class="p">(</span><span class="n">DeviceTimerMode</span><span class="o">.</span><span class="n">EACH_DAY_OF_THE_WEEK</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Timer mode set to EACH_DAY_OF_THE_WEEK&quot;</span><span class="p">)</span>
+
+<span class="c1"># Usage</span>
+<span class="k">await</span> <span class="n">set_weekly_timer</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="configure-day-specific-restrictions">Configure Day-Specific Restrictions<a class="headerlink" href="#configure-day-specific-restrictions" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">time</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">set_weekday_restrictions</span><span class="p">(</span><span class="n">device</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set different restrictions for a specific day.&quot;&quot;&quot;</span>
+    <span class="c1"># Example: Monday restrictions</span>
+    <span class="k">await</span> <span class="n">device</span><span class="o">.</span><span class="n">set_daily_restrictions</span><span class="p">(</span>
+        <span class="n">day</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># 0=Monday, 1=Tuesday, etc.</span>
+        <span class="n">limit_time</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>  <span class="c1"># 2 hours</span>
+        <span class="n">bedtime_alarm</span><span class="o">=</span><span class="n">time</span><span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="n">bedtime_end</span><span class="o">=</span><span class="n">time</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Weekday restrictions configured&quot;</span><span class="p">)</span>
+
+<span class="c1"># Usage</span>
+<span class="k">await</span> <span class="n">set_weekday_restrictions</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="player-information">Player Information<a class="headerlink" href="#player-information" title="Permanent link">&para;</a></h2>
+<h3 id="list-all-players">List All Players<a class="headerlink" href="#list-all-players" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">list_players</span><span class="p">(</span><span class="n">device</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;List all players on a device.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">player</span> <span class="ow">in</span> <span class="n">device</span><span class="o">.</span><span class="n">players</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Player: </span><span class="si">{</span><span class="n">player</span><span class="o">.</span><span class="n">nickname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  ID: </span><span class="si">{</span><span class="n">player</span><span class="o">.</span><span class="n">player_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Today&#39;s playtime: </span><span class="si">{</span><span class="n">player</span><span class="o">.</span><span class="n">playing_time</span><span class="si">}</span><span class="s2"> minutes&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Profile image: </span><span class="si">{</span><span class="n">player</span><span class="o">.</span><span class="n">player_image</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Usage</span>
+<span class="k">await</span> <span class="n">list_players</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="get-players-apps">Get Player's Apps<a class="headerlink" href="#get-players-apps" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">show_player_apps</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">player</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Show applications played by a specific player.&quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Applications played by </span><span class="si">{</span><span class="n">player</span><span class="o">.</span><span class="n">nickname</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">app</span> <span class="ow">in</span> <span class="n">player</span><span class="o">.</span><span class="n">apps</span><span class="p">:</span>
+        <span class="n">app_id</span> <span class="o">=</span> <span class="n">app</span><span class="p">[</span><span class="s1">&#39;applicationId&#39;</span><span class="p">]</span>
+        <span class="n">application</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">get_application</span><span class="p">(</span><span class="n">app_id</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - </span><span class="si">{</span><span class="n">application</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">app</span><span class="p">[</span><span class="s1">&#39;playingTime&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> minutes&quot;</span><span class="p">)</span>
+
+<span class="c1"># Usage</span>
+<span class="n">player</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">device</span><span class="o">.</span><span class="n">players</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">await</span> <span class="n">show_player_apps</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">player</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="application-management">Application Management<a class="headerlink" href="#application-management" title="Permanent link">&para;</a></h2>
+<h3 id="list-all-applications">List All Applications<a class="headerlink" href="#list-all-applications" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">list_applications</span><span class="p">(</span><span class="n">device</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;List all applications on a device.&quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Applications:&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">app</span> <span class="ow">in</span> <span class="n">device</span><span class="o">.</span><span class="n">applications</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - </span><span class="si">{</span><span class="n">app</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    ID: </span><span class="si">{</span><span class="n">app</span><span class="o">.</span><span class="n">application_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    Today&#39;s playtime: </span><span class="si">{</span><span class="n">app</span><span class="o">.</span><span class="n">today_time_played</span><span class="si">}</span><span class="s2"> minutes&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    Safe launch: </span><span class="si">{</span><span class="n">app</span><span class="o">.</span><span class="n">safe_launch_setting</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Usage</span>
+<span class="k">await</span> <span class="n">list_applications</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="allow-an-application">Allow an Application<a class="headerlink" href="#allow-an-application" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pynintendoparental.enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">SafeLaunchSetting</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">allow_application</span><span class="p">(</span><span class="n">application</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add application to Allow List (bypasses age restrictions).&quot;&quot;&quot;</span>
+    <span class="k">await</span> <span class="n">application</span><span class="o">.</span><span class="n">set_safe_launch_setting</span><span class="p">(</span><span class="n">SafeLaunchSetting</span><span class="o">.</span><span class="n">ALLOW</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">application</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> added to Allow List&quot;</span><span class="p">)</span>
+
+<span class="c1"># Usage</span>
+<span class="n">app</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">device</span><span class="o">.</span><span class="n">applications</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">await</span> <span class="n">allow_application</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="remove-application-from-allow-list">Remove Application from Allow List<a class="headerlink" href="#remove-application-from-allow-list" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pynintendoparental.enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">SafeLaunchSetting</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">remove_from_allow_list</span><span class="p">(</span><span class="n">application</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove application from Allow List.&quot;&quot;&quot;</span>
+    <span class="k">await</span> <span class="n">application</span><span class="o">.</span><span class="n">set_safe_launch_setting</span><span class="p">(</span><span class="n">SafeLaunchSetting</span><span class="o">.</span><span class="n">NONE</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">application</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> removed from Allow List&quot;</span><span class="p">)</span>
+
+<span class="c1"># Usage</span>
+<span class="k">await</span> <span class="n">remove_from_allow_list</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="content-restrictions">Content Restrictions<a class="headerlink" href="#content-restrictions" title="Permanent link">&para;</a></h2>
+<h3 id="set-age-restriction-level">Set Age Restriction Level<a class="headerlink" href="#set-age-restriction-level" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pynintendoparental.enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">FunctionalRestrictionLevel</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">set_age_restrictions</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="n">FunctionalRestrictionLevel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set content restriction level.&quot;&quot;&quot;</span>
+    <span class="k">await</span> <span class="n">device</span><span class="o">.</span><span class="n">set_functional_restriction_level</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Restriction level set to </span><span class="si">{</span><span class="n">level</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Usage examples</span>
+<span class="k">await</span> <span class="n">set_age_restrictions</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">FunctionalRestrictionLevel</span><span class="o">.</span><span class="n">CHILD</span><span class="p">)</span>
+<span class="k">await</span> <span class="n">set_age_restrictions</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">FunctionalRestrictionLevel</span><span class="o">.</span><span class="n">TEEN</span><span class="p">)</span>
+<span class="k">await</span> <span class="n">set_age_restrictions</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">FunctionalRestrictionLevel</span><span class="o">.</span><span class="n">YOUNG_ADULT</span><span class="p">)</span>
+<span class="k">await</span> <span class="n">set_age_restrictions</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">FunctionalRestrictionLevel</span><span class="o">.</span><span class="n">CUSTOM</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="usage-reports">Usage Reports<a class="headerlink" href="#usage-reports" title="Permanent link">&para;</a></h2>
+<h3 id="get-monthly-summary">Get Monthly Summary<a class="headerlink" href="#get-monthly-summary" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_monthly_summary</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">year</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">month</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get monthly usage summary.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">year</span> <span class="ow">and</span> <span class="n">month</span><span class="p">:</span>
+        <span class="n">search_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">search_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+    <span class="n">summary</span> <span class="o">=</span> <span class="k">await</span> <span class="n">device</span><span class="o">.</span><span class="n">get_monthly_summary</span><span class="p">(</span><span class="n">search_date</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Monthly summary for </span><span class="si">{</span><span class="n">search_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%B %Y&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">summary</span><span class="p">)</span>
+
+<span class="c1"># Usage</span>
+<span class="k">await</span> <span class="n">get_monthly_summary</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="mi">2024</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># January 2024</span>
+</code></pre></div>
+<h3 id="get-daily-summary">Get Daily Summary<a class="headerlink" href="#get-daily-summary" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_daily_summary</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">date</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get usage summary for a specific date.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">date</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+    <span class="n">summary</span> <span class="o">=</span> <span class="k">await</span> <span class="n">device</span><span class="o">.</span><span class="n">get_date_summary</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Daily summary for </span><span class="si">{</span><span class="n">date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">summary</span><span class="p">)</span>
+
+<span class="c1"># Usage</span>
+<span class="k">await</span> <span class="n">get_daily_summary</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>  <span class="c1"># Today</span>
+<span class="k">await</span> <span class="n">get_daily_summary</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>  <span class="c1"># Yesterday</span>
+</code></pre></div>
+<h2 id="callbacks-and-real-time-updates">Callbacks and Real-time Updates<a class="headerlink" href="#callbacks-and-real-time-updates" title="Permanent link">&para;</a></h2>
+<h3 id="device-state-change-callbacks">Device State Change Callbacks<a class="headerlink" href="#device-state-change-callbacks" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_device_update</span><span class="p">(</span><span class="n">device</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Callback for device state changes.&quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Device </span><span class="si">{</span><span class="n">device</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> was updated&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Playing time: </span><span class="si">{</span><span class="n">device</span><span class="o">.</span><span class="n">today_playing_time</span><span class="si">}</span><span class="s2"> minutes&quot;</span><span class="p">)</span>
+
+<span class="c1"># Add callback</span>
+<span class="n">device</span><span class="o">.</span><span class="n">add_device_callback</span><span class="p">(</span><span class="n">on_device_update</span><span class="p">)</span>
+
+<span class="c1"># Update device to trigger callback</span>
+<span class="k">await</span> <span class="n">device</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+<span class="c1"># Remove callback when done</span>
+<span class="n">device</span><span class="o">.</span><span class="n">remove_device_callback</span><span class="p">(</span><span class="n">on_device_update</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="application-state-change-callbacks">Application State Change Callbacks<a class="headerlink" href="#application-state-change-callbacks" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_app_update</span><span class="p">(</span><span class="n">application</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Callback for application state changes.&quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Application </span><span class="si">{</span><span class="n">application</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> was updated&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Playtime today: </span><span class="si">{</span><span class="n">application</span><span class="o">.</span><span class="n">today_time_played</span><span class="si">}</span><span class="s2"> minutes&quot;</span><span class="p">)</span>
+
+<span class="c1"># Add callback</span>
+<span class="n">app</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">device</span><span class="o">.</span><span class="n">applications</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">app</span><span class="o">.</span><span class="n">add_application_callback</span><span class="p">(</span><span class="n">on_app_update</span><span class="p">)</span>
+
+<span class="c1"># Changes to the app will trigger the callback</span>
+<span class="k">await</span> <span class="n">app</span><span class="o">.</span><span class="n">set_safe_launch_setting</span><span class="p">(</span><span class="n">SafeLaunchSetting</span><span class="o">.</span><span class="n">ALLOW</span><span class="p">)</span>
+
+<span class="c1"># Remove callback when done</span>
+<span class="n">app</span><span class="o">.</span><span class="n">remove_application_callback</span><span class="p">(</span><span class="n">on_app_update</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="pin-management">PIN Management<a class="headerlink" href="#pin-management" title="Permanent link">&para;</a></h2>
+<h3 id="set-a-new-pin">Set a New PIN<a class="headerlink" href="#set-a-new-pin" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">change_pin</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">new_pin</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Change the parental controls PIN.&quot;&quot;&quot;</span>
+    <span class="k">await</span> <span class="n">device</span><span class="o">.</span><span class="n">set_new_pin</span><span class="p">(</span><span class="n">new_pin</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PIN updated successfully&quot;</span><span class="p">)</span>
+
+<span class="c1"># Usage</span>
+<span class="k">await</span> <span class="n">change_pin</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s2">&quot;1234&quot;</span><span class="p">)</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">PIN Security</p>
+<p>Always use a secure PIN and keep it confidential. Never hardcode PINs in your source code.</p>
+</div>
+<h2 id="complete-example">Complete Example<a class="headerlink" href="#complete-example" title="Permanent link">&para;</a></h2>
+<p>Here's a comprehensive example that combines multiple features:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">aiohttp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pynintendoparental</span><span class="w"> </span><span class="kn">import</span> <span class="n">NintendoParental</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pynintendoparental.authenticator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Authenticator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pynintendoparental.enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">RestrictionMode</span><span class="p">,</span> <span class="n">DeviceTimerMode</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Complete example demonstrating multiple features.&quot;&quot;&quot;</span>
+    <span class="n">session_token</span> <span class="o">=</span> <span class="s2">&quot;YOUR_SESSION_TOKEN&quot;</span>
+
+    <span class="k">async</span> <span class="k">with</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+        <span class="c1"># Authenticate</span>
+        <span class="n">auth</span> <span class="o">=</span> <span class="n">Authenticator</span><span class="p">(</span><span class="n">session_token</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">auth</span><span class="o">.</span><span class="n">async_complete_login</span><span class="p">(</span><span class="n">use_session_token</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">nintendo</span> <span class="o">=</span> <span class="k">await</span> <span class="n">NintendoParental</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">auth</span><span class="p">)</span>
+
+        <span class="c1"># Get the first device</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nintendo</span><span class="o">.</span><span class="n">devices</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Managing device: </span><span class="si">{</span><span class="n">device</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Set daily playtime limit to 3 hours</span>
+        <span class="k">await</span> <span class="n">device</span><span class="o">.</span><span class="n">update_max_daily_playtime</span><span class="p">(</span><span class="mi">180</span><span class="p">)</span>
+
+        <span class="c1"># Configure bedtime from 9 PM to 7 AM</span>
+        <span class="k">await</span> <span class="n">device</span><span class="o">.</span><span class="n">set_bedtime_alarm</span><span class="p">(</span><span class="n">time</span><span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="k">await</span> <span class="n">device</span><span class="o">.</span><span class="n">set_bedtime_end_time</span><span class="p">(</span><span class="n">time</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+        <span class="c1"># Enable forced termination</span>
+        <span class="k">await</span> <span class="n">device</span><span class="o">.</span><span class="n">set_restriction_mode</span><span class="p">(</span><span class="n">RestrictionMode</span><span class="o">.</span><span class="n">FORCED_TERMINATION</span><span class="p">)</span>
+
+        <span class="c1"># List all players and their playtime</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Players:&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">player</span> <span class="ow">in</span> <span class="n">device</span><span class="o">.</span><span class="n">players</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">player</span><span class="o">.</span><span class="n">nickname</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">player</span><span class="o">.</span><span class="n">playing_time</span><span class="si">}</span><span class="s2"> minutes today&quot;</span><span class="p">)</span>
+
+        <span class="c1"># List all applications</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Applications:&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">app</span> <span class="ow">in</span> <span class="n">device</span><span class="o">.</span><span class="n">applications</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">app</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">app</span><span class="o">.</span><span class="n">today_time_played</span><span class="si">}</span><span class="s2"> minutes today&quot;</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Configuration complete!&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</code></pre></div>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Explore the <a href="../../api/nintendoparental/">API Reference</a> for detailed documentation</li>
+<li>Check the <a href="../../api/device/">Device API</a> for all available device methods</li>
+<li>Learn about <a href="../../api/enums/">Enums</a> for configuration options</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "toc.integrate", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

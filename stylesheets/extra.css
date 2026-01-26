@@ -1,0 +1,5 @@
+/* Preserve newlines in specific content areas */
+.md-content p {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
