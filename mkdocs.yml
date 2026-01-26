@@ -30,8 +30,8 @@ theme:
         name: Switch to light mode
       primary: blue
       accent: light blue
-  logo: assets/images/logo.png
-  favicon: assets/images/favicon.png
+  # logo: assets/images/logo.png
+  # favicon: assets/images/favicon.png
 
 extra_css:
   - stylesheets/extra.css
