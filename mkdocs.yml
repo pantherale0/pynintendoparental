@@ -60,6 +60,10 @@ markdown_extensions:
   - toc:
       permalink: true
 
+exclude_docs: |
+  README.md
+  assets/README.md
+
 nav:
   - Home: index.md
   - User Guide:
