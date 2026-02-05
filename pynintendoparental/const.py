@@ -59,7 +59,9 @@ ENDPOINTS = {
         "method": "POST",
     },
     "get_device_monthly_summary": {
-        "url": "{BASE_URL}/v2/actions/playSummary/fetchMonthlySummary?deviceId={DEVICE_ID}&year={YEAR}&month={MONTH}&containLatest=false",
+        "url": (
+            "{BASE_URL}/v2/actions/playSummary/fetchMonthlySummary?deviceId={DEVICE_ID}&year={YEAR}&month={MONTH}&containLatest=false"
+        ),
         "method": "GET",
     },
     "update_extra_playing_time": {

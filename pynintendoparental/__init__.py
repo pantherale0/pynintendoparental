@@ -6,18 +6,18 @@ import asyncio
 from pynintendoauth.exceptions import HttpException
 
 from .api import Api
+from .authenticator import Authenticator
 from .const import _LOGGER
 from .device import Device
 from .exceptions import NoDevicesFoundException
-from .authenticator import Authenticator
 
 
 class NintendoParental:
     """Core Python API for Nintendo Switch Parental Controls.
-    
+
     This is the main entry point for interacting with Nintendo Switch Parental Controls.
     Use the `create` class method to instantiate this class.
-    
+
     Attributes:
         account_id: The Nintendo account ID.
         devices: Dictionary of Device objects keyed by device ID.
@@ -57,7 +57,7 @@ class NintendoParental:
 
     async def update(self):
         """Update module data.
-        
+
         Refreshes all devices and their associated data from Nintendo's servers.
         This method fetches the latest information about all devices linked to
         the authenticated account.
@@ -71,20 +71,20 @@ class NintendoParental:
         cls, auth: Authenticator, timezone: str = "Europe/London", lang: str = "en-GB"
     ) -> "NintendoParental":
         """Create an instance of NintendoParental.
-        
+
         This is the recommended way to create a NintendoParental instance as it
         handles the asynchronous initialization and fetches initial device data.
-        
+
         Args:
             auth: An authenticated Authenticator instance.
             timezone: The timezone to use for API requests (default: "Europe/London").
                      Use any valid IANA timezone identifier.
             lang: The language code for API responses (default: "en-GB").
                   Use ISO 639-1 language codes with ISO 3166-1 country codes.
-        
+
         Returns:
             A fully initialized NintendoParental instance with device data loaded.
-            
+
         Example:
             ```python
             async with aiohttp.ClientSession() as session:

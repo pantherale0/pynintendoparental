@@ -27,10 +27,10 @@ from .utils import is_awaitable
 
 class Device:
     """A Nintendo Switch device.
-    
+
     Represents a single Nintendo Switch console with parental controls enabled.
     This class provides methods to monitor and control various parental control settings.
-    
+
     Attributes:
         device_id: Unique identifier for the device.
         name: User-friendly name/label for the device.
@@ -85,7 +85,7 @@ class Device:
     @property
     def model(self) -> str:
         """Return the device model.
-        
+
         Returns:
             Device model name (e.g., "Switch", "Switch 2", or "Unknown").
         """
@@ -95,7 +95,7 @@ class Device:
     @property
     def generation(self) -> str | None:
         """Return the device generation code.
-        
+
         Returns:
             Platform generation code (e.g., "P00", "P01") or None if unknown.
         """
@@ -104,7 +104,7 @@ class Device:
     @property
     def last_sync(self) -> float | None:
         """Return the last time this device was synced with Nintendo servers.
-        
+
         Returns:
             Unix timestamp of the last synchronization, or None if never synced.
         """
@@ -112,11 +112,11 @@ class Device:
 
     async def update(self, now: datetime = None):
         """Update device data from Nintendo servers.
-        
+
         Fetches the latest information including daily summaries, parental control
         settings, monthly summaries, and extra device information. Also updates
         all associated players and applications.
-        
+
         Args:
             now: Optional datetime for the update. Defaults to current time if not provided.
         """
@@ -136,21 +136,21 @@ class Device:
 
     def add_device_callback(self, callback: Callable):
         """Add a callback function to be called when device state changes.
-        
+
         The callback will be invoked whenever the device data is updated.
         Callbacks can be either synchronous or asynchronous functions.
-        
+
         Args:
             callback: A callable function. Can be sync or async.
-            
+
         Raises:
             ValueError: If the provided object is not callable.
-            
+
         Example:
             ```python
             async def on_device_update():
                 print("Device updated!")
-            
+
             device.add_device_callback(on_device_update)
             ```
         """
@@ -161,10 +161,10 @@ class Device:
 
     def remove_device_callback(self, callback: Callable):
         """Remove a previously registered device callback.
-        
+
         Args:
             callback: The callback function to remove.
-            
+
         Raises:
             ValueError: If the provided object is not callable or not found.
         """
@@ -197,10 +197,10 @@ class Device:
 
     async def set_new_pin(self, pin: str):
         """Set a new PIN code for parental controls on this device.
-        
+
         Args:
             pin: The new PIN code to set. Must be a valid 4-digit string.
-            
+
         Example:
             ```python
             await device.set_new_pin("1234")
@@ -211,13 +211,13 @@ class Device:
 
     async def add_extra_time(self, minutes: int):
         """Add extra playing time for the current day.
-        
+
         This grants additional playing time beyond the configured daily limit
         for the current day only. The extra time does not carry over to other days.
-        
+
         Args:
             minutes: Number of additional minutes to add (must be positive).
-            
+
         Example:
             ```python
             await device.add_extra_time(30)  # Add 30 minutes
@@ -230,16 +230,16 @@ class Device:
 
     async def set_restriction_mode(self, mode: RestrictionMode):
         """Set the restriction mode for playtime limits.
-        
+
         Args:
             mode: The restriction mode to set. Options are:
                 - RestrictionMode.FORCED_TERMINATION: Software will be suspended when playtime limit is reached.
                 - RestrictionMode.ALARM: An alarm will be shown but software won't be suspended.
-                
+
         Example:
             ```python
             from pynintendoparental.enum import RestrictionMode
-            
+
             await device.set_restriction_mode(RestrictionMode.FORCED_TERMINATION)
             ```
         """
@@ -255,20 +255,20 @@ class Device:
 
     async def set_bedtime_alarm(self, value: time):
         """Set the bedtime alarm time.
-        
+
         The bedtime alarm will sound at the specified time to notify that bedtime has arrived.
-        
+
         Args:
             value: Time when the bedtime alarm should sound. Must be between 16:00 (4 PM) and 23:00 (11 PM),
                   or time(0, 0) to disable the alarm.
-                  
+
         Raises:
             BedtimeOutOfRangeError: If the time is outside the valid range.
-            
+
         Example:
             ```python
             from datetime import time
-            
+
             await device.set_bedtime_alarm(time(21, 0))  # Set alarm to 9:00 PM
             await device.set_bedtime_alarm(time(0, 0))   # Disable alarm
             ```
@@ -310,20 +310,20 @@ class Device:
 
     async def set_bedtime_end_time(self, value: time):
         """Set the time when bedtime restrictions end.
-        
+
         This sets when the device can be used again after bedtime restrictions.
-        
+
         Args:
             value: Time when bedtime ends. Must be between 05:00 (5 AM) and 09:00 (9 AM),
                   or time(0, 0) to disable bedtime restrictions.
-                  
+
         Raises:
             BedtimeOutOfRangeError: If the time is outside the valid range.
-            
+
         Example:
             ```python
             from datetime import time
-            
+
             await device.set_bedtime_end_time(time(7, 0))   # Bedtime ends at 7:00 AM
             await device.set_bedtime_end_time(time(0, 0))  # Disable bedtime restrictions
             ```
@@ -360,16 +360,16 @@ class Device:
 
     async def set_timer_mode(self, mode: DeviceTimerMode):
         """Set the timer mode for playtime limits.
-        
+
         Args:
             mode: The timer mode to set. Options are:
                 - DeviceTimerMode.DAILY: Single playtime limit for all days.
                 - DeviceTimerMode.EACH_DAY_OF_THE_WEEK: Different limits for each day of the week.
-                
+
         Example:
             ```python
             from pynintendoparental.enum import DeviceTimerMode
-            
+
             await device.set_timer_mode(DeviceTimerMode.DAILY)
             ```
         """
@@ -392,9 +392,9 @@ class Device:
         max_daily_playtime: int | float | None = None,
     ):
         """Set restrictions for a specific day of the week.
-        
+
         This method only works when timer_mode is set to EACH_DAY_OF_THE_WEEK.
-        
+
         Args:
             enabled: Whether to enable playtime restrictions for this day.
             bedtime_enabled: Whether to enable bedtime restrictions for this day.
@@ -402,16 +402,16 @@ class Device:
             bedtime_start: Time when bedtime restrictions start (required if bedtime_enabled=True).
             bedtime_end: Time when bedtime restrictions end (required if bedtime_enabled=True).
             max_daily_playtime: Maximum playtime in minutes for this day (required if enabled=True).
-            
+
         Raises:
             InvalidDeviceStateError: If timer_mode is not EACH_DAY_OF_THE_WEEK.
             ValueError: If day_of_week is invalid.
             BedtimeOutOfRangeError: If bedtime values are outside valid ranges.
-            
+
         Example:
             ```python
             from datetime import time
-            
+
             # Set Monday restrictions
             await device.set_daily_restrictions(
                 enabled=True,
@@ -484,20 +484,20 @@ class Device:
 
     async def set_functional_restriction_level(self, level: FunctionalRestrictionLevel):
         """Set the content restriction level based on age ratings.
-        
+
         This controls which games and applications can be launched based on their age rating.
-        
+
         Args:
             level: The restriction level to set. Options are:
                 - FunctionalRestrictionLevel.CHILD: Suitable for young children.
                 - FunctionalRestrictionLevel.TEEN: Suitable for teenagers.
                 - FunctionalRestrictionLevel.YOUNG_ADULT: Suitable for young adults.
                 - FunctionalRestrictionLevel.CUSTOM: Custom restrictions.
-                
+
         Example:
             ```python
             from pynintendoparental.enum import FunctionalRestrictionLevel
-            
+
             await device.set_functional_restriction_level(FunctionalRestrictionLevel.TEEN)
             ```
         """
@@ -511,13 +511,13 @@ class Device:
 
     async def update_max_daily_playtime(self, minutes: int | float = 0):
         """Set the maximum daily playtime limit.
-        
+
         Args:
             minutes: Maximum playtime in minutes (0-360). Use -1 to remove the limit.
-            
+
         Raises:
             DailyPlaytimeOutOfRangeError: If minutes is outside the valid range.
-            
+
         Example:
             ```python
             await device.update_max_daily_playtime(180)  # 3 hours
@@ -615,19 +615,39 @@ class Device:
         today_reg = self._get_today_regulation(now)
         limit_time = today_reg.get("timeToPlayInOneDay", {}).get("limitTime")
         self.limit_time = limit_time if limit_time is not None else -1
-        extra_playing_time_data = pcs.get("ownedDevice", {}).get("device", {}).get("extraPlayingTime")
-        self.extra_playing_time = None
-        if extra_playing_time_data:
-            self.extra_playing_time = extra_playing_time_data.get("inOneDay", {}).get("duration")
-
         bedtime_setting = today_reg.get("bedtime", {})
-        if bedtime_setting.get("enabled") and bedtime_setting["endingTime"]:
+        bedtime_enabled = bedtime_setting.get("enabled", False)
+
+        # Set bedtime_alarm first as we need it for extra_playing_time calculation
+        if bedtime_enabled and bedtime_setting.get("endingTime"):
             self.bedtime_alarm = time(
                 hour=bedtime_setting["endingTime"]["hour"],
                 minute=bedtime_setting["endingTime"]["minute"],
             )
         else:
             self.bedtime_alarm = time(hour=0, minute=0)
+
+        # Parse extra playing time based on whether bedtime is enabled
+        extra_playing_time_data = pcs.get("ownedDevice", {}).get("device", {}).get("extraPlayingTime")
+        self.extra_playing_time = None
+        if extra_playing_time_data:
+            if bedtime_enabled and extra_playing_time_data.get("bedtime"):
+                # When bedtime is enabled, calculate the difference between new bedtime and original bedtime
+                extended_bedtime_data = extra_playing_time_data["bedtime"].get("endTime")
+                if extended_bedtime_data:
+                    extended_bedtime = time(
+                        hour=extended_bedtime_data["hour"],
+                        minute=extended_bedtime_data["minute"],
+                    )
+                    # Calculate difference in minutes
+                    original_minutes = self.bedtime_alarm.hour * 60 + self.bedtime_alarm.minute
+                    extended_minutes = extended_bedtime.hour * 60 + extended_bedtime.minute
+                    self.extra_playing_time = extended_minutes - original_minutes
+            else:
+                # When bedtime is disabled, use inOneDay duration
+                in_one_day = extra_playing_time_data.get("inOneDay")
+                if in_one_day:
+                    self.extra_playing_time = in_one_day.get("duration")
         if bedtime_setting.get("enabled") and bedtime_setting["startingTime"]:
             self.bedtime_end = time(
                 hour=bedtime_setting["startingTime"]["hour"],
@@ -733,20 +753,20 @@ class Device:
 
     async def get_monthly_summary(self, search_date: datetime = None) -> dict | None:
         """Get the monthly usage summary for a specific month.
-        
+
         Args:
             search_date: The month to get the summary for. If None, returns the most recent available summary.
-            
+
         Returns:
             Dictionary containing monthly usage data, or None if no summary is available.
-            
+
         Example:
             ```python
             from datetime import datetime
-            
+
             # Get summary for January 2024
             summary = await device.get_monthly_summary(datetime(2024, 1, 1))
-            
+
             # Get most recent summary
             summary = await device.get_monthly_summary()
             ```
@@ -807,23 +827,23 @@ class Device:
 
     def get_date_summary(self, input_date: datetime = datetime.now()) -> dict:
         """Get the usage summary for a specific date.
-        
+
         Args:
             input_date: The date to get the summary for. Defaults to today.
-            
+
         Returns:
             Dictionary containing usage data for the specified date.
-            
+
         Raises:
             ValueError: If no summary exists for the given date or no summaries are available.
-            
+
         Example:
             ```python
             from datetime import datetime, timedelta
-            
+
             # Get today's summary
             today = device.get_date_summary()
-            
+
             # Get yesterday's summary
             yesterday = device.get_date_summary(datetime.now() - timedelta(days=1))
             ```
@@ -840,16 +860,16 @@ class Device:
 
     def get_application(self, application_id: str) -> Application:
         """Get an Application object by its application ID.
-        
+
         Args:
             application_id: The unique identifier for the application.
-            
+
         Returns:
             The Application object for the specified ID.
-            
+
         Raises:
             ValueError: If the application is not found.
-            
+
         Example:
             ```python
             app = device.get_application("0100ABC001234000")
@@ -862,16 +882,16 @@ class Device:
 
     def get_player(self, player_id: str) -> Player:
         """Get a Player object by player ID.
-        
+
         Args:
             player_id: The unique identifier for the player.
-            
+
         Returns:
             The Player object for the specified ID.
-            
+
         Raises:
             ValueError: If the player is not found.
-            
+
         Example:
             ```python
             player = device.get_player("player123")

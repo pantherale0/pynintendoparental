@@ -700,7 +700,7 @@ async def test_parse_with_extra_playing_time(mock_api: Api):
     # Default to None if not set.
     assert device.extra_playing_time is None
 
-    # Now override with extra time.
+    # Test case 1: Bedtime disabled - use inOneDay duration
     pcs_response = await load_fixture("device_parental_control_setting")
     pcs_response["ownedDevice"]["device"]["extraPlayingTime"] = {"inOneDay": {"duration": 50}}
 
@@ -709,6 +709,42 @@ async def test_parse_with_extra_playing_time(mock_api: Api):
     await device.update()
 
     assert device.extra_playing_time == 50
+
+
+async def test_parse_with_extra_playing_time_bedtime_enabled(mock_api: Api):
+    """Test that the `extra_playing_time` is calculated from bedtime when bedtime is enabled."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+
+    # Test case 2: Bedtime enabled - calculate from extended bedtime
+    pcs_response = await load_fixture("device_parental_control_setting")
+    
+    # Enable bedtime with original ending time of 21:00 (9:00 PM)
+    pcs_response["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["bedtime"] = {
+        "enabled": True,
+        "endingTime": {"hour": 21, "minute": 0},
+        "startingTime": {"hour": 6, "minute": 0}
+    }
+    
+    # Set extra playing time with extended bedtime to 21:30 (9:30 PM)
+    # This means 30 minutes of extra playing time
+    pcs_response["ownedDevice"]["device"]["extraPlayingTime"] = {
+        "bedtime": {
+            "endTime": {"hour": 21, "minute": 30}
+        },
+        "inOneDay": None,
+        "expiresAt": 1770335999
+    }
+
+    # Set the pcs response and call the update method
+    mock_api.async_get_device_parental_control_setting.return_value = {"json": pcs_response}
+    await device.update()
+
+    # Should calculate: 21:30 - 21:00 = 30 minutes
+    assert device.extra_playing_time == 30
+    assert device.bedtime_alarm == time(hour=21, minute=0)
 
 
 async def test_calculate_times(

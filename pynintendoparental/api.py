@@ -1,21 +1,20 @@
 """API handler."""
 
 import aiohttp
-
 from pynintendoauth.exceptions import HttpException
 
 from .authenticator import Authenticator
 from .const import (
-    ENDPOINTS,
-    BASE_URL,
-    USER_AGENT,
-    MOBILE_APP_PKG,
-    MOBILE_APP_BUILD,
-    MOBILE_APP_VERSION,
-    OS_VERSION,
-    OS_NAME,
-    DEVICE_MODEL,
     _LOGGER,
+    BASE_URL,
+    DEVICE_MODEL,
+    ENDPOINTS,
+    MOBILE_APP_BUILD,
+    MOBILE_APP_PKG,
+    MOBILE_APP_VERSION,
+    OS_NAME,
+    OS_VERSION,
+    USER_AGENT,
 )
 
 
@@ -80,9 +79,7 @@ class Api:
                 try:
                     error: dict = await response.json()
                     if "detail" in error:
-                        raise HttpException(
-                            response.status, error["detail"], error.get("errorCode")
-                        )
+                        raise HttpException(response.status, error["detail"], error.get("errorCode"))
                 except (aiohttp.ContentTypeError, ValueError):
                     # Fall through to the generic exception below on parsing failure.
                     pass
@@ -114,31 +111,21 @@ class Api:
 
     async def async_get_account_device(self, device_id: str) -> dict:
         """Get account device."""
-        return await self.send_request(
-            endpoint="get_account_device", DEVICE_ID=device_id
-        )
+        return await self.send_request(endpoint="get_account_device", DEVICE_ID=device_id)
 
     async def async_get_device_daily_summaries(self, device_id: str) -> dict:
         """Get device daily summaries."""
-        return await self.send_request(
-            endpoint="get_device_daily_summaries", DEVICE_ID=device_id
-        )
+        return await self.send_request(endpoint="get_device_daily_summaries", DEVICE_ID=device_id)
 
     async def async_get_device_monthly_summaries(self, device_id: str) -> dict:
         """Get device monthly summaries."""
-        return await self.send_request(
-            endpoint="get_device_monthly_summaries", DEVICE_ID=device_id
-        )
+        return await self.send_request(endpoint="get_device_monthly_summaries", DEVICE_ID=device_id)
 
     async def async_get_device_parental_control_setting(self, device_id: str) -> dict:
         """Get device parental control setting."""
-        return await self.send_request(
-            endpoint="get_device_parental_control_setting", DEVICE_ID=device_id
-        )
+        return await self.send_request(endpoint="get_device_parental_control_setting", DEVICE_ID=device_id)
 
-    async def async_get_device_monthly_summary(
-        self, device_id: str, year: int, month: int
-    ) -> dict:
+    async def async_get_device_monthly_summary(self, device_id: str, year: int, month: int) -> dict:
         """Get device monthly summary."""
         return await self.send_request(
             endpoint="get_device_monthly_summary",
@@ -147,9 +134,7 @@ class Api:
             MONTH=f"{month:02d}",
         )
 
-    async def async_update_restriction_level(
-        self, device_id: str, parental_control_setting: dict
-    ) -> dict:
+    async def async_update_restriction_level(self, device_id: str, parental_control_setting: dict) -> dict:
         """Update device restriction level."""
         allowed_keys = (
             "whitelistedApplicationList",
@@ -159,18 +144,12 @@ class Api:
             "deviceId": device_id,
             "customSettings": parental_control_setting.get("customSettings", {}),
             "parentalControlSettingEtag": parental_control_setting.get("etag"),
-            "vrRestrictionEtag": parental_control_setting.get("customSettings", {}).get(
-                "vrRestrictionEtag"
-            ),
+            "vrRestrictionEtag": parental_control_setting.get("customSettings", {}).get("vrRestrictionEtag"),
             **{key: parental_control_setting.get(key) for key in allowed_keys},
         }
-        return await self.send_request(
-            endpoint="update_restriction_level", body=settings
-        )
+        return await self.send_request(endpoint="update_restriction_level", body=settings)
 
-    async def async_update_play_timer(
-        self, device_id: str, play_timer_regulations: dict
-    ) -> dict:
+    async def async_update_play_timer(self, device_id: str, play_timer_regulations: dict) -> dict:
         """Update device play timer settings."""
         allowed_ptr_keys = (
             "timerMode",
@@ -180,9 +159,7 @@ class Api:
         )
         settings = {
             "deviceId": device_id,
-            "playTimerRegulations": {
-                key: play_timer_regulations.get(key) for key in allowed_ptr_keys
-            },
+            "playTimerRegulations": {key: play_timer_regulations.get(key) for key in allowed_ptr_keys},
         }
         return await self.send_request(endpoint="update_play_timer", body=settings)
 
@@ -193,9 +170,7 @@ class Api:
             body={"deviceId": device_id, "unlockCode": str(new_code)},
         )
 
-    async def async_update_extra_playing_time(
-        self, device_id: str, additional_time: int
-    ) -> dict:
+    async def async_update_extra_playing_time(self, device_id: str, additional_time: int) -> dict:
         """Update device extra playing time."""
         body = {
             "deviceId": device_id,
