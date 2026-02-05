@@ -9,15 +9,15 @@ from .const import CLIENT_ID
 
 class Authenticator(NintendoAuth):
     """Nintendo authentication handler.
-    
+
     Handles authentication with Nintendo's servers for accessing Parental Controls API.
     Supports both session token and interactive login methods.
-    
+
     Attributes:
         session_token: The session token for authentication.
         account_id: The authenticated Nintendo account ID.
         login_url: URL for interactive login (when session_token not provided).
-    
+
     Example:
         Using a session token:
         ```python
@@ -25,7 +25,7 @@ class Authenticator(NintendoAuth):
             auth = Authenticator(session_token="YOUR_TOKEN", client_session=session)
             await auth.async_complete_login(use_session_token=True)
         ```
-        
+
         Interactive login:
         ```python
         async with aiohttp.ClientSession() as session:

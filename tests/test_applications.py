@@ -113,9 +113,7 @@ async def test_application_update_scenarios(
     "setting",
     [pytest.param(SafeLaunchSetting.ALLOW), pytest.param(SafeLaunchSetting.NONE)],
 )
-async def test_application_set_safe_launch_setting(
-    mock_api: Api, setting: SafeLaunchSetting
-):
+async def test_application_set_safe_launch_setting(mock_api: Api, setting: SafeLaunchSetting):
     """Ensure that the safe launch setting correctly updates."""
     devices_response = await load_fixture("account_devices")
     pcs_response = {"json": await load_fixture("device_parental_control_setting")}
@@ -127,9 +125,7 @@ async def test_application_set_safe_launch_setting(
     # Select the first application
     application = list(device.applications.values())[0]
     # Update pcs_response
-    pcs_response["json"]["parentalControlSetting"]["whitelistedApplicationList"][0][
-        "safeLaunch"
-    ] = str(setting)
+    pcs_response["json"]["parentalControlSetting"]["whitelistedApplicationList"][0]["safeLaunch"] = str(setting)
     mock_api.async_update_restriction_level.return_value = pcs_response
     await application.set_safe_launch_setting(setting)
 
@@ -146,9 +142,7 @@ async def test_application_set_safe_launch_setting(
         pytest.param(SafeLaunchSetting.ALLOW, ValueError),
     ],
 )
-async def test_application_set_safe_launch_setting_init_errors(
-    setting: SafeLaunchSetting, exception: Exception
-):
+async def test_application_set_safe_launch_setting_init_errors(setting: SafeLaunchSetting, exception: Exception):
     """Test the application set_safe_launch_setting correctly errors for init."""
 
     # Test with no device
@@ -198,13 +192,11 @@ async def test_application_set_safe_launch_setting_whitelist_errors(
     # Select the first application
     application = list(device.applications.values())[0]
     # Update pcs_response
-    pcs_response["json"]["parentalControlSetting"]["whitelistedApplicationList"][0][
-        "safeLaunch"
-    ] = str(setting)
+    pcs_response["json"]["parentalControlSetting"]["whitelistedApplicationList"][0]["safeLaunch"] = str(setting)
     # Override application pcs
-    application._parental_control_settings["whitelistedApplicationList"] = (
-        application._parental_control_settings["whitelistedApplicationList"][1:-1]
-    )
+    application._parental_control_settings["whitelistedApplicationList"] = application._parental_control_settings[
+        "whitelistedApplicationList"
+    ][1:-1]
     with pytest.raises(exception):
         await application.set_safe_launch_setting(setting)
 

@@ -5,9 +5,9 @@ from .const import _LOGGER
 
 class Player:
     """A Nintendo Switch user profile.
-    
+
     Represents a player profile on a Nintendo Switch console with their gaming activity.
-    
+
     Attributes:
         player_id: Unique identifier for the player.
         nickname: Player's display name.
@@ -28,7 +28,7 @@ class Player:
 
     def update_from_daily_summary(self, raw: list[dict]):
         """Update player data from a daily summary response.
-        
+
         Args:
             raw: List of daily summary dictionaries from the API.
         """
@@ -44,10 +44,10 @@ class Player:
     @classmethod
     def from_device_daily_summary(cls, raw: list[dict]) -> list["Player"]:
         """Create Player objects from a device daily summary response.
-        
+
         Args:
             raw: List of daily summary dictionaries from the API.
-            
+
         Returns:
             List of Player objects parsed from the summary.
         """
@@ -67,10 +67,10 @@ class Player:
     @classmethod
     def from_profile(cls, raw: dict) -> "Player":
         """Create a Player object from a profile response.
-        
+
         Args:
             raw: Profile dictionary from the API.
-            
+
         Returns:
             A Player object parsed from the profile data.
         """

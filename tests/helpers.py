@@ -1,8 +1,9 @@
 """Test helpers."""
 
-import aiofiles
 import json
 from pathlib import Path
+
+import aiofiles
 
 from pynintendoparental.device import Device
 
@@ -25,10 +26,7 @@ def clean_device_for_snapshot(device: Device) -> dict:
         if key.startswith("_"):
             continue
         if isinstance(value, list):
-            cleaned[key] = [
-                clean_device_for_snapshot(v) if hasattr(v, "__dict__") else v
-                for v in value
-            ]
+            cleaned[key] = [clean_device_for_snapshot(v) if hasattr(v, "__dict__") else v for v in value]
         elif hasattr(value, "__dict__"):
             cleaned[key] = clean_device_for_snapshot(value)
         else:

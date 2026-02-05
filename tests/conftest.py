@@ -31,24 +31,14 @@ async def mock_api(mock_authenticator: Authenticator) -> Api:
     api._language = "en-GB"
 
     # Mock the return value for each API method by loading the corresponding fixture
-    api.async_get_account_devices.return_value = {
-        "json": await load_fixture("account_devices")
-    }
-    api.async_get_account_device.return_value = {
-        "json": await load_fixture("account_device")
-    }
-    api.async_get_device_daily_summaries.return_value = {
-        "json": await load_fixture("device_daily_summaries")
-    }
+    api.async_get_account_devices.return_value = {"json": await load_fixture("account_devices")}
+    api.async_get_account_device.return_value = {"json": await load_fixture("account_device")}
+    api.async_get_device_daily_summaries.return_value = {"json": await load_fixture("device_daily_summaries")}
     api.async_get_device_parental_control_setting.return_value = {
         "json": await load_fixture("device_parental_control_setting")
     }
-    api.async_get_device_monthly_summaries.return_value = {
-        "json": await load_fixture("device_monthly_summaries_list")
-    }
-    api.async_get_device_monthly_summary.return_value = {
-        "json": await load_fixture("device_monthly_summary")
-    }
+    api.async_get_device_monthly_summaries.return_value = {"json": await load_fixture("device_monthly_summaries_list")}
+    api.async_get_device_monthly_summary.return_value = {"json": await load_fixture("device_monthly_summary")}
     return api
 
 
