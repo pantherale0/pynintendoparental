@@ -630,10 +630,10 @@ class Device:
         # Parse extra playing time based on whether bedtime is enabled
         extra_playing_time_data = pcs.get("ownedDevice", {}).get("device", {}).get("extraPlayingTime")
         self.extra_playing_time = None
-        if extra_playing_time_data:
+        if extra_playing_time_data is not None:
             if bedtime_enabled and extra_playing_time_data.get("bedtime"):
                 # When bedtime is enabled, calculate the difference between new bedtime and original bedtime
-                extended_bedtime_data = extra_playing_time_data["bedtime"].get("endTime")
+                extended_bedtime_data = extra_playing_time_data.get("bedtime", {}).get("endTime")
                 if extended_bedtime_data:
                     extended_bedtime = time(
                         hour=extended_bedtime_data["hour"],
@@ -648,7 +648,7 @@ class Device:
             else:
                 # When bedtime is disabled, use inOneDay duration
                 in_one_day = extra_playing_time_data.get("inOneDay")
-                if in_one_day:
+                if in_one_day is not None:
                     self.extra_playing_time = in_one_day.get("duration")
         if bedtime_setting.get("enabled") and bedtime_setting["startingTime"]:
             self.bedtime_end = time(
