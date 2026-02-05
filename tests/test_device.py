@@ -720,22 +720,20 @@ async def test_parse_with_extra_playing_time_bedtime_enabled(mock_api: Api):
 
     # Test case 2: Bedtime enabled - calculate from extended bedtime
     pcs_response = await load_fixture("device_parental_control_setting")
-    
+
     # Enable bedtime with original ending time of 21:00 (9:00 PM)
     pcs_response["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["bedtime"] = {
         "enabled": True,
         "endingTime": {"hour": 21, "minute": 0},
-        "startingTime": {"hour": 6, "minute": 0}
+        "startingTime": {"hour": 6, "minute": 0},
     }
-    
+
     # Set extra playing time with extended bedtime to 21:30 (9:30 PM)
     # This means 30 minutes of extra playing time
     pcs_response["ownedDevice"]["device"]["extraPlayingTime"] = {
-        "bedtime": {
-            "endTime": {"hour": 21, "minute": 30}
-        },
+        "bedtime": {"endTime": {"hour": 21, "minute": 30}},
         "inOneDay": None,
-        "expiresAt": 1770335999
+        "expiresAt": 1770335999,
     }
 
     # Set the pcs response and call the update method
@@ -744,7 +742,73 @@ async def test_parse_with_extra_playing_time_bedtime_enabled(mock_api: Api):
 
     # Should calculate: 21:30 - 21:00 = 30 minutes
     assert device.extra_playing_time == 30
-    assert device.bedtime_alarm == time(hour=21, minute=0)
+    # bedtime_alarm should be updated to the extended bedtime
+    assert device.bedtime_alarm == time(hour=21, minute=30)
+
+
+async def test_today_time_remaining_with_extra_playing_time(mock_api: Api):
+    """Test that today_time_remaining accounts for extra_playing_time."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+
+    # Set up a scenario with a play limit and NO bedtime
+    pcs_response = await load_fixture("device_parental_control_setting")
+
+    # Set a daily play limit of 60 minutes
+    pcs_response["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"] = {
+        "enabled": True,
+        "limitTime": 60,
+    }
+
+    # Disable bedtime to avoid bedtime constraints in the test
+    pcs_response["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["bedtime"] = {
+        "enabled": False,
+        "endingTime": None,
+        "startingTime": {"hour": 6, "minute": 0},
+    }
+
+    # Add 30 minutes of extra playing time
+    pcs_response["ownedDevice"]["device"]["extraPlayingTime"] = {
+        "inOneDay": {"duration": 30, "isInfinity": False},
+        "bedtime": None,
+        "expiresAt": 1770335999,
+    }
+
+    # Set the pcs response and call the update method
+    mock_api.async_get_device_parental_control_setting.return_value = {"json": pcs_response}
+
+    # Set up daily summaries with some playing time
+    daily_summaries_response = await load_fixture("device_daily_summaries")
+    # Modify to have 20 minutes played today
+    from datetime import datetime
+
+    today = datetime.now().strftime("%Y-%m-%d")
+    daily_summaries_response["dailySummaries"][0]["date"] = today
+    daily_summaries_response["dailySummaries"][0]["playingTime"] = 20
+    mock_api.async_get_device_daily_summaries.return_value = {"json": daily_summaries_response}
+
+    await device.update()
+
+    # Verify extra_playing_time is set
+    assert device.extra_playing_time == 30
+
+    # Verify effective limit calculation
+    assert device.limit_time == 60
+    assert device.today_playing_time == 20
+
+    # The effective limit should be 60 + 30 = 90
+    # Remaining should be min(90 - 20, minutes_until_end_of_day)
+    # Calculate expected: (60 + 30) - 20 = 70 minutes from play limit
+    now = datetime.now()
+    minutes_in_day = 1440
+    current_minutes_past_midnight = now.hour * 60 + now.minute
+    remaining_by_end_of_day = minutes_in_day - current_minutes_past_midnight
+    remaining_by_play_limit = 70
+    expected_remaining = min(remaining_by_play_limit, remaining_by_end_of_day)
+
+    assert device.today_time_remaining == expected_remaining
 
 
 async def test_calculate_times(

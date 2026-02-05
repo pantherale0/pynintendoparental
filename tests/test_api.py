@@ -10,9 +10,7 @@ from pynintendoparental.api import Api, _check_http_success
 from pynintendoparental.authenticator import Authenticator
 
 
-@pytest.mark.parametrize(
-    "status, expected", [(200, True), (204, True), (300, False), (404, False)]
-)
+@pytest.mark.parametrize("status, expected", [(200, True), (204, True), (300, False), (404, False)])
 def test_check_http_success(status, expected):
     """Test the _check_http_success function."""
     assert _check_http_success(status) == expected
@@ -65,9 +63,7 @@ async def test_send_request_http_exception(mock_authenticator: Authenticator):
     mock_response.status = 500
     mock_response.content_type = "text/plain"
     mock_response.text = AsyncMock(return_value="Internal Server Error")
-    mock_authenticator.async_authenticated_request = AsyncMock(
-        return_value=mock_response
-    )
+    mock_authenticator.async_authenticated_request = AsyncMock(return_value=mock_response)
 
     with pytest.raises(HttpException, match="Internal Server Error"):
         await api.send_request("get_account_devices")
@@ -82,12 +78,8 @@ async def test_send_request_http_exception_problem_json(
     mock_response = MagicMock()
     mock_response.status = 400
     mock_response.content_type = "application/problem+json"
-    mock_response.json = AsyncMock(
-        return_value={"detail": "Bad Request", "errorCode": "E0001"}
-    )
-    mock_authenticator.async_authenticated_request = AsyncMock(
-        return_value=mock_response
-    )
+    mock_response.json = AsyncMock(return_value={"detail": "Bad Request", "errorCode": "E0001"})
+    mock_authenticator.async_authenticated_request = AsyncMock(return_value=mock_response)
 
     with pytest.raises(HttpException, match="Bad Request"):
         await api.send_request("get_account_devices")
@@ -106,9 +98,7 @@ async def test_send_request_http_exception_problem_json_invalid(
     mock_response.content_type = "application/problem+json"
     mock_response.json = AsyncMock(side_effect=content_type_error)
     mock_response.text = AsyncMock(return_value="Invalid JSON")
-    mock_authenticator.async_authenticated_request = AsyncMock(
-        return_value=mock_response
-    )
+    mock_authenticator.async_authenticated_request = AsyncMock(return_value=mock_response)
 
     with pytest.raises(HttpException, match="Invalid JSON"):
         await api.send_request("get_account_devices")
@@ -125,9 +115,7 @@ async def test_send_request_json_decode_error(mock_authenticator: Authenticator)
     mock_response.json = AsyncMock(side_effect=content_type_error)
     mock_response.text = AsyncMock(return_value="<not_json>")
     mock_response.url = "http://mock.url"
-    mock_authenticator.async_authenticated_request = AsyncMock(
-        return_value=mock_response
-    )
+    mock_authenticator.async_authenticated_request = AsyncMock(return_value=mock_response)
 
     result = await api.send_request("get_account_devices")
     assert result["json"] == {}
@@ -142,24 +130,16 @@ async def test_api_methods(mock_authenticator: Authenticator):
     api.send_request.assert_called_with(endpoint="get_account_devices")
 
     await api.async_get_account_device("DEVICE_ID")
-    api.send_request.assert_called_with(
-        endpoint="get_account_device", DEVICE_ID="DEVICE_ID"
-    )
+    api.send_request.assert_called_with(endpoint="get_account_device", DEVICE_ID="DEVICE_ID")
 
     await api.async_get_device_daily_summaries("DEVICE_ID")
-    api.send_request.assert_called_with(
-        endpoint="get_device_daily_summaries", DEVICE_ID="DEVICE_ID"
-    )
+    api.send_request.assert_called_with(endpoint="get_device_daily_summaries", DEVICE_ID="DEVICE_ID")
 
     await api.async_get_device_monthly_summaries("DEVICE_ID")
-    api.send_request.assert_called_with(
-        endpoint="get_device_monthly_summaries", DEVICE_ID="DEVICE_ID"
-    )
+    api.send_request.assert_called_with(endpoint="get_device_monthly_summaries", DEVICE_ID="DEVICE_ID")
 
     await api.async_get_device_parental_control_setting("DEVICE_ID")
-    api.send_request.assert_called_with(
-        endpoint="get_device_parental_control_setting", DEVICE_ID="DEVICE_ID"
-    )
+    api.send_request.assert_called_with(endpoint="get_device_parental_control_setting", DEVICE_ID="DEVICE_ID")
 
     await api.async_get_device_monthly_summary("DEVICE_ID", 2023, 11)
     api.send_request.assert_called_with(

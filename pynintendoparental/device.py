@@ -643,6 +643,8 @@ class Device:
                     original_minutes = self.bedtime_alarm.hour * 60 + self.bedtime_alarm.minute
                     extended_minutes = extended_bedtime.hour * 60 + extended_bedtime.minute
                     self.extra_playing_time = extended_minutes - original_minutes
+                    # Update bedtime_alarm to the extended bedtime
+                    self.bedtime_alarm = extended_bedtime
             else:
                 # When bedtime is disabled, use inOneDay duration
                 in_one_day = extra_playing_time_data.get("inOneDay")
@@ -698,7 +700,11 @@ class Device:
                 # No play limit, so remaining time is until end of day.
                 time_remaining_by_play_limit = minutes_in_day - current_minutes_past_midnight
             else:
-                time_remaining_by_play_limit = self.limit_time - self.today_playing_time
+                # Calculate remaining time from play limit, adding any extra playing time
+                effective_limit = self.limit_time
+                if self.extra_playing_time:
+                    effective_limit += self.extra_playing_time
+                time_remaining_by_play_limit = effective_limit - self.today_playing_time
 
             # 2. Calculate remaining time until bedtime
             if self.bedtime_alarm and self.bedtime_alarm != time(hour=0, minute=0) and self.alarms_enabled:

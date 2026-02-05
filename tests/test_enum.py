@@ -4,9 +4,9 @@ import pytest
 
 from pynintendoparental.enum import (
     AlarmSettingState,
-    RestrictionMode,
     DeviceTimerMode,
     FunctionalRestrictionLevel,
+    RestrictionMode,
 )
 
 
