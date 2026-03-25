@@ -6,8 +6,8 @@ import logging
 _LOGGER = logging.getLogger(__package__)
 CLIENT_ID = "54789befb391a838"
 MOBILE_APP_PKG = "com.nintendo.znma"
-MOBILE_APP_VERSION = "2.3.2"
-MOBILE_APP_BUILD = "640"
+MOBILE_APP_VERSION = "2.4.0"
+MOBILE_APP_BUILD = "660"
 OS_NAME = "ANDROID"
 OS_VERSION = "34"
 OS_STR = f"{OS_NAME} {OS_VERSION}"
@@ -66,6 +66,14 @@ ENDPOINTS = {
     },
     "update_extra_playing_time": {
         "url": "{BASE_URL}/v2/actions/device/updateExtraPlayingTime",
+        "method": "POST",
+    },
+    "get_notification_setting": {
+        "url": "{BASE_URL}/v2/actions/notification/fetchNotificationSetting?deviceId={DEVICE_ID}",
+        "method": "GET",
+    },
+    "update_notification_setting": {
+        "url": "{BASE_URL}/v2/actions/notification/updateNotificationSetting",
         "method": "POST",
     },
 }

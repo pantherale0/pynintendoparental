@@ -8,7 +8,9 @@
             "disabledTime": 15,
             "miscTime": 0,
             "timeZoneUtcOffsetSeconds": 0,
-            "events": {},
+            "events": {
+                "pinEntered": true
+            },
             "nonFeaturedGameCount": -1,
             "players": [
                 {

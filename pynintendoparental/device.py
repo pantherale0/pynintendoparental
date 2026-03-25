@@ -46,6 +46,7 @@ class Device:
         forced_termination_mode: True if software suspension is enabled at playtime limit.
         alarms_enabled: True if alarms are enabled.
         last_sync: Timestamp of the last sync with Nintendo servers.
+        today_pin_entries: True if a parental controls PIN was entered on this device today.
     """
 
     def __init__(self, api):
@@ -71,6 +72,7 @@ class Device:
         self.today_notices: list = []
         self.today_important_info: list = []
         self.today_observations: list = []
+        self.today_pin_entries: bool = False
         self.last_month_summary: dict = {}
         self.applications: dict[str, Application] = {}
         self.whitelisted_applications: dict[str, bool] = {}
@@ -208,6 +210,29 @@ class Device:
         """
         _LOGGER.debug(">> Device.set_new_pin(pin=REDACTED)")
         await self._send_api_update(self._api.async_update_unlock_code, new_code=pin, device_id=self.device_id)
+
+    async def set_pin_entry_notification(self, enabled: bool):
+        """Enable or disable PIN entry notifications for this device.
+
+        When enabled, the Nintendo Switch Parental Controls app will send a
+        notification whenever a parental controls PIN is successfully entered
+        on this device.
+
+        Args:
+            enabled: True to enable PIN entry notifications, False to disable them.
+
+        Example:
+            ```python
+            await device.set_pin_entry_notification(True)   # Enable notifications
+            await device.set_pin_entry_notification(False)  # Disable notifications
+            ```
+        """
+        _LOGGER.debug(">> Device.set_pin_entry_notification(enabled=%s)", enabled)
+        notification_setting = {
+            "deviceId": self.device_id,
+            "pinEntry": enabled,
+        }
+        await self._api.async_update_notification_setting(self.device_id, notification_setting)
 
     async def add_extra_time(self, minutes: int):
         """Add extra playing time for the current day.
@@ -670,10 +695,12 @@ class Device:
             self.today_playing_time = 0
             self.today_disabled_time = 0
             self.today_exceeded_time = 0
+            self.today_pin_entries = False
         else:
             self.today_playing_time = self.daily_summaries[0].get("playingTime") or 0
             self.today_disabled_time = self.daily_summaries[0].get("disabledTime") or 0
             self.today_exceeded_time = self.daily_summaries[0].get("exceededTime") or 0
+            self.today_pin_entries = self.daily_summaries[0].get("events", {}).get("pinEntered", False)
         _LOGGER.debug(
             "Cached playing, disabled and exceeded time for today for device %s",
             self.device_id,

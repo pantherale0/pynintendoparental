@@ -363,6 +363,7 @@
         'date': '2025-12-08',
         'disabledTime': 15,
         'events': dict({
+          'pinEntered': True,
         }),
         'exceededTime': 20,
         'miscTime': 0,
@@ -5147,6 +5148,7 @@
     ]),
     'today_observations': list([
     ]),
+    'today_pin_entries': True,
     'today_playing_time': 60,
     'whitelisted_applications': dict({
     }),

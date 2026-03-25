@@ -880,3 +880,42 @@ async def test_calculate_times(
     assert len(matching_logs) == 1
 
     assert device.month_playing_time == 75
+
+
+async def test_today_pin_entries(mock_api: Api):
+    """Test that today_pin_entries is correctly parsed from daily summary events."""
+    devices_response = await load_fixture("account_devices")
+    fixed_now = datetime(2025, 12, 8, 12, 0, 0)
+    devices = await Device.from_devices_response(devices_response, mock_api, now=fixed_now)
+    assert len(devices) > 0
+    device = devices[0]
+
+    # The fixture has pinEntered: true for 2025-12-08
+    assert device.today_pin_entries is True
+
+    # Test that pin entries are False when not present in today's events
+    device.daily_summaries[0]["events"] = {}
+    device._calculate_times(fixed_now)
+    assert device.today_pin_entries is False
+
+    # Test that pin entries are False when date does not match today
+    device._calculate_times(datetime(2023, 10, 30, 12, 0, 0))
+    assert device.today_pin_entries is False
+
+
+@pytest.mark.parametrize("enabled", [True, False])
+async def test_set_pin_entry_notification(mock_api: Api, caplog: pytest.LogCaptureFixture, enabled: bool):
+    """Test that set_pin_entry_notification calls the correct API method."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+
+    mock_api.async_update_notification_setting = AsyncMock(return_value={"json": {}})
+    await device.set_pin_entry_notification(enabled)
+
+    mock_api.async_update_notification_setting.assert_called_once_with(
+        device.device_id,
+        {"deviceId": device.device_id, "pinEntry": enabled},
+    )
+    assert f">> Device.set_pin_entry_notification(enabled={enabled})" in caplog.text

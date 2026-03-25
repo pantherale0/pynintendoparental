@@ -193,3 +193,12 @@ async def test_api_methods(mock_authenticator: Authenticator):
         endpoint="update_unlock_code",
         body={"deviceId": "DEVICE_ID", "unlockCode": "1234"},
     )
+
+    await api.async_get_notification_setting("DEVICE_ID")
+    api.send_request.assert_called_with(endpoint="get_notification_setting", DEVICE_ID="DEVICE_ID")
+
+    await api.async_update_notification_setting("DEVICE_ID", {"deviceId": "DEVICE_ID", "pinEntry": True})
+    api.send_request.assert_called_with(
+        endpoint="update_notification_setting",
+        body={"deviceId": "DEVICE_ID", "pinEntry": True},
+    )

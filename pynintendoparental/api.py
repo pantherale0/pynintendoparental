@@ -181,3 +181,11 @@ class Api:
             body["status"] = "TO_INFINITY"
             body.pop("additionalTime")
         return await self.send_request(endpoint="update_extra_playing_time", body=body)
+
+    async def async_get_notification_setting(self, device_id: str) -> dict:
+        """Get notification setting for a device."""
+        return await self.send_request(endpoint="get_notification_setting", DEVICE_ID=device_id)
+
+    async def async_update_notification_setting(self, device_id: str, notification_setting: dict) -> dict:
+        """Update notification setting for a device."""
+        return await self.send_request(endpoint="update_notification_setting", body=notification_setting)
