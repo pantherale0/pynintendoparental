@@ -340,7 +340,7 @@ class Device:
             ]
         new_bedtime_settings = {
             **regulation["bedtime"],
-            "enabled": regulation["bedtime"]["endingTime"] or value != time(0, 0),
+            "enabled": value != time(0, 0),
             "startingTime": (
                 {
                     "hour": value.hour,

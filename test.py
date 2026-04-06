@@ -2,6 +2,8 @@ import os
 import logging
 import asyncio
 
+from datetime import time
+
 from dotenv import load_dotenv
 from pynintendoauth.exceptions import InvalidSessionTokenException
 from pynintendoparental import Authenticator, NintendoParental
@@ -46,7 +48,7 @@ async def main():
             )
             _LOGGER.debug("Usage today %s", device.today_playing_time)
             _LOGGER.debug("Usage remaining %s", device.today_time_remaining)
-            await device.set_functional_restriction_level(FunctionalRestrictionLevel.TEEN)
+            await device.set_bedtime_end_time(time(hour=7, minute=0))
 
         _LOGGER.debug("ping")
         await asyncio.sleep(15)
