@@ -216,7 +216,7 @@ class Device:
         for the current day only. The extra time does not carry over to other days.
 
         Args:
-            minutes: Number of additional minutes to add (must be positive).
+            minutes: Number of additional minutes to add.
 
         Example:
             ```python
@@ -224,8 +224,12 @@ class Device:
             ```
         """
         _LOGGER.debug(">> Device.add_extra_time(minutes=%s)", minutes)
-        # This endpoint does not return parental control settings, so we call it directly.
-        await self._api.async_update_extra_playing_time(self.device_id, minutes)
+        with_bedtime = (
+            self.bedtime_alarm is not None
+            and self.bedtime_alarm != time(hour=0, minute=0)
+            and self.alarms_enabled
+        )
+        await self._api.async_confirm_extra_playing_time(self.device_id, minutes, with_bedtime)
         await self._get_parental_control_setting(datetime.now())
 
     async def set_restriction_mode(self, mode: RestrictionMode):
@@ -627,29 +631,31 @@ class Device:
         else:
             self.bedtime_alarm = time(hour=0, minute=0)
 
-        # Parse extra playing time based on whether bedtime is enabled
+        # Parse extra playing time: prefer inOneDay.duration when available,
+        # fall back to bedtime extension calculation otherwise.
+        # Always update bedtime_alarm when bedtime is extended so that
+        # _calculate_today_remaining_time uses the correct extended bedtime.
         extra_playing_time_data = pcs.get("ownedDevice", {}).get("device", {}).get("extraPlayingTime")
         self.extra_playing_time = None
         if extra_playing_time_data is not None:
+            in_one_day = extra_playing_time_data.get("inOneDay")
+            if in_one_day is not None:
+                self.extra_playing_time = in_one_day.get("duration")
             if bedtime_enabled and extra_playing_time_data.get("bedtime"):
-                # When bedtime is enabled, calculate the difference between new bedtime and original bedtime
                 extended_bedtime_data = extra_playing_time_data.get("bedtime", {}).get("endTime")
                 if extended_bedtime_data:
                     extended_bedtime = time(
                         hour=extended_bedtime_data["hour"],
                         minute=extended_bedtime_data["minute"],
                     )
-                    # Calculate difference in minutes
-                    original_minutes = self.bedtime_alarm.hour * 60 + self.bedtime_alarm.minute
-                    extended_minutes = extended_bedtime.hour * 60 + extended_bedtime.minute
-                    self.extra_playing_time = extended_minutes - original_minutes
-                    # Update bedtime_alarm to the extended bedtime
+                    if self.extra_playing_time is None:
+                        # inOneDay not available — derive extra time from bedtime extension
+                        original_minutes = self.bedtime_alarm.hour * 60 + self.bedtime_alarm.minute
+                        extended_minutes = extended_bedtime.hour * 60 + extended_bedtime.minute
+                        # Normalize to handle midnight-wrap (e.g. 23:30 → 00:15 = +45 min)
+                        self.extra_playing_time = (extended_minutes - original_minutes) % 1440
+                    # Always update bedtime_alarm to the extended bedtime
                     self.bedtime_alarm = extended_bedtime
-            else:
-                # When bedtime is disabled, use inOneDay duration
-                in_one_day = extra_playing_time_data.get("inOneDay")
-                if in_one_day is not None:
-                    self.extra_playing_time = in_one_day.get("duration")
         if bedtime_setting.get("enabled") and bedtime_setting["startingTime"]:
             self.bedtime_end = time(
                 hour=bedtime_setting["startingTime"]["hour"],
@@ -709,7 +715,16 @@ class Device:
             # 2. Calculate remaining time until bedtime
             if self.bedtime_alarm and self.bedtime_alarm != time(hour=0, minute=0) and self.alarms_enabled:
                 bedtime_dt = datetime.combine(now.date(), self.bedtime_alarm)
-                if bedtime_dt > now:  # Bedtime is in the future today
+                # If the bedtime clock value is in early-morning hours (00:00–05:59) it
+                # can only occur when the bedtime was extended past midnight.  In that
+                # case combine() produced a datetime that is earlier than now; roll it
+                # forward by one day so the next-day occurrence is used — but skip the
+                # rollover when now is still in the early-morning window (hour < 6)
+                # because the bedtime may have just passed this morning
+                # (e.g. now=01:00, bedtime=00:15 → bedtime already elapsed → 0).
+                if bedtime_dt <= now and self.bedtime_alarm.hour < 6 and now.hour >= 6:
+                    bedtime_dt += timedelta(days=1)
+                if bedtime_dt > now:  # Bedtime is in the future today (or next day)
                     time_remaining_by_bedtime = (bedtime_dt - now).total_seconds() / 60
                 else:  # Bedtime has passed
                     time_remaining_by_bedtime = 0.0
