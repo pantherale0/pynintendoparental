@@ -868,8 +868,29 @@ async def test_bedtime_rollover_evening(mock_api: Api):
     assert device.today_time_remaining == 75
 
 
+async def test_bedtime_rollover_daytime(mock_api: Api):
+    """Test that a midnight-wrap bedtime is rolled to next day even during daytime hours."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+
+    device.bedtime_alarm = time(hour=0, minute=15)
+    device.alarms_enabled = True
+    device.limit_time = 480
+    device.today_playing_time = 0
+
+    # now = 12:00 noon — bedtime 00:15 is 12h15m = 735 min away after rollover
+    now_noon = datetime.now().replace(hour=12, minute=0, second=0, microsecond=0)
+    device._calculate_today_remaining_time(now_noon)
+
+    # now.hour=12 >= 6 → rollover applied; bedtime is 12*60+15 = 735 min from noon
+    # Play-limit constraint: 480 - 0 = 480 min (more restrictive)
+    # effective_remaining = min(735, 480) = 480
+    assert device.today_time_remaining == 480
+
+
 async def test_bedtime_rollover_after_midnight(mock_api: Api):
-    """Test that a midnight-wrap bedtime is NOT rolled when now is already past it (e.g. 01:00)."""
+    """Test that a midnight-wrap bedtime is NOT rolled when now is in the early-morning window."""
     devices_response = await load_fixture("account_devices")
     devices = await Device.from_devices_response(devices_response, mock_api)
     device = devices[0]
@@ -883,7 +904,7 @@ async def test_bedtime_rollover_after_midnight(mock_api: Api):
     now_after_midnight = datetime.now().replace(hour=1, minute=0, second=0, microsecond=0)
     device._calculate_today_remaining_time(now_after_midnight)
 
-    # now.hour=1 < 18 → no rollover; bedtime_dt=today 00:15 < now 01:00 → bedtime passed
+    # now.hour=1 < 6 → no rollover; bedtime_dt=today 00:15 < now 01:00 → bedtime passed
     # time_remaining_by_bedtime = 0 → effective_remaining = min(480, 0) = 0
     assert device.today_time_remaining == 0
 
