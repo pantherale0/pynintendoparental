@@ -216,7 +216,7 @@ class Device:
         for the current day only. The extra time does not carry over to other days.
 
         Args:
-            minutes: Number of additional minutes to add (must be positive).
+            minutes: Number of additional minutes to add.
 
         Example:
             ```python
@@ -711,7 +711,13 @@ class Device:
             # 2. Calculate remaining time until bedtime
             if self.bedtime_alarm and self.bedtime_alarm != time(hour=0, minute=0) and self.alarms_enabled:
                 bedtime_dt = datetime.combine(now.date(), self.bedtime_alarm)
-                if bedtime_dt > now:  # Bedtime is in the future today
+                # If the bedtime clock value is in early-morning hours (00:00–05:59) it
+                # can only occur when the bedtime was extended past midnight.  In that
+                # case combine() produced a datetime that is earlier than now, so roll
+                # it forward by one day to get the correct future instant.
+                if bedtime_dt <= now and self.bedtime_alarm.hour < 6:
+                    bedtime_dt += timedelta(days=1)
+                if bedtime_dt > now:  # Bedtime is in the future today (or next day)
                     time_remaining_by_bedtime = (bedtime_dt - now).total_seconds() / 60
                 else:  # Bedtime has passed
                     time_remaining_by_bedtime = 0.0
