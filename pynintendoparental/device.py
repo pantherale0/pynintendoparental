@@ -224,8 +224,12 @@ class Device:
             ```
         """
         _LOGGER.debug(">> Device.add_extra_time(minutes=%s)", minutes)
-        # This endpoint does not return parental control settings, so we call it directly.
-        await self._api.async_update_extra_playing_time(self.device_id, minutes)
+        with_bedtime = (
+            self.bedtime_alarm is not None
+            and self.bedtime_alarm != time(hour=0, minute=0)
+            and self.alarms_enabled
+        )
+        await self._api.async_confirm_extra_playing_time(self.device_id, minutes, with_bedtime)
         await self._get_parental_control_setting(datetime.now())
 
     async def set_restriction_mode(self, mode: RestrictionMode):
@@ -627,29 +631,26 @@ class Device:
         else:
             self.bedtime_alarm = time(hour=0, minute=0)
 
-        # Parse extra playing time based on whether bedtime is enabled
+        # Parse extra playing time: prefer inOneDay.duration when available,
+        # fall back to bedtime extension calculation otherwise.
         extra_playing_time_data = pcs.get("ownedDevice", {}).get("device", {}).get("extraPlayingTime")
         self.extra_playing_time = None
         if extra_playing_time_data is not None:
-            if bedtime_enabled and extra_playing_time_data.get("bedtime"):
-                # When bedtime is enabled, calculate the difference between new bedtime and original bedtime
+            in_one_day = extra_playing_time_data.get("inOneDay")
+            if in_one_day is not None:
+                self.extra_playing_time = in_one_day.get("duration")
+            elif bedtime_enabled and extra_playing_time_data.get("bedtime"):
+                # Fall back to bedtime extension when inOneDay is not present
                 extended_bedtime_data = extra_playing_time_data.get("bedtime", {}).get("endTime")
                 if extended_bedtime_data:
                     extended_bedtime = time(
                         hour=extended_bedtime_data["hour"],
                         minute=extended_bedtime_data["minute"],
                     )
-                    # Calculate difference in minutes
                     original_minutes = self.bedtime_alarm.hour * 60 + self.bedtime_alarm.minute
                     extended_minutes = extended_bedtime.hour * 60 + extended_bedtime.minute
                     self.extra_playing_time = extended_minutes - original_minutes
-                    # Update bedtime_alarm to the extended bedtime
                     self.bedtime_alarm = extended_bedtime
-            else:
-                # When bedtime is disabled, use inOneDay duration
-                in_one_day = extra_playing_time_data.get("inOneDay")
-                if in_one_day is not None:
-                    self.extra_playing_time = in_one_day.get("duration")
         if bedtime_setting.get("enabled") and bedtime_setting["startingTime"]:
             self.bedtime_end = time(
                 hour=bedtime_setting["startingTime"]["hour"],
