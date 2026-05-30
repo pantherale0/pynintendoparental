@@ -649,7 +649,8 @@ class Device:
                     )
                     original_minutes = self.bedtime_alarm.hour * 60 + self.bedtime_alarm.minute
                     extended_minutes = extended_bedtime.hour * 60 + extended_bedtime.minute
-                    self.extra_playing_time = extended_minutes - original_minutes
+                    # Normalize to handle midnight-wrap (e.g. 23:30 → 00:15 = +45 min)
+                    self.extra_playing_time = (extended_minutes - original_minutes) % 1440
                     self.bedtime_alarm = extended_bedtime
         if bedtime_setting.get("enabled") and bedtime_setting["startingTime"]:
             self.bedtime_end = time(
