@@ -713,9 +713,11 @@ class Device:
                 bedtime_dt = datetime.combine(now.date(), self.bedtime_alarm)
                 # If the bedtime clock value is in early-morning hours (00:00–05:59) it
                 # can only occur when the bedtime was extended past midnight.  In that
-                # case combine() produced a datetime that is earlier than now, so roll
-                # it forward by one day to get the correct future instant.
-                if bedtime_dt <= now and self.bedtime_alarm.hour < 6:
+                # case combine() produced a datetime that is earlier than now; roll it
+                # forward by one day — but only when now is still in the evening
+                # (hour >= 18) so we don't incorrectly roll forward when now is already
+                # past the early-morning bedtime (e.g. now=01:00, bedtime=00:15).
+                if bedtime_dt <= now and self.bedtime_alarm.hour < 6 and now.hour >= 18:
                     bedtime_dt += timedelta(days=1)
                 if bedtime_dt > now:  # Bedtime is in the future today (or next day)
                     time_remaining_by_bedtime = (bedtime_dt - now).total_seconds() / 60
