@@ -633,24 +633,28 @@ class Device:
 
         # Parse extra playing time: prefer inOneDay.duration when available,
         # fall back to bedtime extension calculation otherwise.
+        # Always update bedtime_alarm when bedtime is extended so that
+        # _calculate_today_remaining_time uses the correct extended bedtime.
         extra_playing_time_data = pcs.get("ownedDevice", {}).get("device", {}).get("extraPlayingTime")
         self.extra_playing_time = None
         if extra_playing_time_data is not None:
             in_one_day = extra_playing_time_data.get("inOneDay")
             if in_one_day is not None:
                 self.extra_playing_time = in_one_day.get("duration")
-            elif bedtime_enabled and extra_playing_time_data.get("bedtime"):
-                # Fall back to bedtime extension when inOneDay is not present
+            if bedtime_enabled and extra_playing_time_data.get("bedtime"):
                 extended_bedtime_data = extra_playing_time_data.get("bedtime", {}).get("endTime")
                 if extended_bedtime_data:
                     extended_bedtime = time(
                         hour=extended_bedtime_data["hour"],
                         minute=extended_bedtime_data["minute"],
                     )
-                    original_minutes = self.bedtime_alarm.hour * 60 + self.bedtime_alarm.minute
-                    extended_minutes = extended_bedtime.hour * 60 + extended_bedtime.minute
-                    # Normalize to handle midnight-wrap (e.g. 23:30 → 00:15 = +45 min)
-                    self.extra_playing_time = (extended_minutes - original_minutes) % 1440
+                    if self.extra_playing_time is None:
+                        # inOneDay not available — derive extra time from bedtime extension
+                        original_minutes = self.bedtime_alarm.hour * 60 + self.bedtime_alarm.minute
+                        extended_minutes = extended_bedtime.hour * 60 + extended_bedtime.minute
+                        # Normalize to handle midnight-wrap (e.g. 23:30 → 00:15 = +45 min)
+                        self.extra_playing_time = (extended_minutes - original_minutes) % 1440
+                    # Always update bedtime_alarm to the extended bedtime
                     self.bedtime_alarm = extended_bedtime
         if bedtime_setting.get("enabled") and bedtime_setting["startingTime"]:
             self.bedtime_end = time(
