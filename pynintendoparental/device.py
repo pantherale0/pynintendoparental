@@ -2,6 +2,7 @@
 """Defines a single Nintendo Switch device."""
 
 import asyncio
+from copy import deepcopy
 from datetime import datetime, time, timedelta
 from typing import Callable
 
@@ -190,7 +191,15 @@ class Device:
     async def _send_api_update(self, api_call: Callable, *args, **kwargs):
         """Sends an update to the API and refreshes local state."""
         now = kwargs.pop("now", datetime.now())
-        response = await api_call(*args, **kwargs)
+        try:
+            response = await api_call(*args, **kwargs)
+        except HttpException as e:
+            # Refresh state and retry on 409
+            if e.status_code == 409:
+                await self.update()
+                response = await api_call(*args, **kwargs)
+            else:
+                raise e
         self._parse_parental_control_setting(response["json"], now)
         self._calculate_times(now)
         await self._execute_callbacks()
@@ -304,7 +313,7 @@ class Device:
         await self._send_api_update(
             self._api.async_update_play_timer,
             self.device_id,
-            self.parental_control_settings["playTimerRegulations"],
+            deepcopy(self.parental_control_settings["playTimerRegulations"]),
             now=now,
         )
 
@@ -354,7 +363,7 @@ class Device:
         await self._send_api_update(
             self._api.async_update_play_timer,
             self.device_id,
-            self.parental_control_settings["playTimerRegulations"],
+            deepcopy(self.parental_control_settings["playTimerRegulations"]),
             now=now,
         )
 
@@ -379,7 +388,7 @@ class Device:
         await self._send_api_update(
             self._api.async_update_play_timer,
             self.device_id,
-            self.parental_control_settings["playTimerRegulations"],
+            deepcopy(self.parental_control_settings["playTimerRegulations"]),
         )
 
     async def set_daily_restrictions(
@@ -479,7 +488,7 @@ class Device:
         await self._send_api_update(
             self._api.async_update_play_timer,
             self.device_id,
-            self.parental_control_settings["playTimerRegulations"],
+            deepcopy(self.parental_control_settings["playTimerRegulations"]),
         )
 
     async def set_functional_restriction_level(self, level: FunctionalRestrictionLevel):
@@ -506,7 +515,7 @@ class Device:
         await self._send_api_update(
             self._api.async_update_restriction_level,
             self.device_id,
-            self.parental_control_settings,
+            deepcopy(self.parental_control_settings),
         )
 
     async def update_max_daily_playtime(self, minutes: int | float = 0):
@@ -572,7 +581,7 @@ class Device:
         await self._send_api_update(
             self._api.async_update_play_timer,
             self.device_id,
-            self.parental_control_settings["playTimerRegulations"],
+            deepcopy(self.parental_control_settings["playTimerRegulations"]),
             now=now,
         )
 
