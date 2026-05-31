@@ -351,7 +351,7 @@ class Device:
                     "minute": value.minute,
                 }
                 if value != time(0, 0)
-                else None
+                else dict(regulation["bedtime"].get("startingTime") or {"hour": 6, "minute": 0})
             ),
         }
         regulation["bedtime"] = new_bedtime_settings
@@ -463,10 +463,13 @@ class Device:
         elif bedtime_enabled:
             raise BedtimeOutOfRangeError(value=None)
         else:
-            # Even when disabled, the API seems to expect a starting time.
+            # API requires startingTime even when bedtime is disabled.
+            # Preserve the existing value, defaulting to 06:00 (the Nintendo app's own default).
+            bedtime = regulation.get("bedtime") or {}
+            existing_start = dict(bedtime.get("startingTime") or {"hour": 6, "minute": 0})
             regulation["bedtime"] = {
                 "enabled": False,
-                "startingTime": None,
+                "startingTime": existing_start,
                 "endingTime": None,
             }
 

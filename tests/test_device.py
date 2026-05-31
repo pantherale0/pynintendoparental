@@ -132,7 +132,7 @@ async def test_update_device_bedtime_end_time(mock_api: Api, value: time):
     expected_pcs = copy.deepcopy(pcs_response)
     bedtime = expected_pcs["json"]["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["bedtime"]
     if value == time(0, 0):
-        bedtime["startingTime"] = None
+        # startingTime is preserved (not nullified) — existing fixture value {"hour": 6, "minute": 0} stays
         bedtime["enabled"] = False
     else:
         bedtime["enabled"] = True
@@ -416,6 +416,47 @@ async def test_set_daily_restrictions(
 
     assert ">> Device.set_daily_restrictions" in caplog.text
     assert ">> Device._parse_parental_control_setting" in caplog.text
+
+
+async def test_set_daily_restrictions_bedtime_disabled_preserves_starting_time(
+    mock_api: Api,
+):
+    """When bedtime_enabled=False, startingTime must be preserved from existing data.
+
+    Sending null startingTime causes the Nintendo API to return 400 invalid_params.
+    The fix preserves the existing startingTime from the regulation data.
+    """
+    devices_response = await load_fixture("account_devices")
+    pcs_response = await load_fixture("device_parental_control_setting")
+    # Use a non-default startingTime to verify preservation, not the fallback default
+    pcs_response["parentalControlSetting"]["playTimerRegulations"][
+        "eachDayOfTheWeekRegulations"
+    ]["monday"]["bedtime"]["startingTime"] = {"hour": 7, "minute": 30}
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+    device._parse_parental_control_setting(  # pylint: disable=protected-access
+        pcs_response,
+        datetime(2023, 10, 30, 12, 0, 0),
+    )
+    device.timer_mode = DeviceTimerMode.EACH_DAY_OF_THE_WEEK
+    mock_api.async_update_play_timer.return_value = {"json": pcs_response}
+
+    await device.set_daily_restrictions(
+        enabled=True,
+        bedtime_enabled=False,
+        day_of_week="monday",
+        max_daily_playtime=120,
+    )
+
+    mock_api.async_update_play_timer.assert_called_once()
+    call_args = mock_api.async_update_play_timer.call_args
+    sent_regulations = call_args[0][1]
+    monday_bedtime = sent_regulations["eachDayOfTheWeekRegulations"]["monday"]["bedtime"]
+    assert monday_bedtime["enabled"] is False
+    assert monday_bedtime["startingTime"] == {"hour": 7, "minute": 30}, (
+        "startingTime must be preserved from existing data, not replaced with default"
+    )
+    assert monday_bedtime["endingTime"] is None
 
 
 async def test_set_functional_restriction_level(
