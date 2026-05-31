@@ -466,7 +466,7 @@ class Device:
             # API requires startingTime even when bedtime is disabled.
             # Preserve the existing value, defaulting to 06:00 (the Nintendo app's own default).
             existing_start = (
-                regulation.get("bedtime", {}).get("startingTime")
+                (regulation.get("bedtime") or {}).get("startingTime")
                 or {"hour": 6, "minute": 0}
             )
             regulation["bedtime"] = {
