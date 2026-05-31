@@ -421,13 +421,17 @@ async def test_set_daily_restrictions(
 async def test_set_daily_restrictions_bedtime_disabled_preserves_starting_time(
     mock_api: Api,
 ):
-    """When bedtime_enabled=False, startingTime must not be null.
+    """When bedtime_enabled=False, startingTime must be preserved from existing data.
 
     Sending null startingTime causes the Nintendo API to return 400 invalid_params.
     The fix preserves the existing startingTime from the regulation data.
     """
     devices_response = await load_fixture("account_devices")
     pcs_response = await load_fixture("device_parental_control_setting")
+    # Use a non-default startingTime to verify preservation, not the fallback default
+    pcs_response["parentalControlSetting"]["playTimerRegulations"][
+        "eachDayOfTheWeekRegulations"
+    ]["monday"]["bedtime"]["startingTime"] = {"hour": 7, "minute": 30}
     devices = await Device.from_devices_response(devices_response, mock_api)
     device = devices[0]
     device._parse_parental_control_setting(  # pylint: disable=protected-access
@@ -449,7 +453,9 @@ async def test_set_daily_restrictions_bedtime_disabled_preserves_starting_time(
     sent_regulations = call_args[0][1]
     monday_bedtime = sent_regulations["eachDayOfTheWeekRegulations"]["monday"]["bedtime"]
     assert monday_bedtime["enabled"] is False
-    assert monday_bedtime["startingTime"] is not None, "startingTime must not be null — API rejects null with 400"
+    assert monday_bedtime["startingTime"] == {"hour": 7, "minute": 30}, (
+        "startingTime must be preserved from existing data, not replaced with default"
+    )
     assert monday_bedtime["endingTime"] is None
 
 
