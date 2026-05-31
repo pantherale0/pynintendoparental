@@ -418,6 +418,41 @@ async def test_set_daily_restrictions(
     assert ">> Device._parse_parental_control_setting" in caplog.text
 
 
+async def test_set_daily_restrictions_bedtime_disabled_preserves_starting_time(
+    mock_api: Api,
+):
+    """When bedtime_enabled=False, startingTime must not be null.
+
+    Sending null startingTime causes the Nintendo API to return 400 invalid_params.
+    The fix preserves the existing startingTime from the regulation data.
+    """
+    devices_response = await load_fixture("account_devices")
+    pcs_response = await load_fixture("device_parental_control_setting")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+    device._parse_parental_control_setting(  # pylint: disable=protected-access
+        pcs_response,
+        datetime(2023, 10, 30, 12, 0, 0),
+    )
+    device.timer_mode = DeviceTimerMode.EACH_DAY_OF_THE_WEEK
+    mock_api.async_update_play_timer.return_value = {"json": pcs_response}
+
+    await device.set_daily_restrictions(
+        enabled=True,
+        bedtime_enabled=False,
+        day_of_week="monday",
+        max_daily_playtime=120,
+    )
+
+    mock_api.async_update_play_timer.assert_called_once()
+    call_args = mock_api.async_update_play_timer.call_args
+    sent_regulations = call_args[0][1]
+    monday_bedtime = sent_regulations["eachDayOfTheWeekRegulations"]["monday"]["bedtime"]
+    assert monday_bedtime["enabled"] is False
+    assert monday_bedtime["startingTime"] is not None, "startingTime must not be null — API rejects null with 400"
+    assert monday_bedtime["endingTime"] is None
+
+
 async def test_set_functional_restriction_level(
     mock_api: Api,
     caplog: pytest.LogCaptureFixture,
