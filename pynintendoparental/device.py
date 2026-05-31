@@ -463,12 +463,10 @@ class Device:
         elif bedtime_enabled:
             raise BedtimeOutOfRangeError(value=None)
         else:
-            # API requires startingTime even when bedtime is disabled. Preserve
-            # the existing value or fall back to the top-level bedtimeStartingTime,
-            # defaulting to 06:00 (the Nintendo app's own default).
+            # API requires startingTime even when bedtime is disabled.
+            # Preserve the existing value, defaulting to 06:00 (the Nintendo app's own default).
             existing_start = (
                 regulation.get("bedtime", {}).get("startingTime")
-                or self.parental_control_settings.get("playTimerRegulations", {}).get("bedtimeStartingTime")
                 or {"hour": 6, "minute": 0}
             )
             regulation["bedtime"] = {
