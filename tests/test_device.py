@@ -132,7 +132,7 @@ async def test_update_device_bedtime_end_time(mock_api: Api, value: time):
     expected_pcs = copy.deepcopy(pcs_response)
     bedtime = expected_pcs["json"]["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["bedtime"]
     if value == time(0, 0):
-        bedtime["startingTime"] = None
+        # startingTime is preserved (not nullified) — existing fixture value {"hour": 6, "minute": 0} stays
         bedtime["enabled"] = False
     else:
         bedtime["enabled"] = True

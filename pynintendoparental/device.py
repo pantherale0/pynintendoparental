@@ -351,7 +351,7 @@ class Device:
                     "minute": value.minute,
                 }
                 if value != time(0, 0)
-                else None
+                else dict(regulation["bedtime"].get("startingTime") or {"hour": 6, "minute": 0})
             ),
         }
         regulation["bedtime"] = new_bedtime_settings
