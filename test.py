@@ -48,7 +48,7 @@ async def main():
             )
             _LOGGER.debug("Usage today %s", device.today_playing_time)
             _LOGGER.debug("Usage remaining %s", device.today_time_remaining)
-            await device.set_bedtime_end_time(time(hour=7, minute=0))
+            _LOGGER.info("Data: %s", device.parental_control_settings)
 
         _LOGGER.debug("ping")
         await asyncio.sleep(15)
@@ -58,7 +58,7 @@ async def main():
 
 if __name__ == "__main__":
     logging.basicConfig(
-        level=logging.DEBUG,
+        level=logging.INFO,
         format="%(asctime)s %(name)s %(levelname)s: %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
     )
