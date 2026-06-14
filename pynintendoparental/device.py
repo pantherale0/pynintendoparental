@@ -712,7 +712,9 @@ class Device:
             # 2. Calculate remaining time until bedtime
             if self.bedtime_alarm and self.bedtime_alarm != time(hour=0, minute=0) and self.alarms_enabled:
                 bedtime_dt = datetime.combine(now.date(), self.bedtime_alarm)
-                if bedtime_dt > now:  # Bedtime is in the future today
+                if bedtime_dt <= now and self.bedtime_alarm.hour < 6 and now.hour >= 6:
+                    bedtime_dt += timedelta(days=1)
+                if bedtime_dt > now:  # Bedtime is in the future today (or next day)
                     time_remaining_by_bedtime = (bedtime_dt - now).total_seconds() / 60
                 else:  # Bedtime has passed
                     time_remaining_by_bedtime = 0.0
