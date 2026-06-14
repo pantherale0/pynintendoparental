@@ -645,7 +645,7 @@ class Device:
                     # Calculate difference in minutes
                     original_minutes = self.bedtime_alarm.hour * 60 + self.bedtime_alarm.minute
                     extended_minutes = extended_bedtime.hour * 60 + extended_bedtime.minute
-                    self.extra_playing_time = extended_minutes - original_minutes
+                    self.extra_playing_time = (extended_minutes - original_minutes) % 1440
                     # Update bedtime_alarm to the extended bedtime
                     self.bedtime_alarm = extended_bedtime
             else:
