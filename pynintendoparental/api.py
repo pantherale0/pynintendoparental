@@ -170,20 +170,14 @@ class Api:
             body={"deviceId": device_id, "unlockCode": str(new_code)},
         )
 
-    async def async_confirm_extra_playing_time(
-        self, device_id: str, additional_time: int, with_bedtime: bool
-    ) -> dict:
-        """Confirm (grant) extra playing time for the current day.
-
-        Args:
-            device_id: The Nintendo device ID.
-            additional_time: Number of additional minutes to grant.
-            with_bedtime: When True, the bonus is granted relative to the
-                bedtime limit; when False it extends the inOneDay play limit.
-        """
+    async def async_update_extra_playing_time(self, device_id: str, additional_time: int) -> dict:
+        """Update device extra playing time."""
         body = {
             "deviceId": device_id,
             "additionalTime": additional_time,
-            "withBedtime": with_bedtime,
+            "status": "TO_ADDED",
         }
-        return await self.send_request(endpoint="confirm_extra_playing_time", body=body)
+        if additional_time == -1:
+            body["status"] = "TO_INFINITY"
+            body.pop("additionalTime")
+        return await self.send_request(endpoint="update_extra_playing_time", body=body)
