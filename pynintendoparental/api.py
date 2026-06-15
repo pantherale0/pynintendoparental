@@ -187,3 +187,15 @@ class Api:
             "withBedtime": with_bedtime,
         }
         return await self.send_request(endpoint="confirm_extra_playing_time", body=body)
+
+    async def async_update_extra_playing_time(self, device_id: str, additional_time: int) -> dict:
+        """Add extra playing time via the daily inOneDay limit (no-bedtime path)."""
+        body: dict = {
+            "deviceId": device_id,
+            "additionalTime": additional_time,
+            "status": "TO_ADDED",
+        }
+        if additional_time == -1:
+            body["status"] = "TO_INFINITY"
+            body.pop("additionalTime")
+        return await self.send_request(endpoint="update_extra_playing_time", body=body)

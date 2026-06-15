@@ -68,4 +68,8 @@ ENDPOINTS = {
         "url": "{BASE_URL}/v2/actions/device/confirmExtraPlayingTime",
         "method": "POST",
     },
+    "update_extra_playing_time": {
+        "url": "{BASE_URL}/v2/actions/device/updateExtraPlayingTime",
+        "method": "POST",
+    },
 }

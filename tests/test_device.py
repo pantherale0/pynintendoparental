@@ -611,12 +611,13 @@ async def test_add_extra_time(
     assert len(devices) > 0
     device = devices[0]
 
-    mock_api.async_confirm_extra_playing_time.return_value = None
+    mock_api.async_update_extra_playing_time.return_value = None
 
     await device.add_extra_time(extra_time)
     # bedtime is disabled in the fixture (bedtime.enabled=false), so bedtime_alarm is
     # time(0, 0) after update() runs; the != time(0, 0) check makes with_bedtime=False
-    mock_api.async_confirm_extra_playing_time.assert_called_with(device.device_id, extra_time, False)
+    mock_api.async_update_extra_playing_time.assert_called_with(device.device_id, extra_time)
+    mock_api.async_confirm_extra_playing_time.assert_not_called()
     assert f">> Device.add_extra_time(minutes={extra_time})" in caplog.text
 
 
