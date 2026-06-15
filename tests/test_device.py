@@ -621,6 +621,25 @@ async def test_add_extra_time(
     assert f">> Device.add_extra_time(minutes={extra_time})" in caplog.text
 
 
+async def test_add_extra_time_with_bedtime(
+    mock_api: Api,
+    caplog: pytest.LogCaptureFixture,
+):
+    """Test add_extra_time uses confirmExtraPlayingTime when bedtime is active."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+    device.bedtime_alarm = time(hour=21, minute=0)
+    device.alarms_enabled = True
+
+    mock_api.async_confirm_extra_playing_time.return_value = None
+
+    await device.add_extra_time(15)
+    mock_api.async_confirm_extra_playing_time.assert_called_with(device.device_id, 15, True)
+    mock_api.async_update_extra_playing_time.assert_not_called()
+    assert ">> Device.add_extra_time(minutes=15)" in caplog.text
+
+
 @pytest.mark.parametrize(
     "restriction_mode,expected_restriction_state_flag",
     [
@@ -893,20 +912,14 @@ async def test_bedtime_rollover_evening(mock_api: Api):
     devices = await Device.from_devices_response(devices_response, mock_api)
     device = devices[0]
 
-    # Directly configure the device state: bedtime extended past midnight to 00:15
     device.bedtime_alarm = time(hour=0, minute=15)
     device.alarms_enabled = True
-    # Use a large play limit (480 min) so that the bedtime constraint (75 min) is binding
     device.limit_time = 480
     device.today_playing_time = 0
 
-    # now = 23:00 in the evening — bedtime 00:15 is 75 min away (after rollover to next day)
     now_evening = datetime.now().replace(hour=23, minute=0, second=0, microsecond=0)
     device._calculate_today_remaining_time(now_evening)
 
-    # Bedtime constraint: 00:15 tomorrow - 23:00 today = 75 min
-    # Play-limit constraint: 480 - 0 = 480 min
-    # effective_remaining = min(75, 480) = 75
     assert device.today_time_remaining == 75
 
 
@@ -921,13 +934,9 @@ async def test_bedtime_rollover_daytime(mock_api: Api):
     device.limit_time = 480
     device.today_playing_time = 0
 
-    # now = 12:00 noon — bedtime 00:15 is 12h15m = 735 min away after rollover
     now_noon = datetime.now().replace(hour=12, minute=0, second=0, microsecond=0)
     device._calculate_today_remaining_time(now_noon)
 
-    # now.hour=12 >= 6 → rollover applied; bedtime is 12*60+15 = 735 min from noon
-    # Play-limit constraint: 480 - 0 = 480 min (more restrictive)
-    # effective_remaining = min(735, 480) = 480
     assert device.today_time_remaining == 480
 
 
@@ -937,7 +946,6 @@ async def test_bedtime_rollover_after_midnight(mock_api: Api):
     devices = await Device.from_devices_response(devices_response, mock_api)
     device = devices[0]
 
-    # bedtime was extended past midnight to 00:15; it's now 01:00 — bedtime already passed
     device.bedtime_alarm = time(hour=0, minute=15)
     device.alarms_enabled = True
     device.limit_time = 480
@@ -946,8 +954,6 @@ async def test_bedtime_rollover_after_midnight(mock_api: Api):
     now_after_midnight = datetime.now().replace(hour=1, minute=0, second=0, microsecond=0)
     device._calculate_today_remaining_time(now_after_midnight)
 
-    # now.hour=1 < 6 → no rollover; bedtime_dt=today 00:15 < now 01:00 → bedtime passed
-    # time_remaining_by_bedtime = 0 → effective_remaining = min(480, 0) = 0
     assert device.today_time_remaining == 0
 
 

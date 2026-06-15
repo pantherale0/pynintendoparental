@@ -43,7 +43,7 @@ ENDPOINTS = {
         "method": "GET",
     },
     "get_device_parental_control_setting": {
-        "url": "{BASE_URL}/v3/actions/parentalControlSetting/fetchParentalControlSetting?deviceId={DEVICE_ID}",
+        "url": "{BASE_URL}/v2/actions/parentalControlSetting/fetchParentalControlSetting?deviceId={DEVICE_ID}",
         "method": "GET",
     },
     "update_restriction_level": {
