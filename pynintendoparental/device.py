@@ -231,7 +231,7 @@ class Device:
             and self.bedtime_alarm != time(hour=0, minute=0)
             and self.alarms_enabled
         )
-        if with_bedtime:
+        if minutes != -1 and with_bedtime:
             await self._api.async_confirm_extra_playing_time(self.device_id, minutes, True)
         else:
             await self._api.async_update_extra_playing_time(self.device_id, minutes)
