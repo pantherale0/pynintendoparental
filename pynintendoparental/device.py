@@ -258,6 +258,9 @@ class Device:
             minutes: Number of additional minutes to add (must be positive), or
                 -1 to grant unlimited time for the rest of the day.
 
+        Raises:
+            ValueError: If minutes is less than -1.
+
         Example:
             ```python
             await device.add_extra_time(30)   # Add 30 minutes
@@ -265,19 +268,27 @@ class Device:
             ```
         """
         _LOGGER.debug(">> Device.add_extra_time(minutes=%s)", minutes)
+        if isinstance(minutes, float):
+            minutes = int(minutes)
+        if minutes < -1:
+            raise ValueError("minutes must be -1 or a non-negative integer.")
         chunks = _split_extra_time(minutes)
-        for index, chunk in enumerate(chunks):
-            with_bedtime = (
-                self.bedtime_alarm is not None and self.bedtime_alarm != time(hour=0, minute=0) and self.alarms_enabled
-            )
-            if chunk != -1 and with_bedtime:
-                await self._api.async_confirm_extra_playing_time(self.device_id, chunk, True)
-            else:
-                await self._api.async_update_extra_playing_time(self.device_id, chunk)
-            await self._get_parental_control_setting(datetime.now())
-            if index < len(chunks) - 1:
-                await asyncio.sleep(_EXTRA_TIME_BATCH_DELAY_SECONDS)
-        await self._execute_callbacks()
+        try:
+            for index, chunk in enumerate(chunks):
+                with_bedtime = (
+                    self.bedtime_alarm is not None
+                    and self.bedtime_alarm != time(hour=0, minute=0)
+                    and self.alarms_enabled
+                )
+                if chunk != -1 and with_bedtime:
+                    await self._api.async_confirm_extra_playing_time(self.device_id, chunk, True)
+                else:
+                    await self._api.async_update_extra_playing_time(self.device_id, chunk)
+                await self._get_parental_control_setting(datetime.now())
+                if index < len(chunks) - 1:
+                    await asyncio.sleep(_EXTRA_TIME_BATCH_DELAY_SECONDS)
+        finally:
+            await self._execute_callbacks()
 
     async def cancel_extra_time(self):
         """Cancel any active extra playing time for the current day.
@@ -297,13 +308,8 @@ class Device:
         await self._execute_callbacks()
 
     def _raise_if_extra_time_active(self, action: str):
-        """Raise if extra playing time is active; Nintendo blocks playtime/bedtime edits until it's cancelled.
-
-        Checks `extra_playing_time_unlimited` via getattr because it's
-        introduced by a separate, standalone PR (the isInfinity parsing fix)
-        that may land before or after this one - this stays correct either way.
-        """
-        if self.extra_playing_time is not None or getattr(self, "extra_playing_time_unlimited", False):
+        """Raise if extra playing time is active; Nintendo blocks playtime/bedtime edits until it's cancelled."""
+        if self.extra_playing_time is not None:
             raise ExtraPlayingTimeActiveError(
                 f"Cannot {action} while extra playing time is active. Call cancel_extra_time() first."
             )

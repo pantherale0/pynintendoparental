@@ -768,6 +768,53 @@ async def test_add_extra_time_executes_callbacks(mock_api: Api):
     callback.assert_awaited_once()
 
 
+async def test_add_extra_time_converts_float_to_int(mock_api: Api):
+    """A float minutes value (e.g. from a Home Assistant numeric state) must be
+    converted to int before being sent to the API, matching update_max_daily_playtime
+    and set_daily_restrictions - the API would otherwise likely 400 on a float."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+    mock_api.async_update_extra_playing_time.return_value = None
+
+    await device.add_extra_time(30.0)
+
+    mock_api.async_update_extra_playing_time.assert_called_once_with(device.device_id, 30)
+    sent_minutes = mock_api.async_update_extra_playing_time.call_args.args[1]
+    assert type(sent_minutes) is int  # noqa: E721 - explicitly checking for int, not just == 30
+
+
+async def test_add_extra_time_rejects_values_below_minus_one(mock_api: Api):
+    """Any value less than -1 is invalid and must raise immediately without an API call."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+
+    with pytest.raises(ValueError):
+        await device.add_extra_time(-5)
+
+    mock_api.async_update_extra_playing_time.assert_not_called()
+    mock_api.async_confirm_extra_playing_time.assert_not_called()
+
+
+async def test_add_extra_time_fires_callbacks_after_partial_batch_failure(mock_api: Api):
+    """If a chunk's API call fails partway through a batch, callbacks must still fire
+    so consumers (e.g. Home Assistant entities) reflect whatever chunks did apply,
+    even though the exception propagates to the caller."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+    mock_api.async_update_extra_playing_time.side_effect = [None, HttpException(500, "boom")]
+    callback = AsyncMock()
+    device.add_device_callback(callback)
+
+    with patch("pynintendoparental.device.asyncio.sleep", new=AsyncMock()):
+        with pytest.raises(HttpException):
+            await device.add_extra_time(130)  # 3 chunks: 60, 60, 10 - second chunk fails
+
+    callback.assert_awaited_once()
+
+
 async def test_cancel_extra_time(
     mock_api: Api,
     caplog: pytest.LogCaptureFixture,
@@ -846,17 +893,16 @@ async def test_playtime_edits_blocked_while_extra_time_active(
 
 
 async def test_guard_blocks_when_extra_playing_time_unlimited(mock_api: Api):
-    """The guard must also block when extra time is unlimited.
+    """The guard must also block when extra time is unlimited (extra_playing_time == -1).
 
-    extra_playing_time_unlimited is introduced by a separate, standalone PR
-    (the isInfinity parsing fix) that may merge before or after this one -
-    the guard checks it via getattr so it's correct either way.
+    -1 is the same "unlimited" sentinel used elsewhere in this class (e.g.
+    limit_time) and by the isInfinity parsing fix - is-not-None already
+    covers it without any special-casing.
     """
     devices_response = await load_fixture("account_devices")
     devices = await Device.from_devices_response(devices_response, mock_api)
     device = devices[0]
-    device.extra_playing_time = None
-    device.extra_playing_time_unlimited = True
+    device.extra_playing_time = -1
 
     with pytest.raises(ExtraPlayingTimeActiveError):
         await device.update_max_daily_playtime(120)
