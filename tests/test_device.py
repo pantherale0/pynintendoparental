@@ -750,16 +750,16 @@ async def test_parse_with_extra_playing_time(mock_api: Api):
     await device.update()
 
     assert device.extra_playing_time == 50
-    assert device.extra_playing_time_unlimited is False
 
 
 async def test_parse_with_extra_playing_time_infinity(mock_api: Api):
-    """Test that isInfinity is parsed into extra_playing_time_unlimited, not a numeric duration."""
+    """Test that isInfinity is parsed into extra_playing_time as -1 (the same "unlimited" sentinel
+    already used by limit_time and the update_extra_playing_time API method), not a separate flag."""
     devices_response = await load_fixture("account_devices")
     devices = await Device.from_devices_response(devices_response, mock_api)
     device = devices[0]
 
-    assert device.extra_playing_time_unlimited is False
+    assert device.extra_playing_time is None
 
     pcs_response = await load_fixture("device_parental_control_setting")
     pcs_response["ownedDevice"]["device"]["extraPlayingTime"] = {
@@ -769,8 +769,7 @@ async def test_parse_with_extra_playing_time_infinity(mock_api: Api):
     mock_api.async_get_device_parental_control_setting.return_value = {"json": pcs_response}
     await device.update()
 
-    assert device.extra_playing_time_unlimited is True
-    assert device.extra_playing_time is None
+    assert device.extra_playing_time == -1
 
 
 async def test_parse_with_extra_playing_time_bedtime_enabled(mock_api: Api):
@@ -912,7 +911,7 @@ async def test_today_time_remaining_with_infinite_extra_playing_time(mock_api: A
 
     await device.update()
 
-    assert device.extra_playing_time_unlimited is True
+    assert device.extra_playing_time == -1
     assert device.limit_time == 60
     assert device.today_playing_time == 20
 

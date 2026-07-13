@@ -38,9 +38,8 @@ class Device:
         limit_time: Daily playtime limit in minutes (-1 if no limit).
         today_playing_time: Total playing time for the current day in minutes.
         today_time_remaining: Remaining playtime for the current day in minutes.
-        extra_playing_time_unlimited: True if granted extra time is unlimited
-            (TO_INFINITY) for the rest of the day; today_time_remaining
-            already accounts for this, it does not need separate handling.
+        extra_playing_time: Extra/bonus playing time granted for today, in
+            minutes, or -1 if unlimited (TO_INFINITY) for the rest of the day.
         players: Dictionary of Player objects keyed by player ID.
         applications: Dictionary of Application objects keyed by application ID.
         timer_mode: Current timer mode (DAILY or EACH_DAY_OF_THE_WEEK).
@@ -63,7 +62,6 @@ class Device:
         self.players: dict[str, Player] = {}
         self.limit_time: int | float | None = 0
         self.extra_playing_time: int | None = None
-        self.extra_playing_time_unlimited: bool = False
         self.timer_mode: DeviceTimerMode | None = None
         self.today_playing_time: int | float = 0
         self.today_time_remaining: int | float = 0
@@ -637,7 +635,6 @@ class Device:
         # Parse extra playing time based on whether bedtime is enabled
         extra_playing_time_data = pcs.get("ownedDevice", {}).get("device", {}).get("extraPlayingTime")
         self.extra_playing_time = None
-        self.extra_playing_time_unlimited = False
         if extra_playing_time_data is not None:
             if bedtime_enabled and extra_playing_time_data.get("bedtime"):
                 # When bedtime is enabled, calculate the difference between new bedtime and original bedtime
@@ -654,11 +651,13 @@ class Device:
                     # Update bedtime_alarm to the extended bedtime
                     self.bedtime_alarm = extended_bedtime
             else:
-                # When bedtime is disabled, use inOneDay duration
+                # When bedtime is disabled, use inOneDay duration. -1 (matching
+                # the same "unlimited" sentinel limit_time and the API already
+                # use) represents Nintendo's isInfinity/TO_INFINITY grant.
                 in_one_day = extra_playing_time_data.get("inOneDay")
                 if in_one_day is not None:
                     if in_one_day.get("isInfinity"):
-                        self.extra_playing_time_unlimited = True
+                        self.extra_playing_time = -1
                     else:
                         self.extra_playing_time = in_one_day.get("duration")
         if bedtime_setting.get("enabled") and bedtime_setting["startingTime"]:
@@ -707,7 +706,7 @@ class Device:
             minutes_in_day = 1440  # 24 * 60
             current_minutes_past_midnight = now.hour * 60 + now.minute
 
-            if self.limit_time in (-1, None) or self.extra_playing_time_unlimited:
+            if self.limit_time in (-1, None) or self.extra_playing_time == -1:
                 # No play limit (or unlimited extra time granted), so remaining
                 # time is until end of day.
                 time_remaining_by_play_limit = minutes_in_day - current_minutes_past_midnight

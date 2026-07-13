@@ -1357,7 +1357,6 @@
       'updatedAt': 1764668290,
     }),
     'extra_playing_time': None,
-    'extra_playing_time_unlimited': False,
     'forced_termination_mode': False,
     'last_month_playing_time': 0,
     'last_month_summary': dict({
