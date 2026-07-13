@@ -3,7 +3,7 @@
 import copy
 import logging
 from datetime import datetime, time
-from unittest.mock import AsyncMock, Mock
+from unittest.mock import AsyncMock, Mock, call, patch
 
 import pytest
 from pynintendoauth.exceptions import HttpException
@@ -20,6 +20,7 @@ from pynintendoparental.enum import (
 from pynintendoparental.exceptions import (
     BedtimeOutOfRangeError,
     DailyPlaytimeOutOfRangeError,
+    ExtraPlayingTimeActiveError,
     InvalidDeviceStateError,
 )
 
@@ -638,6 +639,264 @@ async def test_add_extra_time_with_bedtime(
     mock_api.async_confirm_extra_playing_time.assert_called_with(device.device_id, 15, True)
     mock_api.async_update_extra_playing_time.assert_not_called()
     assert ">> Device.add_extra_time(minutes=15)" in caplog.text
+
+
+async def test_add_extra_time_at_60_not_batched(mock_api: Api):
+    """60 minutes (the server's per-call max) is still a single call, no delay."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+
+    mock_api.async_update_extra_playing_time.return_value = None
+
+    with patch("pynintendoparental.device.asyncio.sleep", new=AsyncMock()) as mock_sleep:
+        await device.add_extra_time(60)
+
+    mock_api.async_update_extra_playing_time.assert_called_once_with(device.device_id, 60)
+    mock_sleep.assert_not_called()
+
+
+async def test_add_extra_time_minus_one_not_batched(mock_api: Api):
+    """-1 (unlimited) is never split into batches."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+
+    mock_api.async_update_extra_playing_time.return_value = None
+
+    with patch("pynintendoparental.device.asyncio.sleep", new=AsyncMock()) as mock_sleep:
+        await device.add_extra_time(-1)
+
+    mock_api.async_update_extra_playing_time.assert_called_once_with(device.device_id, -1)
+    mock_sleep.assert_not_called()
+
+
+async def test_add_extra_time_over_60_batches_into_chunks(mock_api: Api):
+    """Requests over 60 minutes are split into <=60-minute calls, with a delay between them."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+
+    mock_api.async_update_extra_playing_time.return_value = None
+
+    with patch("pynintendoparental.device.asyncio.sleep", new=AsyncMock()) as mock_sleep:
+        await device.add_extra_time(130)
+
+    assert mock_api.async_update_extra_playing_time.call_args_list == [
+        call(device.device_id, 60),
+        call(device.device_id, 60),
+        call(device.device_id, 10),
+    ]
+    mock_api.async_confirm_extra_playing_time.assert_not_called()
+    assert mock_sleep.await_count == 2
+
+
+async def test_add_extra_time_over_60_batches_with_bedtime(mock_api: Api):
+    """Batched chunks route through confirmExtraPlayingTime when bedtime is active."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+    device.bedtime_alarm = time(hour=21, minute=0)
+    device.alarms_enabled = True
+
+    # with_bedtime is recomputed after each chunk's refetch, so the mocked PCS
+    # response must also reflect bedtime being enabled, or the second chunk
+    # would see it revert to the fixture's disabled default.
+    pcs_response = await load_fixture("device_parental_control_setting")
+    pcs_response["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["bedtime"] = {
+        "enabled": True,
+        "endingTime": {"hour": 21, "minute": 0},
+        "startingTime": {"hour": 6, "minute": 0},
+    }
+    mock_api.async_get_device_parental_control_setting.return_value = {"json": pcs_response}
+    mock_api.async_confirm_extra_playing_time.return_value = None
+
+    with patch("pynintendoparental.device.asyncio.sleep", new=AsyncMock()):
+        await device.add_extra_time(90)
+
+    assert mock_api.async_confirm_extra_playing_time.call_args_list == [
+        call(device.device_id, 60, True),
+        call(device.device_id, 30, True),
+    ]
+    mock_api.async_update_extra_playing_time.assert_not_called()
+
+
+async def test_add_extra_time_recomputes_with_bedtime_per_chunk(mock_api: Api):
+    """with_bedtime must be recomputed each chunk, not frozen once before the loop.
+
+    Each chunk already pays for a fresh _get_parental_control_setting fetch;
+    if bedtime becomes active partway through a batch, later chunks must use
+    the refreshed state for their dispatch decision instead of ignoring it.
+    """
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+    assert device.bedtime_alarm == time(0, 0)  # starts disabled per fixture
+
+    pcs_response = await load_fixture("device_parental_control_setting")
+    bedtime_on_response = copy.deepcopy(pcs_response)
+    bedtime_on_response["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["bedtime"] = {
+        "enabled": True,
+        "endingTime": {"hour": 21, "minute": 0},
+        "startingTime": {"hour": 6, "minute": 0},
+    }
+    mock_api.async_get_device_parental_control_setting.return_value = {"json": bedtime_on_response}
+    mock_api.async_update_extra_playing_time.return_value = None
+    mock_api.async_confirm_extra_playing_time.return_value = None
+
+    with patch("pynintendoparental.device.asyncio.sleep", new=AsyncMock()):
+        await device.add_extra_time(90)
+
+    # First chunk: bedtime was still disabled at dispatch time.
+    mock_api.async_update_extra_playing_time.assert_called_once_with(device.device_id, 60)
+    # The refetch after chunk 1 revealed bedtime is now active; chunk 2 must
+    # use that, not the frozen pre-loop decision.
+    mock_api.async_confirm_extra_playing_time.assert_called_once_with(device.device_id, 30, True)
+
+
+async def test_add_extra_time_executes_callbacks(mock_api: Api):
+    """add_extra_time must fire device callbacks so consumers (e.g. HA entities) refresh promptly."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+    mock_api.async_update_extra_playing_time.return_value = None
+    callback = AsyncMock()
+    device.add_device_callback(callback)
+
+    await device.add_extra_time(15)
+
+    callback.assert_awaited_once()
+
+
+async def test_cancel_extra_time(
+    mock_api: Api,
+    caplog: pytest.LogCaptureFixture,
+):
+    """Test that cancel_extra_time calls the API and refreshes state."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+
+    mock_api.async_cancel_extra_playing_time.return_value = None
+
+    await device.cancel_extra_time()
+    mock_api.async_cancel_extra_playing_time.assert_called_with(device.device_id)
+    assert ">> Device.cancel_extra_time()" in caplog.text
+
+
+async def test_cancel_extra_time_executes_callbacks(mock_api: Api):
+    """cancel_extra_time must fire device callbacks so consumers refresh promptly."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+    mock_api.async_cancel_extra_playing_time.return_value = None
+    callback = AsyncMock()
+    device.add_device_callback(callback)
+
+    await device.cancel_extra_time()
+
+    callback.assert_awaited_once()
+
+
+@pytest.mark.parametrize(
+    "action",
+    [
+        pytest.param(
+            lambda device: device.set_bedtime_alarm(time(hour=21, minute=0)),
+            id="set_bedtime_alarm",
+        ),
+        pytest.param(
+            lambda device: device.set_bedtime_end_time(time(hour=7, minute=0)),
+            id="set_bedtime_end_time",
+        ),
+        pytest.param(
+            lambda device: device.update_max_daily_playtime(120),
+            id="update_max_daily_playtime",
+        ),
+        pytest.param(
+            lambda device: device.set_restriction_mode(RestrictionMode.FORCED_TERMINATION),
+            id="set_restriction_mode",
+        ),
+        pytest.param(
+            lambda device: device.set_timer_mode(DeviceTimerMode.EACH_DAY_OF_THE_WEEK),
+            id="set_timer_mode",
+        ),
+    ],
+)
+async def test_playtime_edits_blocked_while_extra_time_active(
+    mock_api: Api,
+    action,
+):
+    """Bedtime/daily-limit/mode edits must be rejected while extra playing time is active.
+
+    Mirrors a restriction enforced by Nintendo's own app: these settings
+    can't be changed until any active extra playing time is cancelled.
+    Confirmed live against a real device that set_restriction_mode and
+    set_timer_mode 409 the same way the other four operations do - this
+    isn't just the four operations originally reported.
+    """
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+    device.extra_playing_time = 30
+
+    with pytest.raises(ExtraPlayingTimeActiveError):
+        await action(device)
+    mock_api.async_update_play_timer.assert_not_called()
+
+
+async def test_guard_blocks_when_extra_playing_time_unlimited(mock_api: Api):
+    """The guard must also block when extra time is unlimited.
+
+    extra_playing_time_unlimited is introduced by a separate, standalone PR
+    (the isInfinity parsing fix) that may merge before or after this one -
+    the guard checks it via getattr so it's correct either way.
+    """
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+    device.extra_playing_time = None
+    device.extra_playing_time_unlimited = True
+
+    with pytest.raises(ExtraPlayingTimeActiveError):
+        await device.update_max_daily_playtime(120)
+    mock_api.async_update_play_timer.assert_not_called()
+
+
+async def test_guard_blocks_when_extra_playing_time_is_zero(mock_api: Api):
+    """extra_playing_time == 0 must still count as active (explicit is-not-None check).
+
+    A truthy check would treat 0 the same as None/absent and silently let
+    the edit through.
+    """
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+    device.extra_playing_time = 0
+
+    with pytest.raises(ExtraPlayingTimeActiveError):
+        await device.update_max_daily_playtime(120)
+    mock_api.async_update_play_timer.assert_not_called()
+
+
+async def test_set_daily_restrictions_blocked_while_extra_time_active(
+    mock_api: Api,
+):
+    """set_daily_restrictions must also be rejected while extra playing time is active."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+    device.timer_mode = DeviceTimerMode.EACH_DAY_OF_THE_WEEK
+    device.extra_playing_time = 30
+
+    with pytest.raises(ExtraPlayingTimeActiveError):
+        await device.set_daily_restrictions(
+            enabled=True,
+            bedtime_enabled=False,
+            day_of_week="monday",
+            max_daily_playtime=60,
+        )
+    mock_api.async_update_play_timer.assert_not_called()
 
 
 @pytest.mark.parametrize(

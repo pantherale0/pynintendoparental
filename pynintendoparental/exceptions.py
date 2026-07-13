@@ -9,6 +9,7 @@ class RangeErrorKeys(StrEnum):
     DAILY_PLAYTIME = "daily_playtime_out_of_range"
     BEDTIME = "bedtime_alarm_out_of_range"
     INVALID_DEVICE_STATE = "invalid_device_state"
+    EXTRA_PLAYING_TIME_ACTIVE = "extra_playing_time_active"
 
 
 class NoDevicesFoundException(Exception):
@@ -52,3 +53,14 @@ class InvalidDeviceStateError(DeviceError):
     """The device is in an invalid state for the requested operation."""
 
     error_key = RangeErrorKeys.INVALID_DEVICE_STATE
+
+
+class ExtraPlayingTimeActiveError(InvalidDeviceStateError):
+    """Playtime limits and bedtime cannot be changed while extra playing time is active.
+
+    This mirrors a restriction enforced by Nintendo's own app: cancel the
+    active extra time (see `Device.cancel_extra_time`) before changing the
+    daily limit, per-day restrictions, timer mode, or bedtime.
+    """
+
+    error_key = RangeErrorKeys.EXTRA_PLAYING_TIME_ACTIVE

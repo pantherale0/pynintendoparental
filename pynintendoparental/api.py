@@ -170,9 +170,7 @@ class Api:
             body={"deviceId": device_id, "unlockCode": str(new_code)},
         )
 
-    async def async_confirm_extra_playing_time(
-        self, device_id: str, additional_time: int, with_bedtime: bool
-    ) -> dict:
+    async def async_confirm_extra_playing_time(self, device_id: str, additional_time: int, with_bedtime: bool) -> dict:
         """Confirm (grant) extra playing time for the current day.
 
         Args:
@@ -198,4 +196,9 @@ class Api:
         if additional_time == -1:
             body["status"] = "TO_INFINITY"
             body.pop("additionalTime")
+        return await self.send_request(endpoint="update_extra_playing_time", body=body)
+
+    async def async_cancel_extra_playing_time(self, device_id: str) -> dict:
+        """Cancel any active extra playing time for the current day."""
+        body = {"deviceId": device_id, "status": "TO_CANCELED"}
         return await self.send_request(endpoint="update_extra_playing_time", body=body)
