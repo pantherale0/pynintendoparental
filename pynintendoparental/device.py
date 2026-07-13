@@ -24,6 +24,33 @@ from .exceptions import (
 from .player import Player
 from .utils import is_awaitable
 
+# Nintendo's server hard-rejects additionalTime > 60 on a single
+# updateExtraPlayingTime/confirmExtraPlayingTime call (HTTP 400:
+# "additionalTime must be less than or equal to 60"), matching the app's own
+# largest bonus-time preset (ONE_HOUR). Requests above this are split into
+# multiple calls.
+_MAX_EXTRA_TIME_MINUTES_PER_CALL = 60
+# Paced between batched calls rather than fired back-to-back, since the
+# server appears to need a moment to settle each write before the next one
+# (and to avoid hammering the API).
+_EXTRA_TIME_BATCH_DELAY_SECONDS = 2
+
+
+def _split_extra_time(minutes: int) -> list[int]:
+    """Split a requested extra-time amount into <=60-minute chunks.
+
+    -1 (unlimited/TO_INFINITY) is never split, regardless of size.
+    """
+    if minutes == -1 or minutes <= _MAX_EXTRA_TIME_MINUTES_PER_CALL:
+        return [minutes]
+    chunks = []
+    remaining = minutes
+    while remaining > 0:
+        chunk = min(remaining, _MAX_EXTRA_TIME_MINUTES_PER_CALL)
+        chunks.append(chunk)
+        remaining -= chunk
+    return chunks
+
 
 class Device:
     """A Nintendo Switch device.
@@ -217,25 +244,50 @@ class Device:
         This grants additional playing time beyond the configured daily limit
         for the current day only. The extra time does not carry over to other days.
 
+        Nintendo's server rejects more than 60 minutes in a single request, so
+        larger amounts are transparently split into multiple <=60-minute
+        calls, paced a couple of seconds apart. `-1` (unlimited) is always a
+        single call regardless of size. Each chunk re-evaluates whether
+        bedtime is active from freshly-fetched state, so a bedtime change
+        mid-batch is picked up for the remaining chunks. If a chunk's API
+        call raises partway through, earlier chunks remain applied - check
+        `extra_playing_time` afterward to see how much actually went through.
+
         Args:
-            minutes: Number of additional minutes to add (must be positive).
+            minutes: Number of additional minutes to add (must be positive), or
+                -1 to grant unlimited time for the rest of the day.
+
+        Raises:
+            ValueError: If minutes is less than -1.
 
         Example:
             ```python
-            await device.add_extra_time(30)  # Add 30 minutes
+            await device.add_extra_time(30)   # Add 30 minutes
+            await device.add_extra_time(130)  # Add 130 minutes, batched as 60+60+10
             ```
         """
         _LOGGER.debug(">> Device.add_extra_time(minutes=%s)", minutes)
-        with_bedtime = (
-            self.bedtime_alarm is not None
-            and self.bedtime_alarm != time(hour=0, minute=0)
-            and self.alarms_enabled
-        )
-        if minutes != -1 and with_bedtime:
-            await self._api.async_confirm_extra_playing_time(self.device_id, minutes, True)
-        else:
-            await self._api.async_update_extra_playing_time(self.device_id, minutes)
-        await self._get_parental_control_setting(datetime.now())
+        if isinstance(minutes, float):
+            minutes = int(minutes)
+        if minutes < -1:
+            raise ValueError("minutes must be -1 or a non-negative integer.")
+        chunks = _split_extra_time(minutes)
+        try:
+            for index, chunk in enumerate(chunks):
+                with_bedtime = (
+                    self.bedtime_alarm is not None
+                    and self.bedtime_alarm != time(hour=0, minute=0)
+                    and self.alarms_enabled
+                )
+                if chunk != -1 and with_bedtime:
+                    await self._api.async_confirm_extra_playing_time(self.device_id, chunk, True)
+                else:
+                    await self._api.async_update_extra_playing_time(self.device_id, chunk)
+                await self._get_parental_control_setting(datetime.now())
+                if index < len(chunks) - 1:
+                    await asyncio.sleep(_EXTRA_TIME_BATCH_DELAY_SECONDS)
+        finally:
+            await self._execute_callbacks()
 
     async def set_restriction_mode(self, mode: RestrictionMode):
         """Set the restriction mode for playtime limits.
