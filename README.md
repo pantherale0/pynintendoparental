@@ -159,6 +159,8 @@ All methods are asynchronous.
 - `remove_device_callback(callback)`: Removes a previously added callback.
 - `set_new_pin(pin: str)`: Sets a new PIN for the parental controls.
 - `add_extra_time(minutes: int)`: Adds extra playing time for the current day.
+- `cancel_extra_time()`: Cancels any active extra playing time for the current day. Required before changing
+  the daily limit, per-day restrictions, timer mode, restriction mode, or bedtime while extra time is active.
 - `update_max_daily_playtime(minutes: int)`: Sets the daily playtime limit. Use `-1` to remove the limit.
 - `set_restriction_mode(mode: RestrictionMode)`: Sets the restriction mode.
     - `RestrictionMode.FORCED_TERMINATION`: The software will be suspended when the playtime limit is reached.

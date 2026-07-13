@@ -174,6 +174,12 @@ async def test_api_methods(mock_authenticator: Authenticator):
         body={"deviceId": "DEVICE_ID", "additionalTime": 60, "status": "TO_ADDED"},
     )
 
+    await api.async_cancel_extra_playing_time("DEVICE_ID")
+    api.send_request.assert_called_with(
+        endpoint="update_extra_playing_time",
+        body={"deviceId": "DEVICE_ID", "status": "TO_CANCELED"},
+    )
+
     await api.async_update_play_timer("DEVICE_ID", {"some": "setting"})
     api.send_request.assert_called_with(
         endpoint="update_play_timer",

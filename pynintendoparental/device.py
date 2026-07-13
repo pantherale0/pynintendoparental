@@ -19,6 +19,7 @@ from .enum import (
 from .exceptions import (
     BedtimeOutOfRangeError,
     DailyPlaytimeOutOfRangeError,
+    ExtraPlayingTimeActiveError,
     InvalidDeviceStateError,
 )
 from .player import Player
@@ -228,6 +229,30 @@ class Device:
         await self._api.async_update_extra_playing_time(self.device_id, minutes)
         await self._get_parental_control_setting(datetime.now())
 
+    async def cancel_extra_time(self):
+        """Cancel any active extra playing time for the current day.
+
+        Nintendo's own app requires this before the daily limit, per-day
+        restrictions, timer mode, or bedtime can be changed while extra time
+        is active (see `Device.update_max_daily_playtime` and friends).
+
+        Example:
+            ```python
+            await device.cancel_extra_time()
+            ```
+        """
+        _LOGGER.debug(">> Device.cancel_extra_time()")
+        await self._api.async_cancel_extra_playing_time(self.device_id)
+        await self._get_parental_control_setting(datetime.now())
+        await self._execute_callbacks()
+
+    def _raise_if_extra_time_active(self, action: str):
+        """Raise if extra playing time is active; Nintendo blocks playtime/bedtime edits until it's cancelled."""
+        if self.extra_playing_time is not None:
+            raise ExtraPlayingTimeActiveError(
+                f"Cannot {action} while extra playing time is active. Call cancel_extra_time() first."
+            )
+
     async def set_restriction_mode(self, mode: RestrictionMode):
         """Set the restriction mode for playtime limits.
 
@@ -242,8 +267,12 @@ class Device:
 
             await device.set_restriction_mode(RestrictionMode.FORCED_TERMINATION)
             ```
+
+        Raises:
+            ExtraPlayingTimeActiveError: If extra playing time is currently active.
         """
         _LOGGER.debug(">> Device.set_restriction_mode(mode=%s)", mode)
+        self._raise_if_extra_time_active("change the restriction mode")
         self.parental_control_settings["playTimerRegulations"]["restrictionMode"] = str(mode)
         response = await self._api.async_update_play_timer(
             self.device_id,
@@ -264,6 +293,7 @@ class Device:
 
         Raises:
             BedtimeOutOfRangeError: If the time is outside the valid range.
+            ExtraPlayingTimeActiveError: If extra playing time is currently active.
 
         Example:
             ```python
@@ -274,6 +304,7 @@ class Device:
             ```
         """
         _LOGGER.debug(">> Device.set_bedtime_alarm(value=%s)", value)
+        self._raise_if_extra_time_active("change the bedtime alarm")
         if not ((16 <= value.hour <= 23) or (value.hour == 0 and value.minute == 0)):
             raise BedtimeOutOfRangeError(value=value)
         now = datetime.now()
@@ -319,6 +350,7 @@ class Device:
 
         Raises:
             BedtimeOutOfRangeError: If the time is outside the valid range.
+            ExtraPlayingTimeActiveError: If extra playing time is currently active.
 
         Example:
             ```python
@@ -329,6 +361,7 @@ class Device:
             ```
         """
         _LOGGER.debug(">> Device.set_bedtime_end_time(value=%s)", value)
+        self._raise_if_extra_time_active("change the bedtime end time")
         if not time(5, 0) <= value <= time(9, 0) and value != time(0, 0):
             raise BedtimeOutOfRangeError(value=value)
         now = datetime.now()
@@ -372,8 +405,12 @@ class Device:
 
             await device.set_timer_mode(DeviceTimerMode.DAILY)
             ```
+
+        Raises:
+            ExtraPlayingTimeActiveError: If extra playing time is currently active.
         """
         _LOGGER.debug(">> Device.set_timer_mode(mode=%s)", mode)
+        self._raise_if_extra_time_active("change the timer mode")
         self.timer_mode = mode
         self.parental_control_settings["playTimerRegulations"]["timerMode"] = str(mode)
         await self._send_api_update(
@@ -407,6 +444,7 @@ class Device:
             InvalidDeviceStateError: If timer_mode is not EACH_DAY_OF_THE_WEEK.
             ValueError: If day_of_week is invalid.
             BedtimeOutOfRangeError: If bedtime values are outside valid ranges.
+            ExtraPlayingTimeActiveError: If extra playing time is currently active.
 
         Example:
             ```python
@@ -433,6 +471,7 @@ class Device:
             bedtime_end,
             max_daily_playtime,
         )
+        self._raise_if_extra_time_active("change daily restrictions")
         if self.timer_mode != DeviceTimerMode.EACH_DAY_OF_THE_WEEK:
             raise InvalidDeviceStateError("Daily restrictions can only be set when timer_mode is EACH_DAY_OF_THE_WEEK.")
         if day_of_week not in DAYS_OF_WEEK:
@@ -520,6 +559,7 @@ class Device:
 
         Raises:
             DailyPlaytimeOutOfRangeError: If minutes is outside the valid range.
+            ExtraPlayingTimeActiveError: If extra playing time is currently active.
 
         Example:
             ```python
@@ -528,6 +568,7 @@ class Device:
             ```
         """
         _LOGGER.debug(">> Device.update_max_daily_playtime(minutes=%s)", minutes)
+        self._raise_if_extra_time_active("change the daily playtime limit")
         if isinstance(minutes, float):
             minutes = int(minutes)
         if not (-1 <= minutes <= 360):
