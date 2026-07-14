@@ -614,8 +614,30 @@ async def test_add_extra_time(
     mock_api.async_update_extra_playing_time.return_value = None
 
     await device.add_extra_time(extra_time)
+    # bedtime is disabled in the fixture (bedtime.enabled=false), so bedtime_alarm is
+    # time(0, 0) after update() runs; the != time(0, 0) check makes with_bedtime=False
     mock_api.async_update_extra_playing_time.assert_called_with(device.device_id, extra_time)
+    mock_api.async_confirm_extra_playing_time.assert_not_called()
     assert f">> Device.add_extra_time(minutes={extra_time})" in caplog.text
+
+
+async def test_add_extra_time_with_bedtime(
+    mock_api: Api,
+    caplog: pytest.LogCaptureFixture,
+):
+    """Test add_extra_time uses confirmExtraPlayingTime when bedtime is active."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+    device.bedtime_alarm = time(hour=21, minute=0)
+    device.alarms_enabled = True
+
+    mock_api.async_confirm_extra_playing_time.return_value = None
+
+    await device.add_extra_time(15)
+    mock_api.async_confirm_extra_playing_time.assert_called_with(device.device_id, 15, True)
+    mock_api.async_update_extra_playing_time.assert_not_called()
+    assert ">> Device.add_extra_time(minutes=15)" in caplog.text
 
 
 @pytest.mark.parametrize(
@@ -787,6 +809,38 @@ async def test_parse_with_extra_playing_time_bedtime_enabled(mock_api: Api):
     assert device.bedtime_alarm == time(hour=21, minute=30)
 
 
+async def test_parse_with_extra_playing_time_bedtime_midnight_wrap(mock_api: Api):
+    """Test that extra_playing_time normalises correctly when extended bedtime wraps past midnight."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+
+    pcs_response = await load_fixture("device_parental_control_setting")
+
+    # Original bedtime ending at 23:30
+    pcs_response["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["bedtime"] = {
+        "enabled": True,
+        "endingTime": {"hour": 23, "minute": 30},
+        "startingTime": {"hour": 6, "minute": 0},
+    }
+
+    # Extended bedtime wraps past midnight to 00:15
+    # Without % 1440 normalisation the delta would be negative: 15 - 1410 = -1395
+    pcs_response["ownedDevice"]["device"]["extraPlayingTime"] = {
+        "bedtime": {"endTime": {"hour": 0, "minute": 15}},
+        "inOneDay": None,
+        "expiresAt": 1770335999,
+    }
+
+    mock_api.async_get_device_parental_control_setting.return_value = {"json": pcs_response}
+    await device.update()
+
+    # 23:30 → 00:15 wraps to +45 minutes, not -1395
+    assert device.extra_playing_time == 45
+    assert device.bedtime_alarm == time(hour=0, minute=15)
+
+
 async def test_today_time_remaining_with_extra_playing_time(mock_api: Api):
     """Test that today_time_remaining accounts for extra_playing_time."""
     devices_response = await load_fixture("account_devices")
@@ -850,6 +904,57 @@ async def test_today_time_remaining_with_extra_playing_time(mock_api: Api):
     expected_remaining = min(remaining_by_play_limit, remaining_by_end_of_day)
 
     assert device.today_time_remaining == expected_remaining
+
+
+async def test_bedtime_rollover_evening(mock_api: Api):
+    """Test that a midnight-wrap bedtime is correctly rolled to the next day when now is in the evening."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+
+    device.bedtime_alarm = time(hour=0, minute=15)
+    device.alarms_enabled = True
+    device.limit_time = 480
+    device.today_playing_time = 0
+
+    now_evening = datetime.now().replace(hour=23, minute=0, second=0, microsecond=0)
+    device._calculate_today_remaining_time(now_evening)
+
+    assert device.today_time_remaining == 75
+
+
+async def test_bedtime_rollover_daytime(mock_api: Api):
+    """Test that a midnight-wrap bedtime is rolled to next day even during daytime hours."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+
+    device.bedtime_alarm = time(hour=0, minute=15)
+    device.alarms_enabled = True
+    device.limit_time = 480
+    device.today_playing_time = 0
+
+    now_noon = datetime.now().replace(hour=12, minute=0, second=0, microsecond=0)
+    device._calculate_today_remaining_time(now_noon)
+
+    assert device.today_time_remaining == 480
+
+
+async def test_bedtime_rollover_after_midnight(mock_api: Api):
+    """Test that a midnight-wrap bedtime is NOT rolled when now is in the early-morning window."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+
+    device.bedtime_alarm = time(hour=0, minute=15)
+    device.alarms_enabled = True
+    device.limit_time = 480
+    device.today_playing_time = 0
+
+    now_after_midnight = datetime.now().replace(hour=1, minute=0, second=0, microsecond=0)
+    device._calculate_today_remaining_time(now_after_midnight)
+
+    assert device.today_time_remaining == 0
 
 
 async def test_calculate_times(

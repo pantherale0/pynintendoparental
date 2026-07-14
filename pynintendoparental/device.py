@@ -125,10 +125,12 @@ class Device:
             now = datetime.now()
         await asyncio.gather(
             self._get_daily_summaries(now),
-            self._get_parental_control_setting(now),
             self.get_monthly_summary(),
             self._get_extras(),
         )
+        # Fetch PCS after daily summaries so extra_playing_time is not parsed from a
+        # stale concurrent response (see #118 / debug-430f96).
+        await self._get_parental_control_setting(now)
         for player in self.players.values():
             player.update_from_daily_summary(self.daily_summaries)
         self._update_applications()
@@ -224,8 +226,15 @@ class Device:
             ```
         """
         _LOGGER.debug(">> Device.add_extra_time(minutes=%s)", minutes)
-        # This endpoint does not return parental control settings, so we call it directly.
-        await self._api.async_update_extra_playing_time(self.device_id, minutes)
+        with_bedtime = (
+            self.bedtime_alarm is not None
+            and self.bedtime_alarm != time(hour=0, minute=0)
+            and self.alarms_enabled
+        )
+        if minutes != -1 and with_bedtime:
+            await self._api.async_confirm_extra_playing_time(self.device_id, minutes, True)
+        else:
+            await self._api.async_update_extra_playing_time(self.device_id, minutes)
         await self._get_parental_control_setting(datetime.now())
 
     async def set_restriction_mode(self, mode: RestrictionMode):

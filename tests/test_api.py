@@ -162,6 +162,18 @@ async def test_api_methods(mock_authenticator: Authenticator):
         },
     )
 
+    await api.async_confirm_extra_playing_time("DEVICE_ID", 15, False)
+    api.send_request.assert_called_with(
+        endpoint="confirm_extra_playing_time",
+        body={"deviceId": "DEVICE_ID", "additionalTime": 15, "withBedtime": False},
+    )
+
+    await api.async_confirm_extra_playing_time("DEVICE_ID", 30, True)
+    api.send_request.assert_called_with(
+        endpoint="confirm_extra_playing_time",
+        body={"deviceId": "DEVICE_ID", "additionalTime": 30, "withBedtime": True},
+    )
+
     await api.async_update_extra_playing_time("DEVICE_ID", -1)
     api.send_request.assert_called_with(
         endpoint="update_extra_playing_time",
