@@ -3,7 +3,7 @@
 import copy
 import logging
 from datetime import datetime, time
-from unittest.mock import AsyncMock, Mock
+from unittest.mock import AsyncMock, Mock, call, patch
 
 import pytest
 from pynintendoauth.exceptions import HttpException
@@ -638,6 +638,180 @@ async def test_add_extra_time_with_bedtime(
     mock_api.async_confirm_extra_playing_time.assert_called_with(device.device_id, 15, True)
     mock_api.async_update_extra_playing_time.assert_not_called()
     assert ">> Device.add_extra_time(minutes=15)" in caplog.text
+
+
+async def test_add_extra_time_at_60_not_batched(mock_api: Api):
+    """60 minutes (the server's per-call max) is still a single call, no delay."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+
+    mock_api.async_update_extra_playing_time.return_value = None
+
+    with patch("pynintendoparental.device.asyncio.sleep", new=AsyncMock()) as mock_sleep:
+        await device.add_extra_time(60)
+
+    mock_api.async_update_extra_playing_time.assert_called_once_with(device.device_id, 60)
+    mock_sleep.assert_not_called()
+
+
+async def test_add_extra_time_minus_one_not_batched(mock_api: Api):
+    """-1 (unlimited) is never split into batches."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+
+    mock_api.async_update_extra_playing_time.return_value = None
+
+    with patch("pynintendoparental.device.asyncio.sleep", new=AsyncMock()) as mock_sleep:
+        await device.add_extra_time(-1)
+
+    mock_api.async_update_extra_playing_time.assert_called_once_with(device.device_id, -1)
+    mock_sleep.assert_not_called()
+
+
+async def test_add_extra_time_over_60_batches_into_chunks(mock_api: Api):
+    """Requests over 60 minutes are split into <=60-minute calls, with a delay between them."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+
+    mock_api.async_update_extra_playing_time.return_value = None
+
+    with patch("pynintendoparental.device.asyncio.sleep", new=AsyncMock()) as mock_sleep:
+        await device.add_extra_time(130)
+
+    assert mock_api.async_update_extra_playing_time.call_args_list == [
+        call(device.device_id, 60),
+        call(device.device_id, 60),
+        call(device.device_id, 10),
+    ]
+    mock_api.async_confirm_extra_playing_time.assert_not_called()
+    assert mock_sleep.await_count == 2
+
+
+async def test_add_extra_time_over_60_batches_with_bedtime(mock_api: Api):
+    """Batched chunks route through confirmExtraPlayingTime when bedtime is active."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+    device.bedtime_alarm = time(hour=21, minute=0)
+    device.alarms_enabled = True
+
+    # with_bedtime is recomputed after each chunk's refetch, so the mocked PCS
+    # response must also reflect bedtime being enabled, or the second chunk
+    # would see it revert to the fixture's disabled default.
+    pcs_response = await load_fixture("device_parental_control_setting")
+    pcs_response["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["bedtime"] = {
+        "enabled": True,
+        "endingTime": {"hour": 21, "minute": 0},
+        "startingTime": {"hour": 6, "minute": 0},
+    }
+    mock_api.async_get_device_parental_control_setting.return_value = {"json": pcs_response}
+    mock_api.async_confirm_extra_playing_time.return_value = None
+
+    with patch("pynintendoparental.device.asyncio.sleep", new=AsyncMock()):
+        await device.add_extra_time(90)
+
+    assert mock_api.async_confirm_extra_playing_time.call_args_list == [
+        call(device.device_id, 60, True),
+        call(device.device_id, 30, True),
+    ]
+    mock_api.async_update_extra_playing_time.assert_not_called()
+
+
+async def test_add_extra_time_recomputes_with_bedtime_per_chunk(mock_api: Api):
+    """with_bedtime must be recomputed each chunk, not frozen once before the loop.
+
+    Each chunk already pays for a fresh _get_parental_control_setting fetch;
+    if bedtime becomes active partway through a batch, later chunks must use
+    the refreshed state for their dispatch decision instead of ignoring it.
+    """
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+    assert device.bedtime_alarm == time(0, 0)  # starts disabled per fixture
+
+    pcs_response = await load_fixture("device_parental_control_setting")
+    bedtime_on_response = copy.deepcopy(pcs_response)
+    bedtime_on_response["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["bedtime"] = {
+        "enabled": True,
+        "endingTime": {"hour": 21, "minute": 0},
+        "startingTime": {"hour": 6, "minute": 0},
+    }
+    mock_api.async_get_device_parental_control_setting.return_value = {"json": bedtime_on_response}
+    mock_api.async_update_extra_playing_time.return_value = None
+    mock_api.async_confirm_extra_playing_time.return_value = None
+
+    with patch("pynintendoparental.device.asyncio.sleep", new=AsyncMock()):
+        await device.add_extra_time(90)
+
+    # First chunk: bedtime was still disabled at dispatch time.
+    mock_api.async_update_extra_playing_time.assert_called_once_with(device.device_id, 60)
+    # The refetch after chunk 1 revealed bedtime is now active; chunk 2 must
+    # use that, not the frozen pre-loop decision.
+    mock_api.async_confirm_extra_playing_time.assert_called_once_with(device.device_id, 30, True)
+
+
+async def test_add_extra_time_executes_callbacks(mock_api: Api):
+    """add_extra_time must fire device callbacks so consumers (e.g. HA entities) refresh promptly."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+    mock_api.async_update_extra_playing_time.return_value = None
+    callback = AsyncMock()
+    device.add_device_callback(callback)
+
+    await device.add_extra_time(15)
+
+    callback.assert_awaited_once()
+
+
+async def test_add_extra_time_converts_float_to_int(mock_api: Api):
+    """A float minutes value (e.g. from a Home Assistant numeric state) must be
+    converted to int before being sent to the API, matching update_max_daily_playtime
+    and set_daily_restrictions - the API would otherwise likely 400 on a float."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+    mock_api.async_update_extra_playing_time.return_value = None
+
+    await device.add_extra_time(30.0)
+
+    mock_api.async_update_extra_playing_time.assert_called_once_with(device.device_id, 30)
+    sent_minutes = mock_api.async_update_extra_playing_time.call_args.args[1]
+    assert type(sent_minutes) is int  # noqa: E721 - explicitly checking for int, not just == 30
+
+
+async def test_add_extra_time_rejects_values_below_minus_one(mock_api: Api):
+    """Any value less than -1 is invalid and must raise immediately without an API call."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+
+    with pytest.raises(ValueError):
+        await device.add_extra_time(-5)
+
+    mock_api.async_update_extra_playing_time.assert_not_called()
+    mock_api.async_confirm_extra_playing_time.assert_not_called()
+
+
+async def test_add_extra_time_fires_callbacks_after_partial_batch_failure(mock_api: Api):
+    """If a chunk's API call fails partway through a batch, callbacks must still fire
+    so consumers (e.g. Home Assistant entities) reflect whatever chunks did apply,
+    even though the exception propagates to the caller."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+    mock_api.async_update_extra_playing_time.side_effect = [None, HttpException(500, "boom")]
+    callback = AsyncMock()
+    device.add_device_callback(callback)
+
+    with patch("pynintendoparental.device.asyncio.sleep", new=AsyncMock()):
+        with pytest.raises(HttpException):
+            await device.add_extra_time(130)  # 3 chunks: 60, 60, 10 - second chunk fails
+
+    callback.assert_awaited_once()
 
 
 @pytest.mark.parametrize(

@@ -158,7 +158,7 @@ All methods are asynchronous.
 - `add_device_callback(callback)`: Adds a callback that will be called when the device state changes.
 - `remove_device_callback(callback)`: Removes a previously added callback.
 - `set_new_pin(pin: str)`: Sets a new PIN for the parental controls.
-- `add_extra_time(minutes: int)`: Adds extra playing time for the current day.
+- `add_extra_time(minutes: int)`: Adds extra playing time for the current day. Use `-1` to grant unlimited time for the rest of the day. Nintendo's server rejects more than 60 minutes in a single request, so amounts above that are transparently split into multiple <=60-minute calls, paced a couple of seconds apart.
 - `update_max_daily_playtime(minutes: int)`: Sets the daily playtime limit. Use `-1` to remove the limit.
 - `set_restriction_mode(mode: RestrictionMode)`: Sets the restriction mode.
     - `RestrictionMode.FORCED_TERMINATION`: The software will be suspended when the playtime limit is reached.
