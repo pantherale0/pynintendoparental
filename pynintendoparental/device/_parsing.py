@@ -9,7 +9,7 @@ from ..const import _LOGGER
 from ..enum import DeviceTimerMode, RestrictionMode
 from ._helpers import api_dict_to_time, disabled_bedtime, time_to_minutes
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from ._core import Device
 
 
@@ -68,8 +68,7 @@ class DeviceParsingMixin:
             extended_bedtime_data = extra_playing_time_data.get("bedtime", {}).get("endTime")
             if extended_bedtime_data and self.bedtime_alarm is not None:
                 extended_bedtime = api_dict_to_time(extended_bedtime_data)
-                if extended_bedtime is None:
-                    return
+                assert extended_bedtime is not None
                 original_minutes = time_to_minutes(self.bedtime_alarm)
                 extended_minutes = time_to_minutes(extended_bedtime)
                 self.extra_playing_time = (extended_minutes - original_minutes) % 1440

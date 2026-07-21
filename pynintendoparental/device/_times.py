@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 from ..const import _LOGGER
 from ._helpers import is_bedtime_disabled, minutes_until_end_of_day
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from ._core import Device
 
 
@@ -69,8 +69,6 @@ class DeviceTimesMixin:
     def _calculate_times(self: Device, now: datetime) -> None:  # type: ignore[misc]
         """Calculate times from parental control settings."""
         if not isinstance(self.daily_summaries, list) or not self.daily_summaries:
-            return
-        if len(self.daily_summaries) == 0:
             return
         _LOGGER.debug(">> Device._calculate_times()")
         if self.daily_summaries[0]["date"] != now.strftime("%Y-%m-%d"):

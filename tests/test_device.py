@@ -3,7 +3,7 @@
 import copy
 import logging
 from datetime import datetime, time
-from unittest.mock import AsyncMock, Mock
+from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
 from pynintendoauth.exceptions import HttpException
@@ -771,3 +771,138 @@ async def test_calculate_times(
         assert device.month_playing_time == month_playing
     if summaries == "fixture" and dt == MONDAY:
         assert "No daily summary for today, assuming 0 playing time." in caplog.text
+
+
+async def test_get_date_summary(device: Device):
+    """Test get_date_summary for today, yesterday fallback, and missing dates."""
+    device.daily_summaries = [
+        {"date": "2025-12-08", "playingTime": 60},
+        {"date": "2025-12-07", "playingTime": 15},
+    ]
+
+    today = device.get_date_summary(datetime(2025, 12, 8, 12, 0, 0))
+    assert today[0]["date"] == "2025-12-08"
+
+    # No entry for the given day → fall back one day
+    yesterday = device.get_date_summary(datetime(2025, 12, 9, 12, 0, 0))
+    assert yesterday[0]["date"] == "2025-12-08"
+
+    with pytest.raises(ValueError, match="does not exist"):
+        device.get_date_summary(datetime(2020, 1, 1, 12, 0, 0))
+
+    device.daily_summaries = []
+    with pytest.raises(ValueError, match="No daily summaries"):
+        device.get_date_summary()
+
+
+async def test_from_device_response(mock_api: Api):
+    """Test from_device_response builds a Device without calling update()."""
+    raw = (await load_fixture("account_devices"))["ownedDevices"][0]
+    device = Device.from_device_response(raw, mock_api)
+
+    assert device.device_id == raw["deviceId"]
+    assert device.name == raw["label"]
+    assert device.extra == raw
+    mock_api.async_get_device_parental_control_setting.assert_not_called()
+
+    with pytest.raises(ValueError, match="Invalid response"):
+        Device.from_device_response({"label": "missing-id"}, mock_api)
+
+
+async def test_from_devices_response_invalid(mock_api: Api):
+    """Test from_devices_response rejects payloads without ownedDevices."""
+    with pytest.raises(ValueError, match="Invalid response"):
+        await Device.from_devices_response({}, mock_api)
+
+
+async def test_get_monthly_summary_empty_available(device: Device, mock_api: Api):
+    """When no monthly summaries are available, get_monthly_summary returns None."""
+    mock_api.async_get_device_monthly_summaries.return_value = {"json": {"available": []}}
+    mock_api.async_get_device_monthly_summary.reset_mock()
+
+    assert await device.get_monthly_summary() is None
+    mock_api.async_get_device_monthly_summary.assert_not_called()
+
+
+async def test_get_monthly_summary_with_search_date(device: Device, mock_api: Api):
+    """Providing search_date fetches that month without treating it as latest."""
+    summary = {"playingTime": 100, "players": []}
+    mock_api.async_get_device_monthly_summary.return_value = {"json": {"summary": summary}}
+    mock_api.async_get_device_monthly_summaries.reset_mock()
+
+    result = await device.get_monthly_summary(datetime(2024, 1, 1))
+
+    assert result == summary
+    mock_api.async_get_device_monthly_summaries.assert_not_called()
+    mock_api.async_get_device_monthly_summary.assert_called_with(
+        device_id=device.device_id, year=2024, month=1
+    )
+
+
+async def test_get_monthly_summary_fetch_returns_none(device: Device, mock_api: Api):
+    """HTTP failure on a dated monthly summary returns None."""
+    mock_api.async_get_device_monthly_summary.side_effect = HttpException(404, "test", "test")
+
+    assert await device.get_monthly_summary(datetime(2024, 1, 1)) is None
+
+
+async def test_get_extras_skips_http_when_alarms_enabled_unset(device: Device, mock_api: Api):
+    """_get_extras can use cached extra when alarms_enabled is None."""
+    device.alarms_enabled = None  # type: ignore[assignment]
+    mock_api.async_get_account_device.reset_mock()
+
+    await device._get_extras()  # pylint: disable=protected-access
+
+    mock_api.async_get_account_device.assert_not_called()
+    assert isinstance(device.alarms_enabled, bool)
+
+
+async def test_callback_idempotent_add_and_missing_remove(device: Device):
+    """Adding an existing callback is a no-op; removing a missing one is too."""
+    callback = Mock()
+    device.add_device_callback(callback)
+    device.add_device_callback(callback)
+    assert device._callbacks.count(callback) == 1
+
+    device.remove_device_callback(Mock())  # not registered
+    assert callback in device._callbacks
+    device.remove_device_callback(callback)
+    assert callback not in device._callbacks
+
+
+async def test_calculate_today_remaining_time_failure(device: Device):
+    """stats_update_failed stays True when remaining-time math raises."""
+    with patch(
+        "pynintendoparental.device._times.remaining_play_minutes",
+        side_effect=TypeError("boom"),
+    ):
+        device._calculate_today_remaining_time(FIXED_NOW)  # pylint: disable=protected-access
+
+    assert device.stats_update_failed is True
+
+
+def test_api_dict_to_time_helpers():
+    """Cover empty/None api dict conversion and time packing."""
+    from pynintendoparental.device._helpers import api_dict_to_time, time_to_api_dict
+
+    assert api_dict_to_time(None) is None
+    assert api_dict_to_time({}) is None
+    assert api_dict_to_time({"hour": 21, "minute": 30}) == time(21, 30)
+    assert time_to_api_dict(time(7, 15)) == {"hour": 7, "minute": 15}
+
+
+async def test_parse_extra_playing_time_bedtime_without_end_time(device: Device, mock_api: Api, pcs: dict):
+    """Bedtime extra-playing-time with no endTime leaves extra_playing_time unset."""
+    from .helpers import pcs_with_bedtime
+
+    pcs_response = pcs_with_bedtime(pcs, enabled=True, start=time(6, 0), end=time(21, 0))
+    pcs_response["ownedDevice"]["device"]["extraPlayingTime"] = {
+        "bedtime": {"endTime": None},  # present but no usable endTime
+        "inOneDay": None,
+        "expiresAt": 1770335999,
+    }
+    mock_api.async_get_device_parental_control_setting.return_value = {"json": pcs_response}
+    await device.update()
+
+    assert device.extra_playing_time is None
+    assert device.bedtime_alarm == time(21, 0)

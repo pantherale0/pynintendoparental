@@ -24,7 +24,7 @@ from ._helpers import (
     validate_max_daily_playtime,
 )
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from ._core import Device
 
 

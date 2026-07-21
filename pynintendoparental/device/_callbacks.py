@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Callable
 
 from ..utils import is_awaitable
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from ._core import Device
 
 
