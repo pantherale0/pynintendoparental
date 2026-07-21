@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 from datetime import datetime, time
+from typing import TYPE_CHECKING
 
+from ..api import Api
 from ..const import _LOGGER, DAYS_OF_WEEK
 from ..enum import DeviceTimerMode, FunctionalRestrictionLevel, RestrictionMode
 from ..exceptions import BedtimeOutOfRangeError, InvalidDeviceStateError
@@ -22,11 +24,21 @@ from ._helpers import (
     validate_max_daily_playtime,
 )
 
+if TYPE_CHECKING:
+    from ._core import Device
+
 
 class DeviceSettingsMixin:
     """Mixin providing parental-control mutation APIs on Device."""
 
-    async def set_new_pin(self, pin: str):
+    device_id: str
+    _api: Api
+    parental_control_settings: dict
+    timer_mode: DeviceTimerMode | None
+    bedtime_alarm: time | None
+    alarms_enabled: bool
+
+    async def set_new_pin(self: Device, pin: str) -> None:  # type: ignore[misc]
         """Set a new PIN code for parental controls on this device.
 
         Args:
@@ -35,7 +47,7 @@ class DeviceSettingsMixin:
         _LOGGER.debug(">> Device.set_new_pin(pin=REDACTED)")
         await self._send_api_update(self._api.async_update_unlock_code, new_code=pin, device_id=self.device_id)
 
-    async def add_extra_time(self, minutes: int):
+    async def add_extra_time(self: Device, minutes: int) -> None:  # type: ignore[misc]
         """Add extra playing time for the current day.
 
         Args:
@@ -51,7 +63,7 @@ class DeviceSettingsMixin:
             await self._api.async_update_extra_playing_time(self.device_id, minutes)
         await self._get_parental_control_setting(datetime.now())
 
-    async def set_restriction_mode(self, mode: RestrictionMode):
+    async def set_restriction_mode(self: Device, mode: RestrictionMode) -> None:  # type: ignore[misc]
         """Set the restriction mode for playtime limits.
 
         Args:
@@ -67,7 +79,7 @@ class DeviceSettingsMixin:
         self._parse_parental_control_setting(response["json"], now)  # Don't need to recalculate times
         await self._execute_callbacks()
 
-    async def set_bedtime_alarm(self, value: time):
+    async def set_bedtime_alarm(self: Device, value: time) -> None:  # type: ignore[misc]
         """Set the bedtime alarm time (16:00–23:00, or time(0, 0) to disable)."""
         _LOGGER.debug(">> Device.set_bedtime_alarm(value=%s)", value)
         validate_bedtime_alarm(value)
@@ -92,7 +104,7 @@ class DeviceSettingsMixin:
             now=now,
         )
 
-    async def set_bedtime_end_time(self, value: time):
+    async def set_bedtime_end_time(self: Device, value: time) -> None:  # type: ignore[misc]
         """Set when bedtime restrictions end (05:00–09:00, or time(0, 0) to disable)."""
         _LOGGER.debug(">> Device.set_bedtime_end_time(value=%s)", value)
         validate_bedtime_end(value)
@@ -111,7 +123,7 @@ class DeviceSettingsMixin:
             now=now,
         )
 
-    async def set_timer_mode(self, mode: DeviceTimerMode):
+    async def set_timer_mode(self: Device, mode: DeviceTimerMode) -> None:  # type: ignore[misc]
         """Set the timer mode (DAILY or EACH_DAY_OF_THE_WEEK)."""
         _LOGGER.debug(">> Device.set_timer_mode(mode=%s)", mode)
         self.timer_mode = mode
@@ -122,15 +134,15 @@ class DeviceSettingsMixin:
             self.parental_control_settings["playTimerRegulations"],
         )
 
-    async def set_daily_restrictions(
-        self,
+    async def set_daily_restrictions(  # type: ignore[misc]
+        self: Device,
         enabled: bool,
         bedtime_enabled: bool,
         day_of_week: str,
         bedtime_start: time | None = None,
         bedtime_end: time | None = None,
         max_daily_playtime: int | float | None = None,
-    ):
+    ) -> None:
         """Set restrictions for a specific day of the week.
 
         Only works when timer_mode is EACH_DAY_OF_THE_WEEK.
@@ -175,8 +187,8 @@ class DeviceSettingsMixin:
             self.parental_control_settings["playTimerRegulations"],
         )
 
-    def _build_daily_restriction_bedtime(
-        self,
+    def _build_daily_restriction_bedtime(  # type: ignore[misc]
+        self: Device,
         regulation: dict,
         *,
         bedtime_enabled: bool,
@@ -201,7 +213,9 @@ class DeviceSettingsMixin:
             ending_time=None,
         )
 
-    async def set_functional_restriction_level(self, level: FunctionalRestrictionLevel):
+    async def set_functional_restriction_level(  # type: ignore[misc]
+        self: Device, level: FunctionalRestrictionLevel
+    ) -> None:
         """Set the content restriction level based on age ratings."""
         _LOGGER.debug(">> Device.set_functional_restriction_level(level=%s)", level)
         self.parental_control_settings["functionalRestrictionLevel"] = str(level)
@@ -211,7 +225,7 @@ class DeviceSettingsMixin:
             self.parental_control_settings,
         )
 
-    async def update_max_daily_playtime(self, minutes: int | float = 0):
+    async def update_max_daily_playtime(self: Device, minutes: int | float = 0) -> None:  # type: ignore[misc]
         """Set the maximum daily playtime limit (0–360, or -1 to remove)."""
         _LOGGER.debug(">> Device.update_max_daily_playtime(minutes=%s)", minutes)
         minutes = normalize_playtime_minutes(minutes)

@@ -7,7 +7,7 @@ import asyncio
 from datetime import datetime, time, timedelta
 from typing import Callable
 
-from pynintendoauth.exceptions import HttpException
+from pynintendoauth.exceptions import HttpException  # type: ignore[import-untyped]  # pylint: disable=import-error
 
 from ..api import Api
 from ..application import Application
@@ -49,14 +49,15 @@ class Device(
         last_sync: Timestamp of the last sync with Nintendo servers.
     """
 
-    def __init__(self, api):
+    def __init__(self, api: Api) -> None:
         """INIT"""
-        self.device_id: str = None
-        self.name: str = None
-        self.sync_state: str = None
+        # Factories always set identity fields before API use; empty defaults keep types honest.
+        self.device_id: str = ""
+        self.name: str = ""
+        self.sync_state: str = ""
         self.extra: dict = {}
         self._api: Api = api
-        self.daily_summaries: dict = {}
+        self.daily_summaries: list = []
         self.parental_control_settings: dict = {}
         self.players: dict[str, Player] = {}
         self.limit_time: int | float | None = 0
@@ -91,7 +92,8 @@ class Device(
             Device model name (e.g., "Switch", "Switch 2", or "Unknown").
         """
         model_map = {"P00": "Switch", "P01": "Switch 2"}
-        return model_map.get(self.generation, "Unknown")
+        generation = self.generation
+        return model_map.get(generation, "Unknown") if generation else "Unknown"
 
     @property
     def generation(self) -> str | None:
@@ -111,7 +113,7 @@ class Device(
         """
         return self.extra.get("synchronizedParentalControlSetting", {}).get("synchronizedAt", None)
 
-    async def update(self, now: datetime = None):
+    async def update(self, now: datetime | None = None):
         """Update device data from Nintendo servers.
 
         Fetches the latest information including daily summaries, parental control
@@ -191,7 +193,7 @@ class Device(
             self.device_id,
         )
 
-    async def get_monthly_summary(self, search_date: datetime = None) -> dict | None:
+    async def get_monthly_summary(self, search_date: datetime | None = None) -> dict | None:
         """Get the monthly usage summary for a specific month.
 
         Args:
@@ -271,18 +273,20 @@ class Device(
                 self.players[player_id] = Player.from_profile(profile)
             self.players[player_id].month_summary = player.get("summary", {})
 
-    def get_date_summary(self, input_date: datetime = datetime.now()) -> dict:
+    def get_date_summary(self, input_date: datetime | None = None) -> list:
         """Get the usage summary for a specific date.
 
         Args:
             input_date: The date to get the summary for. Defaults to today.
 
         Returns:
-            Dictionary containing usage data for the specified date.
+            List containing usage data for the specified date.
 
         Raises:
             ValueError: If no summary exists for the given date or no summaries are available.
         """
+        if input_date is None:
+            input_date = datetime.now()
         if not self.daily_summaries:
             raise ValueError("No daily summaries available to search.")
         summary = [x for x in self.daily_summaries if x["date"] == input_date.strftime("%Y-%m-%d")]
@@ -307,7 +311,7 @@ class Device(
         raise ValueError(f"Player with id {player_id} not found.")
 
     @classmethod
-    async def from_devices_response(cls, raw: dict, api, now: datetime = None) -> list[Device]:
+    async def from_devices_response(cls, raw: dict, api: Api, now: datetime | None = None) -> list[Device]:
         """Parses a device request response body."""
         _LOGGER.debug("Parsing device list response")
         if "ownedDevices" not in raw.keys():
@@ -325,7 +329,7 @@ class Device(
         return devices
 
     @classmethod
-    def from_device_response(cls, raw: dict, api) -> Device:
+    def from_device_response(cls, raw: dict, api: Api) -> Device:
         """Parses a single device request response body."""
         _LOGGER.debug("Parsing device response")
         if "deviceId" not in raw.keys():

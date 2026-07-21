@@ -3,15 +3,21 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Callable
+from typing import TYPE_CHECKING, Callable
 
 from ..utils import is_awaitable
+
+if TYPE_CHECKING:
+    from ._core import Device
 
 
 class DeviceCallbacksMixin:
     """Mixin providing device callback registration and API update plumbing."""
 
-    def add_device_callback(self, callback: Callable):
+    _callbacks: list[Callable]
+    _internal_callbacks: list[Callable]
+
+    def add_device_callback(self: Device, callback: Callable) -> None:  # type: ignore[misc]
         """Add a callback function to be called when device state changes.
 
         The callback will be invoked whenever the device data is updated.
@@ -28,7 +34,7 @@ class DeviceCallbacksMixin:
         if callback not in self._callbacks:
             self._callbacks.append(callback)
 
-    def remove_device_callback(self, callback: Callable):
+    def remove_device_callback(self: Device, callback: Callable) -> None:  # type: ignore[misc]
         """Remove a previously registered device callback.
 
         Args:
@@ -42,7 +48,7 @@ class DeviceCallbacksMixin:
         if callback in self._callbacks:
             self._callbacks.remove(callback)
 
-    async def _execute_callbacks(self):
+    async def _execute_callbacks(self: Device) -> None:  # type: ignore[misc]
         """Execute all callbacks."""
         for cb in self._internal_callbacks:
             if is_awaitable(cb):
@@ -56,7 +62,7 @@ class DeviceCallbacksMixin:
             else:
                 cb()
 
-    async def _send_api_update(self, api_call: Callable, *args, **kwargs):
+    async def _send_api_update(self: Device, api_call: Callable, *args, **kwargs) -> None:  # type: ignore[misc]
         """Sends an update to the API and refreshes local state."""
         now = kwargs.pop("now", datetime.now())
         response = await api_call(*args, **kwargs)

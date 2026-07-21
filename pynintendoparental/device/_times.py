@@ -3,9 +3,13 @@
 from __future__ import annotations
 
 from datetime import datetime, time, timedelta
+from typing import TYPE_CHECKING
 
 from ..const import _LOGGER
 from ._helpers import is_bedtime_disabled, minutes_until_end_of_day
+
+if TYPE_CHECKING:
+    from ._core import Device
 
 
 def remaining_play_minutes(
@@ -21,13 +25,12 @@ def remaining_play_minutes(
 
     Pure function extracted from Device._calculate_today_remaining_time.
     """
-    current_minutes_past_midnight = now.hour * 60 + now.minute
     end_of_day = minutes_until_end_of_day(now.hour, now.minute)
 
-    if limit_time in (-1, None) or extra_playing_time == -1:
-        time_remaining_by_play_limit = end_of_day
+    if limit_time is None or limit_time == -1 or extra_playing_time == -1:
+        time_remaining_by_play_limit: float = float(end_of_day)
     else:
-        effective_limit = limit_time
+        effective_limit: float = float(limit_time)
         if extra_playing_time:
             effective_limit += extra_playing_time
         time_remaining_by_play_limit = effective_limit - today_playing_time
@@ -41,7 +44,7 @@ def remaining_play_minutes(
         else:
             time_remaining_by_bedtime = 0.0
     else:
-        time_remaining_by_bedtime = end_of_day
+        time_remaining_by_bedtime = float(end_of_day)
 
     return int(max(0.0, min(time_remaining_by_play_limit, time_remaining_by_bedtime)))
 
@@ -49,7 +52,21 @@ def remaining_play_minutes(
 class DeviceTimesMixin:
     """Mixin for daily/monthly playtime aggregates and remaining time."""
 
-    def _calculate_times(self, now: datetime):
+    daily_summaries: list
+    device_id: str
+    name: str | None
+    today_playing_time: int | float
+    today_disabled_time: int | float
+    today_exceeded_time: int | float
+    today_time_remaining: int | float
+    month_playing_time: int | float
+    limit_time: int | float | None
+    extra_playing_time: int | None
+    bedtime_alarm: time | None
+    alarms_enabled: bool
+    stats_update_failed: bool
+
+    def _calculate_times(self: Device, now: datetime) -> None:  # type: ignore[misc]
         """Calculate times from parental control settings."""
         if not isinstance(self.daily_summaries, list) or not self.daily_summaries:
             return
@@ -79,7 +96,7 @@ class DeviceTimesMixin:
         self.month_playing_time = month_playing_time
         _LOGGER.debug("Cached current month playing time for device %s", self.device_id)
 
-    def _calculate_today_remaining_time(self, now: datetime):
+    def _calculate_today_remaining_time(self: Device, now: datetime) -> None:  # type: ignore[misc]
         """Calculates the remaining playing time for today."""
         self.stats_update_failed = True
         try:
