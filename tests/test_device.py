@@ -20,6 +20,7 @@ from pynintendoparental.enum import (
 from pynintendoparental.exceptions import (
     BedtimeOutOfRangeError,
     DailyPlaytimeOutOfRangeError,
+    ExtraPlayingTimeActiveError,
     InvalidDeviceStateError,
 )
 
@@ -511,6 +512,56 @@ async def test_add_extra_time_with_bedtime(device: Device, mock_api: Api):
     await device.add_extra_time(15)
     mock_api.async_confirm_extra_playing_time.assert_called_with(device.device_id, 15, True)
     mock_api.async_update_extra_playing_time.assert_not_called()
+
+
+async def test_cancel_extra_time(device: Device, mock_api: Api):
+    """Test cancel_extra_time clears local state and refreshes from the API."""
+    device.extra_playing_time = 30
+    mock_api.async_update_extra_playing_time.return_value = None
+    mock_api.async_get_device_parental_control_setting.reset_mock()
+
+    await device.cancel_extra_time()
+
+    mock_api.async_update_extra_playing_time.assert_called_with(device.device_id, cancel=True)
+    mock_api.async_get_device_parental_control_setting.assert_called()
+    assert device.extra_playing_time is None
+
+
+@pytest.mark.parametrize(
+    "call",
+    [
+        pytest.param(lambda d: d.set_restriction_mode(RestrictionMode.ALARM), id="restriction_mode"),
+        pytest.param(lambda d: d.set_bedtime_alarm(time(21, 0)), id="bedtime_alarm"),
+        pytest.param(lambda d: d.set_bedtime_end_time(time(7, 0)), id="bedtime_end"),
+        pytest.param(lambda d: d.set_timer_mode(DeviceTimerMode.DAILY), id="timer_mode"),
+        pytest.param(lambda d: d.update_max_daily_playtime(60), id="max_playtime"),
+    ],
+)
+async def test_mutators_blocked_when_extra_playing_time_active(device: Device, call):
+    """Mutators that change play limits raise while extra playing time is active."""
+    device.extra_playing_time = 45
+
+    with pytest.raises(ExtraPlayingTimeActiveError) as err:
+        await call(device)
+
+    assert err.value.extra_playing_time == 45
+    assert err.value.error_key == "extra_playing_time_active"
+    assert "45 minutes" in str(err.value)
+
+
+async def test_set_daily_restrictions_blocked_when_extra_playing_time_active(device: Device, pcs: dict):
+    """set_daily_restrictions also refuses to run while extra time is active."""
+    device._parse_parental_control_setting(pcs, MONDAY)  # pylint: disable=protected-access
+    device.timer_mode = DeviceTimerMode.EACH_DAY_OF_THE_WEEK
+    device.extra_playing_time = 20
+
+    with pytest.raises(ExtraPlayingTimeActiveError):
+        await device.set_daily_restrictions(
+            enabled=True,
+            bedtime_enabled=False,
+            day_of_week="monday",
+            max_daily_playtime=120,
+        )
 
 
 @pytest.mark.parametrize(

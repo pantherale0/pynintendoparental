@@ -6,6 +6,7 @@ from datetime import datetime, time, timedelta
 from typing import TYPE_CHECKING
 
 from ..const import _LOGGER
+from ..exceptions import ExtraPlayingTimeActiveError
 from ._helpers import is_bedtime_disabled, minutes_until_end_of_day
 
 if TYPE_CHECKING:  # pragma: no cover
@@ -113,3 +114,8 @@ class DeviceTimesMixin:
             self.stats_update_failed = False
         except (ValueError, TypeError, AttributeError) as err:
             _LOGGER.warning("Unable to calculate remaining time for device %s: %s", self.name, err)
+
+    def _raise_if_extra_playing_time_active(self: Device) -> None: # type: ignore[misc]
+        """Raise an exception if extra playing time is active for the current day."""
+        if self.extra_playing_time:
+            raise ExtraPlayingTimeActiveError(self.extra_playing_time)
