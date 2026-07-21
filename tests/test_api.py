@@ -174,17 +174,8 @@ async def test_api_methods(mock_authenticator: Authenticator):
         body={"deviceId": "DEVICE_ID", "additionalTime": 30, "withBedtime": True},
     )
 
-    await api.async_update_extra_playing_time("DEVICE_ID", -1)
-    api.send_request.assert_called_with(
-        endpoint="update_extra_playing_time",
-        body={"deviceId": "DEVICE_ID", "status": "TO_INFINITY"},
-    )
-
-    await api.async_update_extra_playing_time("DEVICE_ID", 60)
-    api.send_request.assert_called_with(
-        endpoint="update_extra_playing_time",
-        body={"deviceId": "DEVICE_ID", "additionalTime": 60, "status": "TO_ADDED"},
-    )
+    with pytest.raises(ValueError, match="Additional time must be provided if not canceling"):
+        await api.async_update_extra_playing_time("DEVICE_ID", additional_time=None)
 
     await api.async_update_play_timer("DEVICE_ID", {"some": "setting"})
     api.send_request.assert_called_with(
@@ -205,3 +196,21 @@ async def test_api_methods(mock_authenticator: Authenticator):
         endpoint="update_unlock_code",
         body={"deviceId": "DEVICE_ID", "unlockCode": "1234"},
     )
+
+@pytest.mark.parametrize("additional_time, cancel, expected_body", [
+    (15, False, {"deviceId": "DEVICE_ID", "additionalTime": 15, "status": "TO_ADDED"}),
+    (30, True, {"deviceId": "DEVICE_ID", "status": "TO_CANCELLED"}),
+    (-1, False, {"deviceId": "DEVICE_ID", "status": "TO_INFINITY"}),
+    (None, True, {"deviceId": "DEVICE_ID", "status": "TO_CANCELLED"}),
+])
+async def test_async_update_extra_playing_time(
+    mock_authenticator: Authenticator,
+    additional_time: int | None,
+    cancel: bool,
+    expected_body: dict,
+):
+    """Test async_update_extra_playing_time with different parameters."""
+    api = Api(auth=mock_authenticator, tz="Europe/London", lang="en-GB")
+    api.send_request = AsyncMock()
+    await api.async_update_extra_playing_time("DEVICE_ID", additional_time, cancel)
+    api.send_request.assert_called_with(endpoint="update_extra_playing_time", body=expected_body)

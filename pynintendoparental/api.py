@@ -188,14 +188,18 @@ class Api:
         }
         return await self.send_request(endpoint="confirm_extra_playing_time", body=body)
 
-    async def async_update_extra_playing_time(self, device_id: str, additional_time: int) -> dict:
-        """Add extra playing time via the daily inOneDay limit (no-bedtime path)."""
-        body: dict = {
+    async def async_update_extra_playing_time(self, device_id: str, additional_time: int | None = None, cancel: bool = False) -> dict:
+        """Add or cancel extra playing time via the daily inOneDay limit (no-bedtime path)."""
+        body = {
             "deviceId": device_id,
-            "additionalTime": additional_time,
-            "status": "TO_ADDED",
         }
-        if additional_time == -1:
+        if cancel:
+            body["status"] = "TO_CANCELLED"
+        elif additional_time == -1 and not cancel:
             body["status"] = "TO_INFINITY"
-            body.pop("additionalTime")
+        elif additional_time is not None:
+            body["additionalTime"] = additional_time
+            body["status"] = "TO_ADDED"
+        else:
+            raise ValueError("Additional time must be provided if not canceling")
         return await self.send_request(endpoint="update_extra_playing_time", body=body)

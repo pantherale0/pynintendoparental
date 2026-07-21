@@ -9,6 +9,7 @@ class RangeErrorKeys(StrEnum):
     DAILY_PLAYTIME = "daily_playtime_out_of_range"
     BEDTIME = "bedtime_alarm_out_of_range"
     INVALID_DEVICE_STATE = "invalid_device_state"
+    EXTRA_PLAYING_TIME_ACTIVE = "extra_playing_time_active"
 
 
 class NoDevicesFoundException(Exception):
@@ -52,3 +53,15 @@ class InvalidDeviceStateError(DeviceError):
     """The device is in an invalid state for the requested operation."""
 
     error_key = RangeErrorKeys.INVALID_DEVICE_STATE
+
+class ExtraPlayingTimeActiveError(DeviceError):
+    """Extra playing time is active for the current day."""
+
+    error_key = RangeErrorKeys.EXTRA_PLAYING_TIME_ACTIVE
+    extra_playing_time: int
+
+    def __init__(self, extra_playing_time: int) -> None:
+        super().__init__(
+            f"Extra playing time is active for the current day: {extra_playing_time} minutes"
+        )
+        self.extra_playing_time = extra_playing_time

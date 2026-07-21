@@ -63,13 +63,24 @@ class DeviceSettingsMixin:
             await self._api.async_update_extra_playing_time(self.device_id, minutes)
         await self._get_parental_control_setting(datetime.now())
 
+    async def cancel_extra_time(self: Device) -> None:  # type: ignore[misc]
+        """Cancel extra playing time for the current day."""
+        _LOGGER.debug(">> Device.cancel_extra_time()")
+        await self._api.async_update_extra_playing_time(self.device_id, cancel=True)
+        self.extra_playing_time = None
+        await self._get_parental_control_setting(datetime.now())
+        await self._execute_callbacks()
+
     async def set_restriction_mode(self: Device, mode: RestrictionMode) -> None:  # type: ignore[misc]
         """Set the restriction mode for playtime limits.
 
         Args:
             mode: RestrictionMode.FORCED_TERMINATION or RestrictionMode.ALARM.
+        Raises:
+            ExtraPlayingTimeActiveError: If extra playing time is active for the current day.
         """
         _LOGGER.debug(">> Device.set_restriction_mode(mode=%s)", mode)
+        self._raise_if_extra_playing_time_active()
         self.parental_control_settings["playTimerRegulations"]["restrictionMode"] = str(mode)
         response = await self._api.async_update_play_timer(
             self.device_id,
@@ -82,6 +93,7 @@ class DeviceSettingsMixin:
     async def set_bedtime_alarm(self: Device, value: time) -> None:  # type: ignore[misc]
         """Set the bedtime alarm time (16:00–23:00, or time(0, 0) to disable)."""
         _LOGGER.debug(">> Device.set_bedtime_alarm(value=%s)", value)
+        self._raise_if_extra_playing_time_active()
         validate_bedtime_alarm(value)
         now = datetime.now()
         regulation = self._get_today_regulation(now)
@@ -107,6 +119,7 @@ class DeviceSettingsMixin:
     async def set_bedtime_end_time(self: Device, value: time) -> None:  # type: ignore[misc]
         """Set when bedtime restrictions end (05:00–09:00, or time(0, 0) to disable)."""
         _LOGGER.debug(">> Device.set_bedtime_end_time(value=%s)", value)
+        self._raise_if_extra_playing_time_active()
         validate_bedtime_end(value)
         now = datetime.now()
         regulation = self._get_today_regulation(now)
@@ -126,6 +139,7 @@ class DeviceSettingsMixin:
     async def set_timer_mode(self: Device, mode: DeviceTimerMode) -> None:  # type: ignore[misc]
         """Set the timer mode (DAILY or EACH_DAY_OF_THE_WEEK)."""
         _LOGGER.debug(">> Device.set_timer_mode(mode=%s)", mode)
+        self._raise_if_extra_playing_time_active()
         self.timer_mode = mode
         self.parental_control_settings["playTimerRegulations"]["timerMode"] = str(mode)
         await self._send_api_update(
@@ -157,6 +171,7 @@ class DeviceSettingsMixin:
             bedtime_end,
             max_daily_playtime,
         )
+        self._raise_if_extra_playing_time_active()
         if self.timer_mode != DeviceTimerMode.EACH_DAY_OF_THE_WEEK:
             raise InvalidDeviceStateError("Daily restrictions can only be set when timer_mode is EACH_DAY_OF_THE_WEEK.")
         if day_of_week not in DAYS_OF_WEEK:
@@ -228,6 +243,7 @@ class DeviceSettingsMixin:
     async def update_max_daily_playtime(self: Device, minutes: int | float = 0) -> None:  # type: ignore[misc]
         """Set the maximum daily playtime limit (0–360, or -1 to remove)."""
         _LOGGER.debug(">> Device.update_max_daily_playtime(minutes=%s)", minutes)
+        self._raise_if_extra_playing_time_active()
         minutes = normalize_playtime_minutes(minutes)
         validate_max_daily_playtime(minutes)
         now = datetime.now()
