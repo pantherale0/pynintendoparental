@@ -1026,3 +1026,75 @@ async def test_calculate_times(
     assert len(matching_logs) == 1
 
     assert device.month_playing_time == 75
+
+async def test_parse_with_extra_playing_time_infinity(mock_api: Api):
+    """Test that isInfinity is parsed into extra_playing_time as -1 (the same "unlimited" sentinel
+    already used by limit_time and the update_extra_playing_time API method), not a separate flag."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+
+    assert device.extra_playing_time is None
+
+    pcs_response = await load_fixture("device_parental_control_setting")
+    pcs_response["ownedDevice"]["device"]["extraPlayingTime"] = {
+        "inOneDay": {"duration": None, "isInfinity": True},
+    }
+
+    mock_api.async_get_device_parental_control_setting.return_value = {"json": pcs_response}
+    await device.update()
+
+    assert device.extra_playing_time == -1
+
+
+async def test_today_time_remaining_with_infinite_extra_playing_time(mock_api: Api):
+    """today_time_remaining must not be capped by the daily limit when extra time is unlimited.
+
+    Previously isInfinity wasn't parsed at all, so an unlimited grant fell back
+    to a falsy extra_playing_time and today_time_remaining showed just the
+    (much smaller) finite daily limit instead of reading as unlimited.
+    """
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    device = devices[0]
+
+    pcs_response = await load_fixture("device_parental_control_setting")
+
+    # A small daily play limit of 60 minutes - unlimited extra time should
+    # override this entirely, not just add a finite bonus on top.
+    pcs_response["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"] = {
+        "enabled": True,
+        "limitTime": 60,
+    }
+    pcs_response["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["bedtime"] = {
+        "enabled": False,
+        "endingTime": None,
+        "startingTime": {"hour": 6, "minute": 0},
+    }
+    pcs_response["ownedDevice"]["device"]["extraPlayingTime"] = {
+        "inOneDay": {"duration": None, "isInfinity": True},
+        "bedtime": None,
+        "expiresAt": 1770335999,
+    }
+    mock_api.async_get_device_parental_control_setting.return_value = {"json": pcs_response}
+
+    daily_summaries_response = await load_fixture("device_daily_summaries")
+    today = datetime.now().strftime("%Y-%m-%d")
+    daily_summaries_response["dailySummaries"][0]["date"] = today
+    daily_summaries_response["dailySummaries"][0]["playingTime"] = 20
+    mock_api.async_get_device_daily_summaries.return_value = {"json": daily_summaries_response}
+
+    await device.update()
+
+    assert device.extra_playing_time == -1
+    assert device.limit_time == 60
+    assert device.today_playing_time == 20
+
+    # Same "remaining until end of day" this library already uses for
+    # limit_time in (-1, None) - not (60 - 20) and definitely not negative.
+    now = datetime.now()
+    minutes_in_day = 1440
+    current_minutes_past_midnight = now.hour * 60 + now.minute
+    expected_remaining = minutes_in_day - current_minutes_past_midnight
+
+    assert device.today_time_remaining == expected_remaining
