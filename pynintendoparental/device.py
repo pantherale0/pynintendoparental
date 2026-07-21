@@ -36,6 +36,7 @@ class Device:
         name: User-friendly name/label for the device.
         model: Device model (e.g., "Switch", "Switch 2").
         limit_time: Daily playtime limit in minutes (-1 if no limit).
+        extra_playing_time: Extra playing time in minutes, or -1 if unlimited (TO_INFINITY).
         today_playing_time: Total playing time for the current day in minutes.
         today_time_remaining: Remaining playtime for the current day in minutes.
         players: Dictionary of Player objects keyed by player ID.
@@ -658,10 +659,15 @@ class Device:
                     # Update bedtime_alarm to the extended bedtime
                     self.bedtime_alarm = extended_bedtime
             else:
-                # When bedtime is disabled, use inOneDay duration
+                # When bedtime is disabled, use inOneDay duration.
+                # If the duration is -1, set extra_playing_time to -1 (TO_INFINITY).
                 in_one_day = extra_playing_time_data.get("inOneDay")
-                if in_one_day is not None:
+                if in_one_day is not None and in_one_day.get("isInfinity"):
+                    self.extra_playing_time = -1
+                elif in_one_day is not None:
                     self.extra_playing_time = in_one_day.get("duration")
+                else:
+                    self.extra_playing_time = None
         if bedtime_setting.get("enabled") and bedtime_setting["startingTime"]:
             self.bedtime_end = time(
                 hour=bedtime_setting["startingTime"]["hour"],
@@ -708,8 +714,8 @@ class Device:
             minutes_in_day = 1440  # 24 * 60
             current_minutes_past_midnight = now.hour * 60 + now.minute
 
-            if self.limit_time in (-1, None):
-                # No play limit, so remaining time is until end of day.
+            if self.limit_time in (-1, None) or self.extra_playing_time == -1:
+                # No play limit (or unlimited extra playing time), so remaining time is until end of day.
                 time_remaining_by_play_limit = minutes_in_day - current_minutes_past_midnight
             else:
                 # Calculate remaining time from play limit, adding any extra playing time
