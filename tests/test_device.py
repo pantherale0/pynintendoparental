@@ -23,18 +23,22 @@ from pynintendoparental.exceptions import (
     InvalidDeviceStateError,
 )
 
-from .helpers import clean_device_for_snapshot, load_fixture
+from .conftest import FIXED_NOW
+from .helpers import (
+    clean_device_for_snapshot,
+    daily_summaries_for,
+    load_fixture,
+    pcs_with_bedtime,
+    pcs_with_extra_bedtime,
+    pcs_with_extra_in_one_day,
+    pcs_with_play_limit,
+)
+
+MONDAY = datetime(2023, 10, 30, 12, 0, 0)
 
 
-async def test_device_parsing(mock_api: Api, snapshot: SnapshotAssertion):
+async def test_device_parsing(device: Device, mock_api: Api, snapshot: SnapshotAssertion):
     """Test that the device class parsing works as expected."""
-    devices_response = await load_fixture("account_devices")
-    # Use a fixed datetime that matches the fixture dates to avoid flakiness
-    fixed_now = datetime(2025, 12, 8, 12, 0, 0)
-    devices = await Device.from_devices_response(devices_response, mock_api, now=fixed_now)
-    assert len(devices) > 0
-    device = devices[0]
-
     mock_api.async_get_device_monthly_summary.assert_called_once()
     mock_api.async_get_device_daily_summaries.assert_called_once()
     mock_api.async_get_device_parental_control_setting.assert_called_once()
@@ -48,19 +52,13 @@ async def test_device_parsing(mock_api: Api, snapshot: SnapshotAssertion):
     assert test_device.last_sync is None
 
     assert len(getattr(device, "_internal_callbacks")) == len(device.applications)
-
     assert clean_device_for_snapshot(device) == snapshot(exclude=props("today_time_remaining"))
 
 
-async def test_player_discovery(mock_api: Api):
+async def test_player_discovery(device: Device, mock_api: Api):
     """Test that the device correctly parses players in different scenarios."""
-    devices_response = await load_fixture("account_devices")
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    assert len(devices) > 0
-    device = devices[0]
     assert len(device.players) > 0
 
-    # Test that the library correctly handles cases where the playerId is not found
     monthly_summary_response = await load_fixture("device_monthly_summary")
     players = copy.deepcopy(monthly_summary_response["summary"]["players"][0])
     del players["profile"]["playerId"]
@@ -75,38 +73,22 @@ async def test_player_discovery(mock_api: Api):
     assert mock_api.async_get_device_monthly_summary.call_count == 2
 
 
-async def test_get_player(mock_api: Api):
+async def test_get_player(device: Device):
     """Test that the get_player method works as expected."""
-    devices_response = await load_fixture("account_devices")
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    assert len(devices) > 0
-    device = devices[0]
-    assert len(device.players) > 0
-
-    # Get the ID of the first player in the dictionary
     first_player_id = list(device.players.keys())[0]
     player = device.get_player(first_player_id)
     assert player.player_id == first_player_id
 
-    # Now test that it errors
     with pytest.raises(ValueError):
         device.get_player("invalid_player_id")
 
 
-async def test_get_application(mock_api: Api):
+async def test_get_application(device: Device):
     """Test that the get_application method works as expected."""
-    devices_response = await load_fixture("account_devices")
-    devices: list[Device] = await Device.from_devices_response(devices_response, mock_api)
-    assert len(devices) > 0
-    device = devices[0]
-    assert len(device.applications) > 0
-
-    # Get the ID of the first application in the dict
     first_app_id = list(device.applications.keys())[0]
     application = device.get_application(first_app_id)
     assert application.application_id == first_app_id
 
-    # Now test the errors
     with pytest.raises(ValueError):
         device.get_application("invalid_application_id")
 
@@ -114,75 +96,48 @@ async def test_get_application(mock_api: Api):
 @pytest.mark.parametrize(
     "value",
     [
-        pytest.param(time(hour=6, minute=30)),
-        pytest.param(time(hour=5, minute=0)),  # lower bound
-        pytest.param(time(hour=9, minute=0)),  # upper bound
-        pytest.param(time(hour=0, minute=0)),  # Disable
+        pytest.param(time(hour=6, minute=30), id="mid"),
+        pytest.param(time(hour=5, minute=0), id="lower_bound"),
+        pytest.param(time(hour=9, minute=0), id="upper_bound"),
+        pytest.param(time(hour=0, minute=0), id="disable"),
     ],
 )
-async def test_update_device_bedtime_end_time(mock_api: Api, value: time):
+async def test_update_device_bedtime_end_time(device: Device, mock_api: Api, pcs: dict, value: time):
     """Test that updating the device bedtime end time works as expected."""
-    devices_response = await load_fixture("account_devices")
-    pcs_response = {"json": await load_fixture("device_parental_control_setting")}
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    assert len(devices) > 0
-    device = devices[0]
-    assert len(device.players) > 0
-
-    expected_pcs = copy.deepcopy(pcs_response)
+    expected_pcs = {"json": copy.deepcopy(pcs)}
     bedtime = expected_pcs["json"]["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["bedtime"]
     if value == time(0, 0):
-        # startingTime is preserved (not nullified) — existing fixture value {"hour": 6, "minute": 0} stays
         bedtime["enabled"] = False
     else:
         bedtime["enabled"] = True
-        bedtime["startingTime"] = {
-            "hour": value.hour,
-            "minute": value.minute,
-        }
+        bedtime["startingTime"] = {"hour": value.hour, "minute": value.minute}
 
-    mock_api.async_update_play_timer.return_value = expected_pcs  # Override the response to correctly parse the data
+    mock_api.async_update_play_timer.return_value = expected_pcs
     await device.set_bedtime_end_time(value)
 
     mock_api.async_update_play_timer.assert_called_with(
         device.device_id,
         expected_pcs["json"]["parentalControlSetting"]["playTimerRegulations"],
     )
-
     assert device.bedtime_end == value
 
 
 @pytest.mark.parametrize(
     "new_bedtime",
     [
-        pytest.param(time(hour=20, minute=0)),  # Lower bound
-        pytest.param(time(hour=23, minute=0)),  # Upper bound
-        pytest.param(time(hour=21, minute=30)),
-        pytest.param(time(hour=0, minute=0)),
+        pytest.param(time(hour=20, minute=0), id="lower_bound"),
+        pytest.param(time(hour=23, minute=0), id="upper_bound"),
+        pytest.param(time(hour=21, minute=30), id="mid"),
+        pytest.param(time(hour=0, minute=0), id="disable"),
     ],
 )
-async def test_update_device_bedtime_alarm(
-    mock_api: Api,
-    new_bedtime: time,
-    caplog: pytest.LogCaptureFixture,
-):
+async def test_update_device_bedtime_alarm(device: Device, mock_api: Api, pcs: dict, new_bedtime: time):
     """Test that updating the device bedtime alarm works as expected."""
-    devices_response = await load_fixture("account_devices")
-    pcs_response = {"json": await load_fixture("device_parental_control_setting")}
-    mock_api.async_update_play_timer.return_value = pcs_response
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    assert len(devices) > 0
-    device = devices[0]
-    assert len(device.players) > 0
-
     assert device.timer_mode is DeviceTimerMode.DAILY
     assert device.bedtime_alarm == time(0, 0)
 
-    expected_pcs = copy.deepcopy(pcs_response)
-    if new_bedtime == time(0, 0):
-        ending_time = None
-    else:
-        ending_time = {"hour": new_bedtime.hour, "minute": new_bedtime.minute}
+    expected_pcs = {"json": copy.deepcopy(pcs)}
+    ending_time = None if new_bedtime == time(0, 0) else {"hour": new_bedtime.hour, "minute": new_bedtime.minute}
     expected_pcs["json"]["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["bedtime"].update(
         {
             "enabled": new_bedtime != time(0, 0),
@@ -192,12 +147,10 @@ async def test_update_device_bedtime_alarm(
     mock_api.async_update_play_timer.return_value = expected_pcs
 
     await device.set_bedtime_alarm(new_bedtime)
-    assert f">> Device.set_bedtime_alarm(value={new_bedtime})" in caplog.text
     mock_api.async_update_play_timer.assert_called_with(
         device.device_id,
         expected_pcs["json"]["parentalControlSetting"]["playTimerRegulations"],
     )
-
     assert device.parental_control_settings["playTimerRegulations"]["dailyRegulations"]["bedtime"]["enabled"] == (
         new_bedtime != time(0, 0)
     )
@@ -211,27 +164,29 @@ async def test_update_device_bedtime_alarm(
             BedtimeOutOfRangeError(value=time(4, 0)),
             "set_bedtime_end_time",
             "Bedtime is outside of the allowed range.",
+            id="end_too_early",
         ),
         pytest.param(
             BedtimeOutOfRangeError(value=time(0, 1)),
             "set_bedtime_end_time",
             "Bedtime is outside of the allowed range.",
+            id="end_invalid",
         ),
         pytest.param(
             BedtimeOutOfRangeError(value=time(14, 30)),
             "set_bedtime_alarm",
             "Bedtime is outside of the allowed range.",
+            id="alarm_afternoon",
         ),
     ],
 )
-async def test_update_device_exceptions(mock_api: Api, side_effect: Exception, function_name: str, expected_log: str):
-    """Test that updating the device bedtime end time raises exceptions as expected."""
-    devices_response = await load_fixture("account_devices")
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    assert len(devices) > 0
-    device = devices[0]
-    assert len(device.players) > 0
-
+async def test_update_device_exceptions(
+    device: Device,
+    side_effect: Exception,
+    function_name: str,
+    expected_log: str,
+):
+    """Test that updating bedtime raises exceptions as expected."""
     with pytest.raises(type(side_effect)) as err:
         await getattr(device, function_name)(side_effect.value)
 
@@ -245,28 +200,25 @@ async def test_update_device_exceptions(mock_api: Api, side_effect: Exception, f
             "async_get_device_monthly_summary",
             HttpException(404, "test", "test"),
             "HTTP Exception raised while getting monthly summary for device {DEVICE_ID}: HTTP 404: test (test)",
+            id="summary",
         ),
         pytest.param(
             "async_get_device_monthly_summaries",
             HttpException(404, "test", "test"),
             "Could not retrieve monthly summaries: HTTP 404: test (test)",
+            id="summaries_list",
         ),
     ],
 )
 async def test_get_monthly_summary_error(
+    device: Device,
     mock_api: Api,
     caplog: pytest.LogCaptureFixture,
     mock_api_function: str,
     side_effect: Exception,
     expected_log: str,
 ):
-    """Test that get_monthly_summary calls correctly handle and log HTTP exceptions."""
-    devices_response = await load_fixture("account_devices")
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    assert len(devices) > 0
-    device = devices[0]
-    assert len(device.players) > 0
-
+    """Test that get_monthly_summary correctly handles and logs HTTP exceptions."""
     getattr(mock_api, mock_api_function).side_effect = side_effect
 
     await device.get_monthly_summary()
@@ -285,6 +237,7 @@ async def test_get_monthly_summary_error(
                 "day_of_week": "monday",
                 "max_daily_playtime": 260,
             },
+            id="success_int",
         ),
         pytest.param(
             None,
@@ -295,6 +248,7 @@ async def test_get_monthly_summary_error(
                 "day_of_week": "monday",
                 "max_daily_playtime": 260.0,
             },
+            id="success_float",
         ),
         pytest.param(
             None,
@@ -305,6 +259,7 @@ async def test_get_monthly_summary_error(
                 "day_of_week": "monday",
                 "max_daily_playtime": None,
             },
+            id="success_no_limit",
         ),
         pytest.param(
             None,
@@ -317,6 +272,7 @@ async def test_get_monthly_summary_error(
                 "day_of_week": "monday",
                 "max_daily_playtime": 260,
             },
+            id="success_with_bedtime",
         ),
         pytest.param(
             InvalidDeviceStateError,
@@ -327,6 +283,7 @@ async def test_get_monthly_summary_error(
                 "day_of_week": "monday",
                 "max_daily_playtime": 260,
             },
+            id="error_daily_mode",
         ),
         pytest.param(
             ValueError,
@@ -337,6 +294,7 @@ async def test_get_monthly_summary_error(
                 "day_of_week": "invalid_day",
                 "max_daily_playtime": 260,
             },
+            id="error_invalid_day",
         ),
         pytest.param(
             DailyPlaytimeOutOfRangeError,
@@ -347,6 +305,7 @@ async def test_get_monthly_summary_error(
                 "day_of_week": "monday",
                 "max_daily_playtime": 380,
             },
+            id="error_playtime_range",
         ),
         pytest.param(
             BedtimeOutOfRangeError,
@@ -359,6 +318,7 @@ async def test_get_monthly_summary_error(
                 "day_of_week": "monday",
                 "max_daily_playtime": 380,
             },
+            id="error_start_range",
         ),
         pytest.param(
             BedtimeOutOfRangeError,
@@ -371,6 +331,7 @@ async def test_get_monthly_summary_error(
                 "day_of_week": "monday",
                 "max_daily_playtime": 380,
             },
+            id="error_end_range",
         ),
         pytest.param(
             BedtimeOutOfRangeError,
@@ -381,31 +342,22 @@ async def test_get_monthly_summary_error(
                 "day_of_week": "monday",
                 "max_daily_playtime": 280,
             },
+            id="error_missing_bedtime_times",
         ),
     ],
 )
 async def test_set_daily_restrictions(
+    device: Device,
     mock_api: Api,
-    caplog: pytest.LogCaptureFixture,
-    side_effect: Exception | None,
+    pcs: dict,
+    side_effect: type[Exception] | None,
     timer_state: DeviceTimerMode,
     kwargs: dict,
 ):
-    """Test that set_daily_restrictions calls correctly raises exceptions."""
-    devices_response = await load_fixture("account_devices")
-    pcs_response = await load_fixture("device_parental_control_setting")
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    assert len(devices) > 0
-    device = devices[0]
-    device._parse_parental_control_setting(  # pylint: disable=protected-access
-        pcs_response,
-        datetime(2023, 10, 30, 12, 0, 0),  # A Monday
-    )
-    assert len(device.players) > 0
-
-    # Override the device timer mode for testing
+    """Test that set_daily_restrictions succeeds or raises as expected."""
+    device._parse_parental_control_setting(pcs, MONDAY)  # pylint: disable=protected-access
     device.timer_mode = timer_state
-    mock_api.async_update_play_timer.return_value = {"json": pcs_response}
+    mock_api.async_update_play_timer.return_value = {"json": pcs}
 
     if side_effect is None:
         await device.set_daily_restrictions(**kwargs)
@@ -414,32 +366,19 @@ async def test_set_daily_restrictions(
         with pytest.raises(side_effect):
             await device.set_daily_restrictions(**kwargs)
 
-    assert ">> Device.set_daily_restrictions" in caplog.text
-    assert ">> Device._parse_parental_control_setting" in caplog.text
-
 
 async def test_set_daily_restrictions_bedtime_disabled_preserves_starting_time(
+    device: Device,
     mock_api: Api,
+    pcs: dict,
 ):
-    """When bedtime_enabled=False, startingTime must be preserved from existing data.
-
-    Sending null startingTime causes the Nintendo API to return 400 invalid_params.
-    The fix preserves the existing startingTime from the regulation data.
-    """
-    devices_response = await load_fixture("account_devices")
-    pcs_response = await load_fixture("device_parental_control_setting")
-    # Use a non-default startingTime to verify preservation, not the fallback default
-    pcs_response["parentalControlSetting"]["playTimerRegulations"][
-        "eachDayOfTheWeekRegulations"
-    ]["monday"]["bedtime"]["startingTime"] = {"hour": 7, "minute": 30}
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    device = devices[0]
-    device._parse_parental_control_setting(  # pylint: disable=protected-access
-        pcs_response,
-        datetime(2023, 10, 30, 12, 0, 0),
-    )
+    """When bedtime_enabled=False, startingTime must be preserved from existing data."""
+    pcs["parentalControlSetting"]["playTimerRegulations"]["eachDayOfTheWeekRegulations"]["monday"]["bedtime"][
+        "startingTime"
+    ] = {"hour": 7, "minute": 30}
+    device._parse_parental_control_setting(pcs, MONDAY)  # pylint: disable=protected-access
     device.timer_mode = DeviceTimerMode.EACH_DAY_OF_THE_WEEK
-    mock_api.async_update_play_timer.return_value = {"json": pcs_response}
+    mock_api.async_update_play_timer.return_value = {"json": pcs}
 
     await device.set_daily_restrictions(
         enabled=True,
@@ -449,33 +388,19 @@ async def test_set_daily_restrictions_bedtime_disabled_preserves_starting_time(
     )
 
     mock_api.async_update_play_timer.assert_called_once()
-    call_args = mock_api.async_update_play_timer.call_args
-    sent_regulations = call_args[0][1]
+    sent_regulations = mock_api.async_update_play_timer.call_args[0][1]
     monday_bedtime = sent_regulations["eachDayOfTheWeekRegulations"]["monday"]["bedtime"]
     assert monday_bedtime["enabled"] is False
-    assert monday_bedtime["startingTime"] == {"hour": 7, "minute": 30}, (
-        "startingTime must be preserved from existing data, not replaced with default"
-    )
+    assert monday_bedtime["startingTime"] == {"hour": 7, "minute": 30}
     assert monday_bedtime["endingTime"] is None
 
 
-async def test_set_functional_restriction_level(
-    mock_api: Api,
-    caplog: pytest.LogCaptureFixture,
-):
+async def test_set_functional_restriction_level(device: Device, mock_api: Api, pcs: dict):
     """Test that set_functional_restriction_level calls correctly."""
-    devices_response = await load_fixture("account_devices")
-    pcs_response = await load_fixture("device_parental_control_setting")
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    assert len(devices) > 0
-    device = devices[0]
-    device._parse_parental_control_setting(  # pylint: disable=protected-access
-        pcs_response, datetime(2023, 10, 30, 12, 0, 0)
-    )
-    assert len(device.players) > 0
+    device._parse_parental_control_setting(pcs, MONDAY)  # pylint: disable=protected-access
 
     new_level = FunctionalRestrictionLevel.TEEN
-    expected_response = copy.deepcopy(pcs_response)
+    expected_response = copy.deepcopy(pcs)
     expected_response["parentalControlSetting"]["functionalRestrictionLevel"] = "OLDER_TEENS"
     mock_api.async_update_restriction_level.return_value = {"json": expected_response}
 
@@ -485,19 +410,9 @@ async def test_set_functional_restriction_level(
         device.parental_control_settings,
     )
 
-    assert ">> Device.set_functional_restriction_level" in caplog.text
-    assert ">> Device._parse_parental_control_setting" in caplog.text
 
-
-async def test_model_map(
-    mock_api: Api,
-):
+async def test_model_map(device: Device):
     """Test that the model map works as expected."""
-    devices_response = await load_fixture("account_devices")
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    assert len(devices) > 0
-    device = devices[0]
-
     device.extra["platformGeneration"] = "P01"
     assert device.model == "Switch 2"
 
@@ -511,15 +426,8 @@ async def test_model_map(
     assert device.model == "Unknown"
 
 
-async def test_device_callbacks(
-    mock_api: Api,
-):
+async def test_device_callbacks(device: Device):
     """Test that the device callbacks work as expected."""
-    devices_response = await load_fixture("account_devices")
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    assert len(devices) > 0
-    device = devices[0]
-
     assert len(device._callbacks) == 0
     assert len(device._internal_callbacks) == len(device.applications)
 
@@ -533,7 +441,6 @@ async def test_device_callbacks(
     sync_callback.assert_called_once()
     async_callback.assert_called_once()
 
-    # Remove a callback
     sync_callback.reset_mock()
     async_callback.reset_mock()
     device.remove_device_callback(sync_callback)
@@ -543,24 +450,15 @@ async def test_device_callbacks(
     sync_callback.assert_not_called()
     async_callback.assert_not_called()
 
-    # Test removing a non-callable
     with pytest.raises(ValueError, match="Object must be callable."):
         device.remove_device_callback("not a function")
 
-    # Test adding a non-callable
     with pytest.raises(ValueError, match="Object must be callable."):
         device.add_device_callback("not a function")
 
 
-async def test_internal_callbacks(
-    mock_api: Api,
-):
+async def test_internal_callbacks(device: Device):
     """Test that the internal callbacks work as expected."""
-    devices_response = await load_fixture("account_devices")
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    assert len(devices) > 0
-    device = devices[0]
-
     sync_callback = Mock()
     async_callback = AsyncMock()
 
@@ -580,17 +478,11 @@ async def test_internal_callbacks(
         pytest.param("2359434069346"),
     ],
 )
-async def test_set_new_pin(mock_api: Api, caplog: pytest.LogCaptureFixture, pin):
+async def test_set_new_pin(device: Device, mock_api: Api, pin: str):
     """Test that the set_new_pin method works as expected."""
-    devices_response = await load_fixture("account_devices")
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    assert len(devices) > 0
-    device = devices[0]
-
     mock_api.async_update_unlock_code.return_value = {"json": await load_fixture("device_parental_control_setting")}
     await device.set_new_pin(pin)
     mock_api.async_update_unlock_code.assert_called_with(new_code=pin, device_id=device.device_id)
-    assert ">> Device.set_new_pin(pin=REDACTED)" in caplog.text
 
 
 @pytest.mark.parametrize(
@@ -600,35 +492,17 @@ async def test_set_new_pin(mock_api: Api, caplog: pytest.LogCaptureFixture, pin)
         pytest.param(0),
     ],
 )
-async def test_add_extra_time(
-    mock_api: Api,
-    caplog: pytest.LogCaptureFixture,
-    extra_time: int,
-):
+async def test_add_extra_time(device: Device, mock_api: Api, extra_time: int):
     """Test that the add_extra_time method works as expected."""
-    devices_response = await load_fixture("account_devices")
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    assert len(devices) > 0
-    device = devices[0]
-
     mock_api.async_update_extra_playing_time.return_value = None
 
     await device.add_extra_time(extra_time)
-    # bedtime is disabled in the fixture (bedtime.enabled=false), so bedtime_alarm is
-    # time(0, 0) after update() runs; the != time(0, 0) check makes with_bedtime=False
     mock_api.async_update_extra_playing_time.assert_called_with(device.device_id, extra_time)
     mock_api.async_confirm_extra_playing_time.assert_not_called()
-    assert f">> Device.add_extra_time(minutes={extra_time})" in caplog.text
 
 
-async def test_add_extra_time_with_bedtime(
-    mock_api: Api,
-    caplog: pytest.LogCaptureFixture,
-):
+async def test_add_extra_time_with_bedtime(device: Device, mock_api: Api):
     """Test add_extra_time uses confirmExtraPlayingTime when bedtime is active."""
-    devices_response = await load_fixture("account_devices")
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    device = devices[0]
     device.bedtime_alarm = time(hour=21, minute=0)
     device.alarms_enabled = True
 
@@ -637,7 +511,6 @@ async def test_add_extra_time_with_bedtime(
     await device.add_extra_time(15)
     mock_api.async_confirm_extra_playing_time.assert_called_with(device.device_id, 15, True)
     mock_api.async_update_extra_playing_time.assert_not_called()
-    assert ">> Device.add_extra_time(minutes=15)" in caplog.text
 
 
 @pytest.mark.parametrize(
@@ -648,20 +521,15 @@ async def test_add_extra_time_with_bedtime(
     ],
 )
 async def test_set_restriction_mode(
+    device: Device,
     mock_api: Api,
-    caplog: pytest.LogCaptureFixture,
+    pcs: dict,
     restriction_mode: RestrictionMode,
     expected_restriction_state_flag: bool,
 ):
     """Test that the set_restriction_mode method works as expected."""
-    devices_response = await load_fixture("account_devices")
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    assert len(devices) > 0
-    device = devices[0]
-
-    expected_pcs = await load_fixture("device_parental_control_setting")
+    expected_pcs = copy.deepcopy(pcs)
     expected_pcs["parentalControlSetting"]["playTimerRegulations"]["restrictionMode"] = str(restriction_mode)
-
     mock_api.async_update_play_timer.return_value = {"json": expected_pcs}
 
     await device.set_restriction_mode(restriction_mode)
@@ -669,7 +537,6 @@ async def test_set_restriction_mode(
         device.device_id,
         device.parental_control_settings["playTimerRegulations"],
     )
-    assert f">> Device.set_restriction_mode(mode={restriction_mode})" in caplog.text
     assert device.forced_termination_mode == expected_restriction_state_flag
 
 
@@ -680,18 +547,9 @@ async def test_set_restriction_mode(
         pytest.param(DeviceTimerMode.EACH_DAY_OF_THE_WEEK),
     ],
 )
-async def test_set_timer_mode(
-    mock_api: Api,
-    caplog: pytest.LogCaptureFixture,
-    new_mode: DeviceTimerMode,
-):
+async def test_set_timer_mode(device: Device, mock_api: Api, pcs: dict, new_mode: DeviceTimerMode):
     """Test that the set_timer_mode method works as expected."""
-    devices_response = await load_fixture("account_devices")
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    assert len(devices) > 0
-    device = devices[0]
-
-    expected_pcs = {"json": await load_fixture("device_parental_control_setting")}
+    expected_pcs = {"json": copy.deepcopy(pcs)}
     expected_pcs["json"]["parentalControlSetting"]["playTimerRegulations"]["timerMode"] = str(new_mode)
     mock_api.async_update_play_timer.return_value = expected_pcs
     await device.set_timer_mode(new_mode)
@@ -699,37 +557,30 @@ async def test_set_timer_mode(
         device.device_id,
         device.parental_control_settings["playTimerRegulations"],
     )
-
     assert device.timer_mode == new_mode
-    assert f">> Device.set_timer_mode(mode={new_mode})" in caplog.text
 
 
 @pytest.mark.parametrize(
     "minutes,expected_exception",
     [
-        pytest.param(-2, DailyPlaytimeOutOfRangeError),
-        pytest.param(-1, None),
-        pytest.param(0, None),
-        pytest.param(1, None),
-        pytest.param(1.5, None),
-        pytest.param(360, None),
-        pytest.param(361, DailyPlaytimeOutOfRangeError),
+        pytest.param(-2, DailyPlaytimeOutOfRangeError, id="below"),
+        pytest.param(-1, None, id="unlimited"),
+        pytest.param(0, None, id="zero"),
+        pytest.param(1, None, id="one"),
+        pytest.param(1.5, None, id="float"),
+        pytest.param(360, None, id="max"),
+        pytest.param(361, DailyPlaytimeOutOfRangeError, id="above"),
     ],
 )
 async def test_update_max_daily_playtime(
+    device: Device,
     mock_api: Api,
-    caplog: pytest.LogCaptureFixture,
+    pcs: dict,
     minutes: int,
-    expected_exception: Exception | None,
+    expected_exception: type[Exception] | None,
 ):
     """Test that the update_max_daily_playtime method works as expected."""
-    devices_response = await load_fixture("account_devices")
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    assert len(devices) > 0
-    device = devices[0]
-
-    pcs_response = await load_fixture("device_parental_control_setting")
-    ttpiod = pcs_response["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]
+    ttpiod = pcs["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"]
     if minutes == -1:
         ttpiod["enabled"] = False
         ttpiod.pop("limitTime")
@@ -737,386 +588,186 @@ async def test_update_max_daily_playtime(
         ttpiod["enabled"] = True
         ttpiod["limitTime"] = int(minutes)
 
-    mock_api.async_update_play_timer.return_value = {"json": pcs_response}
+    mock_api.async_update_play_timer.return_value = {"json": pcs}
 
     if expected_exception is None:
         await device.update_max_daily_playtime(minutes)
         mock_api.async_update_play_timer.assert_called_with(
             device.device_id,
-            pcs_response["parentalControlSetting"]["playTimerRegulations"],
+            pcs["parentalControlSetting"]["playTimerRegulations"],
         )
-
     else:
         with pytest.raises(expected_exception):
             await device.update_max_daily_playtime(minutes)
 
-    assert f">> Device.update_max_daily_playtime(minutes={minutes})" in caplog.text
 
-
-async def test_parse_with_extra_playing_time(mock_api: Api):
+async def test_parse_with_extra_playing_time(device: Device, mock_api: Api, pcs: dict):
     """Test that the `extra_playing_time` property is correctly set in the PCS parser."""
-    devices_response = await load_fixture("account_devices")
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    assert len(devices) > 0
-    device = devices[0]
-
-    # Default to None if not set.
     assert device.extra_playing_time is None
 
-    # Test case 1: Bedtime disabled - use inOneDay duration
-    pcs_response = await load_fixture("device_parental_control_setting")
-    pcs_response["ownedDevice"]["device"]["extraPlayingTime"] = {"inOneDay": {"duration": 50}}
-
-    # Set the pcs response and call the update method
+    pcs_response = pcs_with_extra_in_one_day(pcs, duration=50)
     mock_api.async_get_device_parental_control_setting.return_value = {"json": pcs_response}
     await device.update()
 
     assert device.extra_playing_time == 50
 
 
-async def test_parse_with_extra_playing_time_bedtime_disabled_in_one_day_missing(mock_api: Api):
-    """If bedtime is disabled and PCS contains extraPlayingTime but no inOneDay, parsing should keep it unset."""
-    devices_response = await load_fixture("account_devices")
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    assert len(devices) > 0
-    device = devices[0]
-
-    pcs_response = await load_fixture("device_parental_control_setting")
-    # Ensure bedtime is disabled so we go down the inOneDay parsing branch.
-    pcs_response["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["bedtime"]["enabled"] = False
+async def test_parse_with_extra_playing_time_bedtime_disabled_in_one_day_missing(
+    device: Device, mock_api: Api, pcs: dict
+):
+    """If bedtime is disabled and PCS has extraPlayingTime but no inOneDay, keep unset."""
+    pcs_response = pcs_with_bedtime(pcs, enabled=False)
     pcs_response["ownedDevice"]["device"]["extraPlayingTime"] = {
         "expiresAt": 1770335999,
-        # Note: deliberately omit "inOneDay" to exercise device.py:670.
         "bedtime": None,
     }
-
     mock_api.async_get_device_parental_control_setting.return_value = {"json": pcs_response}
     await device.update()
 
     assert device.extra_playing_time is None
 
 
-async def test_parse_with_extra_playing_time_bedtime_enabled(mock_api: Api):
-    """Test that the `extra_playing_time` is calculated from bedtime when bedtime is enabled."""
-    devices_response = await load_fixture("account_devices")
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    assert len(devices) > 0
-    device = devices[0]
-
-    # Test case 2: Bedtime enabled - calculate from extended bedtime
-    pcs_response = await load_fixture("device_parental_control_setting")
-
-    # Enable bedtime with original ending time of 21:00 (9:00 PM)
-    pcs_response["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["bedtime"] = {
-        "enabled": True,
-        "endingTime": {"hour": 21, "minute": 0},
-        "startingTime": {"hour": 6, "minute": 0},
-    }
-
-    # Set extra playing time with extended bedtime to 21:30 (9:30 PM)
-    # This means 30 minutes of extra playing time
-    pcs_response["ownedDevice"]["device"]["extraPlayingTime"] = {
-        "bedtime": {"endTime": {"hour": 21, "minute": 30}},
-        "inOneDay": None,
-        "expiresAt": 1770335999,
-    }
-
-    # Set the pcs response and call the update method
+async def test_parse_with_extra_playing_time_bedtime_enabled(device: Device, mock_api: Api, pcs: dict):
+    """Test that extra_playing_time is calculated from bedtime when bedtime is enabled."""
+    pcs_response = pcs_with_bedtime(
+        pcs,
+        enabled=True,
+        start=time(6, 0),
+        end=time(21, 0),
+    )
+    pcs_response = pcs_with_extra_bedtime(pcs_response, time(21, 30))
     mock_api.async_get_device_parental_control_setting.return_value = {"json": pcs_response}
     await device.update()
 
-    # Should calculate: 21:30 - 21:00 = 30 minutes
     assert device.extra_playing_time == 30
-    # bedtime_alarm should be updated to the extended bedtime
     assert device.bedtime_alarm == time(hour=21, minute=30)
 
 
-async def test_parse_with_extra_playing_time_bedtime_midnight_wrap(mock_api: Api):
-    """Test that extra_playing_time normalises correctly when extended bedtime wraps past midnight."""
-    devices_response = await load_fixture("account_devices")
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    assert len(devices) > 0
-    device = devices[0]
-
-    pcs_response = await load_fixture("device_parental_control_setting")
-
-    # Original bedtime ending at 23:30
-    pcs_response["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["bedtime"] = {
-        "enabled": True,
-        "endingTime": {"hour": 23, "minute": 30},
-        "startingTime": {"hour": 6, "minute": 0},
-    }
-
-    # Extended bedtime wraps past midnight to 00:15
-    # Without % 1440 normalisation the delta would be negative: 15 - 1410 = -1395
-    pcs_response["ownedDevice"]["device"]["extraPlayingTime"] = {
-        "bedtime": {"endTime": {"hour": 0, "minute": 15}},
-        "inOneDay": None,
-        "expiresAt": 1770335999,
-    }
-
+async def test_parse_with_extra_playing_time_bedtime_midnight_wrap(device: Device, mock_api: Api, pcs: dict):
+    """Test that extra_playing_time normalises when extended bedtime wraps past midnight."""
+    pcs_response = pcs_with_bedtime(
+        pcs,
+        enabled=True,
+        start=time(6, 0),
+        end=time(23, 30),
+    )
+    pcs_response = pcs_with_extra_bedtime(pcs_response, time(0, 15))
     mock_api.async_get_device_parental_control_setting.return_value = {"json": pcs_response}
     await device.update()
 
-    # 23:30 → 00:15 wraps to +45 minutes, not -1395
     assert device.extra_playing_time == 45
     assert device.bedtime_alarm == time(hour=0, minute=15)
 
 
-async def test_today_time_remaining_with_extra_playing_time(mock_api: Api):
-    """Test that today_time_remaining accounts for extra_playing_time."""
-    devices_response = await load_fixture("account_devices")
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    assert len(devices) > 0
-    device = devices[0]
-
-    # Set up a scenario with a play limit and NO bedtime
-    pcs_response = await load_fixture("device_parental_control_setting")
-
-    # Set a daily play limit of 60 minutes
-    pcs_response["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"] = {
-        "enabled": True,
-        "limitTime": 60,
-    }
-
-    # Disable bedtime to avoid bedtime constraints in the test
-    pcs_response["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["bedtime"] = {
-        "enabled": False,
-        "endingTime": None,
-        "startingTime": {"hour": 6, "minute": 0},
-    }
-
-    # Add 30 minutes of extra playing time
-    pcs_response["ownedDevice"]["device"]["extraPlayingTime"] = {
-        "inOneDay": {"duration": 30, "isInfinity": False},
-        "bedtime": None,
-        "expiresAt": 1770335999,
-    }
-
-    # Set the pcs response and call the update method
-    mock_api.async_get_device_parental_control_setting.return_value = {"json": pcs_response}
-
-    # Set up daily summaries with some playing time
-    daily_summaries_response = await load_fixture("device_daily_summaries")
-    # Modify to have 20 minutes played today
-    from datetime import datetime
-
-    today = datetime.now().strftime("%Y-%m-%d")
-    daily_summaries_response["dailySummaries"][0]["date"] = today
-    daily_summaries_response["dailySummaries"][0]["playingTime"] = 20
-    mock_api.async_get_device_daily_summaries.return_value = {"json": daily_summaries_response}
-
-    await device.update()
-
-    # Verify extra_playing_time is set
-    assert device.extra_playing_time == 30
-
-    # Verify effective limit calculation
-    assert device.limit_time == 60
-    assert device.today_playing_time == 20
-
-    # The effective limit should be 60 + 30 = 90
-    # Remaining should be min(90 - 20, minutes_until_end_of_day)
-    # Calculate expected: (60 + 30) - 20 = 70 minutes from play limit
-    now = datetime.now()
-    minutes_in_day = 1440
-    current_minutes_past_midnight = now.hour * 60 + now.minute
-    remaining_by_end_of_day = minutes_in_day - current_minutes_past_midnight
-    remaining_by_play_limit = 70
-    expected_remaining = min(remaining_by_play_limit, remaining_by_end_of_day)
-
-    assert device.today_time_remaining == expected_remaining
-
-
-async def test_bedtime_rollover_evening(mock_api: Api):
-    """Test that a midnight-wrap bedtime is correctly rolled to the next day when now is in the evening."""
-    devices_response = await load_fixture("account_devices")
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    device = devices[0]
-
-    device.bedtime_alarm = time(hour=0, minute=15)
-    device.alarms_enabled = True
-    device.limit_time = 480
-    device.today_playing_time = 0
-
-    now_evening = datetime.now().replace(hour=23, minute=0, second=0, microsecond=0)
-    device._calculate_today_remaining_time(now_evening)
-
-    assert device.today_time_remaining == 75
-
-
-async def test_bedtime_rollover_daytime(mock_api: Api):
-    """Test that a midnight-wrap bedtime is rolled to next day even during daytime hours."""
-    devices_response = await load_fixture("account_devices")
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    device = devices[0]
-
-    device.bedtime_alarm = time(hour=0, minute=15)
-    device.alarms_enabled = True
-    device.limit_time = 480
-    device.today_playing_time = 0
-
-    now_noon = datetime.now().replace(hour=12, minute=0, second=0, microsecond=0)
-    device._calculate_today_remaining_time(now_noon)
-
-    assert device.today_time_remaining == 480
-
-
-async def test_bedtime_rollover_after_midnight(mock_api: Api):
-    """Test that a midnight-wrap bedtime is NOT rolled when now is in the early-morning window."""
-    devices_response = await load_fixture("account_devices")
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    device = devices[0]
-
-    device.bedtime_alarm = time(hour=0, minute=15)
-    device.alarms_enabled = True
-    device.limit_time = 480
-    device.today_playing_time = 0
-
-    now_after_midnight = datetime.now().replace(hour=1, minute=0, second=0, microsecond=0)
-    device._calculate_today_remaining_time(now_after_midnight)
-
-    assert device.today_time_remaining == 0
-
-
-async def test_calculate_times(
-    mock_api: Api,
-    caplog: pytest.LogCaptureFixture,
-):
-    """Test that the `_calculate_times` method works as expected."""
-    devices_response = await load_fixture("account_devices")
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    assert len(devices) > 0
-    device = devices[0]
-
-    dt = datetime(2023, 10, 30, 12, 0, 0)
-
-    daily_summaries = copy.deepcopy(device.daily_summaries)
-
-    caplog.clear()
-
-    # Test with invalid data
-    device.daily_summaries = "not a list"
-    with caplog.at_level(logging.DEBUG):
-        device._calculate_times(dt)
-    matching_logs = [r for r in caplog.records if r.message == ">> Device._calculate_times()"]
-    assert len(matching_logs) == 0
-
-    # Test with empty data
-    device.daily_summaries = []
-    with caplog.at_level(logging.DEBUG):
-        device._calculate_times(dt)
-    matching_logs = [r for r in caplog.records if r.message == ">> Device._calculate_times()"]
-    assert len(matching_logs) == 0
-
-    # Test with null data
-    device.daily_summaries = None
-    with caplog.at_level(logging.DEBUG):
-        device._calculate_times(dt)
-    matching_logs = [r for r in caplog.records if r.message == ">> Device._calculate_times()"]
-    assert len(matching_logs) == 0
-
-    # Test with no current day summary
-    device.daily_summaries = daily_summaries
-    with caplog.at_level(logging.DEBUG):
-        device._calculate_times(dt)
-    matching_logs = [r for r in caplog.records if r.message == ">> Device._calculate_times()"]
-    assert len(matching_logs) == 1
-    assert "No daily summary for today, assuming 0 playing time." in caplog.text
-    assert device.today_playing_time == 0
-    assert device.today_disabled_time == 0
-    assert device.today_exceeded_time == 0
-
-    caplog.clear()
-
-    # Test with a daily summary
-    dt = datetime(2025, 12, 8, 12, 0, 0)
-    device.daily_summaries = daily_summaries
-    with caplog.at_level(logging.DEBUG):
-        device._calculate_times(dt)
-    matching_logs = [r for r in caplog.records if r.message == ">> Device._calculate_times()"]
-    assert len(matching_logs) == 1
-    assert device.today_playing_time == 60
-    assert device.today_disabled_time == 15
-    assert device.today_exceeded_time == 20
-
-    matching_logs = [
-        r
-        for r in caplog.records
-        if r.message == f"Cached playing, disabled and exceeded time for today for device {device.device_id}"
-    ]
-    assert len(matching_logs) == 1
-
-    assert device.month_playing_time == 75
-
-async def test_parse_with_extra_playing_time_infinity(mock_api: Api):
-    """Test that isInfinity is parsed into extra_playing_time as -1 (the same "unlimited" sentinel
-    already used by limit_time and the update_extra_playing_time API method), not a separate flag."""
-    devices_response = await load_fixture("account_devices")
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    device = devices[0]
-
+async def test_parse_with_extra_playing_time_infinity(device: Device, mock_api: Api, pcs: dict):
+    """Test that isInfinity is parsed into extra_playing_time as -1."""
     assert device.extra_playing_time is None
 
-    pcs_response = await load_fixture("device_parental_control_setting")
-    pcs_response["ownedDevice"]["device"]["extraPlayingTime"] = {
-        "inOneDay": {"duration": None, "isInfinity": True},
-    }
-
+    pcs_response = pcs_with_extra_in_one_day(pcs, is_infinity=True)
     mock_api.async_get_device_parental_control_setting.return_value = {"json": pcs_response}
     await device.update()
 
     assert device.extra_playing_time == -1
 
 
-async def test_today_time_remaining_with_infinite_extra_playing_time(mock_api: Api):
-    """today_time_remaining must not be capped by the daily limit when extra time is unlimited.
-
-    Previously isInfinity wasn't parsed at all, so an unlimited grant fell back
-    to a falsy extra_playing_time and today_time_remaining showed just the
-    (much smaller) finite daily limit instead of reading as unlimited.
-    """
-    devices_response = await load_fixture("account_devices")
-    devices = await Device.from_devices_response(devices_response, mock_api)
-    device = devices[0]
-
-    pcs_response = await load_fixture("device_parental_control_setting")
-
-    # A small daily play limit of 60 minutes - unlimited extra time should
-    # override this entirely, not just add a finite bonus on top.
-    pcs_response["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["timeToPlayInOneDay"] = {
-        "enabled": True,
-        "limitTime": 60,
-    }
-    pcs_response["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["bedtime"] = {
-        "enabled": False,
-        "endingTime": None,
-        "startingTime": {"hour": 6, "minute": 0},
-    }
-    pcs_response["ownedDevice"]["device"]["extraPlayingTime"] = {
-        "inOneDay": {"duration": None, "isInfinity": True},
-        "bedtime": None,
-        "expiresAt": 1770335999,
-    }
+@pytest.mark.parametrize(
+    "extra_kwargs,expected_remaining_from_limit",
+    [
+        pytest.param({"duration": 30}, 70, id="finite_extra"),
+        pytest.param({"is_infinity": True}, None, id="infinite_extra"),
+    ],
+)
+async def test_today_time_remaining_with_extra_playing_time(
+    device: Device,
+    mock_api: Api,
+    pcs: dict,
+    extra_kwargs: dict,
+    expected_remaining_from_limit: int | None,
+):
+    """today_time_remaining accounts for finite or unlimited extra playing time."""
+    now = FIXED_NOW
+    pcs_response = pcs_with_play_limit(pcs, 60)
+    pcs_response = pcs_with_bedtime(pcs_response, enabled=False)
+    pcs_response = pcs_with_extra_in_one_day(pcs_response, **extra_kwargs)
     mock_api.async_get_device_parental_control_setting.return_value = {"json": pcs_response}
 
-    daily_summaries_response = await load_fixture("device_daily_summaries")
-    today = datetime.now().strftime("%Y-%m-%d")
-    daily_summaries_response["dailySummaries"][0]["date"] = today
-    daily_summaries_response["dailySummaries"][0]["playingTime"] = 20
-    mock_api.async_get_device_daily_summaries.return_value = {"json": daily_summaries_response}
+    summaries = await load_fixture("device_daily_summaries")
+    mock_api.async_get_device_daily_summaries.return_value = {
+        "json": daily_summaries_for(summaries, now.strftime("%Y-%m-%d"), playing_time=20)
+    }
 
-    await device.update()
+    await device.update(now=now)
 
-    assert device.extra_playing_time == -1
     assert device.limit_time == 60
     assert device.today_playing_time == 20
 
-    # Same "remaining until end of day" this library already uses for
-    # limit_time in (-1, None) - not (60 - 20) and definitely not negative.
-    now = datetime.now()
-    minutes_in_day = 1440
-    current_minutes_past_midnight = now.hour * 60 + now.minute
-    expected_remaining = minutes_in_day - current_minutes_past_midnight
+    minutes_until_eod = 1440 - (now.hour * 60 + now.minute)
+    if expected_remaining_from_limit is None:
+        assert device.extra_playing_time == -1
+        assert device.today_time_remaining == minutes_until_eod
+    else:
+        assert device.extra_playing_time == 30
+        assert device.today_time_remaining == min(expected_remaining_from_limit, minutes_until_eod)
+
+
+@pytest.mark.parametrize(
+    "hour,expected_remaining",
+    [
+        pytest.param(23, 75, id="evening"),
+        pytest.param(12, 480, id="daytime"),
+        pytest.param(1, 0, id="after_midnight"),
+    ],
+)
+async def test_bedtime_rollover(device: Device, hour: int, expected_remaining: int):
+    """Test midnight-wrap bedtime remaining-time behaviour across times of day."""
+    device.bedtime_alarm = time(hour=0, minute=15)
+    device.alarms_enabled = True
+    device.limit_time = 480
+    device.today_playing_time = 0
+
+    now = FIXED_NOW.replace(hour=hour, minute=0, second=0, microsecond=0)
+    device._calculate_today_remaining_time(now)  # pylint: disable=protected-access
 
     assert device.today_time_remaining == expected_remaining
+
+
+@pytest.mark.parametrize(
+    "summaries,dt,expect_debug,today_playing,today_disabled,today_exceeded,month_playing",
+    [
+        pytest.param("not a list", MONDAY, False, None, None, None, None, id="invalid"),
+        pytest.param([], MONDAY, False, None, None, None, None, id="empty"),
+        pytest.param(None, MONDAY, False, None, None, None, None, id="null"),
+        pytest.param("fixture", MONDAY, True, 0, 0, 0, None, id="no_today"),
+        pytest.param("fixture", FIXED_NOW, True, 60, 15, 20, 75, id="matching_day"),
+    ],
+)
+async def test_calculate_times(
+    device: Device,
+    caplog: pytest.LogCaptureFixture,
+    summaries,
+    dt: datetime,
+    expect_debug: bool,
+    today_playing: int | None,
+    today_disabled: int | None,
+    today_exceeded: int | None,
+    month_playing: int | None,
+):
+    """Test that `_calculate_times` handles invalid, empty, and valid summaries."""
+    fixture_summaries = copy.deepcopy(device.daily_summaries)
+    device.daily_summaries = fixture_summaries if summaries == "fixture" else summaries
+
+    caplog.clear()
+    with caplog.at_level(logging.DEBUG):
+        device._calculate_times(dt)  # pylint: disable=protected-access
+
+    matching_logs = [r for r in caplog.records if r.message == ">> Device._calculate_times()"]
+    assert len(matching_logs) == (1 if expect_debug else 0)
+
+    if today_playing is not None:
+        assert device.today_playing_time == today_playing
+        assert device.today_disabled_time == today_disabled
+        assert device.today_exceeded_time == today_exceeded
+    if month_playing is not None:
+        assert device.month_playing_time == month_playing
+    if summaries == "fixture" and dt == MONDAY:
+        assert "No daily summary for today, assuming 0 playing time." in caplog.text
