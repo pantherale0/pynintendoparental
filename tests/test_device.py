@@ -774,6 +774,28 @@ async def test_parse_with_extra_playing_time(mock_api: Api):
     assert device.extra_playing_time == 50
 
 
+async def test_parse_with_extra_playing_time_bedtime_disabled_in_one_day_missing(mock_api: Api):
+    """If bedtime is disabled and PCS contains extraPlayingTime but no inOneDay, parsing should keep it unset."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+
+    pcs_response = await load_fixture("device_parental_control_setting")
+    # Ensure bedtime is disabled so we go down the inOneDay parsing branch.
+    pcs_response["parentalControlSetting"]["playTimerRegulations"]["dailyRegulations"]["bedtime"]["enabled"] = False
+    pcs_response["ownedDevice"]["device"]["extraPlayingTime"] = {
+        "expiresAt": 1770335999,
+        # Note: deliberately omit "inOneDay" to exercise device.py:670.
+        "bedtime": None,
+    }
+
+    mock_api.async_get_device_parental_control_setting.return_value = {"json": pcs_response}
+    await device.update()
+
+    assert device.extra_playing_time is None
+
+
 async def test_parse_with_extra_playing_time_bedtime_enabled(mock_api: Api):
     """Test that the `extra_playing_time` is calculated from bedtime when bedtime is enabled."""
     devices_response = await load_fixture("account_devices")
