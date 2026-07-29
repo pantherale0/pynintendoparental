@@ -32,7 +32,7 @@ DEV_REQUIREMENTS = [
     'pytest-cov >= 4,< 8',
     'pytest-asyncio >= 0.21,< 2.0',
     'syrupy >= 5,< 6',
-    'twine >= 4,< 7',
+    'twine >= 4,< 8',
 ]
 
 setuptools.setup(
