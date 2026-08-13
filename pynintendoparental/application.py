@@ -1,5 +1,6 @@
 """A Nintendo application."""
 
+from dataclasses import dataclass
 import copy
 from datetime import datetime
 from typing import TYPE_CHECKING, Callable
@@ -172,3 +173,11 @@ class Application:
         if callback not in self._callbacks:
             raise ValueError("Callback not found.")
         self._callbacks.remove(callback)
+
+
+@dataclass(frozen=True, slots=True)
+class PlayedAppUsage:
+    """Usage information for a played application for a given player."""
+
+    application: Application
+    playing_time: int

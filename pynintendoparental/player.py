@@ -1,5 +1,6 @@
 """Nintendo Player."""
 
+from .application import PlayedAppUsage
 from .const import _LOGGER
 
 
@@ -21,7 +22,7 @@ class Player:
         """Init a player."""
         self.player_image: str | None = None
         self.nickname: str | None = None
-        self.apps: list = []
+        self.apps: list[PlayedAppUsage] = []
         self.month_summary: dict = {}
         self.player_id: str | None = None
         self.playing_time: int = 0
@@ -40,6 +41,27 @@ class Player:
                 self.playing_time = player.get("playingTime")
                 self.apps = player.get("playedGames")
                 break
+
+    def _parse_played_apps(self, raw: list[dict]) -> list[PlayedAppUsage]:
+        """Parse the played apps from a daily summary response.
+
+        Args:
+            raw: List of daily summary dictionaries from the API.
+
+        Returns:
+            List of PlayedAppUsage objects parsed from the summary.
+        """
+        result = []
+        for entry in raw:
+            # Handle both platform generations
+            app_id = (
+                entry.get("applicationId") or
+                entry.get("meta", {}).get("applicationId")
+            )
+            if not app_id:
+                continue
+            result.append(PlayedAppUsage(application=None, playing_time=entry.get("playingTime")))
+        return result
 
     @classmethod
     def from_device_daily_summary(cls, raw: list[dict]) -> list["Player"]:
