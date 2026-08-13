@@ -1,8 +1,34 @@
 """Nintendo Player."""
 
-from .application import PlayedAppUsage
+from .application import ApplicationRegistry, PlayedAppUsage
 from .const import _LOGGER
 
+
+def parse_played_apps(raw: list[dict], app_registry: ApplicationRegistry) -> list[PlayedAppUsage]:
+    """Parse the played apps from a daily summary response.
+
+    Args:
+        raw: List of daily summary dictionaries from the API.
+        app_registry: Application registry to use to parse the played apps.
+    Returns:
+        List of PlayedAppUsage objects parsed from the summary.
+    """
+    result = []
+    for entry in raw:
+        # Handle both platform generations
+        app_id = (
+            entry.get("applicationId") or
+            entry.get("meta", {}).get("applicationId")
+        )
+        if not app_id:
+            continue
+        result.append(
+            PlayedAppUsage(
+                application=app_registry.get_application(app_id),
+                playing_time=entry.get("playingTime"),
+            )
+        )
+    return result
 
 class Player:
     """A Nintendo Switch user profile.
@@ -27,11 +53,12 @@ class Player:
         self.player_id: str | None = None
         self.playing_time: int = 0
 
-    def update_from_daily_summary(self, raw: list[dict]):
+    def update_from_daily_summary(self, raw: list[dict], app_registry: ApplicationRegistry):
         """Update player data from a daily summary response.
 
         Args:
             raw: List of daily summary dictionaries from the API.
+            app_registry: Application registry to use to parse the played apps.
         """
         _LOGGER.debug("Updating player %s daily summary", self.player_id)
         for player in raw[0].get("players", []):
@@ -39,32 +66,11 @@ class Player:
                 self.player_image = player["profile"].get("imageUri")
                 self.nickname = player["profile"].get("nickname")
                 self.playing_time = player.get("playingTime")
-                self.apps = player.get("playedGames")
+                self.apps = parse_played_apps(player.get("playedGames"), app_registry)
                 break
 
-    def _parse_played_apps(self, raw: list[dict]) -> list[PlayedAppUsage]:
-        """Parse the played apps from a daily summary response.
-
-        Args:
-            raw: List of daily summary dictionaries from the API.
-
-        Returns:
-            List of PlayedAppUsage objects parsed from the summary.
-        """
-        result = []
-        for entry in raw:
-            # Handle both platform generations
-            app_id = (
-                entry.get("applicationId") or
-                entry.get("meta", {}).get("applicationId")
-            )
-            if not app_id:
-                continue
-            result.append(PlayedAppUsage(application=None, playing_time=entry.get("playingTime")))
-        return result
-
     @classmethod
-    def from_device_daily_summary(cls, raw: list[dict]) -> list["Player"]:
+    def from_device_daily_summary(cls, raw: list[dict], app_registry: ApplicationRegistry) -> list["Player"]:
         """Create Player objects from a device daily summary response.
 
         Args:
@@ -81,7 +87,10 @@ class Player:
             parsed.player_image = player["profile"].get("imageUri")
             parsed.nickname = player["profile"].get("nickname")
             parsed.playing_time = player.get("playingTime")
-            parsed.apps = player.get("playedGames")
+            parsed.apps = parse_played_apps(
+                player.get("playedGames"),
+                app_registry,
+            )
             players.append(parsed)
             _LOGGER.debug("Built player %s", parsed.player_id)
         return players
@@ -101,3 +110,46 @@ class Player:
         parsed.player_image = raw.get("imageUri")
         parsed.nickname = raw.get("nickname")
         return parsed
+
+class PlayerRegistry:
+    """Registry of players for a device."""
+
+    def __init__(self):
+        """Initialise the player registry."""
+        self._players: list[Player] = []
+        self._player_ids: set[str] = set()
+
+    def __contains__(self, player_id: str) -> bool:
+        """Check if a player is in the registry."""
+        return player_id in self._player_ids
+
+    def __len__(self) -> int:
+        """Get the number of players in the registry."""
+        return len(self._players)
+
+    def __iter__(self) -> Player:
+        """Iterate over the players in the registry."""
+        yield from self._players
+
+    def get_player(self, player_id: str) -> Player:
+        """Get a player by its ID."""
+        if player_id not in self._player_ids:
+            raise ValueError(f"Player {player_id} not found.")
+        for player in self._players:
+            if player.player_id == player_id:
+                return player
+        raise ValueError(f"Player {player_id} not found.")
+
+    def add_player(self, player: Player):
+        """Add a player to the registry."""
+        if player.player_id in self._player_ids:
+            raise ValueError(f"Player {player.player_id} already in registry.")
+        self._players.append(player)
+        self._player_ids.add(player.player_id)
+
+    def remove_player(self, player_id: str):
+        """Remove a player from the registry."""
+        if player_id not in self._player_ids:
+            raise ValueError(f"Player {player_id} not found.")
+        self._players.remove(self.get_player(player_id))
+        self._player_ids.remove(player_id)
