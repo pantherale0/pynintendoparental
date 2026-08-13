@@ -70,7 +70,11 @@ class Player:
                 break
 
     @classmethod
-    def from_device_daily_summary(cls, raw: list[dict], app_registry: ApplicationRegistry) -> list["Player"]:
+    def from_device_daily_summary(
+        cls,
+        raw: list[dict],
+        app_registry: ApplicationRegistry,
+    ) -> list["Player"]:
         """Create Player objects from a device daily summary response.
 
         Args:

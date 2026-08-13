@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import asyncio
 from collections.abc import Callable
-from datetime import datetime, time, timedelta
+from datetime import datetime, time, timedelta, timezone
 
 from pynintendoauth.exceptions import (
     HttpException,
@@ -126,7 +126,7 @@ class Device(
         """
         _LOGGER.debug(">> Device.update()")
         if now is None:
-            now = datetime.now()
+            now = datetime.now(timezone.utc)
         await asyncio.gather(
             self._get_daily_summaries(now),
             self.get_monthly_summary(),
@@ -236,7 +236,7 @@ class Device(
         search_date = datetime.strptime(
             f"{available_summary['year']}-{available_summary['month']}-01",
             "%Y-%m-%d",
-        )
+        ).astimezone(None)
         _LOGGER.debug("Using search date %s for monthly summary request", search_date)
         return search_date
 
@@ -286,7 +286,7 @@ class Device(
             ValueError: If no summary exists for the given date or no summaries are available.
         """
         if input_date is None:
-            input_date = datetime.now()
+            input_date = datetime.now(timezone.utc)
         if not self.daily_summaries:
             raise ValueError("No daily summaries available to search.")
         summary = [x for x in self.daily_summaries if x["date"] == input_date.strftime("%Y-%m-%d")]
