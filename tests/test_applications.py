@@ -1,5 +1,6 @@
 """Unit tests for the Application class."""
 
+import copy
 from unittest.mock import AsyncMock, MagicMock, Mock
 
 import pytest
@@ -19,7 +20,7 @@ async def test_application_callback(mock_api: Api):
     assert len(devices) > 0
     device = devices[0]
     assert len(device.applications) > 0
-    app = list(device.applications.values())[0]
+    app = device.applications.get_application("0100152000022000")
 
     sync_callback = Mock()
     async_callback = AsyncMock()
@@ -122,16 +123,24 @@ async def test_application_set_safe_launch_setting(mock_api: Api, setting: SafeL
     device = devices[0]
     assert len(device.applications) > 0
 
-    # Select the first application
-    application = list(device.applications.values())[0]
-    # Update pcs_response
-    pcs_response["json"]["parentalControlSetting"]["whitelistedApplicationList"][0]["safeLaunch"] = str(setting)
+    application = device.applications.get_application("0100152000022000")
+    expected_pcs = copy.deepcopy(application._parental_control_settings)
+    for app in expected_pcs["whitelistedApplicationList"]:
+        if app["applicationId"].upper() == application.application_id.upper():
+            app["safeLaunch"] = str(setting)
+            break
+    else:
+        pytest.fail(f"Application {application.application_id} not in whitelist")
+
+    # Mock response must update the same app so the post-call callback applies it.
+    for app in pcs_response["json"]["parentalControlSetting"]["whitelistedApplicationList"]:
+        if app["applicationId"].upper() == application.application_id.upper():
+            app["safeLaunch"] = str(setting)
+            break
     mock_api.async_update_restriction_level.return_value = pcs_response
     await application.set_safe_launch_setting(setting)
 
-    mock_api.async_update_restriction_level.assert_called_with(
-        device.device_id, pcs_response["json"]["parentalControlSetting"]
-    )
+    mock_api.async_update_restriction_level.assert_called_with(device.device_id, expected_pcs)
     assert application.safe_launch_setting is setting
 
 
@@ -183,20 +192,17 @@ async def test_application_set_safe_launch_setting_whitelist_errors(
 ):
     """Test the application set_safe_launch_setting correctly errors for whitelist problems."""
     devices_response = await load_fixture("account_devices")
-    pcs_response = {"json": await load_fixture("device_parental_control_setting")}
     devices = await Device.from_devices_response(devices_response, mock_api)
     assert len(devices) > 0
     device = devices[0]
     assert len(device.applications) > 0
 
-    # Select the first application
-    application = list(device.applications.values())[0]
-    # Update pcs_response
-    pcs_response["json"]["parentalControlSetting"]["whitelistedApplicationList"][0]["safeLaunch"] = str(setting)
-    # Override application pcs
-    application._parental_control_settings["whitelistedApplicationList"] = application._parental_control_settings[
-        "whitelistedApplicationList"
-    ][1:-1]
+    application = device.applications.get_application("0100152000022000")
+    application._parental_control_settings["whitelistedApplicationList"] = [
+        app
+        for app in application._parental_control_settings["whitelistedApplicationList"]
+        if app["applicationId"].upper() != application.application_id.upper()
+    ]
     with pytest.raises(exception):
         await application.set_safe_launch_setting(setting)
 
