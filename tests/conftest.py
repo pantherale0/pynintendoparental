@@ -7,8 +7,10 @@ import pytest
 
 from pynintendoparental import NintendoParental
 from pynintendoparental.api import Api
+from pynintendoparental.application import ApplicationRegistry
 from pynintendoparental.authenticator import Authenticator
 from pynintendoparental.device import Device
+from pynintendoparental.player import PlayerRegistry
 
 from .helpers import load_fixture
 
@@ -66,3 +68,13 @@ def mock_client(mock_api: Api) -> NintendoParental:
     client = create_autospec(NintendoParental)
     client._api = mock_api
     return client
+
+@pytest.fixture
+async def app_registry(device: Device) -> ApplicationRegistry:
+    """Fixture for a mocked application registry."""
+    return device.applications
+
+@pytest.fixture
+def player_registry() -> PlayerRegistry:
+    """Fixture for a mocked player registry."""
+    return PlayerRegistry()
