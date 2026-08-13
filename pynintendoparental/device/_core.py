@@ -77,7 +77,6 @@ class Device(
         self.today_observations: list = []
         self.last_month_summary: dict = {}
         self.applications: ApplicationRegistry = ApplicationRegistry()
-        self.whitelisted_applications: dict[str, bool] = {}
         self.last_month_playing_time: int = 0
         self.forced_termination_mode: bool = False
         self.alarms_enabled: bool = False

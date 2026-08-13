@@ -200,7 +200,9 @@ class ApplicationRegistry:
         """Get an application by its ID."""
         if application_id not in self._application_ids:
             raise ValueError(f"Application {application_id} not found.")
-        return self._applications.get(application_id)
+        for application in self._applications:
+            if application.application_id == application_id:
+                return application
 
     def get_application_by_name(self, name: str) -> Application:
         """Get an application by its name."""
