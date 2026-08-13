@@ -7,7 +7,7 @@ import pytest
 from syrupy.assertion import SnapshotAssertion
 
 from pynintendoparental.application import ApplicationRegistry
-from pynintendoparental.player import Player, PlayerRegistry
+from pynintendoparental.player import Player, PlayerRegistry, parse_played_apps
 
 from .helpers import load_fixture
 
@@ -98,3 +98,26 @@ async def test_player_update_from_daily_summary(
     assert player.apps[0].application.application_id == updated_app_id
     assert player.apps[0].playing_time == 100
     assert player == snapshot
+
+async def test_player_parse_played_apps_ignoring_none(
+    app_registry: ApplicationRegistry,
+):
+    """Test the parse_played_apps function ignores apps with a null application id."""
+    raw = [
+        {"applicationId": "010042D00D900000", "playingTime": 100},
+        {"applicationId": None, "playingTime": 200},
+    ]
+    apps = parse_played_apps(raw, app_registry)
+    assert len(apps) == 1
+    assert apps[0].application.application_id == "010042D00D900000"
+    assert apps[0].playing_time == 100
+
+async def test_player_registry_get(
+    player_registry: PlayerRegistry,
+):
+    """Test the player registry get method works as expected."""
+    player = Player()
+    player.player_id = "player_id"
+    player_registry.add_player(player)
+    assert player_registry.get(player.player_id) == player
+    assert player_registry.get("missing_player") is None

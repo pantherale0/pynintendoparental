@@ -148,6 +148,13 @@ class PlayerRegistry:
             if player.player_id == player_id:
                 return player
 
+    def get(self, player_id: str) -> Player | None:
+        """Compatibility method for getting a player by its ID."""
+        try:
+            return self.get_player(player_id)
+        except ValueError:
+            return None
+
     def add_player(self, player: Player):
         """Add a player to the registry."""
         if player.player_id in self._player_ids:
