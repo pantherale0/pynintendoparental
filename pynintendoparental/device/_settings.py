@@ -54,13 +54,9 @@ class DeviceSettingsMixin:
             minutes: Number of additional minutes to add (must be positive).
         """
         _LOGGER.debug(">> Device.add_extra_time(minutes=%s)", minutes)
-        with_bedtime = (
-            self.bedtime_alarm is not None and not is_bedtime_disabled(self.bedtime_alarm) and self.alarms_enabled
-        )
-        if minutes != -1 and with_bedtime:
+        response = await self._api.async_update_extra_playing_time(self.device_id, minutes)
+        if response["json"].get("nextStepDetail"):
             await self._api.async_confirm_extra_playing_time(self.device_id, minutes, True)
-        else:
-            await self._api.async_update_extra_playing_time(self.device_id, minutes)
         await self._get_parental_control_setting(datetime.now())
 
     async def cancel_extra_time(self: Device) -> None:  # type: ignore[misc]
@@ -240,7 +236,7 @@ class DeviceSettingsMixin:
             self.parental_control_settings,
         )
 
-    async def update_max_daily_playtime(self: Device, minutes: int | float = 0) -> None:  # type: ignore[misc]
+    async def update_max_daily_playtime(self: Device, minutes: float = 0) -> None:  # type: ignore[misc]
         """Set the maximum daily playtime limit (0–360, or -1 to remove)."""
         _LOGGER.debug(">> Device.update_max_daily_playtime(minutes=%s)", minutes)
         self._raise_if_extra_playing_time_active()

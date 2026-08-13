@@ -57,3 +57,25 @@ class FunctionalRestrictionLevel(StrEnum, NintendoEnum):
 
     def __str__(self) -> str:
         return self.value
+
+class ExtraPlayingTimeStatus(StrEnum, NintendoEnum):
+    """Extra playing time statuses."""
+
+    TO_ADDED = "TO_ADDED"
+    TO_CANCELED = "TO_CANCELED"
+    TO_INFINITY = "TO_INFINITY"
+    SUCCESS = "SUCCESS"
+    NO_EFFECT = "NO_EFFECT"
+    OVERTIME_ERROR = "OVERTIME_ERROR"
+    DURING_LATE_NIGHT_ERROR = "DURING_LATE_NIGHT_ERROR"
+    FAILED = "FAILED"
+
+    @property
+    def is_error(self) -> bool:
+        """Return True if the status is an error."""
+        return self in [
+            self.NO_EFFECT,
+            self.OVERTIME_ERROR,
+            self.DURING_LATE_NIGHT_ERROR,
+            self.FAILED,
+        ]

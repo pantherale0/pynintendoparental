@@ -2,6 +2,8 @@
 
 from enum import StrEnum
 
+from .enum import ExtraPlayingTimeStatus
+
 
 class RangeErrorKeys(StrEnum):
     """Keys for range errors."""
@@ -10,6 +12,7 @@ class RangeErrorKeys(StrEnum):
     BEDTIME = "bedtime_alarm_out_of_range"
     INVALID_DEVICE_STATE = "invalid_device_state"
     EXTRA_PLAYING_TIME_ACTIVE = "extra_playing_time_active"
+    EXTRA_PLAYING_TIME_REQUEST_ERROR = "extra_playing_time_request_error"
 
 
 class NoDevicesFoundException(Exception):
@@ -65,3 +68,15 @@ class ExtraPlayingTimeActiveError(DeviceError):
             f"Extra playing time is active for the current day: {extra_playing_time} minutes"
         )
         self.extra_playing_time = extra_playing_time
+
+class ExtraPlayingTimeRequestError(DeviceError):
+    """Error requesting extra playing time."""
+
+    error_key = RangeErrorKeys.EXTRA_PLAYING_TIME_REQUEST_ERROR
+    status: ExtraPlayingTimeStatus
+    response: dict
+
+    def __init__(self, status: ExtraPlayingTimeStatus, response: dict) -> None:
+        super().__init__(f"Error requesting extra playing time: {status}")
+        self.status = status
+        self.response = response

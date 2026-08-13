@@ -13,3 +13,4 @@ build
 .ruff_cache
 test.py
 site
+research
