@@ -135,9 +135,10 @@ class Device(
         # Fetch PCS after daily summaries so extra_playing_time is not parsed from a
         # stale concurrent response (see #118 / debug-430f96).
         await self._get_parental_control_setting(now)
+        self._update_applications()
+        self._hydrate_players_from_monthly_summary(self.last_month_summary)
         for player in self.players:
             player.update_from_daily_summary(self.daily_summaries, self.applications)
-        self._update_applications()
         await self._execute_callbacks()
 
     def _update_applications(self):
@@ -215,7 +216,6 @@ class Device(
             return None
         if latest:
             self.last_month_summary = summary
-            self._hydrate_players_from_monthly_summary(summary)
         return summary
 
     async def _resolve_latest_monthly_summary_date(self) -> datetime | None:

@@ -22,9 +22,14 @@ def parse_played_apps(raw: list[dict], app_registry: ApplicationRegistry) -> lis
         )
         if not app_id:
             continue
+        try:
+            app = app_registry.get_application(app_id)
+        except ValueError:
+            _LOGGER.warning("Application %s not found in registry, skipping.", app_id)
+            continue
         result.append(
             PlayedAppUsage(
-                application=app_registry.get_application(app_id),
+                application=app,
                 playing_time=entry.get("playingTime"),
             )
         )
@@ -142,7 +147,6 @@ class PlayerRegistry:
         for player in self._players:
             if player.player_id == player_id:
                 return player
-        raise ValueError(f"Player {player_id} not found.")
 
     def add_player(self, player: Player):
         """Add a player to the registry."""

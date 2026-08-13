@@ -62,6 +62,12 @@ class Application:
         # Register internal callbacks
         callbacks.append(self._internal_update_callback)
 
+    def __eq__(self, other: object) -> bool:
+        """Check if the application is equal to another object."""
+        if not isinstance(other, Application):
+            return False
+        return self.application_id == other.application_id and self.name == other.name
+
     async def set_safe_launch_setting(self, safe_launch_setting: SafeLaunchSetting):
         """Set the application's status on the Allow List.
 
@@ -225,7 +231,8 @@ class ApplicationRegistry:
         self._applications.remove(self.get_application(application_id))
         self._application_ids.remove(application_id)
 
-@dataclass(frozen=True, slots=True)
+
+@dataclass(frozen=True, slots=True, repr=False)
 class PlayedAppUsage:
     """Usage information for a played application for a given player."""
 
