@@ -76,7 +76,7 @@ async def test_player_discovery(device: Device, mock_api: Api):
 
 async def test_get_player(device: Device):
     """Test that the get_player method works as expected."""
-    first_player_id = list(device.players.keys())[0]
+    first_player_id = next(iter(device.players)).player_id
     player = device.get_player(first_player_id)
     assert player.player_id == first_player_id
 
@@ -86,7 +86,7 @@ async def test_get_player(device: Device):
 
 async def test_get_application(device: Device):
     """Test that the get_application method works as expected."""
-    first_app_id = list(device.applications.keys())[0]
+    first_app_id = next(iter(device.applications)).application_id
     application = device.get_application(first_app_id)
     assert application.application_id == first_app_id
 
@@ -451,10 +451,10 @@ async def test_device_callbacks(device: Device):
     sync_callback.assert_not_called()
     async_callback.assert_not_called()
 
-    with pytest.raises(ValueError, match="Object must be callable."):
+    with pytest.raises(TypeError, match="Object must be callable."):
         device.remove_device_callback("not a function")
 
-    with pytest.raises(ValueError, match="Object must be callable."):
+    with pytest.raises(TypeError, match="Object must be callable."):
         device.add_device_callback("not a function")
 
 

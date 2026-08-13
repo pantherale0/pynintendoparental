@@ -9,7 +9,9 @@ from pathlib import Path
 
 import aiofiles
 
+from pynintendoparental.application import ApplicationRegistry
 from pynintendoparental.device import Device
+from pynintendoparental.player import PlayerRegistry
 
 
 async def load_fixture(filename: str) -> dict:
@@ -26,7 +28,11 @@ def clean_device_for_snapshot(device: Device) -> dict:
     for key, value in device.__dict__.items():
         if key.startswith("_"):
             continue
-        if isinstance(value, list):
+        if isinstance(value, ApplicationRegistry):
+            cleaned[key] = {app.application_id: app for app in value}
+        elif isinstance(value, PlayerRegistry):
+            cleaned[key] = {player.player_id: player for player in value}
+        elif isinstance(value, list):
             cleaned[key] = [clean_device_for_snapshot(v) if hasattr(v, "__dict__") else v for v in value]
         elif hasattr(value, "__dict__"):
             cleaned[key] = clean_device_for_snapshot(value)
