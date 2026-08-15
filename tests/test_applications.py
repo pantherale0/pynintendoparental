@@ -207,3 +207,149 @@ async def test_application_set_safe_launch_setting_whitelist_errors(
         await application.set_safe_launch_setting(setting)
 
     mock_api.async_update_restriction_level.assert_not_called()
+
+
+@pytest.mark.parametrize(
+    "val1,val2,expected",
+    [
+        pytest.param(
+            
+            Application(
+                app_id="TESTAPPID",
+                name="TESTAPPNAME",
+                device_id="TESTDEVICEID",
+                api=AsyncMock(),
+                send_api_update=None,
+                callbacks=[],
+            ),
+            Application(
+                app_id="TESTAPPID",
+                name="TESTAPPNAME",
+                device_id="TESTDEVICEID",
+                api=AsyncMock(),
+                send_api_update=None,
+                callbacks=[],
+            ),
+            True,
+        ),
+        pytest.param(
+            Application(
+                app_id="TESTAPPID1",
+                name="TESTAPPNAME",
+                device_id="TESTDEVICEID",
+                api=AsyncMock(),
+                send_api_update=None,
+                callbacks=[],
+            ),
+            Application(
+                app_id="TESTAPPID2",
+                name="TESTAPPNAME",
+                device_id="TESTDEVICEID",
+                api=AsyncMock(),
+                send_api_update=None,
+                callbacks=[],
+            ),
+            False,
+        ),
+        pytest.param(
+            Application(
+                app_id="TESTAPPID",
+                name="TESTAPPNAME1",
+                device_id="TESTDEVICEID",
+                api=AsyncMock(),
+                send_api_update=None,
+                callbacks=[],
+            ),
+            "TESTAPPNAME1",
+            False,
+        ),
+    ]
+)
+async def test_application_class_equality(
+    val1: Application, val2: Application, expected: bool
+):
+    """Test the equality operator for the Application class."""
+    assert (val1 == val2) is expected
+
+
+@pytest.mark.parametrize(
+    "name,is_exception,expected_result",
+    [
+        pytest.param("five", False, "0100152000022000"),
+        pytest.param("Nonexistent Game", True, ValueError),
+    ]
+)
+async def test_application_registry_get_name(
+    name: str, is_exception: bool, expected_result, mock_api: Api
+):
+    """Test the ApplicationRegistry.get_name method."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+    assert len(device.applications) > 0
+
+    if is_exception:
+        with pytest.raises(expected_result) as exc_info:
+            device.applications.get_application_by_name(name)
+        assert "Application Nonexistent Game not found." in str(exc_info.value)
+    else:
+        result = device.applications.get_application_by_name(name)
+        assert result.application_id == expected_result
+
+
+async def test_application_registry_add_exception(
+    mock_api: Api
+):
+    """Test the ApplicationRegistry.add method."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+    assert len(device.applications) > 0
+
+    with pytest.raises(ValueError) as exc_info:
+        device.applications.add_application(
+            Application(
+                app_id="0100152000022000",
+                name="five",
+                device_id="TESTDEVICEID",
+                api=AsyncMock(),
+                send_api_update=None,
+                callbacks=[],
+            )
+        )
+    assert "Application 0100152000022000 already in registry." in str(exc_info.value)
+
+
+async def test_application_registry_remove_exception(
+    mock_api: Api
+):
+    """Test the ApplicationRegistry.remove method."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+    assert len(device.applications) > 0
+
+    with pytest.raises(ValueError) as exc_info:
+        device.applications.remove_application("INVALID_APP_ID")
+    assert "Application INVALID_APP_ID not found." in str(exc_info.value)
+
+
+async def test_application_registry_remove(
+    mock_api: Api
+):
+    """Test the ApplicationRegistry.remove method."""
+    devices_response = await load_fixture("account_devices")
+    devices = await Device.from_devices_response(devices_response, mock_api)
+    assert len(devices) > 0
+    device = devices[0]
+    assert len(device.applications) > 0
+
+    app_id_to_remove = "0100152000022000"
+    device.applications.remove_application(app_id_to_remove)
+
+    with pytest.raises(ValueError) as exc_info:
+        device.applications.get_application(app_id_to_remove)
+    assert f"Application {app_id_to_remove} not found." in str(exc_info.value)
