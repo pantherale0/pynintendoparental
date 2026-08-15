@@ -38,6 +38,10 @@ def remaining_play_minutes(
 
     if bedtime_alarm and not is_bedtime_disabled(bedtime_alarm) and alarms_enabled:
         bedtime_dt = datetime.combine(now.date(), bedtime_alarm)
+        if now.tzinfo is not None and bedtime_dt.tzinfo is None:
+            bedtime_dt = bedtime_dt.replace(tzinfo=now.tzinfo)
+        elif now.tzinfo is None and bedtime_dt.tzinfo is not None:
+            bedtime_dt = bedtime_dt.replace(tzinfo=None)
         if bedtime_dt <= now and bedtime_alarm.hour < 6 and now.hour >= 6:
             bedtime_dt += timedelta(days=1)
         if bedtime_dt > now:

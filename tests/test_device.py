@@ -2,7 +2,7 @@
 
 import copy
 import logging
-from datetime import datetime, time
+from datetime import datetime, time, timezone
 from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
@@ -780,6 +780,20 @@ async def test_bedtime_rollover(device: Device, hour: int, expected_remaining: i
     device._calculate_today_remaining_time(now)  # pylint: disable=protected-access
 
     assert device.today_time_remaining == expected_remaining
+
+
+async def test_bedtime_rollover_with_timezone_aware_now(device: Device):
+    """Bedtime calculations work when the current time is timezone-aware."""
+    device.bedtime_alarm = time(hour=0, minute=15)
+    device.alarms_enabled = True
+    device.limit_time = 480
+    device.today_playing_time = 0
+
+    now = FIXED_NOW.replace(hour=23, minute=0, second=0, microsecond=0, tzinfo=timezone.utc)
+    device._calculate_today_remaining_time(now)  # pylint: disable=protected-access
+
+    assert device.today_time_remaining == 75
+    assert device.stats_update_failed is False
 
 
 @pytest.mark.parametrize(
