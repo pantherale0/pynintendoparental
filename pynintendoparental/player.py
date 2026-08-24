@@ -1,5 +1,6 @@
 """Nintendo Player."""
 
+from collections.abc import Iterator
 from datetime import datetime, timezone
 
 from .application import ApplicationRegistry, PlayedAppUsage
@@ -61,11 +62,11 @@ class Player:
 
     def __init__(self):
         """Init a player."""
-        self.player_image: str | None = None
-        self.nickname: str | None = None
+        self.player_id: str
+        self.player_image: str
+        self.nickname: str
         self.apps: list[PlayedAppUsage] = []
         self.month_summary: dict = {}
-        self.player_id: str | None = None
         self.playing_time: int = 0
 
     def update_from_daily_summary(
@@ -140,9 +141,9 @@ class Player:
             A Player object parsed from the profile data.
         """
         parsed = cls()
-        parsed.player_id = raw.get("playerId")
-        parsed.player_image = raw.get("imageUri")
-        parsed.nickname = raw.get("nickname")
+        parsed.player_id = raw["playerId"]
+        parsed.player_image = raw["imageUri"]
+        parsed.nickname = raw["nickname"]
         return parsed
 
 
@@ -162,7 +163,7 @@ class PlayerRegistry:
         """Get the number of players in the registry."""
         return len(self._players)
 
-    def __iter__(self) -> Player:
+    def __iter__(self) -> Iterator[Player]:
         """Iterate over the players in the registry."""
         yield from self._players
 
