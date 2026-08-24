@@ -2,13 +2,14 @@
 
 from __future__ import annotations
 
-from datetime import datetime, time
+from datetime import time
 from typing import TYPE_CHECKING
 
 from ..api import Api
 from ..const import _LOGGER, DAYS_OF_WEEK
 from ..enum import DeviceTimerMode, FunctionalRestrictionLevel, RestrictionMode
 from ..exceptions import BedtimeOutOfRangeError, InvalidDeviceStateError
+from ..utils import current_datetime
 from ._helpers import (
     apply_time_to_play_in_one_day,
     build_bedtime_dict,
@@ -61,14 +62,14 @@ class DeviceSettingsMixin:
             await self._api.async_confirm_extra_playing_time(self.device_id, minutes, True)
         else:
             await self._api.async_update_extra_playing_time(self.device_id, minutes)
-        await self._get_parental_control_setting(datetime.now())
+        await self._get_parental_control_setting(current_datetime(self._api._tz))
 
     async def cancel_extra_time(self: Device) -> None:  # type: ignore[misc]
         """Cancel extra playing time for the current day."""
         _LOGGER.debug(">> Device.cancel_extra_time()")
         await self._api.async_update_extra_playing_time(self.device_id, cancel=True)
         self.extra_playing_time = None
-        await self._get_parental_control_setting(datetime.now())
+        await self._get_parental_control_setting(current_datetime(self._api._tz))
         await self._execute_callbacks()
 
     async def set_restriction_mode(self: Device, mode: RestrictionMode) -> None:  # type: ignore[misc]
@@ -86,7 +87,7 @@ class DeviceSettingsMixin:
             self.device_id,
             self.parental_control_settings["playTimerRegulations"],
         )
-        now = datetime.now()
+        now = current_datetime(self._api._tz)
         self._parse_parental_control_setting(response["json"], now)  # Don't need to recalculate times
         await self._execute_callbacks()
 
@@ -95,7 +96,7 @@ class DeviceSettingsMixin:
         _LOGGER.debug(">> Device.set_bedtime_alarm(value=%s)", value)
         self._raise_if_extra_playing_time_active()
         validate_bedtime_alarm(value)
-        now = datetime.now()
+        now = current_datetime(self._api._tz)
         regulation = self._get_today_regulation(now)
         enabled = 16 <= value.hour <= 23
         bedtime = {
@@ -121,7 +122,7 @@ class DeviceSettingsMixin:
         _LOGGER.debug(">> Device.set_bedtime_end_time(value=%s)", value)
         self._raise_if_extra_playing_time_active()
         validate_bedtime_end(value)
-        now = datetime.now()
+        now = current_datetime(self._api._tz)
         regulation = self._get_today_regulation(now)
         enabled = not is_bedtime_disabled(value)
         regulation["bedtime"] = {
@@ -246,7 +247,7 @@ class DeviceSettingsMixin:
         self._raise_if_extra_playing_time_active()
         minutes = normalize_playtime_minutes(minutes)
         validate_max_daily_playtime(minutes)
-        now = datetime.now()
+        now = current_datetime(self._api._tz)
         limit = None if minutes == -1 else minutes
         regulation = self._get_today_regulation(now)
         _LOGGER.debug(

@@ -4,8 +4,10 @@ import copy
 import logging
 from datetime import datetime, time, timezone
 from unittest.mock import AsyncMock, Mock, patch
+from zoneinfo import ZoneInfo
 
 import pytest
+from freezegun import freeze_time
 from pynintendoauth.exceptions import HttpException
 from syrupy.assertion import SnapshotAssertion
 from syrupy.filters import props
@@ -971,3 +973,65 @@ async def test_parse_extra_playing_time_bedtime_without_end_time(device: Device,
 
     assert device.extra_playing_time is None
     assert device.bedtime_alarm == time(21, 0)
+
+
+async def test_update_zeros_playtime_after_local_midnight(device: Device):
+    """Yesterday's summary is stale after local midnight in a positive-offset zone."""
+    now = datetime(2025, 12, 9, 0, 30, tzinfo=ZoneInfo("Asia/Tokyo"))
+    await device.update(now=now)
+
+    assert device.today_playing_time == 0
+    assert all(player.playing_time == 0 for player in device.players)
+
+
+async def test_update_keeps_playtime_before_local_midnight_negative_offset(device: Device):
+    """Today's summary is not stale during a US evening when UTC has already rolled."""
+    now = datetime(2025, 12, 8, 17, 30, tzinfo=ZoneInfo("America/Los_Angeles"))
+    await device.update(now=now)
+
+    assert device.today_playing_time == 60
+    assert any(player.playing_time > 0 for player in device.players)
+
+
+@pytest.mark.parametrize(
+    "tz, frozen, summary_date, expect_zero",
+    [
+        pytest.param(
+            "Europe/London",
+            datetime(2025, 6, 1, 23, 30, tzinfo=timezone.utc),
+            "2025-06-01",
+            True,
+            id="bst_after_local_midnight",
+        ),
+        pytest.param(
+            "America/Los_Angeles",
+            datetime(2025, 6, 2, 0, 30, tzinfo=timezone.utc),
+            "2025-06-01",
+            False,
+            id="pdt_evening_utc_next_day",
+        ),
+    ],
+)
+async def test_update_default_now_uses_api_timezone(
+    device: Device,
+    mock_api: Api,
+    tz: str,
+    frozen: datetime,
+    summary_date: str,
+    expect_zero: bool,
+):
+    """Device.update() without now uses the API timezone, not UTC."""
+    summaries = await load_fixture("device_daily_summaries")
+    summaries["dailySummaries"][0]["date"] = summary_date
+    mock_api.async_get_device_daily_summaries.return_value = {"json": summaries}
+    mock_api._tz = tz
+
+    with freeze_time(frozen):
+        await device.update()
+
+    if expect_zero:
+        assert device.today_playing_time == 0
+        assert all(player.playing_time == 0 for player in device.players)
+    else:
+        assert device.today_playing_time == 60
+        assert any(player.playing_time > 0 for player in device.players)
