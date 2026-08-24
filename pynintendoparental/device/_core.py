@@ -138,7 +138,7 @@ class Device(
         self._update_applications()
         self._hydrate_players_from_monthly_summary(self.last_month_summary)
         for player in self.players:
-            player.update_from_daily_summary(self.daily_summaries, self.applications)
+            player.update_from_daily_summary(self.daily_summaries, self.applications, now=now)
         await self._execute_callbacks()
 
     def _update_applications(self):
@@ -146,14 +146,16 @@ class Device(
         _LOGGER.debug(">> Device._update_applications()")
         for app in self.parental_control_settings.get("whitelistedApplicationList", []):
             if app["applicationId"] not in self.applications:
-                self.applications.add_application(Application(
-                    app_id=app["applicationId"],
-                    name=app["title"],
-                    device_id=self.device_id,
-                    api=self._api,
-                    send_api_update=self._send_api_update,
-                    callbacks=self._internal_callbacks,
-                ))
+                self.applications.add_application(
+                    Application(
+                        app_id=app["applicationId"],
+                        name=app["title"],
+                        device_id=self.device_id,
+                        api=self._api,
+                        send_api_update=self._send_api_update,
+                        callbacks=self._internal_callbacks,
+                    )
+                )
 
     def _get_today_regulation(self, now: datetime) -> dict:
         """Returns the regulation settings for the current day."""

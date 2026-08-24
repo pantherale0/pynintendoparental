@@ -1,7 +1,19 @@
 """Nintendo Player."""
 
+from datetime import datetime, timezone
+
 from .application import ApplicationRegistry, PlayedAppUsage
 from .const import _LOGGER
+
+
+def _is_stale_daily_summary(summary: dict, now: datetime | None = None) -> bool:
+    """Return True when the summary date is before today (Switch has not checked in)."""
+    if now is None:
+        now = datetime.now(timezone.utc)
+    date_str = summary.get("date")
+    if not date_str:
+        return True
+    return datetime.strptime(date_str, "%Y-%m-%d").replace(tzinfo=timezone.utc).date() < now.date()
 
 
 def parse_played_apps(raw: list[dict], app_registry: ApplicationRegistry) -> list[PlayedAppUsage]:
@@ -16,10 +28,7 @@ def parse_played_apps(raw: list[dict], app_registry: ApplicationRegistry) -> lis
     result = []
     for entry in raw:
         # Handle both platform generations
-        app_id = (
-            entry.get("applicationId") or
-            entry.get("meta", {}).get("applicationId")
-        )
+        app_id = entry.get("applicationId") or entry.get("meta", {}).get("applicationId")
         if not app_id:
             continue
         try:
@@ -34,6 +43,7 @@ def parse_played_apps(raw: list[dict], app_registry: ApplicationRegistry) -> lis
             )
         )
     return result
+
 
 class Player:
     """A Nintendo Switch user profile.
@@ -58,20 +68,31 @@ class Player:
         self.player_id: str | None = None
         self.playing_time: int = 0
 
-    def update_from_daily_summary(self, raw: list[dict], app_registry: ApplicationRegistry):
+    def update_from_daily_summary(
+        self,
+        raw: list[dict],
+        app_registry: ApplicationRegistry,
+        now: datetime | None = None,
+    ):
         """Update player data from a daily summary response.
 
         Args:
             raw: List of daily summary dictionaries from the API.
             app_registry: Application registry to use to parse the played apps.
+            now: Clock used to decide if the first summary is today. Defaults to UTC now.
         """
         _LOGGER.debug("Updating player %s daily summary", self.player_id)
         for player in raw[0].get("players", []):
             if self.player_id == player["profile"].get("playerId"):
                 self.player_image = player["profile"].get("imageUri")
                 self.nickname = player["profile"].get("nickname")
-                self.playing_time = player.get("playingTime")
-                self.apps = parse_played_apps(player.get("playedGames"), app_registry)
+                # Nintendo omits today when the Switch has not checked in (ha-core/179748).
+                if _is_stale_daily_summary(raw[0], now):
+                    self.playing_time = 0
+                    self.apps.clear()
+                else:
+                    self.playing_time = player.get("playingTime")
+                    self.apps = parse_played_apps(player.get("playedGames"), app_registry)
                 break
 
     @classmethod
@@ -79,11 +100,14 @@ class Player:
         cls,
         raw: list[dict],
         app_registry: ApplicationRegistry,
+        now: datetime | None = None,
     ) -> list["Player"]:
         """Create Player objects from a device daily summary response.
 
         Args:
             raw: List of daily summary dictionaries from the API.
+            app_registry: Application registry to use to parse the played apps.
+            now: Clock used to decide if the first summary is today. Defaults to UTC now.
 
         Returns:
             List of Player objects parsed from the summary.
@@ -95,11 +119,12 @@ class Player:
             parsed.player_id = player["profile"].get("playerId")
             parsed.player_image = player["profile"].get("imageUri")
             parsed.nickname = player["profile"].get("nickname")
-            parsed.playing_time = player.get("playingTime")
-            parsed.apps = parse_played_apps(
-                player.get("playedGames"),
-                app_registry,
-            )
+            if _is_stale_daily_summary(raw[0], now):
+                parsed.playing_time = 0
+                parsed.apps.clear()
+            else:
+                parsed.playing_time = player.get("playingTime")
+                parsed.apps = parse_played_apps(player.get("playedGames"), app_registry)
             players.append(parsed)
             _LOGGER.debug("Built player %s", parsed.player_id)
         return players
@@ -119,6 +144,7 @@ class Player:
         parsed.player_image = raw.get("imageUri")
         parsed.nickname = raw.get("nickname")
         return parsed
+
 
 class PlayerRegistry:
     """Registry of players for a device."""
