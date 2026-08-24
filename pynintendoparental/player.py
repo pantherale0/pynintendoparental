@@ -1,5 +1,7 @@
 """Nintendo Player."""
 
+from datetime import datetime, timezone
+
 from .application import ApplicationRegistry, PlayedAppUsage
 from .const import _LOGGER
 
@@ -70,8 +72,15 @@ class Player:
             if self.player_id == player["profile"].get("playerId"):
                 self.player_image = player["profile"].get("imageUri")
                 self.nickname = player["profile"].get("nickname")
-                self.playing_time = player.get("playingTime")
-                self.apps = parse_played_apps(player.get("playedGames"), app_registry)
+                # Parse the date, to check if it is today or not (ha-core/179748)
+                if datetime.strptime(
+                    raw[0].get("date"), "%Y-%m-%d"
+                ).replace(tzinfo=timezone.utc) < datetime.now(timezone.utc):
+                    self.playing_time = 0
+                    self.apps.clear()
+                else:
+                    self.playing_time = player.get("playingTime")
+                    self.apps = parse_played_apps(player.get("playedGames"), app_registry)
                 break
 
     @classmethod
@@ -95,11 +104,14 @@ class Player:
             parsed.player_id = player["profile"].get("playerId")
             parsed.player_image = player["profile"].get("imageUri")
             parsed.nickname = player["profile"].get("nickname")
-            parsed.playing_time = player.get("playingTime")
-            parsed.apps = parse_played_apps(
-                player.get("playedGames"),
-                app_registry,
-            )
+            if datetime.strptime(
+                raw[0].get("date"), "%Y-%m-%d"
+            ).replace(tzinfo=timezone.utc) < datetime.now(timezone.utc):
+                parsed.playing_time = 0
+                parsed.apps.clear()
+            else:
+                parsed.playing_time = player.get("playingTime")
+                parsed.apps = parse_played_apps(player.get("playedGames"), app_registry)
             players.append(parsed)
             _LOGGER.debug("Built player %s", parsed.player_id)
         return players
