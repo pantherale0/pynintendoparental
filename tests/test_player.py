@@ -2,6 +2,7 @@
 
 import copy
 import logging
+from datetime import timedelta
 
 import pytest
 from syrupy.assertion import SnapshotAssertion
@@ -9,7 +10,11 @@ from syrupy.assertion import SnapshotAssertion
 from pynintendoparental.application import ApplicationRegistry
 from pynintendoparental.player import Player, PlayerRegistry, parse_played_apps
 
+from .conftest import FIXED_NOW
 from .helpers import load_fixture
+
+# The day after FIXED_NOW — summary date 2025-12-08 is then not today.
+NEXT_DAY = FIXED_NOW + timedelta(days=1)
 
 
 async def test_player_parsing(
@@ -23,6 +28,7 @@ async def test_player_parsing(
     player = players[0]
     assert player == snapshot
 
+
 async def test_player_parsing_with_missing_app(
     caplog: pytest.LogCaptureFixture,
     app_registry: ApplicationRegistry,
@@ -35,6 +41,7 @@ async def test_player_parsing_with_missing_app(
     assert "Application missing_app not found in registry, skipping." in caplog.text
     assert len(players) == 1
     assert players[0].apps == []
+
 
 async def test_player_registry(
     app_registry: ApplicationRegistry,
@@ -50,6 +57,7 @@ async def test_player_registry(
     assert len(player_registry) == 1
     player_registry.remove_player(player.player_id)
     assert len(player_registry) == 0
+
 
 async def test_player_registry_exceptions(
     player_registry: PlayerRegistry,
@@ -67,6 +75,7 @@ async def test_player_registry_exceptions(
     player_registry.add_player(player)
     with pytest.raises(ValueError):
         player_registry.add_player(player)
+
 
 async def test_player_update_from_daily_summary(
     snapshot: SnapshotAssertion,
@@ -99,6 +108,68 @@ async def test_player_update_from_daily_summary(
     assert player.apps[0].playing_time == 100
     assert player == snapshot
 
+
+async def test_player_from_daily_summary_not_today(
+    caplog: pytest.LogCaptureFixture,
+    app_registry: ApplicationRegistry,
+):
+    """When the first summary date is before now, playing time and apps are cleared."""
+    daily_summaries_response = await load_fixture("device_daily_summaries")
+    daily_summaries_response["dailySummaries"][0]["players"][0]["playedGames"][0]["applicationId"] = "missing_app"
+    with caplog.at_level(logging.WARNING):
+        players = Player.from_device_daily_summary(
+            daily_summaries_response["dailySummaries"],
+            app_registry,
+            now=NEXT_DAY,
+        )
+
+    assert len(players) == 1
+    assert players[0].playing_time == 0
+    assert players[0].apps == []
+    assert "Application missing_app not found in registry, skipping." not in caplog.text
+
+
+@pytest.mark.parametrize("missing_date", [None, ""])
+async def test_player_from_daily_summary_missing_date(
+    app_registry: ApplicationRegistry,
+    missing_date: str | None,
+):
+    """A missing summary date is treated as not today."""
+    daily_summaries_response = await load_fixture("device_daily_summaries")
+    daily_summaries_response["dailySummaries"][0]["date"] = missing_date
+    players = Player.from_device_daily_summary(
+        daily_summaries_response["dailySummaries"],
+        app_registry,
+        now=FIXED_NOW,
+    )
+
+    assert len(players) == 1
+    assert players[0].playing_time == 0
+    assert players[0].apps == []
+
+
+async def test_player_update_from_daily_summary_not_today(app_registry: ApplicationRegistry):
+    """Updating after the summary date clears previously parsed today playtime and apps."""
+    daily_summaries_response = await load_fixture("device_daily_summaries")
+    players = Player.from_device_daily_summary(
+        daily_summaries_response["dailySummaries"],
+        app_registry,
+        now=FIXED_NOW,
+    )
+    player = players[0]
+    assert player.playing_time > 0
+    assert player.apps
+
+    player.update_from_daily_summary(
+        daily_summaries_response["dailySummaries"],
+        app_registry,
+        now=NEXT_DAY,
+    )
+
+    assert player.playing_time == 0
+    assert player.apps == []
+
+
 async def test_player_parse_played_apps_ignoring_none(
     app_registry: ApplicationRegistry,
 ):
@@ -111,6 +182,7 @@ async def test_player_parse_played_apps_ignoring_none(
     assert len(apps) == 1
     assert apps[0].application.application_id == "010042D00D900000"
     assert apps[0].playing_time == 100
+
 
 async def test_player_registry_get(
     player_registry: PlayerRegistry,

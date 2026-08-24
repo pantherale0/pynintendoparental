@@ -4,6 +4,7 @@ from datetime import datetime
 from unittest.mock import AsyncMock, PropertyMock, create_autospec
 
 import pytest
+from freezegun import freeze_time
 
 from pynintendoparental import NintendoParental
 from pynintendoparental.api import Api
@@ -16,6 +17,13 @@ from .helpers import load_fixture
 
 # Fixed datetime matching fixture dates (avoids flakiness in snapshots / summaries).
 FIXED_NOW = datetime(2025, 12, 8, 12, 0, 0)
+
+
+@pytest.fixture(autouse=True)
+def freeze_now():
+    """Freeze datetime.now so Player current-day checks match fixture dates."""
+    with freeze_time(FIXED_NOW):
+        yield
 
 
 @pytest.fixture
@@ -69,10 +77,12 @@ def mock_client(mock_api: Api) -> NintendoParental:
     client._api = mock_api
     return client
 
+
 @pytest.fixture
 async def app_registry(device: Device) -> ApplicationRegistry:
     """Fixture for a mocked application registry."""
     return device.applications
+
 
 @pytest.fixture
 def player_registry() -> PlayerRegistry:

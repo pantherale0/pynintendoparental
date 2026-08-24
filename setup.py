@@ -26,6 +26,7 @@ DEV_REQUIREMENTS = [
     'build >= 0.10,< 1.6',
     'Faker >= 38,< 41',
     'flake8 >= 6,< 8',
+    'freezegun >= 1.4,< 2',
     'isort >= 5,< 9',
     'mypy >= 1.5,< 2.4',
     'pytest >= 7,< 10',
