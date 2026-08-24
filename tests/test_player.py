@@ -2,13 +2,14 @@
 
 import copy
 import logging
-from datetime import timedelta
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 
 import pytest
 from syrupy.assertion import SnapshotAssertion
 
 from pynintendoparental.application import ApplicationRegistry
-from pynintendoparental.player import Player, PlayerRegistry, parse_played_apps
+from pynintendoparental.player import Player, PlayerRegistry, _is_stale_daily_summary, parse_played_apps
 
 from .conftest import FIXED_NOW
 from .helpers import load_fixture
@@ -193,3 +194,38 @@ async def test_player_registry_get(
     player_registry.add_player(player)
     assert player_registry.get(player.player_id) == player
     assert player_registry.get("missing_player") is None
+
+
+@pytest.mark.parametrize(
+    "now, expected_stale",
+    [
+        pytest.param(
+            datetime(2025, 12, 9, 0, 30, tzinfo=ZoneInfo("Asia/Tokyo")),
+            True,
+            id="tokyo_after_local_midnight",
+        ),
+        pytest.param(
+            datetime(2025, 12, 8, 23, 30, tzinfo=ZoneInfo("Asia/Tokyo")),
+            False,
+            id="tokyo_before_local_midnight",
+        ),
+        pytest.param(
+            datetime(2025, 12, 8, 17, 30, tzinfo=ZoneInfo("America/Los_Angeles")),
+            False,
+            id="la_evening_utc_already_next_day",
+        ),
+        pytest.param(
+            datetime(2025, 12, 9, 0, 0, tzinfo=ZoneInfo("America/Los_Angeles")),
+            True,
+            id="la_local_midnight",
+        ),
+        pytest.param(
+            datetime(2025, 12, 8, 12, 0, tzinfo=ZoneInfo("Europe/London")),
+            False,
+            id="london_noon_same_day",
+        ),
+    ],
+)
+def test_is_stale_daily_summary_timezone_boundaries(now: datetime, expected_stale: bool):
+    """Stale checks use the civil date of ``now``, not a UTC-tagged API date."""
+    assert _is_stale_daily_summary({"date": "2025-12-08"}, now) is expected_stale

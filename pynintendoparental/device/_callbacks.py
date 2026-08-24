@@ -3,10 +3,9 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-from datetime import datetime, timezone
 from typing import TYPE_CHECKING
 
-from ..utils import is_awaitable
+from ..utils import current_datetime, is_awaitable
 
 if TYPE_CHECKING:  # pragma: no cover
     from ._core import Device
@@ -70,7 +69,7 @@ class DeviceCallbacksMixin:
         **kwargs,
     ) -> None:
         """Sends an update to the API and refreshes local state."""
-        now = kwargs.pop("now", datetime.now(timezone.utc))
+        now = kwargs.pop("now", current_datetime(self._api._tz))
         response = await api_call(*args, **kwargs)
         self._parse_parental_control_setting(response["json"], now)
         self._calculate_times(now)

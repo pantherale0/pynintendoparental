@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 from .api import Api
 from .const import _LOGGER
 from .enum import SafeLaunchSetting
-from .utils import is_awaitable
+from .utils import current_datetime, is_awaitable
 
 if TYPE_CHECKING:
     from .device import Device
@@ -104,7 +104,7 @@ class Application:
             self._api.async_update_restriction_level,
             self._device_id,
             pcs,
-            now=datetime.now(),
+            now=current_datetime(self._api._tz),
         )
 
     async def _internal_update_callback(self, device: "Device"):

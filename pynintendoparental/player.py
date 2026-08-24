@@ -1,20 +1,24 @@
 """Nintendo Player."""
 
 from collections.abc import Iterator
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 
 from .application import ApplicationRegistry, PlayedAppUsage
 from .const import _LOGGER
 
 
 def _is_stale_daily_summary(summary: dict, now: datetime | None = None) -> bool:
-    """Return True when the summary date is before today (Switch has not checked in)."""
+    """Return True when the summary date is before today (Switch has not checked in).
+
+    ``now`` must be in the same timezone used for Nintendo API requests
+    (``X-Moon-TimeZone``). The API ``date`` field is a civil date in that zone.
+    """
     if now is None:
         now = datetime.now(timezone.utc)
     date_str = summary.get("date")
     if not date_str:
         return True
-    return datetime.strptime(date_str, "%Y-%m-%d").replace(tzinfo=timezone.utc).date() < now.date()
+    return date.fromisoformat(date_str) < now.date()
 
 
 def parse_played_apps(raw: list[dict], app_registry: ApplicationRegistry) -> list[PlayedAppUsage]:
@@ -80,7 +84,8 @@ class Player:
         Args:
             raw: List of daily summary dictionaries from the API.
             app_registry: Application registry to use to parse the played apps.
-            now: Clock used to decide if the first summary is today. Defaults to UTC now.
+            now: Clock used to decide if the first summary is today. Should be in the
+                API timezone. Defaults to UTC now.
         """
         _LOGGER.debug("Updating player %s daily summary", self.player_id)
         for player in raw[0].get("players", []):
@@ -108,7 +113,8 @@ class Player:
         Args:
             raw: List of daily summary dictionaries from the API.
             app_registry: Application registry to use to parse the played apps.
-            now: Clock used to decide if the first summary is today. Defaults to UTC now.
+            now: Clock used to decide if the first summary is today. Should be in the
+                API timezone. Defaults to UTC now.
 
         Returns:
             List of Player objects parsed from the summary.

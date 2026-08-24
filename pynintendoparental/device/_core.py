@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import asyncio
 from collections.abc import Callable
-from datetime import datetime, time, timedelta, timezone
+from datetime import datetime, time, timedelta
 
 from pynintendoauth.exceptions import (
     HttpException,
@@ -16,6 +16,7 @@ from ..application import Application, ApplicationRegistry
 from ..const import _LOGGER, DAYS_OF_WEEK
 from ..enum import AlarmSettingState, DeviceTimerMode
 from ..player import Player, PlayerRegistry
+from ..utils import current_datetime
 from ._callbacks import DeviceCallbacksMixin
 from ._parsing import DeviceParsingMixin
 from ._settings import DeviceSettingsMixin
@@ -122,11 +123,12 @@ class Device(
         all associated players and applications.
 
         Args:
-            now: Optional datetime for the update. Defaults to current time if not provided.
+            now: Optional datetime for the update. Defaults to the current time in the
+                API timezone if not provided.
         """
         _LOGGER.debug(">> Device.update()")
         if now is None:
-            now = datetime.now(timezone.utc)
+            now = current_datetime(self._api._tz)
         await asyncio.gather(
             self._get_daily_summaries(now),
             self.get_monthly_summary(),
@@ -288,7 +290,7 @@ class Device(
             ValueError: If no summary exists for the given date or no summaries are available.
         """
         if input_date is None:
-            input_date = datetime.now(timezone.utc)
+            input_date = current_datetime(self._api._tz)
         if not self.daily_summaries:
             raise ValueError("No daily summaries available to search.")
         summary = [x for x in self.daily_summaries if x["date"] == input_date.strftime("%Y-%m-%d")]
