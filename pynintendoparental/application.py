@@ -1,8 +1,10 @@
 """A Nintendo application."""
 
 import copy
+from collections.abc import Callable
+from dataclasses import dataclass
 from datetime import datetime
-from typing import TYPE_CHECKING, Callable
+from typing import TYPE_CHECKING
 
 from .api import Api
 from .const import _LOGGER
@@ -55,10 +57,16 @@ class Application:
         self._parental_control_settings: dict = {}
         self._monthly_summary: dict = {}
         self._daily_summary: dict = {}
-        self._device: "Device" | None = None
+        self._device: Device | None = None
 
         # Register internal callbacks
         callbacks.append(self._internal_update_callback)
+
+    def __eq__(self, other: object) -> bool:
+        """Check if the application is equal to another object."""
+        if not isinstance(other, Application):
+            return False
+        return self.application_id == other.application_id and self.name == other.name
 
     async def set_safe_launch_setting(self, safe_launch_setting: SafeLaunchSetting):
         """Set the application's status on the Allow List.
@@ -172,3 +180,61 @@ class Application:
         if callback not in self._callbacks:
             raise ValueError("Callback not found.")
         self._callbacks.remove(callback)
+
+
+class ApplicationRegistry:
+    """Registry of applications for a device."""
+
+    def __init__(self):
+        """Initialise the application registry."""
+        self._applications: list[Application] = []
+        self._application_ids: set[str] = set()
+
+    def __contains__(self, application_id: str) -> bool:
+        """Check if an application is in the registry."""
+        return application_id in self._application_ids
+
+    def __len__(self) -> int:
+        """Get the number of applications in the registry."""
+        return len(self._applications)
+
+    def __iter__(self):
+        """Iterate over the applications in the registry."""
+        yield from self._applications
+
+    def get_application(self, application_id: str) -> Application:
+        """Get an application by its ID."""
+        if application_id not in self._application_ids:
+            raise ValueError(f"Application {application_id} not found.")
+        for application in self._applications:
+            if application.application_id == application_id:
+                return application
+
+    def get_application_by_name(self, name: str) -> Application:
+        """Get an application by its name."""
+        for application in self._applications:
+            if application.name == name:
+                return application
+        raise ValueError(f"Application {name} not found.")
+
+    def add_application(self, application: Application):
+        """Add an application to the registry."""
+        if application.application_id in self._application_ids:
+            raise ValueError(f"Application {application.application_id} already in registry.")
+        self._applications.append(application)
+        self._application_ids.add(application.application_id)
+
+    def remove_application(self, application_id: str):
+        """Remove an application from the registry."""
+        if application_id not in self._application_ids:
+            raise ValueError(f"Application {application_id} not found.")
+        self._applications.remove(self.get_application(application_id))
+        self._application_ids.remove(application_id)
+
+
+@dataclass(frozen=True, slots=True, repr=False)
+class PlayedAppUsage:
+    """Usage information for a played application for a given player."""
+
+    application: Application
+    playing_time: int

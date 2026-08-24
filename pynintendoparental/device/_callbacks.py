@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
-from datetime import datetime
-from typing import TYPE_CHECKING, Callable
+from collections.abc import Callable
+from datetime import datetime, timezone
+from typing import TYPE_CHECKING
 
 from ..utils import is_awaitable
 
@@ -27,10 +28,10 @@ class DeviceCallbacksMixin:
             callback: A callable function. Can be sync or async.
 
         Raises:
-            ValueError: If the provided object is not callable.
+            TypeError: If the provided object is not callable.
         """
         if not callable(callback):
-            raise ValueError("Object must be callable.")
+            raise TypeError("Object must be callable.")
         if callback not in self._callbacks:
             self._callbacks.append(callback)
 
@@ -41,10 +42,10 @@ class DeviceCallbacksMixin:
             callback: The callback function to remove.
 
         Raises:
-            ValueError: If the provided object is not callable or not found.
+            TypeError: If the provided object is not callable or not found.
         """
         if not callable(callback):
-            raise ValueError("Object must be callable.")
+            raise TypeError("Object must be callable.")
         if callback in self._callbacks:
             self._callbacks.remove(callback)
 
@@ -62,9 +63,14 @@ class DeviceCallbacksMixin:
             else:
                 cb()
 
-    async def _send_api_update(self: Device, api_call: Callable, *args, **kwargs) -> None:  # type: ignore[misc]
+    async def _send_api_update(  # type: ignore[misc]
+        self: Device,
+        api_call: Callable,
+        *args,
+        **kwargs,
+    ) -> None:
         """Sends an update to the API and refreshes local state."""
-        now = kwargs.pop("now", datetime.now())
+        now = kwargs.pop("now", datetime.now(timezone.utc))
         response = await api_call(*args, **kwargs)
         self._parse_parental_control_setting(response["json"], now)
         self._calculate_times(now)

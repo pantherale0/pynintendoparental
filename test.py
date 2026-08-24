@@ -1,13 +1,11 @@
-import os
-import logging
 import asyncio
-
-from datetime import time
+import logging
+import os
 
 from dotenv import load_dotenv
 from pynintendoauth.exceptions import InvalidSessionTokenException
+
 from pynintendoparental import Authenticator, NintendoParental
-from pynintendoparental.enum import FunctionalRestrictionLevel
 
 load_dotenv()
 
@@ -58,7 +56,7 @@ async def main():
 
 if __name__ == "__main__":
     logging.basicConfig(
-        level=logging.INFO,
+        level=logging.DEBUG,
         format="%(asctime)s %(name)s %(levelname)s: %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
     )

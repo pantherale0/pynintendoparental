@@ -2,7 +2,7 @@
 
 import copy
 import logging
-from datetime import datetime, time
+from datetime import datetime, time, timezone
 from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
@@ -76,7 +76,7 @@ async def test_player_discovery(device: Device, mock_api: Api):
 
 async def test_get_player(device: Device):
     """Test that the get_player method works as expected."""
-    first_player_id = list(device.players.keys())[0]
+    first_player_id = next(iter(device.players)).player_id
     player = device.get_player(first_player_id)
     assert player.player_id == first_player_id
 
@@ -86,7 +86,7 @@ async def test_get_player(device: Device):
 
 async def test_get_application(device: Device):
     """Test that the get_application method works as expected."""
-    first_app_id = list(device.applications.keys())[0]
+    first_app_id = next(iter(device.applications)).application_id
     application = device.get_application(first_app_id)
     assert application.application_id == first_app_id
 
@@ -451,10 +451,10 @@ async def test_device_callbacks(device: Device):
     sync_callback.assert_not_called()
     async_callback.assert_not_called()
 
-    with pytest.raises(ValueError, match="Object must be callable."):
+    with pytest.raises(TypeError, match="Object must be callable."):
         device.remove_device_callback("not a function")
 
-    with pytest.raises(ValueError, match="Object must be callable."):
+    with pytest.raises(TypeError, match="Object must be callable."):
         device.add_device_callback("not a function")
 
 
@@ -780,6 +780,20 @@ async def test_bedtime_rollover(device: Device, hour: int, expected_remaining: i
     device._calculate_today_remaining_time(now)  # pylint: disable=protected-access
 
     assert device.today_time_remaining == expected_remaining
+
+
+async def test_bedtime_rollover_with_timezone_aware_now(device: Device):
+    """Bedtime calculations work when the current time is timezone-aware."""
+    device.bedtime_alarm = time(hour=0, minute=15)
+    device.alarms_enabled = True
+    device.limit_time = 480
+    device.today_playing_time = 0
+
+    now = FIXED_NOW.replace(hour=23, minute=0, second=0, microsecond=0, tzinfo=timezone.utc)
+    device._calculate_today_remaining_time(now)  # pylint: disable=protected-access
+
+    assert device.today_time_remaining == 75
+    assert device.stats_update_failed is False
 
 
 @pytest.mark.parametrize(
