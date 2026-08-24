@@ -1,0 +1,5519 @@
+{
+  "Device 1 (P01)": {
+    "name": "Device 1",
+    "model": "Switch 2",
+    "generation": "P01",
+    "daily_summaries": [
+      {
+        "date": "2026-08-17",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-08-16",
+        "result": "ACHIEVED",
+        "playingTime": 70,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 3,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "featuredGameIconURL": {
+          "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+          "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+          "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+          "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+          "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+        },
+        "players": [
+          {
+            "profile": {
+              "playerId": "player-1",
+              "nickname": "Player 1",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-1"
+            },
+            "playingTime": 70,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 70
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          },
+          {
+            "profile": {
+              "playerId": "player-2",
+              "nickname": "Player 2",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-2"
+            },
+            "playingTime": 70,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 70
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          }
+        ]
+      },
+      {
+        "date": "2026-08-15",
+        "result": "ACHIEVED",
+        "playingTime": 65,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "featuredGameIconURL": {
+          "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+          "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+          "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+          "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+          "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+        },
+        "players": [
+          {
+            "profile": {
+              "playerId": "player-1",
+              "nickname": "Player 1",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-1"
+            },
+            "playingTime": 60,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 60
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          },
+          {
+            "profile": {
+              "playerId": "player-2",
+              "nickname": "Player 2",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-2"
+            },
+            "playingTime": 60,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 60
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          }
+        ]
+      },
+      {
+        "date": "2026-08-14",
+        "result": "ACHIEVED",
+        "playingTime": 70,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "featuredGameIconURL": {
+          "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+          "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+          "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+          "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+          "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+        },
+        "players": [
+          {
+            "profile": {
+              "playerId": "player-1",
+              "nickname": "Player 1",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-1"
+            },
+            "playingTime": 70,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 70
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          },
+          {
+            "profile": {
+              "playerId": "player-2",
+              "nickname": "Player 2",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-2"
+            },
+            "playingTime": 70,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 70
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          }
+        ]
+      },
+      {
+        "date": "2026-08-13",
+        "result": "ACHIEVED",
+        "playingTime": 65,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "featuredGameIconURL": {
+          "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+          "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+          "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+          "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+          "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+        },
+        "players": [
+          {
+            "profile": {
+              "playerId": "player-1",
+              "nickname": "Player 1",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-1"
+            },
+            "playingTime": 65,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 65
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          },
+          {
+            "profile": {
+              "playerId": "player-2",
+              "nickname": "Player 2",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-2"
+            },
+            "playingTime": 65,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 65
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          }
+        ]
+      },
+      {
+        "date": "2026-08-12",
+        "result": "ACHIEVED",
+        "playingTime": 70,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "featuredGameIconURL": {
+          "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+          "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+          "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+          "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+          "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+        },
+        "players": [
+          {
+            "profile": {
+              "playerId": "player-1",
+              "nickname": "Player 1",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-1"
+            },
+            "playingTime": 70,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 70
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          },
+          {
+            "profile": {
+              "playerId": "player-2",
+              "nickname": "Player 2",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-2"
+            },
+            "playingTime": 65,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 65
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          }
+        ]
+      },
+      {
+        "date": "2026-08-11",
+        "result": "ACHIEVED",
+        "playingTime": 40,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "featuredGameIconURL": {
+          "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+          "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+          "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+          "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+          "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+        },
+        "players": [
+          {
+            "profile": {
+              "playerId": "player-1",
+              "nickname": "Player 1",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-1"
+            },
+            "playingTime": 40,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 40
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          },
+          {
+            "profile": {
+              "playerId": "player-2",
+              "nickname": "Player 2",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-2"
+            },
+            "playingTime": 40,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 40
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          }
+        ]
+      },
+      {
+        "date": "2026-08-10",
+        "result": "ACHIEVED",
+        "playingTime": 115,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "featuredGameIconURL": {
+          "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+          "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+          "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+          "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+          "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+        },
+        "nonFeaturedGameCount": 1,
+        "players": [
+          {
+            "profile": {
+              "playerId": "player-1",
+              "nickname": "Player 1",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-1"
+            },
+            "playingTime": 75,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 75
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          },
+          {
+            "profile": {
+              "playerId": "player-3",
+              "nickname": "Player 3",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-3"
+            },
+            "playingTime": 35,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "01004FF021942000",
+                  "title": "EA SPORTS FC 26",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/54d07ce12da440b598e0e380611fba8a_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/54d07ce12da440b598e0e380611fba8a_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/54d07ce12da440b598e0e380611fba8a_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/54d07ce12da440b598e0e380611fba8a_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/54d07ce12da440b598e0e380611fba8a_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/01004ff021942000/DE?lang=de-DE"
+                },
+                "playingTime": 35
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          },
+          {
+            "profile": {
+              "playerId": "player-2",
+              "nickname": "Player 2",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-2"
+            },
+            "playingTime": 15,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 15
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          }
+        ]
+      },
+      {
+        "date": "2026-08-09",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-08-08",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-08-07",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-08-06",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-08-05",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-08-04",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-08-03",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-08-02",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-08-01",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-31",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-30",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-29",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-28",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-27",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-26",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-25",
+        "result": "ACHIEVED",
+        "playingTime": 70,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "featuredGameIconURL": {
+          "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+          "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+          "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+          "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+          "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+        },
+        "players": [
+          {
+            "profile": {
+              "playerId": "player-1",
+              "nickname": "Player 1",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-1"
+            },
+            "playingTime": 70,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 70
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          },
+          {
+            "profile": {
+              "playerId": "player-2",
+              "nickname": "Player 2",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-2"
+            },
+            "playingTime": 70,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 70
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          }
+        ]
+      },
+      {
+        "date": "2026-07-24",
+        "result": "ACHIEVED",
+        "playingTime": 40,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "featuredGameIconURL": {
+          "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+          "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+          "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+          "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+          "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+        },
+        "players": [
+          {
+            "profile": {
+              "playerId": "player-1",
+              "nickname": "Player 1",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-1"
+            },
+            "playingTime": 40,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 40
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          },
+          {
+            "profile": {
+              "playerId": "player-2",
+              "nickname": "Player 2",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-2"
+            },
+            "playingTime": 40,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 40
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          }
+        ]
+      },
+      {
+        "date": "2026-07-23",
+        "result": "ACHIEVED",
+        "playingTime": 50,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "featuredGameIconURL": {
+          "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+          "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+          "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+          "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+          "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+        },
+        "players": [
+          {
+            "profile": {
+              "playerId": "player-1",
+              "nickname": "Player 1",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-1"
+            },
+            "playingTime": 50,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 50
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          },
+          {
+            "profile": {
+              "playerId": "player-2",
+              "nickname": "Player 2",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-2"
+            },
+            "playingTime": 50,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 50
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          }
+        ]
+      },
+      {
+        "date": "2026-07-22",
+        "result": "ACHIEVED",
+        "playingTime": 45,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "featuredGameIconURL": {
+          "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+          "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+          "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+          "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+          "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+        },
+        "players": [
+          {
+            "profile": {
+              "playerId": "player-1",
+              "nickname": "Player 1",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-1"
+            },
+            "playingTime": 45,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 45
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          },
+          {
+            "profile": {
+              "playerId": "player-2",
+              "nickname": "Player 2",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-2"
+            },
+            "playingTime": 45,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 45
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          }
+        ]
+      },
+      {
+        "date": "2026-07-21",
+        "result": "ACHIEVED",
+        "playingTime": 3,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "featuredGameIconURL": {
+          "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+          "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+          "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+          "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+          "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+        },
+        "players": [
+          {
+            "profile": {
+              "playerId": "player-1",
+              "nickname": "Player 1",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-1"
+            },
+            "playingTime": 3,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 3
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          }
+        ]
+      },
+      {
+        "date": "2026-07-20",
+        "result": "ACHIEVED",
+        "playingTime": 55,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "featuredGameIconURL": {
+          "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+          "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+          "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+          "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+          "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+        },
+        "players": [
+          {
+            "profile": {
+              "playerId": "player-1",
+              "nickname": "Player 1",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-1"
+            },
+            "playingTime": 55,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 55
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          },
+          {
+            "profile": {
+              "playerId": "player-2",
+              "nickname": "Player 2",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-2"
+            },
+            "playingTime": 55,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 55
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          }
+        ]
+      },
+      {
+        "date": "2026-07-19",
+        "result": "ACHIEVED",
+        "playingTime": 70,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "featuredGameIconURL": {
+          "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+          "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+          "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+          "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+          "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+        },
+        "players": [
+          {
+            "profile": {
+              "playerId": "player-1",
+              "nickname": "Player 1",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-1"
+            },
+            "playingTime": 70,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 70
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          },
+          {
+            "profile": {
+              "playerId": "player-2",
+              "nickname": "Player 2",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-2"
+            },
+            "playingTime": 65,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 65
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          }
+        ]
+      },
+      {
+        "date": "2026-07-18",
+        "result": "ACHIEVED",
+        "playingTime": 65,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "featuredGameIconURL": {
+          "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+          "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+          "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+          "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+          "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+        },
+        "players": [
+          {
+            "profile": {
+              "playerId": "player-1",
+              "nickname": "Player 1",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-1"
+            },
+            "playingTime": 65,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 65
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          },
+          {
+            "profile": {
+              "playerId": "player-2",
+              "nickname": "Player 2",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": "nsa-2"
+            },
+            "playingTime": 65,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 65
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          }
+        ]
+      }
+    ],
+    "last_month_summary": {
+      "overall": {
+        "stat": {
+          "totalDays": 18,
+          "averageTime": 55
+        },
+        "dailyStats": [
+          {
+            "date": "2026-07-01",
+            "totalTime": 55,
+            "games": {
+              "010086000E148000": {
+                "totalTime": 50
+              }
+            }
+          },
+          {
+            "date": "2026-07-02",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-07-03",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-07-04",
+            "totalTime": 50,
+            "games": {
+              "01006000040C2000": {
+                "totalTime": 50
+              }
+            }
+          },
+          {
+            "date": "2026-07-05",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-07-06",
+            "totalTime": 80,
+            "games": {
+              "01006000040C2000": {
+                "totalTime": 80
+              }
+            }
+          },
+          {
+            "date": "2026-07-07",
+            "totalTime": 60,
+            "games": {
+              "01006000040C2000": {
+                "totalTime": 60
+              }
+            }
+          },
+          {
+            "date": "2026-07-08",
+            "totalTime": 65,
+            "games": {
+              "01006000040C2000": {
+                "totalTime": 65
+              }
+            }
+          },
+          {
+            "date": "2026-07-09",
+            "totalTime": 55,
+            "games": {
+              "01006000040C2000": {
+                "totalTime": 55
+              }
+            }
+          },
+          {
+            "date": "2026-07-10",
+            "totalTime": 35,
+            "games": {
+              "0100D71004694000": {
+                "totalTime": 35
+              }
+            }
+          },
+          {
+            "date": "2026-07-11",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-07-12",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-07-13",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-07-14",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-07-15",
+            "totalTime": 70,
+            "games": {
+              "0100D71004694000": {
+                "totalTime": 70
+              }
+            }
+          },
+          {
+            "date": "2026-07-16",
+            "totalTime": 85,
+            "games": {
+              "0100D71004694000": {
+                "totalTime": 85
+              }
+            }
+          },
+          {
+            "date": "2026-07-17",
+            "totalTime": 70,
+            "games": {
+              "0100D71004694000": {
+                "totalTime": 70
+              }
+            }
+          },
+          {
+            "date": "2026-07-18",
+            "totalTime": 65,
+            "games": {
+              "0100D71004694000": {
+                "totalTime": 65
+              }
+            }
+          },
+          {
+            "date": "2026-07-19",
+            "totalTime": 70,
+            "games": {
+              "0100D71004694000": {
+                "totalTime": 70
+              }
+            }
+          },
+          {
+            "date": "2026-07-20",
+            "totalTime": 55,
+            "games": {
+              "0100D71004694000": {
+                "totalTime": 55
+              }
+            }
+          },
+          {
+            "date": "2026-07-21",
+            "totalTime": 3,
+            "games": {
+              "0100D71004694000": {
+                "totalTime": 3
+              }
+            }
+          },
+          {
+            "date": "2026-07-22",
+            "totalTime": 45,
+            "games": {
+              "0100D71004694000": {
+                "totalTime": 45
+              }
+            }
+          },
+          {
+            "date": "2026-07-23",
+            "totalTime": 50,
+            "games": {
+              "0100D71004694000": {
+                "totalTime": 50
+              }
+            }
+          },
+          {
+            "date": "2026-07-24",
+            "totalTime": 40,
+            "games": {
+              "0100D71004694000": {
+                "totalTime": 40
+              }
+            }
+          },
+          {
+            "date": "2026-07-25",
+            "totalTime": 70,
+            "games": {
+              "0100D71004694000": {
+                "totalTime": 70
+              }
+            }
+          },
+          {
+            "date": "2026-07-26",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-07-27",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-07-28",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-07-29",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-07-30",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-07-31",
+            "totalTime": 0,
+            "games": {}
+          }
+        ],
+        "ranking": [
+          {
+            "position": "UP",
+            "stat": {
+              "totalDays": 12,
+              "meta": {
+                "applicationId": "0100D71004694000",
+                "title": "Minecraft for Nintendo Switch",
+                "imageUri": {
+                  "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                  "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                  "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512",
+                  "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                  "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256"
+                },
+                "hasUgc": true,
+                "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+              },
+              "players": [
+                {
+                  "playerId": "player-2",
+                  "nickname": "Player 2",
+                  "imageUri": "https://example.invalid/avatar.jpg",
+                  "nsaId": "nsa-2"
+                },
+                {
+                  "playerId": "player-1",
+                  "nickname": "Player 1",
+                  "imageUri": "https://example.invalid/avatar.jpg",
+                  "nsaId": "nsa-1"
+                }
+              ]
+            }
+          },
+          {
+            "position": "NEW",
+            "stat": {
+              "totalDays": 5,
+              "meta": {
+                "applicationId": "01006000040C2000",
+                "title": "Yoshi's Crafted World",
+                "imageUri": {
+                  "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/9e427746a3a04abea0420beb3e65eeca_128",
+                  "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/9e427746a3a04abea0420beb3e65eeca_1024",
+                  "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/9e427746a3a04abea0420beb3e65eeca_512",
+                  "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/9e427746a3a04abea0420beb3e65eeca_3",
+                  "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/9e427746a3a04abea0420beb3e65eeca_256"
+                },
+                "hasUgc": false,
+                "shopUri": "https://ec.nintendo.com/apps/01006000040c2000/DE?lang=de-DE"
+              },
+              "players": [
+                {
+                  "playerId": "player-2",
+                  "nickname": "Player 2",
+                  "imageUri": "https://example.invalid/avatar.jpg",
+                  "nsaId": "nsa-2"
+                }
+              ]
+            }
+          },
+          {
+            "position": "NEW",
+            "stat": {
+              "totalDays": 1,
+              "meta": {
+                "applicationId": "010086000E148000",
+                "title": "MARIO & SONIC BEI DEN OLYMPISCHEN SPIELEN: TOKYO 2020",
+                "imageUri": {
+                  "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/01d576964d764eb49d795518312efad9_128",
+                  "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/01d576964d764eb49d795518312efad9_1024",
+                  "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/01d576964d764eb49d795518312efad9_512",
+                  "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/01d576964d764eb49d795518312efad9_3",
+                  "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/01d576964d764eb49d795518312efad9_256"
+                },
+                "hasUgc": false,
+                "shopUri": "https://ec.nintendo.com/apps/010086000e148000/DE?lang=de-DE"
+              },
+              "players": [
+                {
+                  "playerId": "player-2",
+                  "nickname": "Player 2",
+                  "imageUri": "https://example.invalid/avatar.jpg",
+                  "nsaId": "nsa-2"
+                }
+              ]
+            }
+          }
+        ],
+        "chat": {
+          "players": []
+        }
+      },
+      "players": [
+        {
+          "profile": {
+            "playerId": "player-4",
+            "nickname": "Player 4",
+            "imageUri": "https://example.invalid/avatar.jpg",
+            "nsaId": "nsa-4"
+          },
+          "summary": {
+            "stat": {
+              "totalDays": 0,
+              "averageTime": 0
+            },
+            "dailyStats": [
+              {
+                "date": "2026-07-01",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-02",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-03",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-04",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-05",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-06",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-07",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-08",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-09",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-10",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-11",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-12",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-13",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-14",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-15",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-16",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-17",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-18",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-19",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-20",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-21",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-22",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-23",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-24",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-25",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-26",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-27",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-28",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-29",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-30",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-31",
+                "totalTime": 0,
+                "games": {}
+              }
+            ],
+            "ranking": [],
+            "chat": {
+              "members": []
+            }
+          }
+        },
+        {
+          "profile": {
+            "playerId": "player-5",
+            "nickname": "Player 5",
+            "imageUri": "https://example.invalid/avatar.jpg",
+            "nsaId": null
+          },
+          "summary": {
+            "stat": {
+              "totalDays": 0,
+              "averageTime": 0
+            },
+            "dailyStats": [
+              {
+                "date": "2026-07-01",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-02",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-03",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-04",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-05",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-06",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-07",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-08",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-09",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-10",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-11",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-12",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-13",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-14",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-15",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-16",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-17",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-18",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-19",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-20",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-21",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-22",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-23",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-24",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-25",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-26",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-27",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-28",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-29",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-30",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-31",
+                "totalTime": 0,
+                "games": {}
+              }
+            ],
+            "ranking": [],
+            "chat": {
+              "members": []
+            }
+          }
+        },
+        {
+          "profile": {
+            "playerId": "player-2",
+            "nickname": "Player 2",
+            "imageUri": "https://example.invalid/avatar.jpg",
+            "nsaId": "nsa-2"
+          },
+          "summary": {
+            "stat": {
+              "totalDays": 17,
+              "averageTime": 55
+            },
+            "dailyStats": [
+              {
+                "date": "2026-07-01",
+                "totalTime": 50,
+                "games": {
+                  "010086000E148000": {
+                    "totalTime": 50
+                  }
+                }
+              },
+              {
+                "date": "2026-07-02",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-03",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-04",
+                "totalTime": 50,
+                "games": {
+                  "01006000040C2000": {
+                    "totalTime": 50
+                  }
+                }
+              },
+              {
+                "date": "2026-07-05",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-06",
+                "totalTime": 80,
+                "games": {
+                  "01006000040C2000": {
+                    "totalTime": 80
+                  }
+                }
+              },
+              {
+                "date": "2026-07-07",
+                "totalTime": 60,
+                "games": {
+                  "01006000040C2000": {
+                    "totalTime": 60
+                  }
+                }
+              },
+              {
+                "date": "2026-07-08",
+                "totalTime": 65,
+                "games": {
+                  "01006000040C2000": {
+                    "totalTime": 65
+                  }
+                }
+              },
+              {
+                "date": "2026-07-09",
+                "totalTime": 55,
+                "games": {
+                  "01006000040C2000": {
+                    "totalTime": 55
+                  }
+                }
+              },
+              {
+                "date": "2026-07-10",
+                "totalTime": 35,
+                "games": {
+                  "0100D71004694000": {
+                    "totalTime": 35
+                  }
+                }
+              },
+              {
+                "date": "2026-07-11",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-12",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-13",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-14",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-15",
+                "totalTime": 65,
+                "games": {
+                  "0100D71004694000": {
+                    "totalTime": 65
+                  }
+                }
+              },
+              {
+                "date": "2026-07-16",
+                "totalTime": 85,
+                "games": {
+                  "0100D71004694000": {
+                    "totalTime": 85
+                  }
+                }
+              },
+              {
+                "date": "2026-07-17",
+                "totalTime": 65,
+                "games": {
+                  "0100D71004694000": {
+                    "totalTime": 65
+                  }
+                }
+              },
+              {
+                "date": "2026-07-18",
+                "totalTime": 65,
+                "games": {
+                  "0100D71004694000": {
+                    "totalTime": 65
+                  }
+                }
+              },
+              {
+                "date": "2026-07-19",
+                "totalTime": 65,
+                "games": {
+                  "0100D71004694000": {
+                    "totalTime": 65
+                  }
+                }
+              },
+              {
+                "date": "2026-07-20",
+                "totalTime": 55,
+                "games": {
+                  "0100D71004694000": {
+                    "totalTime": 55
+                  }
+                }
+              },
+              {
+                "date": "2026-07-21",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-22",
+                "totalTime": 45,
+                "games": {
+                  "0100D71004694000": {
+                    "totalTime": 45
+                  }
+                }
+              },
+              {
+                "date": "2026-07-23",
+                "totalTime": 50,
+                "games": {
+                  "0100D71004694000": {
+                    "totalTime": 50
+                  }
+                }
+              },
+              {
+                "date": "2026-07-24",
+                "totalTime": 40,
+                "games": {
+                  "0100D71004694000": {
+                    "totalTime": 40
+                  }
+                }
+              },
+              {
+                "date": "2026-07-25",
+                "totalTime": 70,
+                "games": {
+                  "0100D71004694000": {
+                    "totalTime": 70
+                  }
+                }
+              },
+              {
+                "date": "2026-07-26",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-27",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-28",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-29",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-30",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-31",
+                "totalTime": 0,
+                "games": {}
+              }
+            ],
+            "ranking": [
+              {
+                "position": "UP",
+                "stat": {
+                  "totalDays": 11,
+                  "meta": {
+                    "applicationId": "0100D71004694000",
+                    "title": "Minecraft for Nintendo Switch",
+                    "imageUri": {
+                      "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                      "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                      "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512",
+                      "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                      "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256"
+                    },
+                    "hasUgc": true,
+                    "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                  },
+                  "players": [
+                    {
+                      "playerId": "player-2",
+                      "nickname": "Player 2",
+                      "imageUri": "https://example.invalid/avatar.jpg",
+                      "nsaId": "nsa-2"
+                    }
+                  ]
+                }
+              },
+              {
+                "position": "NEW",
+                "stat": {
+                  "totalDays": 5,
+                  "meta": {
+                    "applicationId": "01006000040C2000",
+                    "title": "Yoshi's Crafted World",
+                    "imageUri": {
+                      "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/9e427746a3a04abea0420beb3e65eeca_128",
+                      "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/9e427746a3a04abea0420beb3e65eeca_1024",
+                      "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/9e427746a3a04abea0420beb3e65eeca_512",
+                      "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/9e427746a3a04abea0420beb3e65eeca_3",
+                      "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/9e427746a3a04abea0420beb3e65eeca_256"
+                    },
+                    "hasUgc": false,
+                    "shopUri": "https://ec.nintendo.com/apps/01006000040c2000/DE?lang=de-DE"
+                  },
+                  "players": [
+                    {
+                      "playerId": "player-2",
+                      "nickname": "Player 2",
+                      "imageUri": "https://example.invalid/avatar.jpg",
+                      "nsaId": "nsa-2"
+                    }
+                  ]
+                }
+              },
+              {
+                "position": "NEW",
+                "stat": {
+                  "totalDays": 1,
+                  "meta": {
+                    "applicationId": "010086000E148000",
+                    "title": "MARIO & SONIC BEI DEN OLYMPISCHEN SPIELEN: TOKYO 2020",
+                    "imageUri": {
+                      "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/01d576964d764eb49d795518312efad9_128",
+                      "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/01d576964d764eb49d795518312efad9_1024",
+                      "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/01d576964d764eb49d795518312efad9_512",
+                      "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/01d576964d764eb49d795518312efad9_3",
+                      "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/01d576964d764eb49d795518312efad9_256"
+                    },
+                    "hasUgc": false,
+                    "shopUri": "https://ec.nintendo.com/apps/010086000e148000/DE?lang=de-DE"
+                  },
+                  "players": [
+                    {
+                      "playerId": "player-2",
+                      "nickname": "Player 2",
+                      "imageUri": "https://example.invalid/avatar.jpg",
+                      "nsaId": "nsa-2"
+                    }
+                  ]
+                }
+              }
+            ],
+            "chat": {
+              "members": []
+            }
+          }
+        },
+        {
+          "profile": {
+            "playerId": "player-3",
+            "nickname": "Player 3",
+            "imageUri": "https://example.invalid/avatar.jpg",
+            "nsaId": "nsa-3"
+          },
+          "summary": {
+            "stat": {
+              "totalDays": 0,
+              "averageTime": 0
+            },
+            "dailyStats": [
+              {
+                "date": "2026-07-01",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-02",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-03",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-04",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-05",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-06",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-07",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-08",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-09",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-10",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-11",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-12",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-13",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-14",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-15",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-16",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-17",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-18",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-19",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-20",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-21",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-22",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-23",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-24",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-25",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-26",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-27",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-28",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-29",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-30",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-31",
+                "totalTime": 0,
+                "games": {}
+              }
+            ],
+            "ranking": [],
+            "chat": {
+              "members": []
+            }
+          }
+        },
+        {
+          "profile": {
+            "playerId": "player-1",
+            "nickname": "Player 1",
+            "imageUri": "https://example.invalid/avatar.jpg",
+            "nsaId": "nsa-1"
+          },
+          "summary": {
+            "stat": {
+              "totalDays": 11,
+              "averageTime": 55
+            },
+            "dailyStats": [
+              {
+                "date": "2026-07-01",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-02",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-03",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-04",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-05",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-06",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-07",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-08",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-09",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-10",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-11",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-12",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-13",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-14",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-15",
+                "totalTime": 60,
+                "games": {
+                  "0100D71004694000": {
+                    "totalTime": 60
+                  }
+                }
+              },
+              {
+                "date": "2026-07-16",
+                "totalTime": 85,
+                "games": {
+                  "0100D71004694000": {
+                    "totalTime": 85
+                  }
+                }
+              },
+              {
+                "date": "2026-07-17",
+                "totalTime": 70,
+                "games": {
+                  "0100D71004694000": {
+                    "totalTime": 70
+                  }
+                }
+              },
+              {
+                "date": "2026-07-18",
+                "totalTime": 65,
+                "games": {
+                  "0100D71004694000": {
+                    "totalTime": 65
+                  }
+                }
+              },
+              {
+                "date": "2026-07-19",
+                "totalTime": 70,
+                "games": {
+                  "0100D71004694000": {
+                    "totalTime": 70
+                  }
+                }
+              },
+              {
+                "date": "2026-07-20",
+                "totalTime": 55,
+                "games": {
+                  "0100D71004694000": {
+                    "totalTime": 55
+                  }
+                }
+              },
+              {
+                "date": "2026-07-21",
+                "totalTime": 3,
+                "games": {
+                  "0100D71004694000": {
+                    "totalTime": 3
+                  }
+                }
+              },
+              {
+                "date": "2026-07-22",
+                "totalTime": 45,
+                "games": {
+                  "0100D71004694000": {
+                    "totalTime": 45
+                  }
+                }
+              },
+              {
+                "date": "2026-07-23",
+                "totalTime": 50,
+                "games": {
+                  "0100D71004694000": {
+                    "totalTime": 50
+                  }
+                }
+              },
+              {
+                "date": "2026-07-24",
+                "totalTime": 40,
+                "games": {
+                  "0100D71004694000": {
+                    "totalTime": 40
+                  }
+                }
+              },
+              {
+                "date": "2026-07-25",
+                "totalTime": 70,
+                "games": {
+                  "0100D71004694000": {
+                    "totalTime": 70
+                  }
+                }
+              },
+              {
+                "date": "2026-07-26",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-27",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-28",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-29",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-30",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-31",
+                "totalTime": 0,
+                "games": {}
+              }
+            ],
+            "ranking": [
+              {
+                "position": "UP",
+                "stat": {
+                  "totalDays": 11,
+                  "meta": {
+                    "applicationId": "0100D71004694000",
+                    "title": "Minecraft for Nintendo Switch",
+                    "imageUri": {
+                      "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                      "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                      "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512",
+                      "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                      "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256"
+                    },
+                    "hasUgc": true,
+                    "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                  },
+                  "players": [
+                    {
+                      "playerId": "player-1",
+                      "nickname": "Player 1",
+                      "imageUri": "https://example.invalid/avatar.jpg",
+                      "nsaId": "nsa-1"
+                    }
+                  ]
+                }
+              }
+            ],
+            "chat": {
+              "members": []
+            }
+          }
+        },
+        {
+          "profile": {
+            "playerId": "player-6",
+            "nickname": "Player 6",
+            "imageUri": "https://example.invalid/avatar.jpg",
+            "nsaId": null
+          },
+          "summary": {
+            "stat": {
+              "totalDays": 0,
+              "averageTime": 0
+            },
+            "dailyStats": [
+              {
+                "date": "2026-07-01",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-02",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-03",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-04",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-05",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-06",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-07",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-08",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-09",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-10",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-11",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-12",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-13",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-14",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-15",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-16",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-17",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-18",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-19",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-20",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-21",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-22",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-23",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-24",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-25",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-26",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-27",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-28",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-29",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-30",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-07-31",
+                "totalTime": 0,
+                "games": {}
+              }
+            ],
+            "ranking": [],
+            "chat": {
+              "members": []
+            }
+          }
+        }
+      ]
+    }
+  },
+  "Device 2 (P00)": {
+    "name": "Device 2",
+    "model": "Switch",
+    "generation": "P00",
+    "daily_summaries": [
+      {
+        "date": "2026-07-31",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-30",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-29",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-28",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-27",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-26",
+        "result": "UNACHIEVED",
+        "playingTime": 70,
+        "exceededTime": 70,
+        "disabledTime": 0,
+        "miscTime": 5,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {
+          "addedExtraPlayingTime": true
+        },
+        "featuredGameIconURL": {
+          "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+          "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+          "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512",
+          "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+          "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256"
+        },
+        "players": [
+          {
+            "profile": {
+              "playerId": "player-7",
+              "nickname": "Player 1",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": null
+            },
+            "playingTime": 65,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512",
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 65
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          }
+        ]
+      },
+      {
+        "date": "2026-07-25",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-24",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-23",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-22",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-21",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-20",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-19",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-18",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-17",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-16",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-15",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-14",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-13",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-12",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-11",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-10",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-09",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-08",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-07",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-06",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-05",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-04",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-03",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-02",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-01",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      }
+    ],
+    "last_month_summary": {
+      "overall": {
+        "stat": {
+          "totalDays": 0,
+          "averageTime": 0
+        },
+        "dailyStats": [
+          {
+            "date": "2026-06-01",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-02",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-03",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-04",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-05",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-06",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-07",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-08",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-09",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-10",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-11",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-12",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-13",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-14",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-15",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-16",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-17",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-18",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-19",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-20",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-21",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-22",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-23",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-24",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-25",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-26",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-27",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-28",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-29",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-30",
+            "totalTime": 0,
+            "games": {}
+          }
+        ],
+        "ranking": [],
+        "chat": {
+          "players": []
+        }
+      },
+      "players": [
+        {
+          "profile": {
+            "playerId": "player-7",
+            "nickname": "Player 1",
+            "imageUri": "https://example.invalid/avatar.jpg",
+            "nsaId": null
+          },
+          "summary": {
+            "stat": {
+              "totalDays": 0,
+              "averageTime": 0
+            },
+            "dailyStats": [
+              {
+                "date": "2026-06-01",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-02",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-03",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-04",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-05",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-06",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-07",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-08",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-09",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-10",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-11",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-12",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-13",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-14",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-15",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-16",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-17",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-18",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-19",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-20",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-21",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-22",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-23",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-24",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-25",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-26",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-27",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-28",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-29",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-30",
+                "totalTime": 0,
+                "games": {}
+              }
+            ],
+            "ranking": [],
+            "chat": {
+              "members": []
+            }
+          }
+        }
+      ]
+    }
+  },
+  "Device 3 (P00)": {
+    "name": "Device 3",
+    "model": "Switch",
+    "generation": "P00",
+    "daily_summaries": [
+      {
+        "date": "2026-07-29",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-28",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-27",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-26",
+        "result": "UNACHIEVED",
+        "playingTime": 75,
+        "exceededTime": 75,
+        "disabledTime": 0,
+        "miscTime": 5,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {
+          "addedExtraPlayingTime": true
+        },
+        "featuredGameIconURL": {
+          "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+          "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512",
+          "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+          "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+          "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128"
+        },
+        "players": [
+          {
+            "profile": {
+              "playerId": "player-8",
+              "nickname": "Player 2",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": null
+            },
+            "playingTime": 65,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 65
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          }
+        ]
+      },
+      {
+        "date": "2026-07-25",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-24",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-23",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-22",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-21",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-20",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-19",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-18",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-17",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-16",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-15",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-14",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-13",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-12",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-11",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-10",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-09",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-08",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-07",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-06",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-05",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-04",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-03",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-02",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-01",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-06-30",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-06-29",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      }
+    ],
+    "last_month_summary": {
+      "overall": {
+        "stat": {
+          "totalDays": 0,
+          "averageTime": 0
+        },
+        "dailyStats": [
+          {
+            "date": "2026-06-01",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-02",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-03",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-04",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-05",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-06",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-07",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-08",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-09",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-10",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-11",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-12",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-13",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-14",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-15",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-16",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-17",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-18",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-19",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-20",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-21",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-22",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-23",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-24",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-25",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-26",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-27",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-28",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-29",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-30",
+            "totalTime": 0,
+            "games": {}
+          }
+        ],
+        "ranking": [],
+        "chat": {
+          "players": []
+        }
+      },
+      "players": [
+        {
+          "profile": {
+            "playerId": "player-8",
+            "nickname": "Player 2",
+            "imageUri": "https://example.invalid/avatar.jpg",
+            "nsaId": null
+          },
+          "summary": {
+            "stat": {
+              "totalDays": 0,
+              "averageTime": 0
+            },
+            "dailyStats": [
+              {
+                "date": "2026-06-01",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-02",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-03",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-04",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-05",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-06",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-07",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-08",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-09",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-10",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-11",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-12",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-13",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-14",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-15",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-16",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-17",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-18",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-19",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-20",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-21",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-22",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-23",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-24",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-25",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-26",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-27",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-28",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-29",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-30",
+                "totalTime": 0,
+                "games": {}
+              }
+            ],
+            "ranking": [],
+            "chat": {
+              "members": []
+            }
+          }
+        }
+      ]
+    }
+  },
+  "Device 4 (P00)": {
+    "name": "Device 4",
+    "model": "Switch",
+    "generation": "P00",
+    "daily_summaries": [
+      {
+        "date": "2026-07-26",
+        "result": "CALCULATING",
+        "playingTime": 65,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 3,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {
+          "addedExtraPlayingTime": true
+        },
+        "featuredGameIconURL": {
+          "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512",
+          "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+          "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+          "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+          "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024"
+        },
+        "nonFeaturedGameCount": 1,
+        "players": [
+          {
+            "profile": {
+              "playerId": "player-9",
+              "nickname": "Player 3",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": null
+            },
+            "playingTime": 65,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "0100D71004694000",
+                  "title": "Minecraft for Nintendo Switch",
+                  "imageUri": {
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_512",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_3",
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_128",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_256",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/266ea5ace7ac458baf96636332dc7c5c_1024"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/0100d71004694000/DE?lang=de-DE"
+                },
+                "playingTime": 30
+              },
+              {
+                "meta": {
+                  "applicationId": "01004FF021942000",
+                  "title": "EA SPORTS FC 26",
+                  "imageUri": {
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/54d07ce12da440b598e0e380611fba8a_512",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/54d07ce12da440b598e0e380611fba8a_3",
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/54d07ce12da440b598e0e380611fba8a_128",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/54d07ce12da440b598e0e380611fba8a_256",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/54d07ce12da440b598e0e380611fba8a_1024"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/01004ff021942000/DE?lang=de-DE"
+                },
+                "playingTime": 30
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          }
+        ]
+      },
+      {
+        "date": "2026-07-25",
+        "result": "ACHIEVED",
+        "playingTime": 1,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 1,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-24",
+        "result": "UNACHIEVED",
+        "playingTime": 40,
+        "exceededTime": 10,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "featuredGameIconURL": {
+          "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_512",
+          "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_3",
+          "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_128",
+          "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_256",
+          "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_1024"
+        },
+        "players": [
+          {
+            "profile": {
+              "playerId": "player-9",
+              "nickname": "Player 3",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": null
+            },
+            "playingTime": 40,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "010054E01D878000",
+                  "title": "EA SPORTS FC 25",
+                  "imageUri": {
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_512",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_3",
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_128",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_256",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_1024"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/010054e01d878000/DE?lang=de-DE"
+                },
+                "playingTime": 40
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          }
+        ]
+      },
+      {
+        "date": "2026-07-23",
+        "result": "UNACHIEVED",
+        "playingTime": 50,
+        "exceededTime": 20,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {
+          "addedExtraPlayingTime": true
+        },
+        "featuredGameIconURL": {
+          "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_512",
+          "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_3",
+          "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_128",
+          "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_256",
+          "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_1024"
+        },
+        "nonFeaturedGameCount": 1,
+        "players": [
+          {
+            "profile": {
+              "playerId": "player-9",
+              "nickname": "Player 3",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": null
+            },
+            "playingTime": 50,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "010054E01D878000",
+                  "title": "EA SPORTS FC 25",
+                  "imageUri": {
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_512",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_3",
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_128",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_256",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_1024"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/010054e01d878000/DE?lang=de-DE"
+                },
+                "playingTime": 30
+              },
+              {
+                "meta": {
+                  "applicationId": "01003C1022148000",
+                  "title": "Electronics Supermarket Simulator",
+                  "imageUri": {
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/b15262226e754b9f87553d6945c3e608_512",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/b15262226e754b9f87553d6945c3e608_3",
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/b15262226e754b9f87553d6945c3e608_128",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/b15262226e754b9f87553d6945c3e608_256",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/b15262226e754b9f87553d6945c3e608_1024"
+                  },
+                  "hasUgc": false,
+                  "shopUri": "https://ec.nintendo.com/apps/01003c1022148000/DE?lang=de-DE"
+                },
+                "playingTime": 20
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          }
+        ]
+      },
+      {
+        "date": "2026-07-22",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-21",
+        "result": "UNACHIEVED",
+        "playingTime": 50,
+        "exceededTime": 20,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {
+          "addedExtraPlayingTime": true
+        },
+        "featuredGameIconURL": {
+          "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_512",
+          "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_3",
+          "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_128",
+          "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_256",
+          "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_1024"
+        },
+        "players": [
+          {
+            "profile": {
+              "playerId": "player-9",
+              "nickname": "Player 3",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": null
+            },
+            "playingTime": 50,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "010054E01D878000",
+                  "title": "EA SPORTS FC 25",
+                  "imageUri": {
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_512",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_3",
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_128",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_256",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_1024"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/010054e01d878000/DE?lang=de-DE"
+                },
+                "playingTime": 50
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          }
+        ]
+      },
+      {
+        "date": "2026-07-20",
+        "result": "UNACHIEVED",
+        "playingTime": 50,
+        "exceededTime": 20,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {
+          "addedExtraPlayingTime": true
+        },
+        "featuredGameIconURL": {
+          "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_512",
+          "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_3",
+          "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_128",
+          "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_256",
+          "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_1024"
+        },
+        "players": [
+          {
+            "profile": {
+              "playerId": "player-9",
+              "nickname": "Player 3",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": null
+            },
+            "playingTime": 45,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "010054E01D878000",
+                  "title": "EA SPORTS FC 25",
+                  "imageUri": {
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_512",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_3",
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_128",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_256",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_1024"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/010054e01d878000/DE?lang=de-DE"
+                },
+                "playingTime": 45
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          }
+        ]
+      },
+      {
+        "date": "2026-07-19",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-18",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-17",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-16",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-15",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-14",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-13",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-12",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-11",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-10",
+        "result": "CALCULATING",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 0,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-09",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-08",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-07",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-06",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-05",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-04",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-03",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-02",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-07-01",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-06-30",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-06-29",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-06-28",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-06-27",
+        "result": "ACHIEVED",
+        "playingTime": 0,
+        "exceededTime": 0,
+        "disabledTime": 0,
+        "miscTime": 0,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "nonFeaturedGameCount": -1,
+        "players": []
+      },
+      {
+        "date": "2026-06-26",
+        "result": "UNACHIEVED",
+        "playingTime": 35,
+        "exceededTime": 5,
+        "disabledTime": 0,
+        "miscTime": 1,
+        "timeZoneUtcOffsetSeconds": 7200,
+        "events": {},
+        "featuredGameIconURL": {
+          "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_512",
+          "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_3",
+          "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_128",
+          "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_256",
+          "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_1024"
+        },
+        "players": [
+          {
+            "profile": {
+              "playerId": "player-9",
+              "nickname": "Player 3",
+              "imageUri": "https://example.invalid/avatar.jpg",
+              "nsaId": null
+            },
+            "playingTime": 30,
+            "playedGames": [
+              {
+                "meta": {
+                  "applicationId": "010054E01D878000",
+                  "title": "EA SPORTS FC 25",
+                  "imageUri": {
+                    "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_512",
+                    "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_3",
+                    "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_128",
+                    "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_256",
+                    "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_1024"
+                  },
+                  "hasUgc": true,
+                  "shopUri": "https://ec.nintendo.com/apps/010054e01d878000/DE?lang=de-DE"
+                },
+                "playingTime": 30
+              }
+            ],
+            "firstChattedFriendshipIds": [],
+            "chatHistory": []
+          }
+        ]
+      }
+    ],
+    "last_month_summary": {
+      "overall": {
+        "stat": {
+          "totalDays": 3,
+          "averageTime": 20
+        },
+        "dailyStats": [
+          {
+            "date": "2026-06-01",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-02",
+            "totalTime": 15,
+            "games": {
+              "010054E01D878000": {
+                "totalTime": 15
+              }
+            }
+          },
+          {
+            "date": "2026-06-03",
+            "totalTime": 15,
+            "games": {
+              "010054E01D878000": {
+                "totalTime": 15
+              }
+            }
+          },
+          {
+            "date": "2026-06-04",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-05",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-06",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-07",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-08",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-09",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-10",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-11",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-12",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-13",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-14",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-15",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-16",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-17",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-18",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-19",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-20",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-21",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-22",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-23",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-24",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-25",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-26",
+            "totalTime": 35,
+            "games": {
+              "010054E01D878000": {
+                "totalTime": 35
+              }
+            }
+          },
+          {
+            "date": "2026-06-27",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-28",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-29",
+            "totalTime": 0,
+            "games": {}
+          },
+          {
+            "date": "2026-06-30",
+            "totalTime": 0,
+            "games": {}
+          }
+        ],
+        "ranking": [
+          {
+            "position": "STAY",
+            "stat": {
+              "totalDays": 3,
+              "meta": {
+                "applicationId": "010054E01D878000",
+                "title": "EA SPORTS FC 25",
+                "imageUri": {
+                  "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_3",
+                  "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_512",
+                  "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_1024",
+                  "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_128",
+                  "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_256"
+                },
+                "hasUgc": true,
+                "shopUri": "https://ec.nintendo.com/apps/010054e01d878000/DE?lang=de-DE"
+              },
+              "players": [
+                {
+                  "playerId": "player-9",
+                  "nickname": "Player 3",
+                  "imageUri": "https://example.invalid/avatar.jpg",
+                  "nsaId": null
+                }
+              ]
+            }
+          }
+        ],
+        "chat": {
+          "players": []
+        }
+      },
+      "players": [
+        {
+          "profile": {
+            "playerId": "player-9",
+            "nickname": "Player 3",
+            "imageUri": "https://example.invalid/avatar.jpg",
+            "nsaId": null
+          },
+          "summary": {
+            "stat": {
+              "totalDays": 3,
+              "averageTime": 20
+            },
+            "dailyStats": [
+              {
+                "date": "2026-06-01",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-02",
+                "totalTime": 15,
+                "games": {
+                  "010054E01D878000": {
+                    "totalTime": 15
+                  }
+                }
+              },
+              {
+                "date": "2026-06-03",
+                "totalTime": 15,
+                "games": {
+                  "010054E01D878000": {
+                    "totalTime": 15
+                  }
+                }
+              },
+              {
+                "date": "2026-06-04",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-05",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-06",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-07",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-08",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-09",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-10",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-11",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-12",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-13",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-14",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-15",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-16",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-17",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-18",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-19",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-20",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-21",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-22",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-23",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-24",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-25",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-26",
+                "totalTime": 30,
+                "games": {
+                  "010054E01D878000": {
+                    "totalTime": 30
+                  }
+                }
+              },
+              {
+                "date": "2026-06-27",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-28",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-29",
+                "totalTime": 0,
+                "games": {}
+              },
+              {
+                "date": "2026-06-30",
+                "totalTime": 0,
+                "games": {}
+              }
+            ],
+            "ranking": [
+              {
+                "position": "STAY",
+                "stat": {
+                  "totalDays": 3,
+                  "meta": {
+                    "applicationId": "010054E01D878000",
+                    "title": "EA SPORTS FC 25",
+                    "imageUri": {
+                      "extraSmall": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_3",
+                      "large": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_512",
+                      "extraLarge": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_1024",
+                      "small": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_128",
+                      "medium": "https://atum-img-lp1.cdn.nintendo.net/i/c/22a54201c85a47af8743b3f7e140720b_256"
+                    },
+                    "hasUgc": true,
+                    "shopUri": "https://ec.nintendo.com/apps/010054e01d878000/DE?lang=de-DE"
+                  },
+                  "players": [
+                    {
+                      "playerId": "player-9",
+                      "nickname": "Player 3",
+                      "imageUri": "https://example.invalid/avatar.jpg",
+                      "nsaId": null
+                    }
+                  ]
+                }
+              }
+            ],
+            "chat": {
+              "members": []
+            }
+          }
+        }
+      ]
+    }
+  }
+}
