@@ -32,7 +32,7 @@ DEV_REQUIREMENTS = [
     'pytest >= 7,< 10',
     'pytest-cov >= 4,< 8',
     'pytest-asyncio >= 0.21,< 2.0',
-    'syrupy >= 5,< 6',
+    'syrupy >= 5,< 7',
     'twine >= 4,< 8',
 ]
 
