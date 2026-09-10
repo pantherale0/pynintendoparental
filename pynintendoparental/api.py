@@ -16,10 +16,37 @@ from .const import (
     OS_VERSION,
     USER_AGENT,
 )
+from .enum import ExtraPlayingTimeStatus
+from .exceptions import ExtraPlayingTimeRequestError
 
 
 def _check_http_success(status: int) -> bool:
     return status >= 200 and status < 300
+
+
+def _check_extra_playing_time_response(response: dict) -> None:
+    """Raise if an extra-playing-time response reports a rejected request.
+
+    Nintendo answers HTTP 200 regardless of outcome; the official app switches on
+    the JSON ``status`` field instead. A missing or unrecognised status is treated
+    as success so that a future API change does not break working setups.
+    """
+    payload = response.get("json") or {}
+    raw_status = payload.get("status")
+    _LOGGER.debug(
+        "Extra playing time response: status=%s nextStepDetail=%s",
+        raw_status,
+        payload.get("nextStepDetail"),
+    )
+    if raw_status is None:
+        return
+    try:
+        status = ExtraPlayingTimeStatus(raw_status)
+    except ValueError:
+        _LOGGER.warning("Unrecognised extra playing time status %r; assuming success", raw_status)
+        return
+    if status.is_error:
+        raise ExtraPlayingTimeRequestError(status, response)
 
 
 class Api:
@@ -170,36 +197,56 @@ class Api:
             body={"deviceId": device_id, "unlockCode": str(new_code)},
         )
 
-    async def async_confirm_extra_playing_time(
-        self, device_id: str, additional_time: int, with_bedtime: bool
-    ) -> dict:
+    async def async_confirm_extra_playing_time(self, device_id: str, additional_time: int, with_bedtime: bool) -> dict:
         """Confirm (grant) extra playing time for the current day.
+
+        The official app only calls this as the second step after
+        ``updateExtraPlayingTime`` returned ``nextStepDetail`` (the grant would
+        run into bedtime and needs confirming).
 
         Args:
             device_id: The Nintendo device ID.
             additional_time: Number of additional minutes to grant.
-            with_bedtime: When True, the bonus is granted relative to the
-                bedtime limit; when False it extends the inOneDay play limit.
+            with_bedtime: When True, bedtime is pushed back along with the
+                play limit; when False only the inOneDay play limit is extended.
+
+        Raises:
+            ExtraPlayingTimeRequestError: If Nintendo rejected the request.
         """
         body = {
             "deviceId": device_id,
             "additionalTime": additional_time,
             "withBedtime": with_bedtime,
         }
-        return await self.send_request(endpoint="confirm_extra_playing_time", body=body)
+        response = await self.send_request(endpoint="confirm_extra_playing_time", body=body)
+        _check_extra_playing_time_response(response)
+        return response
 
-    async def async_update_extra_playing_time(self, device_id: str, additional_time: int | None = None, cancel: bool = False) -> dict:
-        """Add or cancel extra playing time via the daily inOneDay limit (no-bedtime path)."""
-        body = {
+    async def async_update_extra_playing_time(
+        self, device_id: str, additional_time: int | None = None, cancel: bool = False
+    ) -> dict:
+        """Add, make unlimited, or cancel extra playing time for the current day.
+
+        Args:
+            device_id: The Nintendo device ID.
+            additional_time: Minutes to add, or -1 for unlimited.
+            cancel: When True, revoke today's extra playing time.
+
+        Raises:
+            ExtraPlayingTimeRequestError: If Nintendo rejected the request.
+        """
+        body: dict[str, object] = {
             "deviceId": device_id,
         }
         if cancel:
-            body["status"] = "TO_CANCELLED"
-        elif additional_time == -1 and not cancel:
-            body["status"] = "TO_INFINITY"
+            body["status"] = ExtraPlayingTimeStatus.TO_CANCELED.value
+        elif additional_time == -1:
+            body["status"] = ExtraPlayingTimeStatus.TO_INFINITY.value
         elif additional_time is not None:
             body["additionalTime"] = additional_time
-            body["status"] = "TO_ADDED"
+            body["status"] = ExtraPlayingTimeStatus.TO_ADDED.value
         else:
             raise ValueError("Additional time must be provided if not canceling")
-        return await self.send_request(endpoint="update_extra_playing_time", body=body)
+        response = await self.send_request(endpoint="update_extra_playing_time", body=body)
+        _check_extra_playing_time_response(response)
+        return response

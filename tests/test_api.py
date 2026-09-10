@@ -8,6 +8,8 @@ from pynintendoauth.exceptions import HttpException
 
 from pynintendoparental.api import Api, _check_http_success
 from pynintendoparental.authenticator import Authenticator
+from pynintendoparental.enum import ExtraPlayingTimeStatus
+from pynintendoparental.exceptions import ExtraPlayingTimeRequestError
 
 
 @pytest.mark.parametrize("status, expected", [(200, True), (204, True), (300, False), (404, False)])
@@ -124,7 +126,7 @@ async def test_send_request_json_decode_error(mock_authenticator: Authenticator)
 async def test_api_methods(mock_authenticator: Authenticator):
     """Test that API methods call send_request with correct parameters."""
     api = Api(auth=mock_authenticator, tz="Europe/London", lang="en-GB")
-    api.send_request = AsyncMock()
+    api.send_request = AsyncMock(return_value={"json": {}})
 
     await api.async_get_account_devices()
     api.send_request.assert_called_with(endpoint="get_account_devices")
@@ -199,9 +201,9 @@ async def test_api_methods(mock_authenticator: Authenticator):
 
 @pytest.mark.parametrize("additional_time, cancel, expected_body", [
     (15, False, {"deviceId": "DEVICE_ID", "additionalTime": 15, "status": "TO_ADDED"}),
-    (30, True, {"deviceId": "DEVICE_ID", "status": "TO_CANCELLED"}),
+    (30, True, {"deviceId": "DEVICE_ID", "status": "TO_CANCELED"}),
     (-1, False, {"deviceId": "DEVICE_ID", "status": "TO_INFINITY"}),
-    (None, True, {"deviceId": "DEVICE_ID", "status": "TO_CANCELLED"}),
+    (None, True, {"deviceId": "DEVICE_ID", "status": "TO_CANCELED"}),
 ])
 async def test_async_update_extra_playing_time(
     mock_authenticator: Authenticator,
@@ -211,6 +213,57 @@ async def test_async_update_extra_playing_time(
 ):
     """Test async_update_extra_playing_time with different parameters."""
     api = Api(auth=mock_authenticator, tz="Europe/London", lang="en-GB")
-    api.send_request = AsyncMock()
+    api.send_request = AsyncMock(return_value={"json": {"status": expected_body["status"]}})
     await api.async_update_extra_playing_time("DEVICE_ID", additional_time, cancel)
     api.send_request.assert_called_with(endpoint="update_extra_playing_time", body=expected_body)
+    # Body status must be a plain string so it serialises as Nintendo expects.
+    sent_status = api.send_request.call_args.kwargs["body"]["status"]
+    assert type(sent_status) is str  # pylint: disable=unidiomatic-typecheck
+
+
+@pytest.mark.parametrize(
+    "status",
+    ["NO_EFFECT", "OVERTIME_ERROR", "DURING_LATE_NIGHT_ERROR", "FAILED"],
+)
+@pytest.mark.parametrize("method", ["update", "confirm"])
+async def test_extra_playing_time_error_status_raises(
+    mock_authenticator: Authenticator, status: str, method: str
+):
+    """HTTP 200 with a rejected status must surface as ExtraPlayingTimeRequestError."""
+    api = Api(auth=mock_authenticator, tz="Europe/London", lang="en-GB")
+    response = {"status": 200, "json": {"deviceId": "DEVICE_ID", "status": status}}
+    api.send_request = AsyncMock(return_value=response)
+
+    with pytest.raises(ExtraPlayingTimeRequestError) as err:
+        if method == "update":
+            await api.async_update_extra_playing_time("DEVICE_ID", 15)
+        else:
+            await api.async_confirm_extra_playing_time("DEVICE_ID", 15, True)
+
+    assert err.value.status == ExtraPlayingTimeStatus(status)
+    assert err.value.response is response
+    assert err.value.error_key == "extra_playing_time_request_failed"
+    assert status in str(err.value)
+
+
+@pytest.mark.parametrize(
+    "payload",
+    [
+        pytest.param({"status": "TO_ADDED"}, id="to_added"),
+        pytest.param({"status": "SUCCESS"}, id="success"),
+        pytest.param({"status": "TO_CANCELED"}, id="to_canceled"),
+        pytest.param({"status": "TO_INFINITY"}, id="to_infinity"),
+        pytest.param({}, id="missing_status"),
+        pytest.param({"status": "SOMETHING_NEW"}, id="unknown_status"),
+    ],
+)
+async def test_extra_playing_time_success_status_returns_response(
+    mock_authenticator: Authenticator, payload: dict
+):
+    """Success, missing and unrecognised statuses are all treated as success."""
+    api = Api(auth=mock_authenticator, tz="Europe/London", lang="en-GB")
+    response = {"status": 200, "json": payload}
+    api.send_request = AsyncMock(return_value=response)
+
+    assert await api.async_update_extra_playing_time("DEVICE_ID", 15) is response
+    assert await api.async_confirm_extra_playing_time("DEVICE_ID", 15, False) is response

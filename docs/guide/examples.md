@@ -63,13 +63,33 @@ await remove_playtime_limit(device)
 ### Add Extra Time
 
 ```python
+from pynintendoparental.exceptions import ExtraPlayingTimeRequestError
+
 async def add_extra_time(device, minutes: int):
     """Add extra playing time for today."""
-    await device.add_extra_time(minutes)
+    try:
+        await device.add_extra_time(minutes)
+    except ExtraPlayingTimeRequestError as err:
+        # Nintendo answers HTTP 200 even when it rejects the request; the
+        # outcome is reported via a status such as NO_EFFECT or OVERTIME_ERROR.
+        print(f"Nintendo rejected the request: {err.status}")
+        return
     print(f"Added {minutes} minutes of extra time")
 
 # Usage
 await add_extra_time(device, 30)  # Add 30 minutes
+```
+
+### Cancel Extra Time
+
+```python
+async def cancel_extra_time(device):
+    """Revoke today's extra playing time."""
+    await device.cancel_extra_time()
+    print("Extra time cancelled")
+
+# Usage
+await cancel_extra_time(device)
 ```
 
 ## Bedtime Settings

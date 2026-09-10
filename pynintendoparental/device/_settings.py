@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 from datetime import time
 from typing import TYPE_CHECKING
 
@@ -28,6 +29,11 @@ from ._helpers import (
 if TYPE_CHECKING:  # pragma: no cover
     from ._core import Device
 
+# How long to keep re-reading parental control settings after an extra playing
+# time mutation before giving up on seeing the change reflected.
+EXTRA_PLAYING_TIME_SYNC_ATTEMPTS = 3
+EXTRA_PLAYING_TIME_SYNC_DELAY = 2.0
+
 
 class DeviceSettingsMixin:
     """Mixin providing parental-control mutation APIs on Device."""
@@ -38,6 +44,7 @@ class DeviceSettingsMixin:
     timer_mode: DeviceTimerMode | None
     bedtime_alarm: time | None
     alarms_enabled: bool
+    extra_playing_time: int | None
 
     async def set_new_pin(self: Device, pin: str) -> None:  # type: ignore[misc]
         """Set a new PIN code for parental controls on this device.
@@ -55,22 +62,49 @@ class DeviceSettingsMixin:
             minutes: Number of additional minutes to add (must be positive).
         """
         _LOGGER.debug(">> Device.add_extra_time(minutes=%s)", minutes)
-        with_bedtime = (
-            self.bedtime_alarm is not None and not is_bedtime_disabled(self.bedtime_alarm) and self.alarms_enabled
-        )
-        if minutes != -1 and with_bedtime:
+        previous = self.extra_playing_time
+        response = await self._api.async_update_extra_playing_time(self.device_id, minutes)
+        # Nintendo asks for confirmation when the grant would run into bedtime;
+        # the official app then confirms with withBedtime=True to push bedtime back too.
+        if (response.get("json") or {}).get("nextStepDetail"):
+            _LOGGER.debug("Extra playing time requires bedtime confirmation, confirming")
             await self._api.async_confirm_extra_playing_time(self.device_id, minutes, True)
-        else:
-            await self._api.async_update_extra_playing_time(self.device_id, minutes)
-        await self._get_parental_control_setting(current_datetime(self._api._tz))
+        await self._refresh_extra_playing_time(previous)
+        await self._execute_callbacks()
 
     async def cancel_extra_time(self: Device) -> None:  # type: ignore[misc]
         """Cancel extra playing time for the current day."""
         _LOGGER.debug(">> Device.cancel_extra_time()")
+        previous = self.extra_playing_time
         await self._api.async_update_extra_playing_time(self.device_id, cancel=True)
         self.extra_playing_time = None
-        await self._get_parental_control_setting(current_datetime(self._api._tz))
+        await self._refresh_extra_playing_time(previous)
         await self._execute_callbacks()
+
+    async def _refresh_extra_playing_time(self: Device, previous: int | None) -> None:  # type: ignore[misc]
+        """Re-read parental control settings until the extra time change is visible.
+
+        fetchParentalControlSetting lags behind extra-playing-time mutations by
+        several seconds; the official app polls rather than trusting the first read.
+        """
+        for attempt in range(1, EXTRA_PLAYING_TIME_SYNC_ATTEMPTS + 1):
+            await self._get_parental_control_setting(current_datetime(self._api._tz))
+            if self.extra_playing_time != previous:
+                return
+            if attempt < EXTRA_PLAYING_TIME_SYNC_ATTEMPTS:
+                _LOGGER.debug(
+                    "Extra playing time still %s after refresh %s/%s, retrying in %ss",
+                    self.extra_playing_time,
+                    attempt,
+                    EXTRA_PLAYING_TIME_SYNC_ATTEMPTS,
+                    EXTRA_PLAYING_TIME_SYNC_DELAY,
+                )
+                await asyncio.sleep(EXTRA_PLAYING_TIME_SYNC_DELAY)
+        _LOGGER.debug(
+            "Extra playing time unchanged (%s) after %s refreshes",
+            self.extra_playing_time,
+            EXTRA_PLAYING_TIME_SYNC_ATTEMPTS,
+        )
 
     async def set_restriction_mode(self: Device, mode: RestrictionMode) -> None:  # type: ignore[misc]
         """Set the restriction mode for playtime limits.
