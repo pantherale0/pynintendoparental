@@ -57,3 +57,35 @@ class FunctionalRestrictionLevel(StrEnum, NintendoEnum):
 
     def __str__(self) -> str:
         return self.value
+
+
+class ExtraPlayingTimeStatus(StrEnum, NintendoEnum):
+    """Extra playing time statuses.
+
+    Used both as the request ``status`` for ``updateExtraPlayingTime`` and as
+    the response ``status`` of both extra-playing-time endpoints. Nintendo
+    returns HTTP 200 even when the request was rejected, so the response
+    status is the only reliable success indicator.
+    """
+
+    TO_ADDED = "TO_ADDED"
+    TO_CANCELED = "TO_CANCELED"
+    TO_INFINITY = "TO_INFINITY"
+    SUCCESS = "SUCCESS"
+    NO_EFFECT = "NO_EFFECT"
+    OVERTIME_ERROR = "OVERTIME_ERROR"
+    DURING_LATE_NIGHT_ERROR = "DURING_LATE_NIGHT_ERROR"
+    FAILED = "FAILED"
+
+    def __str__(self) -> str:
+        return self.value
+
+    @property
+    def is_error(self) -> bool:
+        """Return True if the status indicates the request was not applied."""
+        return self in (
+            ExtraPlayingTimeStatus.NO_EFFECT,
+            ExtraPlayingTimeStatus.OVERTIME_ERROR,
+            ExtraPlayingTimeStatus.DURING_LATE_NIGHT_ERROR,
+            ExtraPlayingTimeStatus.FAILED,
+        )

@@ -13,9 +13,10 @@ from syrupy.assertion import SnapshotAssertion
 from syrupy.filters import props
 
 from pynintendoparental.api import Api
-from pynintendoparental.device import Device
+from pynintendoparental.device import Device, _settings
 from pynintendoparental.enum import (
     DeviceTimerMode,
+    ExtraPlayingTimeStatus,
     FunctionalRestrictionLevel,
     RestrictionMode,
 )
@@ -23,6 +24,7 @@ from pynintendoparental.exceptions import (
     BedtimeOutOfRangeError,
     DailyPlaytimeOutOfRangeError,
     ExtraPlayingTimeActiveError,
+    ExtraPlayingTimeRequestError,
     InvalidDeviceStateError,
 )
 
@@ -488,44 +490,139 @@ async def test_set_new_pin(device: Device, mock_api: Api, pin: str):
     mock_api.async_update_unlock_code.assert_called_with(new_code=pin, device_id=device.device_id)
 
 
+@pytest.fixture(autouse=True)
+def no_extra_time_sync_delay(monkeypatch: pytest.MonkeyPatch):
+    """Don't sleep between PCS re-reads after extra playing time mutations."""
+    monkeypatch.setattr(_settings, "EXTRA_PLAYING_TIME_SYNC_DELAY", 0)
+
+
 @pytest.mark.parametrize(
     "extra_time",
     [
         pytest.param(10),
         pytest.param(0),
+        pytest.param(-1, id="infinity"),
     ],
 )
-async def test_add_extra_time(device: Device, mock_api: Api, extra_time: int):
-    """Test that the add_extra_time method works as expected."""
-    mock_api.async_update_extra_playing_time.return_value = None
+async def test_add_extra_time(device: Device, mock_api: Api, pcs: dict, extra_time: int):
+    """add_extra_time posts updateExtraPlayingTime and refreshes state; no confirm step by default."""
+    mock_api.async_update_extra_playing_time.return_value = {"json": {"status": "TO_ADDED"}}
+    mock_api.async_get_device_parental_control_setting.return_value = {
+        "json": pcs_with_extra_in_one_day(pcs, duration=None if extra_time == -1 else extra_time, is_infinity=extra_time == -1)
+    }
+    callback = Mock()
+    device.add_device_callback(callback)
 
     await device.add_extra_time(extra_time)
-    mock_api.async_update_extra_playing_time.assert_called_with(device.device_id, extra_time)
+
+    mock_api.async_update_extra_playing_time.assert_called_once_with(device.device_id, extra_time)
+    mock_api.async_confirm_extra_playing_time.assert_not_called()
+    assert device.extra_playing_time == extra_time
+    callback.assert_called_once()
+
+
+async def test_add_extra_time_with_bedtime_does_not_confirm_without_next_step(device: Device, mock_api: Api, pcs: dict):
+    """Bedtime being active is no longer enough to call confirmExtraPlayingTime."""
+    device.bedtime_alarm = time(hour=21, minute=0)
+    device.alarms_enabled = True
+    mock_api.async_update_extra_playing_time.return_value = {"json": {"status": "TO_ADDED", "nextStepDetail": None}}
+    mock_api.async_get_device_parental_control_setting.return_value = {"json": pcs_with_extra_in_one_day(pcs, 15)}
+
+    await device.add_extra_time(15)
+
+    mock_api.async_update_extra_playing_time.assert_called_once_with(device.device_id, 15)
     mock_api.async_confirm_extra_playing_time.assert_not_called()
 
 
-async def test_add_extra_time_with_bedtime(device: Device, mock_api: Api):
-    """Test add_extra_time uses confirmExtraPlayingTime when bedtime is active."""
-    device.bedtime_alarm = time(hour=21, minute=0)
-    device.alarms_enabled = True
-
-    mock_api.async_confirm_extra_playing_time.return_value = None
+async def test_add_extra_time_confirms_when_next_step_requested(device: Device, mock_api: Api, pcs: dict):
+    """When Nintendo returns nextStepDetail the grant is confirmed with withBedtime=True."""
+    mock_api.async_update_extra_playing_time.return_value = {
+        "json": {
+            "status": "TO_ADDED",
+            "nextStepDetail": {
+                "estimatedBedtimeChanges": {"from": {"hour": 21, "minute": 0}, "to": {"hour": 21, "minute": 15}}
+            },
+        }
+    }
+    mock_api.async_confirm_extra_playing_time.return_value = {"json": {"status": "SUCCESS"}}
+    mock_api.async_get_device_parental_control_setting.return_value = {"json": pcs_with_extra_in_one_day(pcs, 15)}
 
     await device.add_extra_time(15)
-    mock_api.async_confirm_extra_playing_time.assert_called_with(device.device_id, 15, True)
-    mock_api.async_update_extra_playing_time.assert_not_called()
+
+    mock_api.async_update_extra_playing_time.assert_called_once_with(device.device_id, 15)
+    mock_api.async_confirm_extra_playing_time.assert_called_once_with(device.device_id, 15, True)
+    assert device.extra_playing_time == 15
+
+
+async def test_add_extra_time_propagates_request_error(device: Device, mock_api: Api):
+    """A rejected status from the API bubbles up and no refresh is attempted."""
+    mock_api.async_update_extra_playing_time.side_effect = ExtraPlayingTimeRequestError(
+        ExtraPlayingTimeStatus.NO_EFFECT, {"json": {"status": "NO_EFFECT"}}
+    )
+    mock_api.async_get_device_parental_control_setting.reset_mock()
+
+    with pytest.raises(ExtraPlayingTimeRequestError) as err:
+        await device.add_extra_time(15)
+
+    assert err.value.status is ExtraPlayingTimeStatus.NO_EFFECT
+    mock_api.async_confirm_extra_playing_time.assert_not_called()
+    mock_api.async_get_device_parental_control_setting.assert_not_called()
+
+
+async def test_add_extra_time_polls_until_pcs_reflects_change(device: Device, mock_api: Api, pcs: dict):
+    """Stale PCS reads after a grant are retried until the extra time shows up."""
+    mock_api.async_update_extra_playing_time.return_value = {"json": {"status": "TO_ADDED"}}
+    mock_api.async_get_device_parental_control_setting.reset_mock()
+    mock_api.async_get_device_parental_control_setting.side_effect = [
+        {"json": pcs},  # stale: still no extra time
+        {"json": pcs_with_extra_in_one_day(pcs, 30)},
+        {"json": pcs_with_extra_in_one_day(pcs, 30)},
+    ]
+
+    await device.add_extra_time(30)
+
+    assert mock_api.async_get_device_parental_control_setting.call_count == 2
+    assert device.extra_playing_time == 30
+
+
+async def test_add_extra_time_gives_up_polling_after_max_attempts(device: Device, mock_api: Api, pcs: dict):
+    """If the PCS never reflects the change we stop after the configured attempts."""
+    mock_api.async_update_extra_playing_time.return_value = {"json": {"status": "TO_ADDED"}}
+    mock_api.async_get_device_parental_control_setting.reset_mock()
+    mock_api.async_get_device_parental_control_setting.return_value = {"json": pcs}
+
+    await device.add_extra_time(30)
+
+    assert mock_api.async_get_device_parental_control_setting.call_count == _settings.EXTRA_PLAYING_TIME_SYNC_ATTEMPTS
+    assert device.extra_playing_time is None
 
 
 async def test_cancel_extra_time(device: Device, mock_api: Api):
     """Test cancel_extra_time clears local state and refreshes from the API."""
     device.extra_playing_time = 30
-    mock_api.async_update_extra_playing_time.return_value = None
+    mock_api.async_update_extra_playing_time.return_value = {"json": {"status": "TO_CANCELED"}}
     mock_api.async_get_device_parental_control_setting.reset_mock()
 
     await device.cancel_extra_time()
 
     mock_api.async_update_extra_playing_time.assert_called_with(device.device_id, cancel=True)
-    mock_api.async_get_device_parental_control_setting.assert_called()
+    mock_api.async_get_device_parental_control_setting.assert_called_once()
+    assert device.extra_playing_time is None
+
+
+async def test_cancel_extra_time_polls_stale_pcs(device: Device, mock_api: Api, pcs: dict):
+    """A stale PCS that still shows the extra time is re-read."""
+    device.extra_playing_time = 30
+    mock_api.async_update_extra_playing_time.return_value = {"json": {"status": "TO_CANCELED"}}
+    mock_api.async_get_device_parental_control_setting.reset_mock()
+    mock_api.async_get_device_parental_control_setting.side_effect = [
+        {"json": pcs_with_extra_in_one_day(pcs, 30)},
+        {"json": pcs},
+    ]
+
+    await device.cancel_extra_time()
+
+    assert mock_api.async_get_device_parental_control_setting.call_count == 2
     assert device.extra_playing_time is None
 
 
