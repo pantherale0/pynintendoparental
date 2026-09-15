@@ -6,8 +6,8 @@ import logging
 _LOGGER = logging.getLogger(__package__)
 CLIENT_ID = "54789befb391a838"
 MOBILE_APP_PKG = "com.nintendo.znma"
-MOBILE_APP_VERSION = "2.4.0"
-MOBILE_APP_BUILD = "660"
+MOBILE_APP_VERSION = "2.6.0"
+MOBILE_APP_BUILD = "700"
 OS_NAME = "ANDROID"
 OS_VERSION = "34"
 OS_STR = f"{OS_NAME} {OS_VERSION}"
