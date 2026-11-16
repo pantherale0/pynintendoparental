@@ -115,6 +115,19 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
+### Updating devices one by one
+
+`update()` logs and skips a device that fails to update. To handle each device yourself, fetch the device list with `discover_devices()` and update the devices one by one:
+
+```python
+await nintendo.discover_devices()
+for device in nintendo.devices.values():
+    try:
+        await device.update()
+    except Exception as err:
+        print(f"Updating {device.name} failed: {err}")
+```
+
 ### The `NintendoParental` object
 
 The main entry point is the `NintendoParental` object. You create it using the asynchronous class method `create`:
