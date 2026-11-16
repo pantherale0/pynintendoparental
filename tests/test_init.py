@@ -66,3 +66,23 @@ async def test_device_update_exception(mock_authenticator: Authenticator, mock_a
         parental = await NintendoParental.create(mock_authenticator)
         assert len(parental.devices) == 1
         assert device_id in parental.devices
+
+
+async def test_update_monthly_summary(mock_authenticator: Authenticator, mock_api_init: AsyncMock):
+    """Test that update(monthly_summary=False) is passed on, except for devices without a summary."""
+    devices_fixture = await load_fixture("account_devices")
+    mock_api_instance = mock_api_init.return_value
+    mock_api_instance.async_get_account_devices.return_value = {"json": devices_fixture}
+
+    with patch("pynintendoparental.Device.update", autospec=True) as mock_update:
+        parental = await NintendoParental.create(mock_authenticator)
+        device = next(iter(parental.devices.values()))
+        assert mock_update.call_args.kwargs == {"monthly_summary": True}
+
+        device.last_month_summary = {"players": []}
+        await parental.update(monthly_summary=False)
+        assert mock_update.call_args.kwargs == {"monthly_summary": False}
+
+        device.last_month_summary = {}
+        await parental.update(monthly_summary=False)
+        assert mock_update.call_args.kwargs == {"monthly_summary": True}

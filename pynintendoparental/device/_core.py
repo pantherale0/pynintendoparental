@@ -115,7 +115,7 @@ class Device(
         """
         return self.extra.get("synchronizedParentalControlSetting", {}).get("synchronizedAt", None)
 
-    async def update(self, now: datetime | None = None):
+    async def update(self, now: datetime | None = None, *, monthly_summary: bool = True):
         """Update device data from Nintendo servers.
 
         Fetches the latest information including daily summaries, parental control
@@ -125,15 +125,16 @@ class Device(
         Args:
             now: Optional datetime for the update. Defaults to the current time in the
                 API timezone if not provided.
+            monthly_summary: Also fetch the monthly summary. If False, the last
+                one is kept.
         """
         _LOGGER.debug(">> Device.update()")
         if now is None:
             now = current_datetime(self._api._tz)
-        await asyncio.gather(
-            self._get_daily_summaries(now),
-            self.get_monthly_summary(),
-            self._get_extras(),
-        )
+        requests = [self._get_daily_summaries(now), self._get_extras()]
+        if monthly_summary:
+            requests.append(self.get_monthly_summary())
+        await asyncio.gather(*requests)
         # Fetch PCS after daily summaries so extra_playing_time is not parsed from a
         # stale concurrent response (see #118 / debug-430f96).
         await self._get_parental_control_setting(now)

@@ -230,6 +230,29 @@ async def test_get_monthly_summary_error(
     assert expected_log.format(DEVICE_ID=device.device_id) in caplog.text
 
 
+async def test_update_skip_monthly_summary(device: Device, mock_api: Api):
+    """Test that update(monthly_summary=False) skips the monthly summary requests."""
+    summary_before = device.last_month_summary
+    players_before = {player.player_id for player in device.players}
+    list_calls = mock_api.async_get_device_monthly_summaries.call_count
+    summary_calls = mock_api.async_get_device_monthly_summary.call_count
+
+    await device.update(monthly_summary=False)
+
+    assert mock_api.async_get_device_monthly_summaries.call_count == list_calls
+    assert mock_api.async_get_device_monthly_summary.call_count == summary_calls
+    assert device.last_month_summary == summary_before
+    assert {player.player_id for player in device.players} == players_before
+    assert mock_api.async_get_device_daily_summaries.call_count == 2
+
+
+async def test_update_monthly_summary_default(device: Device, mock_api: Api):
+    """Test that update() still fetches the monthly summary by default."""
+    await device.update()
+
+    assert mock_api.async_get_device_monthly_summary.call_count == 2
+
+
 @pytest.mark.parametrize(
     "side_effect,timer_state,kwargs",
     [

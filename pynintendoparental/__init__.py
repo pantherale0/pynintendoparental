@@ -28,13 +28,13 @@ class NintendoParental:
         self.account_id = auth.account_id
         self.devices: dict[str, Device] = {}
 
-    async def _get_devices(self):
+    async def _get_devices(self, monthly_summary: bool = True):
         """Gets devices from the API and stores in self.devices"""
 
         async def update_device(dev: Device):
             """Update a device."""
             try:
-                await dev.update()
+                await dev.update(monthly_summary=monthly_summary or not dev.last_month_summary)
             except Exception as err:
                 _LOGGER.exception("Error updating device %s: %s", dev.device_id, err)
 
@@ -55,15 +55,19 @@ class NintendoParental:
         await asyncio.gather(*coros)
         _LOGGER.debug("Found %s device(s)", len(self.devices))
 
-    async def update(self):
+    async def update(self, *, monthly_summary: bool = True):
         """Update module data.
 
         Refreshes all devices and their associated data from Nintendo's servers.
         This method fetches the latest information about all devices linked to
         the authenticated account.
+
+        Args:
+            monthly_summary: Also fetch the monthly summaries. Devices without one
+                always fetch it.
         """
         _LOGGER.debug("Received request to update data.")
-        await self._get_devices()
+        await self._get_devices(monthly_summary=monthly_summary)
         _LOGGER.debug("Update complete.")
 
     @classmethod
