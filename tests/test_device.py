@@ -1132,3 +1132,35 @@ async def test_update_default_now_uses_api_timezone(
     else:
         assert device.today_playing_time == 60
         assert any(player.playing_time > 0 for player in device.players)
+
+
+async def test_players_from_daily_summaries_without_monthly_summary(mock_api: Api):
+    """Test players are created from the daily summaries when there is no monthly summary."""
+    mock_api.async_get_device_monthly_summaries.return_value = {"json": {"available": []}}
+    raw = await load_fixture("account_devices")
+    device = Device.from_device_response(raw["ownedDevices"][0], mock_api)
+
+    await device.update()
+
+    summaries = (await load_fixture("device_daily_summaries"))["dailySummaries"]
+    expected = {player["profile"]["playerId"] for summary in summaries for player in summary["players"]}
+    assert expected
+    assert {player.player_id for player in device.players} == expected
+    mock_api.async_get_device_monthly_summary.assert_not_called()
+
+
+async def test_new_player_from_daily_summaries(device: Device, mock_api: Api):
+    """Test a player missing from the monthly summary is added once."""
+    summaries = await load_fixture("device_daily_summaries")
+    newcomer = copy.deepcopy(summaries["dailySummaries"][0]["players"][0])
+    newcomer["profile"]["playerId"] = "new-player-id"
+    newcomer["profile"]["nickname"] = "Alex"
+    summaries["dailySummaries"][0]["players"].append(newcomer)
+    mock_api.async_get_device_daily_summaries.return_value = {"json": summaries}
+    count_before = len(device.players)
+
+    await device.update()
+    await device.update()
+
+    assert len(device.players) == count_before + 1
+    assert device.players.get_player("new-player-id").nickname == "Alex"

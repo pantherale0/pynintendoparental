@@ -139,6 +139,7 @@ class Device(
         await self._get_parental_control_setting(now)
         self._update_applications()
         self._hydrate_players_from_monthly_summary(self.last_month_summary)
+        self._hydrate_players_from_daily_summaries(self.daily_summaries)
         for player in self.players:
             player.update_from_daily_summary(self.daily_summaries, self.applications, now=now)
         await self._execute_callbacks()
@@ -276,6 +277,16 @@ class Device(
             if player_id not in self.players:
                 self.players.add_player(Player.from_profile(profile))
             self.players.get_player(player_id).month_summary = player.get("summary", {})
+
+    def _hydrate_players_from_daily_summaries(self, summaries: list) -> None:
+        """Create Player objects for players missing from the monthly summary."""
+        for summary in summaries:
+            for player in summary.get("players", []):
+                profile = player.get("profile")
+                if not profile or not profile.get("playerId"):
+                    continue
+                if profile["playerId"] not in self.players:
+                    self.players.add_player(Player.from_profile(profile))
 
     def get_date_summary(self, input_date: datetime | None = None) -> list:
         """Get the usage summary for a specific date.
