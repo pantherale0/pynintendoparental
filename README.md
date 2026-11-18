@@ -142,6 +142,8 @@ nintendo = await NintendoParental.create(auth, timezone="Europe/London", lang="e
 
 After creation, the `NintendoParental` object will have a `devices` property, which is a dictionary of `Device` objects, keyed by their device ID.
 
+Call `await nintendo.update()` to refresh every device. Pass `monthly_summary=False` to skip the monthly summaries, for example on frequent polls; devices without one still fetch it.
+
 ### The `Device` object
 
 The `Device` object contains information about a specific Nintendo Switch console and allows you to control it.
@@ -167,7 +169,7 @@ The `Device` object contains information about a specific Nintendo Switch consol
 
 All methods are asynchronous.
 
-- `update()`: Refreshes the device data from the Nintendo API.
+- `update(monthly_summary: bool = True)`: Refreshes the device data from the Nintendo API. Pass `monthly_summary=False` to skip the monthly summary and keep the last one.
 - `add_device_callback(callback)`: Adds a callback that will be called when the device state changes.
 - `remove_device_callback(callback)`: Removes a previously added callback.
 - `set_new_pin(pin: str)`: Sets a new PIN for the parental controls.
