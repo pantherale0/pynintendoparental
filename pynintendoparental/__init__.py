@@ -38,6 +38,23 @@ class NintendoParental:
             except Exception as err:
                 _LOGGER.exception("Error updating device %s: %s", dev.device_id, err)
 
+        await self.discover_devices()
+        coros = [update_device(d) for d in self.devices.values()]
+        await asyncio.gather(*coros)
+
+    async def discover_devices(self) -> dict[str, Device]:
+        """Fetch the devices linked to the account without updating them.
+
+        New devices are added to `devices`. Call `Device.update()` on each device
+        afterwards; unlike `update()`, its errors reach the caller.
+
+        Returns:
+            The `devices` dictionary, keyed by device ID.
+
+        Raises:
+            NoDevicesFoundException: If the account has no devices.
+            HttpException: If the device list could not be fetched.
+        """
         try:
             response = await self._api.async_get_account_devices()
         except HttpException as err:
@@ -51,9 +68,8 @@ class NintendoParental:
             if self.devices.get(device.device_id, None) is None:
                 _LOGGER.debug("Creating new device %s", device.device_id)
                 self.devices[device.device_id] = device
-        coros = [update_device(d) for d in self.devices.values()]
-        await asyncio.gather(*coros)
         _LOGGER.debug("Found %s device(s)", len(self.devices))
+        return self.devices
 
     async def update(self):
         """Update module data.
